@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class TicketLogType
+    public class TicketLogType
     {
         [Key]
         [Editable(false)]

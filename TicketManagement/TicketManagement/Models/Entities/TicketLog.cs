@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class TicketLog
+    public class TicketLog
     {
         [Key]
         [Editable(false)]
@@ -21,10 +17,14 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket")]
         public int TicketId { get; set; }
 
+        virtual public Ticket Ticket { get; set; }
+
         [Required]
         [ForeignKey("TicketLogType")]
         [DisplayName("Ticket Log Type")]
         public int TicketLogTypeId { get; set; }
+
+        virtual public TicketLogType TicketLogType { get; set; }
 
         [Required]
         [DisplayName("Log Data")]

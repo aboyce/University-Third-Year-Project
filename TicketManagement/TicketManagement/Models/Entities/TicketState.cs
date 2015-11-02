@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class TicketState
+    public class TicketState
     {
         [Key]
         [Editable(false)]

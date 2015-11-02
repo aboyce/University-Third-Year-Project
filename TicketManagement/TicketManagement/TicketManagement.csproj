@@ -175,6 +175,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Context\TicketManagementContext.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
     <Compile Include="Models\Entities\Team.cs" />

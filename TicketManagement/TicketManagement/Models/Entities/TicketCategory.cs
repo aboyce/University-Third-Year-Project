@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class TicketCategory
+    public class TicketCategory
     {
         [Key]
         [Editable(false)]
@@ -25,12 +21,13 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Project")]
         public int? ProjectId { get; set; }
 
+        virtual public Project Project { get; set; }
+
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;
 
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
-
     }
 }

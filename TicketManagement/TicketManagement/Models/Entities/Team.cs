@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class Team
+    public class Team
     {
         [Key]
         [Editable(false)]
@@ -25,9 +21,7 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Organisation")]
         public int? OrganisationId { get; set; }
 
-        [ForeignKey("TeamLeader")]
-        [DisplayName("Team Leader")]
-        public int? TeamLeaderId { get; set; }
+        virtual public Organisation Organisation { get; set; }
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

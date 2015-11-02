@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
-    class Organisation
+    public class Organisation
     {
         [Key]
         [Editable(false)]
@@ -24,9 +20,11 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Is Internal")]
         public bool IsInternal { get; set; }
 
-        [ForeignKey("Default Contact")]
+        [ForeignKey("DefaultContact")]
         [DisplayName("Default Contact")]
-        public int? DefaultContactId { get; set; }
+        public int? ContactUserId { get; set; }
+
+        virtual public User DefaultContact { get; set; }
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;
