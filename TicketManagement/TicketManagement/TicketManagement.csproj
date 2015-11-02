@@ -175,6 +175,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Entities\Organisation.cs" />
+    <Compile Include="Models\Entities\Project.cs" />
+    <Compile Include="Models\Entities\Team.cs" />
+    <Compile Include="Models\Entities\Ticket.cs" />
+    <Compile Include="Models\Entities\TicketCategory.cs" />
+    <Compile Include="Models\Entities\TicketLog.cs" />
+    <Compile Include="Models\Entities\TicketLogType.cs" />
+    <Compile Include="Models\Entities\TicketPriority.cs" />
+    <Compile Include="Models\Entities\TicketState.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
