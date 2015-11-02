@@ -11,6 +11,9 @@ namespace TicketManagement.Models.Context
 {
     public class TicketManagementContext : DbContext
     {
+
+        public TicketManagementContext() : base("TicketManagement") {}
+
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
