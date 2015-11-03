@@ -33,12 +33,12 @@ namespace TicketManagement.Models.Entities
 
         virtual public TicketPriority TicketPriority { get; set; }
 
-        [Required]
-        [ForeignKey("TicketPriorityInternal")]
-        [DisplayName("Ticket Priority Internally")]
-        public int TicketPriorityInternalId { get; set; }
+        //[Required]
+        //[ForeignKey("TicketPriorityInternal")]
+        //[DisplayName("Ticket Priority Internally")]
+        //public int TicketPriorityInternalId { get; set; }
 
-        virtual public TicketPriority TicketPriorityInternal { get; set; }
+        //virtual public TicketPriority TicketPriorityInternal { get; set; }
 
         [ForeignKey("UserAssignedTo")]
         [DisplayName("User Assigned To")]

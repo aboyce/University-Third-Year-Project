@@ -126,7 +126,6 @@ namespace TicketManagement.Migrations
                         Description = c.String(maxLength: 250),
                         OpenedById = c.Int(nullable: false),
                         TicketPriorityId = c.Int(nullable: false),
-                        TicketPriorityInternalId = c.Int(nullable: false),
                         UserAssignedToId = c.Int(),
                         TeamAssignedToId = c.Int(),
                         OrganisationAssignedToId = c.Int(),
@@ -146,12 +145,10 @@ namespace TicketManagement.Migrations
                 .ForeignKey("dbo.Teams", t => t.TeamAssignedToId)
                 .ForeignKey("dbo.TicketCategories", t => t.TicketCategoryId, cascadeDelete: true)
                 .ForeignKey("dbo.TicketPriorities", t => t.TicketPriorityId, cascadeDelete: true)
-                .ForeignKey("dbo.TicketPriorities", t => t.TicketPriorityInternalId, cascadeDelete: true)
                 .ForeignKey("dbo.TicketStates", t => t.TicketStateId, cascadeDelete: true)
                 .ForeignKey("dbo.Users", t => t.UserAssignedToId)
                 .Index(t => t.OpenedById)
                 .Index(t => t.TicketPriorityId)
-                .Index(t => t.TicketPriorityInternalId)
                 .Index(t => t.UserAssignedToId)
                 .Index(t => t.TeamAssignedToId)
                 .Index(t => t.OrganisationAssignedToId)
@@ -190,7 +187,6 @@ namespace TicketManagement.Migrations
             DropForeignKey("dbo.TicketLogs", "TicketId", "dbo.Tickets");
             DropForeignKey("dbo.Tickets", "UserAssignedToId", "dbo.Users");
             DropForeignKey("dbo.Tickets", "TicketStateId", "dbo.TicketStates");
-            DropForeignKey("dbo.Tickets", "TicketPriorityInternalId", "dbo.TicketPriorities");
             DropForeignKey("dbo.Tickets", "TicketPriorityId", "dbo.TicketPriorities");
             DropForeignKey("dbo.Tickets", "TicketCategoryId", "dbo.TicketCategories");
             DropForeignKey("dbo.Tickets", "TeamAssignedToId", "dbo.Teams");
@@ -209,7 +205,6 @@ namespace TicketManagement.Migrations
             DropIndex("dbo.Tickets", new[] { "OrganisationAssignedToId" });
             DropIndex("dbo.Tickets", new[] { "TeamAssignedToId" });
             DropIndex("dbo.Tickets", new[] { "UserAssignedToId" });
-            DropIndex("dbo.Tickets", new[] { "TicketPriorityInternalId" });
             DropIndex("dbo.Tickets", new[] { "TicketPriorityId" });
             DropIndex("dbo.Tickets", new[] { "OpenedById" });
             DropIndex("dbo.TicketLogs", new[] { "TicketLogTypeId" });
