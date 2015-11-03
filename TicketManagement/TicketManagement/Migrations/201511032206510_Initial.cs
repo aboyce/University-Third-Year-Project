@@ -76,18 +76,6 @@ namespace TicketManagement.Migrations
                 .Index(t => t.TeamAssignedToId);
             
             CreateTable(
-                "dbo.TicketStates",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 50),
-                        Colour = c.String(maxLength: 10),
-                        Created = c.DateTime(nullable: false),
-                        LastUpdated = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.TicketCategories",
                 c => new
                     {
@@ -169,6 +157,18 @@ namespace TicketManagement.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.TicketStates",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 50),
+                        Colour = c.String(maxLength: 10),
+                        Created = c.DateTime(nullable: false),
+                        LastUpdated = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.TicketLogTypes",
                 c => new
                     {
@@ -216,11 +216,11 @@ namespace TicketManagement.Migrations
             DropIndex("dbo.Users", new[] { "TeamId" });
             DropIndex("dbo.Organisations", new[] { "ContactUserId" });
             DropTable("dbo.TicketLogTypes");
+            DropTable("dbo.TicketStates");
             DropTable("dbo.TicketPriorities");
             DropTable("dbo.Tickets");
             DropTable("dbo.TicketLogs");
             DropTable("dbo.TicketCategories");
-            DropTable("dbo.TicketStates");
             DropTable("dbo.Projects");
             DropTable("dbo.Teams");
             DropTable("dbo.Users");

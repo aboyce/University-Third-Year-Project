@@ -8,7 +8,6 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -16,8 +15,8 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket Priority Name")]
         public string Name { get; set; }
 
-        [StringLength(10, ErrorMessage = "Username must be less that 10 characters but more than 3", MinimumLength = 3)]
-        public string Colour { get; set; }
+        [StringLength(10, ErrorMessage = "Username must be less that 10 characters but more than 2", MinimumLength = 2)]
+        public string Colour { get; set; } = "#FFFFFF";
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

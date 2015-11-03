@@ -9,7 +9,6 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -22,9 +21,9 @@ namespace TicketManagement.Models.Entities
 
         [ForeignKey("DefaultContact")]
         [DisplayName("Default Contact")]
-        public int? ContactUserId { get; set; }
+        public int? ContactUserId { get; set; } = null;
 
-        virtual public User DefaultContact { get; set; }
+        public virtual User DefaultContact { get; set; } = null;
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

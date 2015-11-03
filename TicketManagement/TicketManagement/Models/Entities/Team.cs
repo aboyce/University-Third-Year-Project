@@ -9,19 +9,18 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Team Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Team Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Team Name")]
         public string Name { get; set; }
 
         [ForeignKey("Organisation")]
         [DisplayName("Organisation")]
-        public int? OrganisationId { get; set; }
+        public int? OrganisationId { get; set; } = null;
 
-        virtual public Organisation Organisation { get; set; }
+        virtual public Organisation Organisation { get; set; } = null;
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

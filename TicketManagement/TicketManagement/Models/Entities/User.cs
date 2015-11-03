@@ -9,31 +9,30 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("First Name")]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Last Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Last Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Username must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Username must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Username")]
         public string UserName { get; set; }
 
-        [StringLength(50, ErrorMessage = "Email must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Email must be less that 50 characters but more than 2", MinimumLength = 2)]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = "";
 
-        [StringLength(50, ErrorMessage = "Telephone must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Telephone must be less that 50 characters but more than 2", MinimumLength = 2)]
         [Phone]
-        public string Telephone { get; set; }
+        public string Telephone { get; set; } = "";
 
         [Required]
         [DisplayName("Internal User")]
@@ -49,18 +48,18 @@ namespace TicketManagement.Models.Entities
 
         [ForeignKey("Team")]
         [DisplayName("Team")]
-        public int? TeamId { get; set; }
+        public int? TeamId { get; set; } = null;
 
-        virtual public Team Team { get; set; }
+        virtual public Team Team { get; set; } = null;
 
         [DisplayName("Is Team Leader")]
         public bool IsTeamLeader { get; set; } = false;
 
         [Required]
-        public DateTime Created { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
 
         [Required]
         [DisplayName("Last Updated")]
-        public DateTime LastUpdated { get; set; }
+        public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
 }

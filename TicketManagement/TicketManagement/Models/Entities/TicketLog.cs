@@ -9,7 +9,6 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]

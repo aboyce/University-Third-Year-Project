@@ -9,14 +9,13 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Title must be less that 100 characters but more than 5", MinimumLength = 5)]
+        [StringLength(100, ErrorMessage = "Title must be less that 100 characters but more than 2", MinimumLength = 2)]
         public string Title { get; set; }
 
-        [StringLength(250, ErrorMessage = "Description must be less that 250 characters but more than 5", MinimumLength = 5)]
+        [StringLength(250, ErrorMessage = "Description must be less that 250 characters but more than 2", MinimumLength = 2)]
         public string Description { get; set; }
 
         [Required]
@@ -42,21 +41,21 @@ namespace TicketManagement.Models.Entities
 
         [ForeignKey("UserAssignedTo")]
         [DisplayName("User Assigned To")]
-        public int? UserAssignedToId { get; set; }
+        public int? UserAssignedToId { get; set; } = null;
 
-        virtual public User UserAssignedTo { get; set; }
+        virtual public User UserAssignedTo { get; set; } = null;
 
         [ForeignKey("TeamAssignedTo")]
         [DisplayName("Team Assigned To")]
-        public int? TeamAssignedToId { get; set; }
+        public int? TeamAssignedToId { get; set; } = null;
 
-        virtual public Team TeamAssignedTo { get; set; }
+        virtual public Team TeamAssignedTo { get; set; } = null;
 
         [ForeignKey("OrganisationAssignedTo")]
         [DisplayName("Organisation Assigned To")]
-        public int? OrganisationAssignedToId { get; set; }
+        public int? OrganisationAssignedToId { get; set; } = null;
 
-        virtual public Organisation OrganisationAssignedTo { get; set; }
+        virtual public Organisation OrganisationAssignedTo { get; set; } = null;
 
         [Required]
         [ForeignKey("TicketState")]
@@ -67,9 +66,9 @@ namespace TicketManagement.Models.Entities
 
         [ForeignKey("Project")]
         [DisplayName("Project")]
-        public int? ProjectId { get; set; }
+        public int? ProjectId { get; set; } = null;
 
-        virtual public Project Project { get; set; }
+        virtual public Project Project { get; set; } = null;
 
         [Required]
         [ForeignKey("TicketCategory")]
@@ -78,13 +77,13 @@ namespace TicketManagement.Models.Entities
 
         virtual public TicketCategory TicketCategory { get; set; }
 
-        public DateTime? Deadline { get; set; }
+        public DateTime? Deadline { get; set; } = null;
 
         [DisplayName("Last Message")]
-        public DateTime? LastMessage { get; set; }
+        public DateTime? LastMessage { get; set; } = null;
 
         [DisplayName("Last Response")]
-        public DateTime? LastResponse { get; set; }
+        public DateTime? LastResponse { get; set; } = null;
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

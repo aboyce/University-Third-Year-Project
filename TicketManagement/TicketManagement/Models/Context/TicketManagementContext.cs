@@ -24,6 +24,6 @@ namespace TicketManagement.Models.Context
         public DbSet<TicketLog> TicketLogs { get; set; }
         public DbSet<TicketLogType> TicketLogTypes { get; set; }
         public DbSet<TicketPriority> TicketPriorities { get; set; }
-        public DbSet<TicketState> TickerStates { get; set; }
+        public DbSet<TicketState> TicketStates { get; set; }
     }
 }

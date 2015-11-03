@@ -9,19 +9,18 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Ticket Category Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Ticket Category Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Ticket Category Name")]
         public string Name { get; set; }
 
         [ForeignKey("Project")]
         [DisplayName("Project")]
-        public int? ProjectId { get; set; }
+        public int? ProjectId { get; set; } = null;
 
-        virtual public Project Project { get; set; }
+        public virtual Project Project { get; set; } = null;
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;

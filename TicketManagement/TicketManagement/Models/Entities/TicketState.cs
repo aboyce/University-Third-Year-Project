@@ -12,16 +12,15 @@ namespace TicketManagement.Models.Entities
     {
         [Key]
         [Editable(false)]
-        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Ticket State Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Ticket State Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Ticket State Name")]
         public string Name { get; set; }
 
         [StringLength(10, ErrorMessage = "Colour must be less that 10 characters but more than 3", MinimumLength = 3)]
-        public string Colour { get; set; }
+        public string Colour { get; set; } = "#FFFFFF";
 
         [Required]
         public DateTime Created { get; set; } = DateTime.Now;
