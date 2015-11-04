@@ -12,7 +12,7 @@ namespace TicketManagement.Models.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Name must be less that 50 characters but more than 5", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         public string Name { get; set; }
 
         [Required]
