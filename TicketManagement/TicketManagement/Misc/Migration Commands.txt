@@ -1,0 +1,10 @@
+﻿Enable-Migrations -ContextTypeName ApplicationDbContext -MigrationsDirectory Migrations\Application
+Enable-Migrations -ContextTypeName TicketManagementContext -MigrationsDirectory Migrations\Entities
+
+
+Add-Migration -ConfigurationTypeName TicketManagement.Migrations.Application.Configuration 'Initial'
+Add-Migration -ConfigurationTypeName TicketManagement.Migrations.Entities.Configuration 'Initial'
+
+
+Update-Database -ConfigurationTypeName TicketManagement.Migrations.Application.Configuration -Verbose
+Update-Database -ConfigurationTypeName TicketManagement.Migrations.Entities.Configuration -Verbose
