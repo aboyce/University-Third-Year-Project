@@ -29,7 +29,5 @@ namespace TicketManagement.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<TicketManagement.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }
