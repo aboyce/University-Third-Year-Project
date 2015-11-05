@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TicketManagement.Models.ApplicationUser>
+@using System.Web.Helpers
+@{
+    Layout = "";
+    
+ }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcom - Ticket Managment</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container body-content">
+        
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-warning">Sign Up</button>
+            </div>
+        </div>
+
+
+
+
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Ticket Management</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
