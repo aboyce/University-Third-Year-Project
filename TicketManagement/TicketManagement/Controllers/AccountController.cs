@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.Models;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
