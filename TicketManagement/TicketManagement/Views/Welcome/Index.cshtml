@@ -1,7 +1,7 @@
-﻿@model TicketManagement.ViewModels.RegisterViewModel
+﻿@model TicketManagement.ViewModels.LoginViewModel
 @{
     Layout = "";
- }
+}
 
 <!DOCTYPE html>
 <html>
@@ -17,12 +17,22 @@
     <img src="~/Content/Images/Wallpapers/bg_mountains.jpg" id="bg_image" alt="Mountain Wallpaper">
 
     <style>
-        #bg_image { position: fixed; top: 0; left: 0; }
-        .bg_image_width { width: 100%; }
-        .bg_image_height { height: 100%; }
+        #bg_image {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .bg_image_width {
+            width: 100%;
+        }
+
+        .bg_image_height {
+            height: 100%;
+        }
     </style>
 
-    <div class="container body-content" style="background-color: gray;">
+    <div class="container body-content">
 
         @*SIGN UP BUTTON*@
         <div class="row">
@@ -31,65 +41,61 @@
             </div>
         </div>
 
-        @*SIGN UP POP-UP (MODAL)*@
-        <div id="modal_SignUp" class="modal fade" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Sign Up</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-10 col-lg-offset-2">
-                                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary("", new { @class = "text-danger" })
-                                    <div class="form-group">
-                                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                                        <div class="col-md-10">
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                                        <div class="col-md-10">
-                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-                                        <div class="col-md-10">
-                                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                   }
+        @*REGISTER POPUP AND FORM*@
+        @Html.Partial("_RegisterPartial")
+
+        @*LOGIN FORM*@
+        <div class="row">
+            <div class="col-md-6 col-lg-offset-3">
+                <section id="loginForm">
+                    @using (Html.BeginForm("Login", "Welcome", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <h3>Welcome</h3>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" value="Register" />
-                    </div>
-                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
+                </section>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4 col-lg-4">
-                
-            </div>
-        </div>
-
-
-
-
-
+        <p>HELLOOOOOOOOOO</p>
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Ticket Management</p>
+        <footer class="modal-footer">
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - Ticket Management</p>
+            </div>
+
         </footer>
+
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")

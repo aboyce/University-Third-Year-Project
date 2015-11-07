@@ -46,7 +46,7 @@ namespace TicketManagement.ViewModels
         public string Email { get; set; }
     }
 
-    public class LoginViewModel
+    public class LoginViewModel_old
     {
         [Required]
         [Display(Name = "Email")]
@@ -62,7 +62,7 @@ namespace TicketManagement.ViewModels
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
+    public class RegisterViewModel_old
     {
         [Required]
         [EmailAddress]
