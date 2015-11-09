@@ -1,0 +1,44 @@
+﻿@model TicketManagement.ViewModels.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Welcome/_WelcomeLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-lg-offset-3">
+        @using (Html.BeginForm("Register", "Welcome", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>Hello</h3>
+            <hr/>
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Register" />
+            </div>
+        }
+    </div>
+</div>
+
+
+

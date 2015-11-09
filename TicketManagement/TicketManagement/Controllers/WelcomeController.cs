@@ -47,26 +47,51 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        // GET: Welcome (Register)
+        //
+        // GET: /Welcome/Login
         [AllowAnonymous]
-        public ActionResult Index(RegisterViewModel model)
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        // GET: Welcome (Login)
+        //
+        // POST: /Welcome/Login
+        [HttpPost]
         [AllowAnonymous]
-        public ActionResult Index(LoginViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                //case SignInStatus.RequiresVerification:
+                //    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
         }
 
-        // GET: Welcome/Register
-        [HttpGet]
+        //
+        // GET: /Welcome/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         //
@@ -96,45 +121,49 @@ namespace TicketManagement.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Welcome", model);
-        }
-
-
-        // GET: Welcome/Login
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-            return RedirectToAction("Index", "Home");
+            return View(model);
         }
 
         //
-        // POST: /Welcome/Login
+        // GET: /Welcome/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Welcome/ChangePassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Welcome", model);
+                return View(model);
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("Index", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return RedirectToAction("Index", "Welcome", model);
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
+            AddErrors(result);
+            return View(model);
+        }
+
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
         }
 
         private void AddErrors(IdentityResult result)

@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Ticket Managment</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <img src="~/Content/Images/Wallpapers/bg_mountains.jpg" id="bg_image" alt="Mountain Wallpaper">
+
+    <style>
+        #bg_image {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .bg_image_width {
+            width: 100%;
+        }
+
+        .bg_image_height {
+            height: 100%;
+        }
+    </style>
+
+    <div class="container body-content">
+
+        @RenderBody()
+
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Login", "Login", "Welcome", null, new { @class = "btn btn-default"})
+                @Html.ActionLink("Register", "Register", "Welcome", null, new { @class = "btn btn-default"})
+            </div>
+        </div>
+
+
+
+
+        @*<div class="row">
+            <div class="col-md-12">
+                <footer class="">
+                    <div class="container">
+                        <p>&copy; @DateTime.Now.Year - Ticket Management</p>
+                    </div>
+                </footer>
+            </div>
+        </div>*@
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/Site/Welcome/welcome.js")
+</body>
+</html>

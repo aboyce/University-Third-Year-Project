@@ -1,26 +1,17 @@
 ﻿@model TicketManagement.ViewModels.LoginViewModel
+
 @{
-    Layout = "_WelcomeLayout.cshtml";   
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Welcome/_WelcomeLayout.cshtml";
 }
 
-@*SIGN UP BUTTON*@
-<div class="row">
-    <div class="col-md-2">
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_SignUp">Sign Up</button>
-    </div>
-</div>
-
-@*REGISTER POPUP AND FORM*@
-@Html.Partial("_RegisterPartial")
-
-@*LOGIN FORM*@
 <div class="row">
     <div class="col-md-6 col-lg-offset-3">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Welcome", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h3>Welcome</h3>
+                <h3>Welcome back</h3>
                         <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
