@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.ViewModels
 {
-    internal class WelcomeViewModels
+    internal class UserViewModels
     {
     }
 

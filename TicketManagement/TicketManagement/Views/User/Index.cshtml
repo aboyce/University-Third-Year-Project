@@ -1,6 +1,6 @@
 ﻿@model TicketManagement.ViewModels.LoginViewModel
 @{
-    Layout = "_WelcomeLayout.cshtml";   
+    Layout = "_WelcomeLayout.cshtml";
 }
 
 @*SIGN UP BUTTON*@
@@ -17,19 +17,19 @@
 <div class="row">
     <div class="col-md-6 col-lg-offset-3">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Welcome", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 <h3>Welcome</h3>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                         <div class="form-group">
                             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">

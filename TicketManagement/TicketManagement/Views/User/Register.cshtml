@@ -1,14 +1,12 @@
 ﻿@model TicketManagement.ViewModels.RegisterViewModel
-
 @{
     ViewBag.Title = "Register";
-    Layout = "~/Views/Welcome/_WelcomeLayout.cshtml";
+    Layout = "_WelcomeLayout.cshtml";
 }
-
 
 <div class="row">
     <div class="col-md-6 col-lg-offset-3">
-        @using (Html.BeginForm("Register", "Welcome", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             <h3>Hello</h3>

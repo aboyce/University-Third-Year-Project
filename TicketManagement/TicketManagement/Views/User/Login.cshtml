@@ -1,14 +1,13 @@
 ﻿@model TicketManagement.ViewModels.LoginViewModel
-
 @{
     ViewBag.Title = "Login";
-    Layout = "~/Views/Welcome/_WelcomeLayout.cshtml";
+    Layout = "_WelcomeLayout.cshtml";
 }
 
 <div class="row">
     <div class="col-md-6 col-lg-offset-3">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Welcome", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 <h3>Welcome back</h3>

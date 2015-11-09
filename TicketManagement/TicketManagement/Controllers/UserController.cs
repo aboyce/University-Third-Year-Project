@@ -15,16 +15,16 @@ using TicketManagement.ViewModels;
 namespace TicketManagement.Controllers
 {
     [Authorize]
-    public class WelcomeController : Controller
+    public class UserController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public WelcomeController()
+        public UserController()
         {
         }
 
-        public WelcomeController(ApplicationSignInManager signInManager, ApplicationUserManager userManager)
+        public UserController(ApplicationSignInManager signInManager, ApplicationUserManager userManager)
         {
             SignInManager = signInManager;
             UserManager = userManager;
@@ -40,7 +40,7 @@ namespace TicketManagement.Controllers
             private set { _userManager = value; }
         }
 
-        // GET: Welcome
+        // GET: User
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -48,7 +48,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // GET: /Welcome/Login
+        // GET: /User/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -57,7 +57,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // POST: /Welcome/Login
+        // POST: /User/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -87,7 +87,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // GET: /Welcome/Register
+        // GET: /User/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -95,7 +95,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // POST: /Welcome/Register
+        // POST: /User/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -125,14 +125,14 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // GET: /Welcome/ChangePassword
+        // GET: /User/ChangePassword
         public ActionResult ChangePassword()
         {
             return View();
         }
 
         //
-        // POST: /Welcome/ChangePassword
+        // POST: /User/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
