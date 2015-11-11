@@ -182,7 +182,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,7 +197,6 @@
       <DependentUpon>201511051440543_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Entities\Configuration.cs" />
-    <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Context\TicketManagementContext.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />

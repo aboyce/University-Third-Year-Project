@@ -32,7 +32,7 @@
                             <td>
                                 @if (ViewBag.ShowRemoveButton)
                                 {
-                                    using (Html.BeginForm("RemoveLogin", "Manage"))
+                                    using (Html.BeginForm("RemoveLogin", "User"))
                                     {
                                         @Html.AntiForgeryToken()
                                         <div>
