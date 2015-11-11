@@ -32,7 +32,7 @@
                             <td>
                                 @if (ViewBag.ShowRemoveButton)
                                 {
-                                    using (Html.BeginForm("RemoveLogin", "User"))
+                                    using (Html.BeginForm("RemoveLogin", "UserAdmin"))
                                     {
                                         @Html.AntiForgeryToken()
                                         <div>
@@ -54,7 +54,7 @@
         }
         if (Model.OtherLogins.Count > 0)
         {
-            using (Html.BeginForm("LinkLogin", "Manage"))
+            @*using (Html.BeginForm("LinkLogin", "Manage"))
             {
                 @Html.AntiForgeryToken()
                 <div id="socialLoginList">
@@ -65,7 +65,7 @@
                         }
                     </p>
                 </div>
-            }
+            }*@
         }
     }
 }
