@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,9 +20,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Is Internal")]
         public bool IsInternal { get; set; }
 
-        [ForeignKey("DefaultContact")]
-        [DisplayName("Default Contact")]
-        public int? ContactUserId { get; set; } = null;
+        //[ForeignKey("DefaultContact")]
+        //[DisplayName("Default Contact")]
+        //public int? ContactUserId { get; set; } = null;
 
         public virtual User DefaultContact { get; set; } = null;
 
@@ -31,5 +32,11 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        public virtual ICollection<Project> Projects { get; set; }
+
+        public virtual ICollection<Team> Teams { get; set; }
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

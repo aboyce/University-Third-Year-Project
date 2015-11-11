@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Models;
 using TicketManagement.ViewModels;
 using Microsoft.Owin.Security;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Controllers
 {
@@ -112,7 +113,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

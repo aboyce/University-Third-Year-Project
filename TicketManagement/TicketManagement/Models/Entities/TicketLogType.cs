@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,5 +22,7 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        public virtual ICollection<TicketLog> TicketLogs { get; set; }
     }
 }

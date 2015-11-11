@@ -11,17 +11,17 @@ namespace TicketManagement.Models.Entities
         [Editable(false)]
         public int Id { get; set; }
 
-        [Required]
-        [ForeignKey("Ticket")]
-        [DisplayName("Ticket")]
-        public int TicketId { get; set; }
+        //[Required]
+        //[ForeignKey("Ticket")]
+        //[DisplayName("Ticket")]
+        //public int TicketId { get; set; }
 
         virtual public Ticket Ticket { get; set; }
 
-        [Required]
-        [ForeignKey("TicketLogType")]
-        [DisplayName("Ticket Log Type")]
-        public int TicketLogTypeId { get; set; }
+        //[Required]
+        //[ForeignKey("TicketLogType")]
+        //[DisplayName("Ticket Log Type")]
+        //public int TicketLogTypeId { get; set; }
 
         virtual public TicketLogType TicketLogType { get; set; }
 

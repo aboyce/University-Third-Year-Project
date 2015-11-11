@@ -28,5 +28,7 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

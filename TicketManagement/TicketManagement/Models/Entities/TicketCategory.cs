@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,9 +17,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket Category Name")]
         public string Name { get; set; }
 
-        [ForeignKey("Project")]
-        [DisplayName("Project")]
-        public int? ProjectId { get; set; } = null;
+        //[ForeignKey("Project")]
+        //[DisplayName("Project")]
+        //public int? ProjectId { get; set; } = null;
 
         public virtual Project Project { get; set; } = null;
 
@@ -28,5 +29,7 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

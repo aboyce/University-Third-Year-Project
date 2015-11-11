@@ -5,7 +5,7 @@ namespace TicketManagement.Migrations.Application
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TicketManagement.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TicketManagement.Models.Context.ApplicationContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace TicketManagement.Migrations.Application
             MigrationsDirectory = @"Migrations\Application";
         }
 
-        protected override void Seed(TicketManagement.Models.ApplicationDbContext context)
+        protected override void Seed(TicketManagement.Models.Context.ApplicationContext context)
         {
             //  This method will be called after migrating to the latest version.
 
