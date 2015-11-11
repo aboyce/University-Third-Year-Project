@@ -39,15 +39,9 @@ namespace TicketManagement.Controllers
         }
 
 
-        // GET: UserAdmin
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         //
-        // GET: /UserAdmin/ManageLogins
-        public async Task<ActionResult> ManageLogins(UserController.ManageMessageId? message)
+        // GET: /UserAdmin/Index
+        public async Task<ActionResult> Index(UserController.ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == UserController.ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
