@@ -115,7 +115,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { FirstName = model.FirstName, LastName = model.LastName, IsInternal = model.IsInternal, IsAdmin = model.IsAdmin, IsArchived = model.IsArchived};
+                User user = new User { FirstName = model.FirstName, LastName = model.LastName, IsArchived = model.IsArchived};
                 ApplicationUser applicationUser = new ApplicationUser {User = user, UserId = user.Id, Email = model.Email, UserName = model.UserName};
                 user.ApplicationUserId = applicationUser.Id;
 

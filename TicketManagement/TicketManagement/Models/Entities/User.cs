@@ -10,8 +10,6 @@ namespace TicketManagement.Models.Entities
         private string _applicationUserId;
         private string _firstName;
         private string _lastName;
-        private bool _isInternal = false;
-        private bool _isAdmin = false;
         private bool _isArchived = false;
         private int? _teamId = null;
         private Team _team = null;
@@ -41,22 +39,6 @@ namespace TicketManagement.Models.Entities
         {
             get { return _lastName; }
             set { _lastName = value; Updated(); }
-        }
-
-        [Required]
-        [DisplayName("Internal User")]
-        public bool IsInternal
-        {
-            get { return _isInternal; }
-            set { _isInternal = value; Updated(); }
-        }
-
-        [Required]
-        [DisplayName("Admin User")]
-        public bool IsAdmin
-        {
-            get { return _isAdmin; }
-            set { _isAdmin = value; Updated(); }
         }
 
         [Required]

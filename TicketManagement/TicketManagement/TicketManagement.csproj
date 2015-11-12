@@ -200,6 +200,10 @@
     <Compile Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.Designer.cs">
       <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.cs" />
+    <Compile Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.Designer.cs">
+      <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -302,6 +306,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.resx">
       <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.resx">
+      <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
