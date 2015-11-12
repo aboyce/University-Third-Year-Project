@@ -11,6 +11,10 @@ namespace TicketManagement.Models.Entities
         [Editable(false)]
         public int Id { get; set; }
 
+        //[Required]
+        [DisplayName("Application User")]
+        public string ApplicationUserId { get; set; } = string.Empty;
+
         [Required]
         [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("First Name")]

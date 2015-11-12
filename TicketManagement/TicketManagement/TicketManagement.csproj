@@ -188,8 +188,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201511121219008_Initial.cs" />
+    <Compile Include="Migrations\Application\201511121219008_Initial.Designer.cs">
+      <DependentUpon>201511121219008_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
-    <Compile Include="Models\Context\TicketManagementContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
@@ -272,7 +276,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -280,6 +283,11 @@
     </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\Application\201511121219008_Initial.resx">
+      <DependentUpon>201511121219008_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

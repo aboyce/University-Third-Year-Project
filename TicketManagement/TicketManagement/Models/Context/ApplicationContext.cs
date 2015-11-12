@@ -21,6 +21,17 @@ namespace TicketManagement.Models.Context
             return new ApplicationContext();
         }
 
+        public DbSet<Organisation> Organisations { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Project> Projects { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketCategory> TicketCategories { get; set; }
+        public DbSet<TicketLog> TicketLogs { get; set; }
+        public DbSet<TicketLogType> TicketLogTypes { get; set; }
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+        public DbSet<TicketState> TicketStates { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
