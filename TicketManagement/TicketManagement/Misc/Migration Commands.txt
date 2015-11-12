@@ -1,4 +1,4 @@
-﻿Enable-Migrations -ContextTypeName ApplicationDbContext -MigrationsDirectory Migrations\Application
+﻿Enable-Migrations -ContextTypeName ApplicationContext -MigrationsDirectory Migrations\Application
 Enable-Migrations -ContextTypeName TicketManagementContext -MigrationsDirectory Migrations\Entities
 
 
