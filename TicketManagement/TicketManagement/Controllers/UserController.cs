@@ -115,11 +115,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { FirstName = model.FirstName, LastName = model.LastName, IsArchived = model.IsArchived};
-                ApplicationUser applicationUser = new ApplicationUser {User = user, UserId = user.Id, Email = model.Email, UserName = model.UserName};
-                user.ApplicationUserId = applicationUser.Id;
-
-                db.UserExtras.Add(user);
+                ApplicationUser applicationUser = new ApplicationUser(model.Email, model.FirstName, model.LastName, model.UserName, model.IsArchived);
 
                 var result = await UserManager.CreateAsync(applicationUser, model.Password);
                 if (result.Succeeded)

@@ -22,6 +22,23 @@ namespace TicketManagement.Models.Entities
             return userIdentity;
         }
 
+        public ApplicationUser() {}
+        public ApplicationUser(string email, string firstName, string lastName, string userName, bool isArchived = false)
+        {
+            try
+            {
+                User = new User { FirstName = firstName, LastName = lastName, IsArchived = isArchived, ApplicationUserId = Id };
+                UserId = User.Id;
+                UserName = userName;
+                Email = email;
+            }
+            catch (Exception)
+            {
+                User = new User { FirstName = "First", LastName = "Last", IsArchived = false, ApplicationUserId = Id};
+            }
+
+        }
+
         [ForeignKey("User")]
         [DisplayName("User")]
         public int? UserId { get; set; } = null;
