@@ -10,15 +10,14 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TicketManagement.Models.Entities
 {
-    public class User : IdentityUser
+    public class User
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
-        {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
-            return userIdentity;
-        }
+        [Key]
+        [Editable(false)]
+        public int Id { get; set; }
+
+        [Required]
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
@@ -42,9 +41,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Archived")]
         public bool IsArchived { get; set; } = false;
 
-        //[ForeignKey("Team")]
-        //[DisplayName("Team")]
-        //public int? TeamId { get; set; } = null;
+        [ForeignKey("Team")]
+        [DisplayName("Team")]
+        public int? TeamId { get; set; } = null;
 
         virtual public Team Team { get; set; } = null;
 
@@ -63,6 +62,8 @@ namespace TicketManagement.Models.Entities
         public virtual ICollection<Ticket> TicketsOpenedBy { get; set; }
 
         public virtual ICollection<Ticket> TicketsAssignedTo { get; set; }
+
+        #region Originial User
 
         //[Key]
         //[Editable(false)]
@@ -118,5 +119,7 @@ namespace TicketManagement.Models.Entities
         //[Required]
         //[DisplayName("Last Updated")]
         //public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        #endregion
     }
 }

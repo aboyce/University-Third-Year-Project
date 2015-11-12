@@ -16,15 +16,15 @@ namespace TicketManagement.Models.Entities
         [StringLength(50, ErrorMessage = "Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         public string Name { get; set; }
 
-        //[ForeignKey("Organisation")]
-        //[DisplayName("Organisation")]
-        //public int? OrganisationId { get; set; } = null;
+        [ForeignKey("Organisation")]
+        [DisplayName("Organisation")]
+        public int? OrganisationId { get; set; } = null;
 
         virtual public Organisation Organisation { get; set; } = null;
 
-        //[ForeignKey("TeamAssignedTo")]
-        //[DisplayName("Team Assigned To")]
-        //public int? TeamAssignedToId { get; set; } = null;
+        [ForeignKey("TeamAssignedTo")]
+        [DisplayName("Team Assigned To")]
+        public int? TeamAssignedToId { get; set; } = null;
 
         virtual public Team TeamAssignedTo { get; set; } = null;
 

@@ -20,9 +20,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Is Internal")]
         public bool IsInternal { get; set; }
 
-        //[ForeignKey("DefaultContact")]
-        //[DisplayName("Default Contact")]
-        //public int? ContactUserId { get; set; } = null;
+        [ForeignKey("DefaultContact")]
+        [DisplayName("Default Contact")]
+        public int? ContactUserId { get; set; } = null;
 
         public virtual User DefaultContact { get; set; } = null;
 

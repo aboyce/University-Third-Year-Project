@@ -10,7 +10,7 @@ using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Models.Context
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationContext()
             : base("TicketManagement", throwIfV1Schema: false)
@@ -22,15 +22,15 @@ namespace TicketManagement.Models.Context
             return new ApplicationContext();
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().ToTable("User").HasKey(u => u.Id);
-            modelBuilder.Entity<IdentityUserRole>().ToTable("UserRole").HasKey(r => r.UserId);
-            modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogin").HasKey(l => l.UserId);
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaim").HasKey(c => c.Id);
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles").HasKey(r => r.Id);
-        }
+        //    modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
+        //    modelBuilder.Entity<IdentityUserRole>().ToTable("UserRole").HasKey(ur => ur.UserId);
+        //    modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogin").HasKey(ul => ul.UserId);
+        //    modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaim");
+        //    modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+        //}
     }
 }

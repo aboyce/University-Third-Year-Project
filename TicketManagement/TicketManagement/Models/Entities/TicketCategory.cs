@@ -17,9 +17,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket Category Name")]
         public string Name { get; set; }
 
-        //[ForeignKey("Project")]
-        //[DisplayName("Project")]
-        //public int? ProjectId { get; set; } = null;
+        [ForeignKey("Project")]
+        [DisplayName("Project")]
+        public int? ProjectId { get; set; } = null;
 
         public virtual Project Project { get; set; } = null;
 

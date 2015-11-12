@@ -19,17 +19,17 @@ namespace TicketManagement.Models.Entities
         [StringLength(250, ErrorMessage = "Description must be less that 250 characters but more than 2", MinimumLength = 2)]
         public string Description { get; set; }
 
-        //[Required]
-        //[ForeignKey("OpenedBy")]
-        //[DisplayName("Opened By")]
-        //public int OpenedById { get; set; }
+        [Required]
+        [ForeignKey("OpenedBy")]
+        [DisplayName("Opened By")]
+        public int OpenedById { get; set; }
 
         virtual public User OpenedBy { get; set; }
 
-        //[Required]
-        //[ForeignKey("TicketPriority")]
-        //[DisplayName("Ticket Priority")]
-        //public int TicketPriorityId { get; set; }
+        [Required]
+        [ForeignKey("TicketPriority")]
+        [DisplayName("Ticket Priority")]
+        public int TicketPriorityId { get; set; }
 
         virtual public TicketPriority TicketPriority { get; set; }
 
@@ -40,41 +40,41 @@ namespace TicketManagement.Models.Entities
 
         //virtual public TicketPriority TicketPriorityInternal { get; set; }
 
-        //[ForeignKey("UserAssignedTo")]
-        //[DisplayName("User Assigned To")]
-        //public int? UserAssignedToId { get; set; } = null;
+        [ForeignKey("UserAssignedTo")]
+        [DisplayName("User Assigned To")]
+        public int? UserAssignedToId { get; set; } = null;
 
         virtual public User UserAssignedTo { get; set; } = null;
 
-        //[ForeignKey("TeamAssignedTo")]
-        //[DisplayName("Team Assigned To")]
-        //public int? TeamAssignedToId { get; set; } = null;
+        [ForeignKey("TeamAssignedTo")]
+        [DisplayName("Team Assigned To")]
+        public int? TeamAssignedToId { get; set; } = null;
 
         virtual public Team TeamAssignedTo { get; set; } = null;
 
-        //[ForeignKey("OrganisationAssignedTo")]
-        //[DisplayName("Organisation Assigned To")]
-        //public int? OrganisationAssignedToId { get; set; } = null;
+        [ForeignKey("OrganisationAssignedTo")]
+        [DisplayName("Organisation Assigned To")]
+        public int? OrganisationAssignedToId { get; set; } = null;
 
         virtual public Organisation OrganisationAssignedTo { get; set; } = null;
 
-        //[Required]
-        //[ForeignKey("TicketState")]
-        //[DisplayName("Ticket State")]
-        //public int TicketStateId { get; set; }
+        [Required]
+        [ForeignKey("TicketState")]
+        [DisplayName("Ticket State")]
+        public int TicketStateId { get; set; }
 
         virtual public TicketState TicketState { get; set; }
 
-        //[ForeignKey("Project")]
-        //[DisplayName("Project")]
-        //public int? ProjectId { get; set; } = null;
+        [ForeignKey("Project")]
+        [DisplayName("Project")]
+        public int? ProjectId { get; set; } = null;
 
         virtual public Project Project { get; set; } = null;
 
-        //[Required]
-        //[ForeignKey("TicketCategory")]
-        //[DisplayName("Ticket Category")]
-        //public int TicketCategoryId { get; set; }
+        [Required]
+        [ForeignKey("TicketCategory")]
+        [DisplayName("Ticket Category")]
+        public int TicketCategoryId { get; set; }
 
         virtual public TicketCategory TicketCategory { get; set; }
 

@@ -17,9 +17,9 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Team Name")]
         public string Name { get; set; }
 
-        //[ForeignKey("Organisation")]
-        //[DisplayName("Organisation")]
-        //public int? OrganisationId { get; set; } = null;
+        [ForeignKey("Organisation")]
+        [DisplayName("Organisation")]
+        public int? OrganisationId { get; set; } = null;
 
         virtual public Organisation Organisation { get; set; } = null;
 
