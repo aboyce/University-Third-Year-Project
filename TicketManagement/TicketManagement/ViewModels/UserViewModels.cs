@@ -22,6 +22,11 @@ namespace TicketManagement.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [StringLength(50, ErrorMessage = "Username must be less that 50 characters but more than 2", MinimumLength = 2)]
+        [DisplayName("Username")]
+        public string UserName { get; set; }
+
+        [Required]
         [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -42,7 +47,6 @@ namespace TicketManagement.ViewModels
         [Required]
         [Display(Name = "Archived")]
         public bool IsArchived { get; set; } = false;
-
 
         public Team Team { get; set; } = null;
 
@@ -65,9 +69,8 @@ namespace TicketManagement.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

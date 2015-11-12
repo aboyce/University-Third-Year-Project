@@ -192,6 +192,14 @@
     <Compile Include="Migrations\Application\201511121219008_Initial.Designer.cs">
       <DependentUpon>201511121219008_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201511121418194_Added Entity Base Class to User.cs" />
+    <Compile Include="Migrations\Application\201511121418194_Added Entity Base Class to User.Designer.cs">
+      <DependentUpon>201511121418194_Added Entity Base Class to User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.cs" />
+    <Compile Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.Designer.cs">
+      <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -288,6 +296,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\Application\201511121219008_Initial.resx">
       <DependentUpon>201511121219008_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201511121418194_Added Entity Base Class to User.resx">
+      <DependentUpon>201511121418194_Added Entity Base Class to User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.resx">
+      <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

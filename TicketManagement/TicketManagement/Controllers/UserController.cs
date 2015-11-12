@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Models;
 using TicketManagement.ViewModels;
 using Microsoft.Owin.Security;
+using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Controllers
@@ -19,6 +20,7 @@ namespace TicketManagement.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        private ApplicationContext db = new ApplicationContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         public UserController()
@@ -70,7 +72,7 @@ namespace TicketManagement.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -113,14 +115,11 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { FirstName = model.FirstName, LastName = model.LastName,
-                    IsInternal = model.IsInternal, IsAdmin = model.IsAdmin, IsArchived = model.IsArchived};
-                ApplicationUser applicationUser = new ApplicationUser {User = user, UserId = user.Id, Email = model.Email};
+                User user = new User { FirstName = model.FirstName, LastName = model.LastName, IsInternal = model.IsInternal, IsAdmin = model.IsAdmin, IsArchived = model.IsArchived};
+                ApplicationUser applicationUser = new ApplicationUser {User = user, UserId = user.Id, Email = model.Email, UserName = model.UserName};
                 user.ApplicationUserId = applicationUser.Id;
-                
-                
-                ;
 
+                db.UserExtras.Add(user);
 
                 var result = await UserManager.CreateAsync(applicationUser, model.Password);
                 if (result.Succeeded)

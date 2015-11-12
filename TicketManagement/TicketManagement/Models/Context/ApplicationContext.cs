@@ -24,7 +24,7 @@ namespace TicketManagement.Models.Context
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Project> Projects { get; set; }
-
+        public DbSet<User> UserExtras { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketCategory> TicketCategories { get; set; }
         public DbSet<TicketLog> TicketLogs { get; set; }
