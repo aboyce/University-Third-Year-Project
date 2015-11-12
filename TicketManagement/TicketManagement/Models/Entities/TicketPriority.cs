@@ -4,25 +4,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Models.Entities
 {
-    public class TicketPriority
+    public class TicketPriority : EntityBase
     {
-        [Key]
-        [Editable(false)]
-        public int Id { get; set; }
+        private string _name;
+        private string _colour = "#FFFFFF";
 
         [Required]
         [StringLength(50, ErrorMessage = "Ticket Priority Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Ticket Priority Name")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; Updated(); }
+        }
 
         [StringLength(10, ErrorMessage = "Username must be less that 10 characters but more than 2", MinimumLength = 2)]
-        public string Colour { get; set; } = "#FFFFFF";
-
-        [Required]
-        public DateTime Created { get; set; } = DateTime.Now;
-
-        [Required]
-        [DisplayName("Last Updated")]
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public string Colour
+        {
+            get { return _colour; }
+            set { _colour = value; Updated(); }
+        }
     }
 }

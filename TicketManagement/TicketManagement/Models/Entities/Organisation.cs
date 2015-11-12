@@ -5,31 +5,41 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class Organisation
+    public class Organisation : EntityBase
     {
-        [Key]
-        [Editable(false)]
-        public int Id { get; set; }
+        private string _name;
+        private bool _isInternal = false;
+        private int? _contactUserId = null;
+        private User _defaultContact = null;
 
         [Required]
         [StringLength(50, ErrorMessage = "Name must be less that 50 characters but more than 2", MinimumLength = 2)]
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; Updated(); }
+        }
 
         [Required]
         [DisplayName("Is Internal")]
-        public bool IsInternal { get; set; }
+        public bool IsInternal
+        {
+            get { return _isInternal; }
+            set { _isInternal = value; Updated(); }
+        }
 
         [ForeignKey("DefaultContact")]
         [DisplayName("Default Contact")]
-        public int? ContactUserId { get; set; } = null;
+        public int? ContactUserId
+        {
+            get { return _contactUserId; }
+            set { _contactUserId = value; Updated(); }
+        }
 
-        public virtual User DefaultContact { get; set; } = null;
-
-        [Required]
-        public DateTime Created { get; set; } = DateTime.Now;
-
-        [Required]
-        [DisplayName("Last Updated")]
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public virtual User DefaultContact
+        {
+            get { return _defaultContact; }
+            set { _defaultContact = value; Updated(); }
+        }
     }
 }
