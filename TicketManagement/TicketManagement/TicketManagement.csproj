@@ -195,6 +195,7 @@
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
+    <Compile Include="Models\Entities\EntityBase.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
     <Compile Include="Models\Entities\Team.cs" />
@@ -257,7 +258,7 @@
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout_Standard.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -265,10 +266,10 @@
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Partial_Login.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\_RegisterPartial.cshtml" />
-    <Content Include="Views\User\_WelcomeLayout.cshtml" />
+    <Content Include="Views\User\_Partial_Register.cshtml" />
+    <Content Include="Views\Shared\_Layout_Welcome.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />

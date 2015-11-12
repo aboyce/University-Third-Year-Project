@@ -5,65 +5,87 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class User
+    public class User : EntityBase
     {
-        [Key]
-        [Editable(false)]
-        public int Id { get; set; }
+        private string _applicationUserId;
+        private string _firstName;
+        private string _lastName;
+        private bool _isInternal = false;
+        private bool _isAdmin = false;
+        private bool _isArchived = false;
+        private int? _teamId = null;
+        private Team _team = null;
+        private bool _isTeamLeader = false;
 
         //[Required]
         [DisplayName("Application User")]
-        public string ApplicationUserId { get; set; } = string.Empty;
+        public string ApplicationUserId
+        {
+            get { return _applicationUserId;}
+            set { _applicationUserId = value; Updated(); }
+        }
 
         [Required]
         [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("First Name")]
-        public string FirstName { get; set; }
+        public string FirstName
+        {
+            get { return _firstName; }
+            set { _firstName = value; Updated(); }
+        }
 
         [Required]
         [StringLength(50, ErrorMessage = "Last Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("Last Name")]
-        public string LastName { get; set; }
-
-        [Required]
-        [StringLength(50, ErrorMessage = "Username must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [DisplayName("Username")]
-        public string UserName { get; set; }
-
-        [StringLength(50, ErrorMessage = "Email must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [EmailAddress]
-        public string Email { get; set; } = "";
-
-        [StringLength(50, ErrorMessage = "Telephone must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [Phone]
-        public string Telephone { get; set; } = "";
+        public string LastName
+        {
+            get { return _lastName; }
+            set { _lastName = value; Updated(); }
+        }
 
         [Required]
         [DisplayName("Internal User")]
-        public bool IsInternal { get; set; } = false;
+        public bool IsInternal
+        {
+            get { return _isInternal; }
+            set { _isInternal = value; Updated(); }
+        }
 
         [Required]
         [DisplayName("Admin User")]
-        public bool IsAdmin { get; set; } = false;
+        public bool IsAdmin
+        {
+            get { return _isAdmin; }
+            set { _isAdmin = value; Updated(); }
+        }
 
         [Required]
         [DisplayName("Archived")]
-        public bool IsArchived { get; set; } = false;
+        public bool IsArchived
+        {
+            get { return _isArchived; }
+            set { _isArchived = value; Updated(); }
+        }
 
         [ForeignKey("Team")]
         [DisplayName("Team")]
-        public int? TeamId { get; set; } = null;
+        public int? TeamId
+        {
+            get { return _teamId; }
+            set { _teamId = value; Updated(); }
+        }
 
-        virtual public Team Team { get; set; } = null;
+        virtual public Team Team
+        {
+            get { return _team; }
+            set { _team = value; Updated(); }
+        }
 
         [DisplayName("Is Team Leader")]
-        public bool IsTeamLeader { get; set; } = false;
-
-        [Required]
-        public DateTime Created { get; set; } = DateTime.Now;
-
-        [Required]
-        [DisplayName("Last Updated")]
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public bool IsTeamLeader
+        {
+            get { return _isTeamLeader; }
+            set { _isTeamLeader = value; Updated(); }
+        }
     }
 }
