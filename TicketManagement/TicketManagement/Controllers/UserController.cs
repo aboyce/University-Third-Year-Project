@@ -20,6 +20,8 @@ namespace TicketManagement.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        #region Properties
+
         private ApplicationContext db = new ApplicationContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -39,6 +41,8 @@ namespace TicketManagement.Controllers
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
             private set { _userManager = value; }
         }
+
+        #endregion
 
         #region GET/POST
 

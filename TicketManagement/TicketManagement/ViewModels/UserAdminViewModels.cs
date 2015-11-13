@@ -12,7 +12,12 @@ namespace TicketManagement.ViewModels
     {
     }
 
-    public class AdminViewModel
+    public class ManageUsers
+    {
+                    
+    }
+
+    public class ExternalLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }
