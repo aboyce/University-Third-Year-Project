@@ -23,7 +23,7 @@ namespace TicketManagement.ViewModels
 
         [Required]
         [StringLength(50, ErrorMessage = "Username must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [DisplayName("Username")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]

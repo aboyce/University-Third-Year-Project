@@ -11,6 +11,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.ViewModels;
+using TicketManagement.Models.Context;
+using System.Web.Security;
+
 
 namespace TicketManagement.Controllers
 {
@@ -19,6 +22,7 @@ namespace TicketManagement.Controllers
     {
         #region Properties
 
+        private ApplicationContext db = new ApplicationContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         public UserAdminController()
@@ -44,7 +48,7 @@ namespace TicketManagement.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(UserManager.Users.ToList());
         }
 
         //
