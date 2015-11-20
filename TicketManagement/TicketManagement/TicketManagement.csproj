@@ -289,7 +289,7 @@
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_Partial_Login.cshtml" />
+    <Content Include="Views\Shared\_Partial_User.cshtml" />
     <Content Include="Views\Home\_Partial_Register.cshtml" />
     <Content Include="Views\Shared\_Layout_Welcome.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />

@@ -7,10 +7,9 @@
 
         <ul class="nav navbar-nav">
             <li>
-                @Html.ActionLink("Hi " + User.Identity.GetUserName(), "ChangePassword", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink("Hi " + User.Identity.GetUserName(), "Index", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             <li><a href="~/Admin/Index"><i class="fa fa-wrench"></i></a></li>
-            <li><a href="~/User/ChangePassword"><i class="fa fa-key"></i></a></li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
         </ul>
     }
