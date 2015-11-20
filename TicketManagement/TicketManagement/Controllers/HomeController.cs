@@ -13,6 +13,7 @@ using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         #region Properties
@@ -65,9 +66,14 @@ namespace TicketManagement.Controllers
 
         //
         // GET: /Home/Login
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (returnUrl != string.Empty && User.Identity.IsAuthenticated) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
+            {
+                ViewBag.ErrorMessage = "It apears that you don't have permission to view that page.";
+                return View("Error");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -75,7 +81,6 @@ namespace TicketManagement.Controllers
         //
         // POST: /Home/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -90,7 +95,11 @@ namespace TicketManagement.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                {
+                    if (returnUrl != string.Empty)
+                        return RedirectToLocal(returnUrl);
                     return RedirectToAction("Index", "Organisations");
+                }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 //case SignInStatus.RequiresVerification:
@@ -123,7 +132,6 @@ namespace TicketManagement.Controllers
         //
         // POST: /Home/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {

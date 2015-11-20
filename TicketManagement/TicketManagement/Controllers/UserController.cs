@@ -47,14 +47,13 @@ namespace TicketManagement.Controllers
         #region GET/POST
 
         // GET: User
-        [AllowAnonymous]
         public ActionResult Index()
         {
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
 
             if (user == null)
             {
-                ViewBag.ErrorMessage = "Could not find user, please try relogging in and try again.";
+                ViewBag.ErrorMessage = "Could not find user, please try (re)logging in and try again.";
                 return View("Error");
             }
             
