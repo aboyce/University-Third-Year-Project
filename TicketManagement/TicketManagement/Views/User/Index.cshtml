@@ -5,29 +5,32 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
-<h2>User</h2>
+<h2>My Account</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
+    string archived = @Model.User.IsArchived ? "True" : "False";
+    string teamLeader = @Model.User.IsTeamLeader ? "True" : "False";
+
     <div class="form-horizontal">
-        <h4>User</h4>
-        <hr/>
+        <h3>Edit</h3>
+        <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                <input class="form-control" type="text" placeholder="@Model.UserName" readonly>
+                <input class="form-control" type="text" placeholder="@Model.UserName" disabled="disabled">
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
                 @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.User.FirstName, "", new { @class = "text-danger" })
@@ -35,62 +38,76 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.User.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.User.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.User.LastName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.User.LastName, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.User.IsArchived, htmlAttributes: new { @class = "control-label col-md-2" })
-
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                @if (@Model.User.IsArchived)
-                {
-                    <p><i class="fa fa-toggle-off"></i>
-                    </p>
-                    <input class="form-control text-box single-line" type="text" value="">
-                }
-                else
-                {
-                    <i class="fa fa-toggle-on"></i>
+                <input class="form-control" type="text" placeholder="@Model.Email" disabled="disabled">
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                }
-                <div class="">
-                    
-                    @*@Html.EditorFor(model => model.User.IsArchived)*@
-                    @Html.ValidationMessageFor(model => model.User.IsArchived, "", new {@class = "text-danger"})
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.IsArchived, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-6">
+                <input class="form-control" type="text" placeholder="@archived" disabled="disabled">
+                @Html.ValidationMessageFor(model => model.User.IsArchived, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-6">
+                <input class="form-control" type="text" placeholder="@teamLeader" disabled="disabled">
+                @Html.ValidationMessageFor(model => model.User.IsTeamLeader, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @if (Model.User.Team != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.User.Team.Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-6">
+                    <input class="form-control" type="text" placeholder="@Model.User.Team.Name" disabled="disabled">
+                    @Html.ValidationMessageFor(model => model.User.Team.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.User.TeamId, "TeamId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TeamId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.User.TeamId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.User.IsTeamLeader)
-                    @Html.ValidationMessageFor(model => model.User.IsTeamLeader, "", new { @class = "text-danger" })
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="control-label col-md-4">Team Name</label>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" placeholder="Not in a team" disabled="disabled">
                 </div>
             </div>
-        </div>
+
+        }
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-offset-4 col-md-8">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Index", "Organisations", null, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Change Password</h3>
+            <hr />
+            @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-default col-md-offset-6" })
+        </div>
+    </div>
+
+
+
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
