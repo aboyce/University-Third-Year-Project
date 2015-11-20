@@ -50,7 +50,7 @@ namespace TicketManagement.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return View(User);
         }
 
         //

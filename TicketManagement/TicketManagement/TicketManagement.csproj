@@ -184,6 +184,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -297,6 +298,11 @@
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\ExternalLogins.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Organisations\Create.cshtml" />
+    <Content Include="Views\Organisations\Delete.cshtml" />
+    <Content Include="Views\Organisations\Details.cshtml" />
+    <Content Include="Views\Organisations\Edit.cshtml" />
+    <Content Include="Views\Organisations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

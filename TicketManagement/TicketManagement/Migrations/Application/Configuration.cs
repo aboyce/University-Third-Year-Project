@@ -37,39 +37,60 @@ namespace TicketManagement.Migrations.Application
             //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             //userManager.AddToRole(admin.Id, "Administrator");
 
-            context.Organisations.AddOrUpdate(
+            if (!context.Organisations.Any(org => org.Name == "My Company"))
+            {
+                context.Organisations.AddOrUpdate(
                 new Organisation { Name = "My Company", IsInternal = true, DefaultContact = null },
                 new Organisation { Name = "Client", IsInternal = false, DefaultContact = null });
+            }
 
-            context.Teams.AddOrUpdate(
+            if (!context.Teams.Any(t => t.Name == "Support"))
+            {
+                context.Teams.AddOrUpdate(
                 new Team { Name = "Support" },
                 new Team { Name = "Management" });
+            }
 
-            context.Projects.AddOrUpdate(
+            if (!context.Projects.Any(p => p.Name == "First Application"))
+            {
+                context.Projects.AddOrUpdate(
                 new Project { Name = "First Application" },
                 new Project { Name = "Second Application" });
+            }
 
-            context.TicketCategories.AddOrUpdate(
+            if (!context.TicketCategories.Any(tc => tc.Name == "Question"))
+            {
+                context.TicketCategories.AddOrUpdate(
                 new TicketCategory { Name = "Question" },
                 new TicketCategory { Name = "Bug" },
                 new TicketCategory { Name = "Feature" });
+            }
 
-            context.TicketLogTypes.AddOrUpdate(
+            if (!context.TicketLogTypes.Any(tlt => tlt.Name == "Message"))
+            {
+                context.TicketLogTypes.AddOrUpdate(
                 new TicketLogType { Name = "Message" },
                 new TicketLogType { Name = "Message" });
+            }
 
-            context.TicketPriorities.AddOrUpdate(
+            if (!context.TicketPriorities.Any(tc => tc.Name == "Feature"))
+            {
+                context.TicketPriorities.AddOrUpdate(
                 new TicketPriority { Name = "Feature", Colour = "#0066FF" },
                 new TicketPriority { Name = "Low", Colour = "#00CC00" },
                 new TicketPriority { Name = "Medium", Colour = "#FF6600" },
                 new TicketPriority { Name = "High", Colour = "#FF0000" },
                 new TicketPriority { Name = "Emergency", Colour = "#800000" });
+            }
 
-            context.TicketStates.AddOrUpdate(
+            if (!context.TicketStates.Any(ts => ts.Name == "Pending Approval"))
+            {
+                context.TicketStates.AddOrUpdate(
                 new TicketState { Name = "Pending Approval", Colour = "#009900" },
                 new TicketState { Name = "Open", Colour = "#CCFFFF" },
                 new TicketState { Name = "Awaiting Response", Colour = "#FFFFFF" },
                 new TicketState { Name = "Closed", Colour = "#FF0000" });
+            }
         }
     }
 }
