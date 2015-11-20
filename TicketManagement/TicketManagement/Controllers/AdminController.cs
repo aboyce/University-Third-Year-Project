@@ -13,6 +13,7 @@ using Microsoft.Owin.Security;
 using TicketManagement.ViewModels;
 using TicketManagement.Models.Context;
 using System.Web.Security;
+using TicketManagement.Helpers;
 
 
 namespace TicketManagement.Controllers
@@ -62,6 +63,13 @@ namespace TicketManagement.Controllers
                 {'e', db.TicketStates.Select(e => e.Id).Count()},
             };
 
+            TicketConfiguration conf = Configuration.GetTicketConfiguration();
+
+            if (conf == null) return View(totals);
+
+            totals.Add('1', (int)conf.TimeSpanGreen.TotalMinutes);
+            totals.Add('2', (int)conf.TimeSpanAmber.TotalMinutes);
+            totals.Add('3', (int)conf.TimeSpanRed.TotalMinutes);
 
             return View(totals);
         }
