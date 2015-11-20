@@ -15,33 +15,36 @@
     </div>
 </div>
 
-@foreach (var kvp in Model)
-{
-    <li class="list-group-item">
-        <span class="badge">@kvp.Value</span>
-        @switch (kvp.Key)
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                @foreach (var kvp in Model)
+            {
+                    <li class="list-group-item">
+                        <span class="badge">@kvp.Value</span>
+                        @switch (kvp.Key)
                 {
                     case 'o':
-                        @Html.ActionLink("Organisations", "Index", "Organisations")
-                        break;
+                                @Html.ActionLink("Organisations", "Index", "Organisations")
+                                break;
+                        }
+                    </li>
                 }
-    </li>
-}
-
-<ul class="list-group">
-    <li class="list-group-item">
-        <span class="badge"></span>
-        Cras justo odio
-    </li>
-    <li class="list-group-item">
-        <span class="badge">14</span>
-        Cras justo odio
-    </li>
-    <li class="list-group-item">
-        <span class="badge">14</span>
-        Cras justo odio
-    </li>
-</ul>
+                <li class="list-group-item">
+                    <span class="badge">14</span>
+                    Cras justo odio
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">14</span>
+                    Cras justo odio
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@

@@ -7,9 +7,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using TicketManagement.Models;
 using TicketManagement.ViewModels;
 using Microsoft.Owin.Security;
 using TicketManagement.Models.Context;
@@ -50,7 +50,15 @@ namespace TicketManagement.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(User);
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "Could not find user, please try relogging in and try again.";
+                return View("Error");
+            }
+            
+            return View(user);
         }
 
         //

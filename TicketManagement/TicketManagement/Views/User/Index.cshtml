@@ -1,1 +1,96 @@
-﻿
+﻿@model TicketManagement.Models.Entities.ApplicationUser
+
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+}
+
+<h2>User</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>User</h4>
+        <hr/>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                <input class="form-control" type="text" placeholder="@Model.UserName" readonly>
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.User.LastName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.User.LastName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.IsArchived, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-6">
+                @if (@Model.User.IsArchived)
+                {
+                    <p><i class="fa fa-toggle-off"></i>
+                    </p>
+                    <input class="form-control text-box single-line" type="text" value="">
+                }
+                else
+                {
+                    <i class="fa fa-toggle-on"></i>
+
+                }
+                <div class="">
+                    
+                    @*@Html.EditorFor(model => model.User.IsArchived)*@
+                    @Html.ValidationMessageFor(model => model.User.IsArchived, "", new {@class = "text-danger"})
+                </div>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.User.TeamId, "TeamId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TeamId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.User.TeamId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.User.IsTeamLeader)
+                    @Html.ValidationMessageFor(model => model.User.IsTeamLeader, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
