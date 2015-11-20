@@ -18,17 +18,17 @@ using System.Web.Security;
 namespace TicketManagement.Controllers
 {
     [Authorize]
-    public class UserAdminController : Controller
+    public class AdminController : Controller
     {
         #region Properties
 
         private ApplicationContext db = new ApplicationContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        public UserAdminController()
+        public AdminController()
         {
         }
-        public UserAdminController(ApplicationSignInManager signInManager, ApplicationUserManager userManager)
+        public AdminController(ApplicationSignInManager signInManager, ApplicationUserManager userManager)
         {
             SignInManager = signInManager;
             UserManager = userManager;
@@ -52,7 +52,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // POST: /UserAdmin/RemoveLogin
+        // POST: /Admin/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
@@ -76,7 +76,7 @@ namespace TicketManagement.Controllers
         }
 
         //
-        // GET: /UserAdmin/ExternalLogins
+        // GET: /Admin/ExternalLogins
         public async Task<ActionResult> ExternalLogins(UserController.ManageMessageId? message)
         {
             ViewBag.StatusMessage =

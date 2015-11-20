@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 col-lg-offset-2">
-                        @using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary("", new { @class = "text-danger" })

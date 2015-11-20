@@ -1,65 +1,55 @@
-﻿@{
-    Layout = "";
-}
+﻿@{ Layout = ""; }
 
 <!DOCTYPE html>
-<html>
+<html class="full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome - Ticket Managment</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Styles/Home/home.css")
 
 </head>
 <body>
-    <img src="~/Content/Images/Wallpapers/bg_mountains.jpg" id="bg_image" alt="Mountain Wallpaper">
 
-    <style>
-        #bg_image {
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        .bg_image_width {
-            width: 100%;
-        }
-
-        .bg_image_height {
-            height: 100%;
-        }
-    </style>
-
-    <div class="container body-content">
-
-        @RenderBody()
-
-        <div class="row">
-            <div class="col-md-12">
-                @Html.ActionLink("Login", "Login", "User", null, new { @class = "btn btn-default"})
-                @Html.ActionLink("Register", "Register", "User", null, new { @class = "btn btn-default"})
+    <nav class="navbar navbar-default navbar-fixed-bottom navbar-welcome" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-welcome-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
+            <div class="collapse navbar-collapse" id="navbar-welcome-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("ABOUT", "About", "Home")</li>
+                    <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
+                </ul>
+                @Html.ActionLink("Ticket Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <ul class="nav navbar-nav navbar-left">
+                    <li>@Html.ActionLink("LOGIN", "Login", "Home")</li>
+                    <li>@Html.ActionLink("REGISTER", "Register", "Home")</li>
+                </ul>
+            </div>
+            @*<div class="collapse navbar-collapse navbar-left" id="welcome-navbar-dev">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("LOGIN", "Login", "Home")</li>
+                        <li>@Html.ActionLink("REGISTER", "Register", "Home")</li>
+                    </ul>
+                </div>*@
         </div>
+    </nav>
 
-
-
-
-        @*<div class="row">
-            <div class="col-md-12">
-                <footer class="">
-                    <div class="container">
-                        <p>&copy; @DateTime.Now.Year - Ticket Management</p>
-                    </div>
-                </footer>
-            </div>
-        </div>*@
-
+    <div class="container container-welcome">
+        @RenderBody()
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/Scripts/Site/User/user.js")
+    @Scripts.Render("~/Scripts/Site/Home/home.js")
 </body>
 </html>

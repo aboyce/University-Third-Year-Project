@@ -183,7 +183,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\UserAdminController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,7 +220,8 @@
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\UserAdminViewModels.cs" />
+    <Compile Include="ViewModels\AdminViewModels.cs" />
+    <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +232,8 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\Wallpapers\bg_mountains.jpg" />
+    <Content Include="Content\Images\Wallpapers\bg_mountains_footer.jpg" />
+    <Content Include="Content\Styles\Home\home.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -251,7 +254,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\Site\User\user.js" />
+    <Content Include="Scripts\Site\Home\home.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -288,13 +291,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Partial_Login.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\_Partial_Register.cshtml" />
+    <Content Include="Views\Home\_Partial_Register.cshtml" />
     <Content Include="Views\Shared\_Layout_Welcome.cshtml" />
-    <Content Include="Views\User\Register.cshtml" />
-    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
-    <Content Include="Views\UserAdmin\ExternalLogins.cshtml" />
-    <Content Include="Views\UserAdmin\Index.cshtml" />
+    <Content Include="Views\Admin\ExternalLogins.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
