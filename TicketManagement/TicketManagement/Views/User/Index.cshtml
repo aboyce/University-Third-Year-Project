@@ -11,8 +11,8 @@
 {
     @Html.AntiForgeryToken()
 
-    string archived = @Model.User.IsArchived ? "True" : "False";
-    string teamLeader = @Model.User.IsTeamLeader ? "True" : "False";
+    string archived = @Model.User.IsArchived ? "checked=\"checked\"" : string.Empty;
+    string teamLeader = @Model.User.IsTeamLeader ? "checked=\"checked\"" : string.Empty;
 
     <div class="form-horizontal">
         
@@ -58,7 +58,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.User.IsArchived, htmlAttributes: new {@class = "control-label col-md-4"})
             <div class="col-md-6">
-                <input class="form-control" type="text" placeholder="@archived" disabled="disabled">
+                <input class="check-box" @archived disabled="disabled" type="checkbox">
                 @Html.ValidationMessageFor(model => model.User.IsArchived, "", new {@class = "text-danger"})
             </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.User.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
             <div class="col-md-6">
-                <input class="form-control" type="text" placeholder="@teamLeader" disabled="disabled">
+                <input class="check-box" @teamLeader disabled="disabled" type="checkbox">
                 @Html.ValidationMessageFor(model => model.User.IsTeamLeader, "", new {@class = "text-danger"})
             </div>
         </div>
@@ -84,9 +84,9 @@
         else
         {
             <div class="form-group">
-                <label class="control-label col-md-4">Team Name</label>
+                <label class="control-label col-md-4">Team Assigned</label>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" placeholder="Not in a team" disabled="disabled">
+                    <input class="check-box" disabled="disabled" type="checkbox">
                 </div>
             </div>
         }

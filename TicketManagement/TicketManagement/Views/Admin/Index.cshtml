@@ -1,46 +1,66 @@
-﻿@model Dictionary<char,int>
+﻿@model Dictionary<char, int>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-4">
             <h2>Admin Panel</h2>
-            <br/>
+            <br />
         </div>
     </div>
 </div>
 
 
-
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-md-offset-3">
             <ul class="list-group">
+
                 @foreach (var kvp in Model)
-            {
-                    <li class="list-group-item">
-                        <span class="badge">@kvp.Value</span>
-                        @switch (kvp.Key)
                 {
-                    case 'o':
-                                @Html.ActionLink("Organisations", "Index", "Organisations")
+                    <li class="list-group-item">
+
+                        <span class="badge badge-important">@kvp.Value</span>
+                        
+                        @switch (kvp.Key)
+                        {
+                            case 'o':
+                                @Html.ActionLink("Organisations", "Index", "Organisations", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'u':
+                                @Html.ActionLink("Users", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'p':
+                                @Html.ActionLink("Projects", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'm':
+                                @Html.ActionLink("Teams", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 't':
+                                @Html.ActionLink("Tickets", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'g':
+                                @Html.ActionLink("Ticket Categories", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'l':
+                                @Html.ActionLink("Ticket Logs", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'y':
+                                @Html.ActionLink("Ticket Log Types", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'i':
+                                @Html.ActionLink("Ticket Priorities", "Index", "User", null, new { @class = "btn btn-default" })
+                                break;
+                            case 'e':
+                                @Html.ActionLink("Ticket States", "Index", "User", null, new { @class = "btn btn-default" })
                                 break;
                         }
                     </li>
                 }
-                <li class="list-group-item">
-                    <span class="badge">14</span>
-                    Cras justo odio
-                </li>
-                <li class="list-group-item">
-                    <span class="badge">14</span>
-                    Cras justo odio
-                </li>
             </ul>
         </div>
     </div>

@@ -48,10 +48,20 @@ namespace TicketManagement.Controllers
 
         public ActionResult Index()
         {
-            Dictionary<char, int> totals = new Dictionary<char, int>();
+            Dictionary<char, int> totals = new Dictionary<char, int>
+            {
+                {'o', db.Organisations.Select(o => o.Id).Count()},
+                {'u', db.Users.Select(u => u.Id).Count()},
+                {'p', db.Projects.Select(p => p.Id).Count()},
+                {'m', db.Teams.Select(m => m.Id).Count()},
+                {'t', db.Tickets.Select(t => t.Id).Count()},
+                {'g', db.TicketCategories.Select(g => g.Id).Count()},
+                {'l', db.TicketLogs.Select(l => l.Id).Count()},
+                {'y', db.TicketLogTypes.Select(y => y.Id).Count()},
+                {'i', db.TicketPriorities.Select(i => i.Id).Count()},
+                {'e', db.TicketStates.Select(e => e.Id).Count()},
+            };
 
-            int orgs = db.Organisations.Select(o => o.Id).Count();
-            totals.Add('o', orgs);
 
             return View(totals);
         }

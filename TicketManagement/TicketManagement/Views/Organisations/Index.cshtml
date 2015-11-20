@@ -1,22 +1,14 @@
 ﻿@model IEnumerable<TicketManagement.Models.Entities.Organisation>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Organisations";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+<h2>Organisations</h2>
+<hr/>
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <h2>Organisations</h2>
-            <br />
-        </div>
-    </div>
-</div>
-
-<table class="table table-hover">
+<table class="table table-hover table-striped table-responsive">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.DefaultContact.ApplicationUserId)
@@ -58,5 +50,5 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create", "Create", null, new {@class="btn btn-default"})
 </p>

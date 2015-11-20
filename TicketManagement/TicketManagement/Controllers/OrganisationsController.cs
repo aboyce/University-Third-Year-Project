@@ -12,6 +12,7 @@ using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class OrganisationsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
