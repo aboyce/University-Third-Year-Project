@@ -5,9 +5,9 @@
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav">
             <li>
-                @Html.ActionLink(User.Identity.GetUserName(), "ChangePassword", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink("Hi " + User.Identity.GetUserName(), "ChangePassword", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             <li><a href="~/Admin/Index"><i class="fa fa-wrench"></i></a></li>
             <li><a href="~/User/ChangePassword"><i class="fa fa-key"></i></a></li>
@@ -17,7 +17,7 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Register", "Register", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>

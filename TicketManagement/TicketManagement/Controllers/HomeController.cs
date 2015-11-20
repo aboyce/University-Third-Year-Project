@@ -43,7 +43,10 @@ namespace TicketManagement.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if(User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Organisations");
+            else
+                return View();
         }
 
         public ActionResult About()
@@ -87,7 +90,7 @@ namespace TicketManagement.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Organisations");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 //case SignInStatus.RequiresVerification:
@@ -106,7 +109,7 @@ namespace TicketManagement.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
         }
 
         //
