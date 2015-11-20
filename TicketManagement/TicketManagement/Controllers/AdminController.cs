@@ -48,7 +48,12 @@ namespace TicketManagement.Controllers
 
         public ActionResult Index()
         {
-            return View(UserManager.Users.ToList());
+            Dictionary<char, int> totals = new Dictionary<char, int>();
+
+            int orgs = db.Organisations.Select(o => o.Id).Count();
+            totals.Add('o', orgs);
+
+            return View(totals);
         }
 
         //
