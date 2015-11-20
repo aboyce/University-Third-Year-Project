@@ -1,10 +1,10 @@
-﻿body {
+﻿.body-welcome {
 	margin-top: 50px;
 	margin-bottom: 50px;
 	background: none;
 }
 
-.full {
+.html-welcome {
   background: url("../../Images/Wallpapers/bg_mountains.jpg") no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -13,7 +13,6 @@
 }
 
 .navbar-welcome {
-    /*background: transparent;*/
     background-color: #181818;
 }
 

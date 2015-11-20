@@ -1,17 +1,19 @@
 ﻿@{ Layout = ""; }
 
 <!DOCTYPE html>
-<html class="full">
+<html class="html-welcome">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Ticket Managment</title>
+    <title>Welcome - Ticket Management</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/Styles/Home/home.css")
 
 </head>
-<body>
+<body class="body-welcome">
 
     <nav class="navbar navbar-default navbar-fixed-bottom navbar-welcome" role="navigation">
         <div class="container">
@@ -45,5 +47,6 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/Site/Home/home.js")
+
 </body>
 </html>

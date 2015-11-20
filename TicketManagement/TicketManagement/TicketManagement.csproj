@@ -232,7 +232,6 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\Wallpapers\bg_mountains.jpg" />
-    <Content Include="Content\Images\Wallpapers\bg_mountains_footer.jpg" />
     <Content Include="Content\Styles\Home\home.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
