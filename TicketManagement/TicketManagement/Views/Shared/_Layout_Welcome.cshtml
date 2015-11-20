@@ -15,6 +15,7 @@
 
     <nav class="navbar navbar-default navbar-fixed-bottom navbar-welcome" role="navigation">
         <div class="container">
+            @Html.ActionLink("Ticket Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand navbar-center" })
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-welcome-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -28,22 +29,15 @@
                     <li>@Html.ActionLink("ABOUT", "About", "Home")</li>
                     <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
                 </ul>
-                @Html.ActionLink("Ticket Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 <ul class="nav navbar-nav navbar-left">
                     <li>@Html.ActionLink("LOGIN", "Login", "Home")</li>
                     <li>@Html.ActionLink("REGISTER", "Register", "Home")</li>
                 </ul>
             </div>
-            @*<div class="collapse navbar-collapse navbar-left" id="welcome-navbar-dev">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("LOGIN", "Login", "Home")</li>
-                        <li>@Html.ActionLink("REGISTER", "Register", "Home")</li>
-                    </ul>
-                </div>*@
         </div>
     </nav>
 
-    <div class="container container-welcome">
+    <div class="container">
         @RenderBody()
     </div>
 
