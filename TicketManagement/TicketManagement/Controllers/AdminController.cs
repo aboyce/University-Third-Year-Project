@@ -18,7 +18,7 @@ using TicketManagement.Helpers;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Administrator")]
     public class AdminController : Controller
     {
         #region Properties
@@ -72,6 +72,14 @@ namespace TicketManagement.Controllers
             totals.Add('3', (int)conf.TimeSpanRed.TotalMinutes);
 
             return View(totals);
+        }
+
+        //
+        // GET: Users
+        public async Task<ActionResult> Users()
+        {
+            var applicationUsers = db.Users.Select(u => u);
+            return View(await applicationUsers.ToListAsync());
         }
 
         //

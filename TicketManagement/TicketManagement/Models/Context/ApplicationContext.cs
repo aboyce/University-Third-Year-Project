@@ -42,5 +42,7 @@ namespace TicketManagement.Models.Context
             modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
         }
+
+        public System.Data.Entity.DbSet<TicketManagement.Models.Entities.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

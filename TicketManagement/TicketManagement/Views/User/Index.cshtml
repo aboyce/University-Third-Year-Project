@@ -7,6 +7,14 @@
 
 <h2>My Account</h2>
 
+@if (Request.Params["Message"] == "ChangePasswordSuccess")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> Your password has been changed.
+    </div>
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -15,14 +23,14 @@
     string teamLeader = @Model.User.IsTeamLeader ? "checked=\"checked\"" : string.Empty;
 
     <div class="form-horizontal">
-        
+
         <h3>Edit</h3>
         <hr/>
 
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})
         @Html.HiddenFor(model => model.Id)
 
-    @*Form Elements*@
+        @*Form Elements*@
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-4"})
             <div class="col-md-6">
@@ -91,7 +99,7 @@
             </div>
         }
 
-    @*Form Buttons*@
+        @*Form Buttons*@
         <div class="form-group">
             <div class="col-md-offset-4 col-md-8">
                 <input type="submit" value="Save" class="btn btn-primary"/>
@@ -108,9 +116,5 @@
             @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-default col-md-offset-6" })
         </div>
     </div>
-
-
-
-
 }
 
