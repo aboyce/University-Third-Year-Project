@@ -45,7 +45,7 @@ namespace TicketManagement.Controllers
         public ActionResult Index()
         {
             if(User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Organisations"); // TODO: Change this back to RedirectToAction("Index", "Tickets");
+                return RedirectToAction("Index", "Tickets");
             else
                 return View();
         }

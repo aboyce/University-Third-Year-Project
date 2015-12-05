@@ -247,6 +247,7 @@
     <Content Include="Content\Images\Wallpapers\bg_mountains.jpg" />
     <Content Include="Content\Styles\Layout\layout.css" />
     <Content Include="Content\Favicon\favicon.ico" />
+    <Content Include="Content\Styles\Site\Tickets\tickets.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
