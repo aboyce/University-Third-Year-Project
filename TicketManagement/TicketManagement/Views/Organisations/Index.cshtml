@@ -20,7 +20,7 @@
         <th>
             @Html.DisplayNameFor(model => model.LastUpdated)
         </th>
-        <th></th>
+        <th>Actions</th>
     </tr>
 
     @foreach (var organisation in Model)
@@ -35,9 +35,6 @@
                 const string fullName = "{organisation.DefaultContact.FirstName} + {organisation.DefaultContact.LastName}";
                 <td>@fullName</td>
             }
-            <td>
-
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => organisation.Name)
             </td>

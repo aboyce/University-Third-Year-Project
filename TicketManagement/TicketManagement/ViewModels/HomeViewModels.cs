@@ -34,10 +34,6 @@ namespace TicketManagement.ViewModels
         public bool IsInternal { get; set; } = false;
 
         [Required]
-        [Display(Name = "Admin User")]
-        public bool IsAdmin { get; set; } = false;
-
-        [Required]
         [Display(Name = "Archived")]
         public bool IsArchived { get; set; } = false;
 
