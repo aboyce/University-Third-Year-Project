@@ -186,6 +186,11 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="Controllers\TicketCategoriesController.cs" />
+    <Compile Include="Controllers\TicketLogTypesController.cs" />
+    <Compile Include="Controllers\TicketPrioritiesController.cs" />
+    <Compile Include="Controllers\TicketStatesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -316,6 +321,31 @@
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Teams\Create.cshtml" />
+    <Content Include="Views\Teams\Delete.cshtml" />
+    <Content Include="Views\Teams\Details.cshtml" />
+    <Content Include="Views\Teams\Edit.cshtml" />
+    <Content Include="Views\Teams\Index.cshtml" />
+    <Content Include="Views\TicketCategories\Create.cshtml" />
+    <Content Include="Views\TicketCategories\Delete.cshtml" />
+    <Content Include="Views\TicketCategories\Details.cshtml" />
+    <Content Include="Views\TicketCategories\Edit.cshtml" />
+    <Content Include="Views\TicketCategories\Index.cshtml" />
+    <Content Include="Views\TicketLogTypes\Create.cshtml" />
+    <Content Include="Views\TicketLogTypes\Delete.cshtml" />
+    <Content Include="Views\TicketLogTypes\Details.cshtml" />
+    <Content Include="Views\TicketLogTypes\Edit.cshtml" />
+    <Content Include="Views\TicketLogTypes\Index.cshtml" />
+    <Content Include="Views\TicketPriorities\Create.cshtml" />
+    <Content Include="Views\TicketPriorities\Delete.cshtml" />
+    <Content Include="Views\TicketPriorities\Details.cshtml" />
+    <Content Include="Views\TicketPriorities\Edit.cshtml" />
+    <Content Include="Views\TicketPriorities\Index.cshtml" />
+    <Content Include="Views\TicketStates\Create.cshtml" />
+    <Content Include="Views\TicketStates\Delete.cshtml" />
+    <Content Include="Views\TicketStates\Details.cshtml" />
+    <Content Include="Views\TicketStates\Edit.cshtml" />
+    <Content Include="Views\TicketStates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
