@@ -10,7 +10,7 @@ namespace TicketManagement.Models.Entities
         private string _name;
         private bool _isInternal = false;
         private int? _contactUserId = null;
-        private User _defaultContact = null;
+        private UserExtra _defaultContact = null;
 
         [Required]
         [StringLength(50, ErrorMessage = "Name must be less that 50 characters but more than 2", MinimumLength = 2)]
@@ -36,7 +36,7 @@ namespace TicketManagement.Models.Entities
             set { _contactUserId = value; Updated(); }
         }
 
-        public virtual User DefaultContact
+        public virtual UserExtra DefaultContact
         {
             get { return _defaultContact; }
             set { _defaultContact = value; Updated(); }

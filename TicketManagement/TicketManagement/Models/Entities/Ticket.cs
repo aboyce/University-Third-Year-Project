@@ -10,11 +10,11 @@ namespace TicketManagement.Models.Entities
         private string _title;
         private string _description;
         private int _openedById;
-        private User _openedBy;
+        private UserExtra _openedBy;
         private int _ticketPriorityId;
         private TicketPriority _ticketPriority;
-        private int? _userAssignedToId = null;
-        private User _userAssignedTo = null;
+        private int? _userExtraAssignedToId = null;
+        private UserExtra _userExtraAssignedTo = null;
         private int? _teamAssignedToId = null;
         private Team _teamAssignedTo = null;
         private int? _organisationAssignedToId = null;
@@ -53,7 +53,7 @@ namespace TicketManagement.Models.Entities
             set { _openedById = value; Updated(); }
         }
 
-        virtual public User OpenedBy
+        virtual public UserExtra OpenedBy
         {
             get { return _openedBy; }
             set { _openedBy = value; Updated(); }
@@ -81,18 +81,18 @@ namespace TicketManagement.Models.Entities
 
         //virtual public TicketPriority TicketPriorityInternal { get; set; }
 
-        [ForeignKey("UserAssignedTo")]
+        [ForeignKey("UserExtraAssignedTo")]
         [DisplayName("User Assigned To")]
-        public int? UserAssignedToId
+        public int? UserExtraAssignedToId
         {
-            get { return _userAssignedToId; }
-            set { _userAssignedToId = value; Updated(); }
+            get { return _userExtraAssignedToId; }
+            set { _userExtraAssignedToId = value; Updated(); }
         }
 
-        virtual public User UserAssignedTo
+        virtual public UserExtra UserExtraAssignedTo
         {
-            get { return _userAssignedTo; }
-            set { _userAssignedTo = value; Updated(); }
+            get { return _userExtraAssignedTo; }
+            set { _userExtraAssignedTo = value; Updated(); }
         }
 
         [ForeignKey("TeamAssignedTo")]

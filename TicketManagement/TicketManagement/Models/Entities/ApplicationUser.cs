@@ -27,22 +27,22 @@ namespace TicketManagement.Models.Entities
         {
             try
             {
-                User = new User { FirstName = firstName, LastName = lastName, IsArchived = isArchived, ApplicationUserId = Id };
-                UserId = User.Id;
+                UserExtra = new UserExtra { FirstName = firstName, LastName = lastName, IsArchived = isArchived, ApplicationUserId = Id };
+                UserExtraId = UserExtra.Id;
                 UserName = userName;
                 Email = email;
             }
             catch (Exception)
             {
-                User = new User { FirstName = "First", LastName = "Last", IsArchived = false, ApplicationUserId = Id};
+                UserExtra = new UserExtra { FirstName = "First", LastName = "Last", IsArchived = false, ApplicationUserId = Id};
             }
 
         }
 
-        [ForeignKey("User")]
+        [ForeignKey("UserExtra")]
         [DisplayName("User")]
-        public int? UserId { get; set; } = null;
+        public int? UserExtraId { get; set; } = null;
 
-        public virtual User User { get; set; } = null;
+        public virtual UserExtra UserExtra { get; set; } = null;
     }
 }

@@ -206,6 +206,10 @@
     <Compile Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.Designer.cs">
       <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512051504300_Updated User to UserExtra.cs" />
+    <Compile Include="Migrations\Application\201512051504300_Updated User to UserExtra.Designer.cs">
+      <DependentUpon>201512051504300_Updated User to UserExtra.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -219,7 +223,7 @@
     <Compile Include="Models\Entities\TicketLogType.cs" />
     <Compile Include="Models\Entities\TicketPriority.cs" />
     <Compile Include="Models\Entities\TicketState.cs" />
-    <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\Entities\UserExtra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
@@ -328,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.resx">
       <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512051504300_Updated User to UserExtra.resx">
+      <DependentUpon>201512051504300_Updated User to UserExtra.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

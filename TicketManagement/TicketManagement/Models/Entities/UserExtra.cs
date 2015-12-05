@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class User : EntityBase
+    public class UserExtra : EntityBase
     {
         private string _applicationUserId;
         private string _firstName;
