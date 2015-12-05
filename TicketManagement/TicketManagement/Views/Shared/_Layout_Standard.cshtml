@@ -24,8 +24,31 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-standard-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("ABOUT", "About", "Home")</li>
-                    <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
+                    <li class="dropdown">
+                        <a href="@Url.Action("Index", "Admin")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index", "Admin")">Admin Panel</a></li>
+                            <li role="separator" class="divider"></li>
+
+                            <li class="dropdown-header">Notifications</li>
+                            <li><a href="#">Pending Approvals</a></li>
+                            <li role="separator" class="divider"></li>
+
+                            <li class="dropdown-header">Manage Groups</li>
+                            <li><a href="@Url.Action("Index", "Organisations")">Organisations</a></li>
+                            <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
+                            <li><a href="#">Projects</a></li>
+                            <li><a href="#">Teams</a></li>
+                            <li><a href="#">Tickets</a></li>
+                            <li><a href="#">Ticket Categories</a></li>
+                            <li><a href="#">Ticket Logs</a></li>
+                            <li><a href="#">Ticket Log Types</a></li>
+                            <li><a href="#">Ticket Priorities</a></li>
+                            <li><a href="#">Ticket States</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("About", "Home")"><i class="fa fa-info" @*style="color: #ff0000"*@></i></a></li>
+                    <li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-phone" @*style="color: #ff0000"*@></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
                     @Html.Partial("_Partial_User")

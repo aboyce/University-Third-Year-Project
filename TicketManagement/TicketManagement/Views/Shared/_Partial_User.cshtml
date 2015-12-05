@@ -11,7 +11,7 @@
             </li>
             @if (User.IsInRole("Administrator"))
             {
-                <li><a href="~/Admin/Index"><i class="fa fa-cog" style="color: #ff0000"></i></a></li>
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-bell" @*style="color: #ff0000"*@></i></a></li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
         </ul>
@@ -21,6 +21,6 @@ else
 {
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Register", "Register", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
     </ul>
 }
