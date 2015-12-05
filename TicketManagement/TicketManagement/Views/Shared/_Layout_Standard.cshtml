@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-default" role="navigation">
         <div class="container">
-            @Html.ActionLink("Ticket Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand navbar-center" })
+            @Html.ActionLink("Ticket Management", "Index", "Tickets", new { area = "" }, new { @class = "navbar-brand navbar-center" })
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-standard-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -37,14 +37,14 @@
                             <li class="dropdown-header">Manage Groups</li>
                             <li><a href="@Url.Action("Index", "Organisations")">Organisations</a></li>
                             <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Teams</a></li>
-                            <li><a href="#">Tickets</a></li>
-                            <li><a href="#">Ticket Categories</a></li>
-                            <li><a href="#">Ticket Logs</a></li>
-                            <li><a href="#">Ticket Log Types</a></li>
-                            <li><a href="#">Ticket Priorities</a></li>
-                            <li><a href="#">Ticket States</a></li>
+                            <li><a href="@Url.Action("Index", "Projects")">Projects</a></li>
+                            <li><a href="@Url.Action("Index", "Teams")">Teams</a></li>
+                            <li><a href="@Url.Action("Index", "Tickets")">Tickets</a></li>
+                            <li><a href="@Url.Action("Index", "TicketCategories")">Ticket Categories</a></li>
+                            <li><a href="#">??Ticket Logs</a></li>
+                            <li><a href="@Url.Action("Index", "TicketLogTypes")">Ticket Log Types</a></li>
+                            <li><a href="@Url.Action("Index", "TicketPriorities")">Ticket Priorities</a></li>
+                            <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
                         </ul>
                     </li>
                     <li><a href="@Url.Action("About", "Home")"><i class="fa fa-info"></i></a></li>

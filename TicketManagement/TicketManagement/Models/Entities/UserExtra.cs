@@ -23,6 +23,9 @@ namespace TicketManagement.Models.Entities
             set { _applicationUserId = value; Updated(); }
         }
 
+        [DisplayName("Name")]
+        public string FullName => $"{_firstName} {_lastName}";
+
         [Required]
         [StringLength(50, ErrorMessage = "First Name must be less that 50 characters but more than 2", MinimumLength = 2)]
         [DisplayName("First Name")]

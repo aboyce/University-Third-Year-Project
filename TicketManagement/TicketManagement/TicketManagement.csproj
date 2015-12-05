@@ -190,6 +190,7 @@
     <Compile Include="Controllers\TicketCategoriesController.cs" />
     <Compile Include="Controllers\TicketLogTypesController.cs" />
     <Compile Include="Controllers\TicketPrioritiesController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\TicketStatesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -279,6 +280,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Site\Tickets\tickets.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -346,6 +348,11 @@
     <Content Include="Views\TicketStates\Details.cshtml" />
     <Content Include="Views\TicketStates\Edit.cshtml" />
     <Content Include="Views\TicketStates\Index.cshtml" />
+    <Content Include="Views\Tickets\Create.cshtml" />
+    <Content Include="Views\Tickets\Delete.cshtml" />
+    <Content Include="Views\Tickets\Details.cshtml" />
+    <Content Include="Views\Tickets\Edit.cshtml" />
+    <Content Include="Views\Tickets\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
