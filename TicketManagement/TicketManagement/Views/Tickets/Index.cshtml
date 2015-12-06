@@ -34,10 +34,10 @@
             <td> @Html.DisplayFor(modelItem => item.OrganisationAssignedTo.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketState.Name) </td>
             <td>
-                <a data-toggle="popover" data-placement="left"
-                   title="@Html.DisplayFor(modelItem => item.Title)" data-content-target="#popover_content"><i class="fa fa-question" style="font-size: 20px;"></i></a>
+                <a data-toggle="popover" data-placement="left" @*Linked with ticket.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
+                   title="@Html.DisplayFor(modelItem => item.Title)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-question" style="font-size: 20px;"></i></a>
 
-                <div class="popover" id="popover_content">
+                <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => item.Id)">
                     <table class="table">
                         <tr>
                             <th> Opened By </th>
