@@ -67,9 +67,9 @@ namespace TicketManagement.Controllers
 
             if (conf == null) return View(totals);
 
-            totals.Add('1', (int)conf.TimeSpanGreen.TotalMinutes);
-            totals.Add('2', (int)conf.TimeSpanAmber.TotalMinutes);
-            totals.Add('3', (int)conf.TimeSpanRed.TotalMinutes);
+            totals.Add('1', (int)conf.TimeSpanGreen.TotalHours);
+            totals.Add('2', (int)conf.TimeSpanAmber.TotalHours);
+            totals.Add('3', (int)conf.TimeSpanRed.TotalHours);
 
             return View(totals);
         }

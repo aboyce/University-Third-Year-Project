@@ -73,10 +73,10 @@ namespace TicketManagement.Migrations.Application
                 new TicketLogType { Name = "Message" });
             }
 
-            if (!context.TicketPriorities.Any(tc => tc.Name == "Feature"))
+            if (!context.TicketPriorities.Any(tc => tc.Name == "Low"))
             {
                 context.TicketPriorities.AddOrUpdate(
-                new TicketPriority { Name = "Feature", Colour = "#0066FF" },
+                new TicketPriority { Name = "On Hold", Colour = "#0066FF" },
                 new TicketPriority { Name = "Low", Colour = "#00CC00" },
                 new TicketPriority { Name = "Medium", Colour = "#FF6600" },
                 new TicketPriority { Name = "High", Colour = "#FF0000" },

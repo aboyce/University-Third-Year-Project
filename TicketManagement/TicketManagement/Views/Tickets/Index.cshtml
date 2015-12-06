@@ -37,7 +37,7 @@
         {
             if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "class=danger"; }
             else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=warning"; }
-            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=success"; }
+            else if ((now - item.Created).Duration() >= conf.TimeSpanGreen) { rowColour = "class=success"; }
             else { rowColour = "class=info"; }
         }
 
