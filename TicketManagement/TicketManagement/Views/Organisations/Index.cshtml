@@ -45,9 +45,9 @@
                 @Html.DisplayFor(modelItem => organisation.LastUpdated)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {id = organisation.Id}) |
-                @Html.ActionLink("Details", "Details", new {id = organisation.Id}) |
-                @Html.ActionLink("Delete", "Delete", new {id = organisation.Id})
+                <a href="@Url.Action("Edit", new {id = organisation.Id})"><i class="fa fa-pencil"></i></a> |
+                <a href="@Url.Action("Details", new {id = organisation.Id})"><i class="fa fa-info-circle"></i></a> |
+                <a href="@Url.Action("Delete", new {id = organisation.Id})"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
     }
