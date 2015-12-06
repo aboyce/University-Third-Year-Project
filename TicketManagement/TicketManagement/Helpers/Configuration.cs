@@ -25,9 +25,9 @@ namespace TicketManagement.Helpers
         {
             try
             {
-                TimeSpanGreen = TimeSpan.FromMinutes(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanGreen"]));
-                TimeSpanAmber = TimeSpan.FromMinutes(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanAmber"]));
-                TimeSpanRed = TimeSpan.FromMinutes(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanRed"]));
+                TimeSpanGreen = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanGreen"]));
+                TimeSpanAmber = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanAmber"]));
+                TimeSpanRed = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanRed"]));
             }
             catch
             { return false; }

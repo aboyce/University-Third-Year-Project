@@ -1,14 +1,20 @@
-﻿@model IEnumerable<TicketManagement.Models.Entities.Ticket>
+﻿@using TicketManagement.Helpers
+@model IEnumerable<TicketManagement.Models.Entities.Ticket>
 
 @{
     ViewBag.Title = "Tickets";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+
+    TicketConfiguration conf = Configuration.GetTicketConfiguration();
+    var now = DateTime.Now;
+    string rowColour = string.Empty;
 }
 
 @Styles.Render("~/Content/Styles/Site/Tickets/tickets.css")
 
+
 <h2>Tickets</h2>
-<hr/>
+<hr />
 
 <table class="table table-hover table-striped table-responsive">
     <tr>
@@ -23,9 +29,19 @@
         <th> </th>
     </tr>
 
+
+
     @foreach (var item in Model)
     {
-        <tr>
+        if (conf != null) // TODO: Requires testing after fixing the date bug.
+        {
+            if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "class=danger"; }
+            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=warning"; }
+            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=success"; }
+            else { rowColour = "class=info"; }
+        }
+
+        <tr @rowColour>
             <td> @Html.DisplayFor(modelItem => item.Id) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketCategory.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketPriority.Name) </td>
@@ -44,6 +60,7 @@
                             <th> Assigned To </th>
                             <th> Project </th>
                             <th> @Html.DisplayNameFor(model => model.Description) </th>
+                            <th> @Html.DisplayNameFor(model => model.Created)</th>
                             <th> @Html.DisplayNameFor(model => model.Deadline) </th>
                             <th> @Html.DisplayNameFor(model => model.LastMessage) </th>
                             <th> @Html.DisplayNameFor(model => model.LastResponse) </th>
@@ -54,6 +71,7 @@
                             <td> @Html.DisplayFor(modelItem => item.UserExtraAssignedTo.FullName) </td>
                             <td> @Html.DisplayFor(modelItem => item.Project.Name) </td>
                             <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                            <td> @Html.DisplayFor(modelItem => item.Created) </td>
                             <td> @Html.DisplayFor(modelItem => item.Deadline) </td>
                             <td> @Html.DisplayFor(modelItem => item.LastMessage) </td>
                             <td> @Html.DisplayFor(modelItem => item.LastResponse) </td>
