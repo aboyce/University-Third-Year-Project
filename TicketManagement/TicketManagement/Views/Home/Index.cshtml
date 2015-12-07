@@ -3,6 +3,22 @@
     Layout = "~/Views/Shared/_Layout_Welcome.cshtml";
 }
 
+@if (Request.Params["Message"] == "PendingApproval")
+{
+    <div class="alert alert-info alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        As you have stated that you are an internal member, you will have to be confirmed. Please check back later on this page.
+    </div>
+}
+
+@if (Request.Params["Message"] == "LoggedOff")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        You have been logged off!
+    </div>
+}
+
 @*SIGN UP BUTTON*@
 <div class="row">
     <div class="col-md-2">

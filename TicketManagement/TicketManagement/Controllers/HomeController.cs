@@ -114,7 +114,7 @@ namespace TicketManagement.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { Message = UserController.ManageMessageId.LoggedOff });
         }
 
         //
@@ -133,7 +133,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser applicationUser = new ApplicationUser(model.Email, model.FirstName, model.LastName, model.UserName, model.IsArchived);
+                ApplicationUser applicationUser = new ApplicationUser(model.Email, model.FirstName, model.LastName, model.UserName, model.PhoneNumber, model.IsArchived);
 
                 var result = await UserManager.CreateAsync(applicationUser, model.Password);
                 if (result.Succeeded)
@@ -146,11 +146,13 @@ namespace TicketManagement.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    if (model.IsInternal)
-                        return View("PendingApproval");
+                    if (model.IsInternal) // If they are internal
+                    {
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                        return RedirectToAction("Index", new { Message = UserController.ManageMessageId.PendingApproval });
+                    }
 
-
-                    return RedirectToAction("Index", "Ticket");
+                    return RedirectToAction("Index", "Tickets");
                 }
                 AddErrors(result);
             }

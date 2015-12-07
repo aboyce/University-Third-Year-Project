@@ -226,6 +226,10 @@
     <Compile Include="Migrations\Application\201512062117216_Fixing problem with dates getting overridden.Designer.cs">
       <DependentUpon>201512062117216_Fixing problem with dates getting overridden.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512071843500_Override PhoneNumber.cs" />
+    <Compile Include="Migrations\Application\201512071843500_Override PhoneNumber.Designer.cs">
+      <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -394,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512062117216_Fixing problem with dates getting overridden.resx">
       <DependentUpon>201512062117216_Fixing problem with dates getting overridden.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512071843500_Override PhoneNumber.resx">
+      <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

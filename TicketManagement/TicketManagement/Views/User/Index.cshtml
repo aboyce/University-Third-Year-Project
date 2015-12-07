@@ -1,4 +1,5 @@
-﻿@model TicketManagement.Models.Entities.ApplicationUser
+﻿@using System.Diagnostics.Eventing.Reader
+@model TicketManagement.Models.Entities.ApplicationUser
 
 @{
     ViewBag.Title = "User";
@@ -33,6 +34,13 @@
         @Html.HiddenFor(model => model.UserExtraId)
         @Html.HiddenFor(model => model.UserName)
         @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.PasswordHash)
+        @Html.HiddenFor(model => model.SecurityStamp)
+        @Html.HiddenFor(model => model.PhoneNumberConfirmed)
+        @Html.HiddenFor(model => model.TwoFactorEnabled)
+        @Html.HiddenFor(model => model.LockoutEndDateUtc)
+        @Html.HiddenFor(model => model.LockoutEnabled)
+        @Html.HiddenFor(model => model.AccessFailedCount)
 
         @*Form Elements*@
         <div class="form-group">

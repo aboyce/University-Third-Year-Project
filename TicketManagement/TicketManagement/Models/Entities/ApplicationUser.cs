@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Claims;
@@ -22,8 +23,7 @@ namespace TicketManagement.Models.Entities
             return userIdentity;
         }
 
-        public ApplicationUser() {}
-        public ApplicationUser(string email, string firstName, string lastName, string userName, bool isArchived = false)
+        public ApplicationUser(string email, string firstName, string lastName, string userName, string phoneNumber, bool isArchived = false)
         {
             try
             {
@@ -31,6 +31,7 @@ namespace TicketManagement.Models.Entities
                 UserExtraId = UserExtra.Id;
                 UserName = userName;
                 Email = email;
+                PhoneNumber = phoneNumber;
             }
             catch (Exception)
             {
@@ -42,6 +43,11 @@ namespace TicketManagement.Models.Entities
         [ForeignKey("UserExtra")]
         [DisplayName("User")]
         public int? UserExtraId { get; set; } = null;
+
+        [Required]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public override string PhoneNumber { get; set; }
 
         public virtual UserExtra UserExtra { get; set; } = null;
     }
