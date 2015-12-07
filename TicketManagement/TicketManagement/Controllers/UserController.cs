@@ -56,9 +56,52 @@ namespace TicketManagement.Controllers
                 ViewBag.ErrorMessage = "Could not find user, please try (re)logging in and try again.";
                 return View("Error");
             }
-            
+
             return View(user);
         }
+
+        //// POST: User (Editing)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Index(ApplicationUser user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(user).State = EntityState.Modified;
+        //        //await db.SaveChangesAsync();
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    //ViewBag.ExtraUserId = new SelectList(db.UserExtras, "Id", "FullName", user);
+        //    return View(user);
+        //}
+
+        //public ActionResult Index()
+        //{
+        //    ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+
+        //    if (user == null)
+        //    {
+        //        ViewBag.ErrorMessage = "Could not find user, please try (re)logging in and try again.";
+        //        return View("Error");
+        //    }
+        //    ViewBag.UserExtraId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", user.UserExtraId);
+        //    return View(user);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Index([Bind(Include = "Id,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(applicationUser).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.UserExtraId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", applicationUser.UserExtraId);
+        //    return View(applicationUser);
+        //}
 
         //
         // GET: /User/ChangePassword

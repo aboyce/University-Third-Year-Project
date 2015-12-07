@@ -30,6 +30,11 @@ namespace TicketManagement.ViewModels
         public string LastName { get; set; }
 
         [Required]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [Display(Name = "Internal User")]
         public bool IsInternal { get; set; } = false;
 
