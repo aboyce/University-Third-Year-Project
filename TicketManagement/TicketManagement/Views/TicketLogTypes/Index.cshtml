@@ -15,7 +15,7 @@
         <th>
             @Html.DisplayNameFor(model => model.LastUpdated)
         </th>
-        <th></th>
+        <th>Actions</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -37,5 +37,5 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>

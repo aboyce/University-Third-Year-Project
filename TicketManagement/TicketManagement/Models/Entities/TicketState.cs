@@ -15,7 +15,7 @@ namespace TicketManagement.Models.Entities
 
         [Required]
         [StringLength(50, ErrorMessage = "Ticket State Name must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [DisplayName("Ticket State Name")]
+        [DisplayName("Name")]
         public string Name
         {
             get { return _name; }
