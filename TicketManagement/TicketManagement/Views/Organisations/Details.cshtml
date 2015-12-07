@@ -5,19 +5,13 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Organisations</h2>
+<hr />
 
 <div>
-    <h4>Organisation</h4>
+    <h4>Details</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DefaultContact.ApplicationUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DefaultContact.ApplicationUserId)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -33,6 +27,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.IsInternal)
+        </dd>
+
+        <dt>
+            Default Contact
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultContact.FullName)
         </dd>
 
         <dt>

@@ -5,21 +5,14 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Organisations</h2>
+<hr />
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Organisation</h4>
-    <hr />
+    <h4>Delete</h4>
+    <h5>Are you sure you want to delete this?</h5>
+    <hr/>
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DefaultContact.ApplicationUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DefaultContact.ApplicationUserId)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -37,6 +30,14 @@
         </dd>
 
         <dt>
+            Default Contact
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultContact.FullName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.LastUpdated)
         </dt>
 
@@ -50,7 +51,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

@@ -28,11 +28,11 @@
         <tr>
             @if (organisation.DefaultContact == null)
             {
-                <td></td>
+                <td>--</td>
             }
             else
             {
-                const string fullName = "{organisation.DefaultContact.FirstName} + {organisation.DefaultContact.LastName}";
+                string fullName = $"{organisation.DefaultContact.FirstName} {organisation.DefaultContact.LastName}";
                 <td>@fullName</td>
             }
             <td>
@@ -54,7 +54,7 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>
 
 
