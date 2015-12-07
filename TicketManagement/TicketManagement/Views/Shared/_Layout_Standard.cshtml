@@ -27,6 +27,11 @@
             <div class="collapse navbar-collapse" id="navbar-standard-collapse">
                 <ul class="nav navbar-nav navbar-right">
 
+                    @if (!User.IsInRole("TextMessage"))
+                    {
+                        <li><a href="@Url.Action("Index", "TextMessage")"><i class="fa fa-mobile"></i></a></li>
+                    }
+
                     @if (User.IsInRole("Administrator"))
                     {
                         <li class="dropdown">

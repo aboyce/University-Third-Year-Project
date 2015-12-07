@@ -12,25 +12,55 @@ namespace TicketManagement.Helpers
 {
     class TextMessageManager
     {
-        public string SendTextMessage(string number, string message)
+        private string _apiKey = string.Empty;
+        private string _from = string.Empty;
+
+        private bool LoadInConfiguration()
         {
+            if (_apiKey == string.Empty)
+                _apiKey = Helpers.Configuration.GetClockworkApiKey();
+
+            if (_from == string.Empty)
+                _from = Helpers.Configuration.GetTextMessageFromCode();
+
+            return !string.IsNullOrEmpty(_apiKey) && !string.IsNullOrEmpty(_from);
+        }
+
+
+        public string CheckBalance()
+        {
+            if (!LoadInConfiguration())
+                return "Error: Cannot load details from the web.config";
+
             try
             {
-                string apiKey = Helpers.Configuration.GetClockworkApiKey();
-                string from = Helpers.Configuration.GetTextMessageFromCode();
+                API api = new API(_apiKey);
+                Balance balance = api.GetBalance();
+                return balance.CurrencySymbol + balance.Amount.ToString("#, 0.00");
+            }
+            catch (Exception ex)
+            {
 
-                if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(from))
-                    return "Cannot load the API key or From value from the web.config";
+                return $"Error: {ex.Message}";
+            }
+        }
 
-                API api = new API(apiKey);
+        public string SendTextMessage(string number, string message)
+        {
+            if (!LoadInConfiguration())
+                return "Error: Cannot load details from the web.config";
+
+            try
+            {
+                API api = new API(_apiKey);
                 SMSResult result = api.Send(new SMS
                 {
                     To = number,
                     Message = message,
-                    From = from
+                    From = _from
                 });
 
-                return result.Success ? null : $"Failed to send message {result.ID} because {result.ErrorMessage} (Code: {result.ErrorCode})";
+                return result.Success ? null : $"Error: Failed to send message {result.ID} because {result.ErrorMessage} (Code: {result.ErrorCode})";
             }
             catch (APIException ex)
             {

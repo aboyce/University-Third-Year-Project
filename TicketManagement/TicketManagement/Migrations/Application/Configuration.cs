@@ -23,6 +23,8 @@ namespace TicketManagement.Migrations.Application
                 context.Roles.AddOrUpdate(
                 new IdentityRole("Approved"),
                 new IdentityRole("Internal"),
+                new IdentityRole("Social"),
+                new IdentityRole("TextMessage"),
                 new IdentityRole("Administrator"));
 
             //User adminUser = new User { FirstName = "Admin", LastName = "" };

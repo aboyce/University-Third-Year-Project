@@ -41,6 +41,16 @@ namespace TicketManagement.Helpers
             return !string.IsNullOrEmpty(from) ? from : null;
         }
 
+        public static int? GetTextMessageMaxLength()
+        {
+            int length;
+
+            if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["TextMessageMaxLength"], out length) && length > 0)
+                return length;
+
+            return null;
+        }
+
     }
 
     public class TicketConfiguration

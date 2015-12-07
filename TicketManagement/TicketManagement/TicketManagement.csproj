@@ -191,6 +191,7 @@
     <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="Controllers\TextMessageController.cs" />
     <Compile Include="Controllers\TicketCategoriesController.cs" />
     <Compile Include="Controllers\TicketLogTypesController.cs" />
     <Compile Include="Controllers\TicketPrioritiesController.cs" />
@@ -369,6 +370,7 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
+    <Content Include="Views\TextMessage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -41,7 +41,7 @@
 
     @foreach (var item in Model)
     {
-        if (conf != null) // TODO: Requires testing after fixing the date bug.
+        if (conf != null)
         {
             if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "class=danger"; }
             else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=warning"; }

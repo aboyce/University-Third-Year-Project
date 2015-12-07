@@ -23,6 +23,10 @@ namespace TicketManagement.Models.Entities
             return userIdentity;
         }
 
+        public ApplicationUser()
+        {
+        }
+
         public ApplicationUser(string email, string firstName, string lastName, string userName, string phoneNumber, bool isArchived = false)
         {
             try
