@@ -11,10 +11,10 @@
 <table class="table table-hover table-striped table-responsive">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Organisation.Name)
+            Organisation
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TeamAssignedTo.Name)
+            Team
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -28,12 +28,21 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organisation.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TeamAssignedTo.Name)
-            </td>
+            @if (item.Organisation == null) { <td>--</td> }
+            else {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Organisation.Name)
+                </td>
+            }
+
+            @if (item.TeamAssignedTo == null) { <td>--</td> }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamAssignedTo.Name)
+                </td>
+            }
+
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -51,5 +60,5 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>

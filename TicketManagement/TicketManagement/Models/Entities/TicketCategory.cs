@@ -12,7 +12,7 @@ namespace TicketManagement.Models.Entities
 
         [Required]
         [StringLength(50, ErrorMessage = "Ticket Category Name must be less that 50 characters but more than 2", MinimumLength = 2)]
-        [DisplayName("Ticket Category Name")]
+        [DisplayName("Name")]
         public string Name
         {
             get { return _name; }
