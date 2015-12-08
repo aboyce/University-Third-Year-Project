@@ -36,7 +36,7 @@ namespace TicketManagement.Helpers
             {
                 API api = new API(_apiKey);
                 Balance balance = api.GetBalance();
-                return balance.CurrencySymbol + balance.Amount.ToString("#, 0.00");
+                return balance.CurrencySymbol + balance.Amount.ToString("#,0.00");
             }
             catch (Exception ex)
             {

@@ -238,6 +238,7 @@
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
     <Compile Include="Models\Entities\Team.cs" />
+    <Compile Include="Models\Entities\TextMessage.cs" />
     <Compile Include="Models\Entities\Ticket.cs" />
     <Compile Include="Models\Entities\TicketCategory.cs" />
     <Compile Include="Models\Entities\TicketLog.cs" />

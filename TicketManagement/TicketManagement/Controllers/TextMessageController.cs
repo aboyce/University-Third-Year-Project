@@ -52,7 +52,27 @@ namespace TicketManagement.Controllers
             {
                 TextMessageManager txtmsg = new TextMessageManager();
 
-                var number = db.Users.Where(u => u.Id == id).Select(p => p.PhoneNumber);
+                string number = db.Users.Where(u => u.Id == id).Select(p => p.PhoneNumber).FirstOrDefault();
+
+                string result;// = txtmsg.SendTextMessage(number, message);
+
+                result = null;
+
+                if (result != null)
+                {
+                    ViewBag.ErrorMessage = result;
+                    ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+                    ViewBag.TextResult = TextResult.SendFailure;
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+                    ViewBag.TextResult = TextResult.SendSuccess;
+                    ViewBag.RemainingBalance = txtmsg.CheckBalance();
+                    return View();
+                }
+
 
                 //db.Organisations.Add(organisation);
                 //await db.SaveChangesAsync();
@@ -61,6 +81,12 @@ namespace TicketManagement.Controllers
 
             ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
             return View();
+        }
+
+        public enum TextResult
+        {
+            SendSuccess,
+            SendFailure
         }
 
         protected override void Dispose(bool disposing)
