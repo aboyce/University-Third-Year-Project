@@ -8,20 +8,34 @@ namespace TicketManagement.Models.Entities
 {
     public class TextMessage
     {
+        public TextMessage(string userToId, ApplicationUser userTo, string number, string message)
+        {
+            ApplicationUserToId = userToId;
+            ApplicationUserTo = userTo;
+            Number = number;
+            Message = message;
+        }
+
         [Key]
         [Editable(false)]
         public int Id { get; set; }
 
         [Required]
-        public DateTime Sent { get; set; } = DateTime.Now;
+        public string ApplicationUserToId { get; set; }
 
         [Required]
-        public string To { get; set; }
+        public ApplicationUser ApplicationUserTo { get; set; }
 
         [Required]
-        public string From { get; set; }
+        public string Number { get; set; }
 
         [Required]
         public string Message { get; set; }
+
+        [Required]
+        public string From { get; } = Helpers.Configuration.GetTextMessageFromCode();
+
+        [Required]
+        public DateTime Sent { get; set; } = DateTime.Now;
     }
 }

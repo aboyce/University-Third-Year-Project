@@ -231,6 +231,10 @@
     <Compile Include="Migrations\Application\201512071843500_Override PhoneNumber.Designer.cs">
       <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.cs" />
+    <Compile Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.Designer.cs">
+      <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -404,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512071843500_Override PhoneNumber.resx">
       <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.resx">
+      <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

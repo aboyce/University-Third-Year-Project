@@ -50,11 +50,15 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                TextMessageManager txtmsg = new TextMessageManager();
+                TextMessageManager txtManager = new TextMessageManager();
+                TextMessage txt;
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == id);
 
-                string number = db.Users.Where(u => u.Id == id).Select(p => p.PhoneNumber).FirstOrDefault();
+                string number = user?.PhoneNumber;
 
-                string result;// = txtmsg.SendTextMessage(number, message);
+                txt = new TextMessage(id, user, number, message);
+
+                string result;// = txtmsg.SendTextMessage(txt);
 
                 result = null;
 
@@ -67,16 +71,14 @@ namespace TicketManagement.Controllers
                 }
                 else
                 {
+                    db.TextMessages.Add(txt);
+                    db.SaveChangesAsync();
+
                     ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
                     ViewBag.TextResult = TextResult.SendSuccess;
-                    ViewBag.RemainingBalance = txtmsg.CheckBalance();
+                    ViewBag.RemainingBalance = txtManager.CheckBalance();
                     return View();
                 }
-
-
-                //db.Organisations.Add(organisation);
-                //await db.SaveChangesAsync();
-                //return RedirectToAction("Index");
             }
 
             ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");

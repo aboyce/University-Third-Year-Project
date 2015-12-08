@@ -7,23 +7,20 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Clockwork;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Helpers
 {
     class TextMessageManager
     {
         private string _apiKey = string.Empty;
-        private string _from = string.Empty;
 
         private bool LoadInConfiguration()
         {
             if (_apiKey == string.Empty)
                 _apiKey = Helpers.Configuration.GetClockworkApiKey();
 
-            if (_from == string.Empty)
-                _from = Helpers.Configuration.GetTextMessageFromCode();
-
-            return !string.IsNullOrEmpty(_apiKey) && !string.IsNullOrEmpty(_from);
+            return !string.IsNullOrEmpty(_apiKey);
         }
 
 
@@ -45,7 +42,7 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public string SendTextMessage(string number, string message)
+        public string SendTextMessage(TextMessage txt)
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
@@ -55,9 +52,9 @@ namespace TicketManagement.Helpers
                 API api = new API(_apiKey);
                 SMSResult result = api.Send(new SMS
                 {
-                    To = number,
-                    Message = message,
-                    From = _from
+                    To = txt.Number,
+                    Message = txt.Message,
+                    From = txt.From
                 });
 
                 return result.Success ? null : $"Error: Failed to send message {result.ID} because {result.ErrorMessage} (Code: {result.ErrorCode})";
