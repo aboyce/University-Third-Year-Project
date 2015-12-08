@@ -11,7 +11,7 @@ using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Helpers
 {
-    class TextMessageManager
+    public class TextMessageManager
     {
         private string _apiKey = string.Empty;
 

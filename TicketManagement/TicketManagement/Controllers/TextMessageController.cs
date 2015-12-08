@@ -20,19 +20,26 @@ namespace TicketManagement.Controllers
         private ApplicationContext db = new ApplicationContext();
 
         // GET: Index
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
+        {
+            var textMessages = db.TextMessages.Select(tm => tm);
+            return View(await textMessages.ToListAsync());
+        }
+
+        // GET: Send
+        public ActionResult Send()
         {
             ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
 
             return View();
         }
 
-        // POST: Index
+        // POST: Send
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(string id, string message)
+        public ActionResult Send(string id, string message)
         {
             if (string.IsNullOrEmpty(id))
                 ModelState.AddModelError("Id", "Please ensure there is a Recipient selected.");

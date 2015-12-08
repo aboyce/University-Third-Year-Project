@@ -8,6 +8,8 @@ namespace TicketManagement.Models.Entities
 {
     public class TextMessage
     {
+        public TextMessage() { }
+
         public TextMessage(string userToId, ApplicationUser userTo, string number, string message)
         {
             ApplicationUserToId = userToId;
