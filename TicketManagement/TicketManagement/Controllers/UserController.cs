@@ -46,7 +46,7 @@ namespace TicketManagement.Controllers
 
         #region GET/POST
 
-        // GET: User
+        // GET: Incex
         public ActionResult Index()
         {
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
@@ -61,7 +61,7 @@ namespace TicketManagement.Controllers
             return View(user);
         }
 
-        // POST: User
+        // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "Id,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)

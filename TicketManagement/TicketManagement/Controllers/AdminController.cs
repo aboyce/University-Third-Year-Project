@@ -81,6 +81,49 @@ namespace TicketManagement.Controllers
         {
             return View(db.Users.Select(u => u).ToList().ToDictionary(user => user, user => UserManager.GetRoles(user.Id)));
         }
+        
+        //
+        // GET: UserEdit
+        public ActionResult UserEdit(string id)
+        {
+            if (id == null)
+            {
+                ViewBag.ErrorMessage = "'Admin/UserEdit' has been visited from the wrong location, please ensure you are an admin and try again.";
+                return View("Error");
+            }
+
+            ApplicationUser user = UserManager.FindById(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "Could not find user, please try again.";
+                return View("Error");
+            }
+
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.UserExtra.TeamId);
+
+            return View(user);
+
+            //return View(db.Users.Select(u => u).ToList().ToDictionary(user => user, user => UserManager.GetRoles(user.Id)));
+        }
+
+        // POST: UserEdit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserEdit([Bind(Include = "Id,UserExtra,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                applicationUser.PhoneNumber = PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                db.Entry(applicationUser).State = EntityState.Modified;
+                db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Users", "Admin", new { Message = UserController.ManageMessageId.ProfileUpdated });
+            }
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
+            return View(applicationUser);
+        }
+
 
         //
         // POST: /Admin/RemoveLogin
