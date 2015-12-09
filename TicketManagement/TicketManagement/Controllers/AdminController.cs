@@ -14,6 +14,7 @@ using TicketManagement.ViewModels;
 using TicketManagement.Models.Context;
 using System.Web.Security;
 using TicketManagement.Helpers;
+using TicketManagement.Models.Entities;
 
 
 namespace TicketManagement.Controllers
@@ -76,10 +77,9 @@ namespace TicketManagement.Controllers
 
         //
         // GET: Users
-        public async Task<ActionResult> Users()
+        public ActionResult Users()
         {
-            var applicationUsers = db.Users.Select(u => u);
-            return View(await applicationUsers.ToListAsync());
+            return View(db.Users.Select(u => u).ToList().ToDictionary(user => user, user => UserManager.GetRoles(user.Id)));
         }
 
         //

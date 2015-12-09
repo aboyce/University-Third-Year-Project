@@ -267,7 +267,7 @@
     <Content Include="Content\Images\Wallpapers\bg_mountains.jpg" />
     <Content Include="Content\Styles\Layout\layout.css" />
     <Content Include="Content\Favicon\favicon.ico" />
-    <Content Include="Content\Styles\Site\Tickets\tickets.css" />
+    <Content Include="Content\Styles\Site\Shared\table_popover.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -301,7 +301,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\Site\Tickets\tickets.js" />
+    <Content Include="Scripts\Site\Shared\table_popover.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

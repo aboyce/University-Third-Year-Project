@@ -10,7 +10,7 @@
     string rowColour = string.Empty;
 }
 
-@Styles.Render("~/Content/Styles/Site/Tickets/tickets.css")
+@Styles.Render("~/Content/Styles/Site/Shared/table_popover.css")
 
 
 <h2>Tickets</h2>
@@ -58,7 +58,7 @@
             <td> @Html.DisplayFor(modelItem => item.OrganisationAssignedTo.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketState.Name) </td>
             <td>
-                <a data-toggle="popover" data-placement="left" @*Linked with ticket.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
+                <a data-toggle="popover" data-placement="left" @*Linked with Shared/table_popover.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
                    title="@Html.DisplayFor(modelItem => item.Title)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-question" style="font-size: 20px;"></i></a>
 
                 <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => item.Id)">
@@ -102,4 +102,4 @@
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
 </p>
 
-@Scripts.Render("/Scripts/Site/Tickets/tickets.js")
+@Scripts.Render("/Scripts/Site/Shared/table_popover.js")

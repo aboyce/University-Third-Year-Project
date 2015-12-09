@@ -1,77 +1,75 @@
-﻿@using Microsoft.AspNet.Identity
-@model IEnumerable<TicketManagement.Models.Entities.ApplicationUser>
+﻿@using System.Collections
+@using Microsoft.AspNet.Identity
+@model   Dictionary<TicketManagement.Models.Entities.ApplicationUser, IList<string>>
 
 @{
     ViewBag.Title = "Users";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+    const string isChecked = "checked=checked";
 }
 
+@Styles.Render("~/Content/Styles/Site/Shared/table_popover.css")
+
 <h2>Users</h2>
-<hr/>
+<hr />
 
 <table class="table table-hover table-striped table-responsive">
     <tr>
-        <th>
-            Id
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserExtra.Team.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserExtra.IsTeamLeader)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserExtra.IsArchived)
-        </th>
-        <th>Actions</th>
+        <th> Id </th>
+        <th> Name </th>
+        <th> UserName </th>
+        <th> Email </th>
+        <th> Team </th>
+        <th> Archived </th>
+        <th> Roles </th>
+        <th> Actions </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var userRoles in Model)
     {
         string rowColour = string.Empty;
-        if (item.Id == User.Identity.GetUserId()) { rowColour = "class=warning"; }
+        if (userRoles.Key.Id == User.Identity.GetUserId()) { rowColour = "class=warning"; }
 
         <tr @rowColour>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserExtra.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserExtra.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            @if (item.UserExtra.Team == null)
-            {
-                <td>--</td>
-            }
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.FullName) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserName) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.Email) </td>
+            @if (userRoles.Key.UserExtra.Team == null)
+                { <td>--</td> }
             else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserExtra.Team.Name)
-                </td>
-            }
+                { <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Team.Name) </td> }
+
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsArchived) </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.UserExtra.IsTeamLeader)
+                <a data-toggle="popover" data-placement="left" @*Linked with Shared/table_popover.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
+                   title="Roles for @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.FullName)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)"><i class="fa fa-users" style="font-size: 20px;"></i></a>
+
+                <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)">
+                    <table class="table">
+                        <tr>
+                            <th> Team Leader </th>
+                            <th> Approved </th>
+                            <th> Internal </th>
+                            <th> Admin </th>
+                            <th> Text Message </th>
+                            <th> Social </th>
+                        </tr>
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsTeamLeader) </td>
+                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
+                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
+                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>
+                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("TextMessage") ? isChecked : "")></td>
+                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Social") ? isChecked : "")></td>
+                        </tr>
+                    </table>
+                </div>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserExtra.IsArchived)
-            </td>
-           <td>
-               <a href="@Url.Action("Edit", new {id = item.Id})"><i class="fa fa-pencil"></i></a> |
-               <a href="@Url.Action("Delete", new {id = item.Id})"><i class="fa fa-trash"></i></a>
+                <a href="@Url.Action("Edit", new {id = userRoles.Key.Id})"><i class="fa fa-pencil"></i></a> |
+                <a href="@Url.Action("Delete", new {id = userRoles.Key.Id})"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
     }
@@ -79,5 +77,7 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default disabled" })
 </p>
+
+@Scripts.Render("/Scripts/Site/Shared/table_popover.js")
