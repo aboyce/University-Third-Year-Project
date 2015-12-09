@@ -68,6 +68,8 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                applicationUser.PhoneNumber =
+                    Helpers.PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
                 db.Entry(applicationUser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", "Tickets", new { Message = ManageMessageId.ProfileUpdated });

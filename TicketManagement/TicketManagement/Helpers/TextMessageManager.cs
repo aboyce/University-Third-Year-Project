@@ -35,10 +35,27 @@ namespace TicketManagement.Helpers
                 Balance balance = api.GetBalance();
                 return balance.CurrencySymbol + balance.Amount.ToString("#,0.00");
             }
+            catch (APIException ex)
+            {
+                // You’ll get an API exception for errors
+                // such as wrong username or password
+                return "API Exception: " + ex.Message;
+            }
+            catch (WebException ex)
+            {
+                // Web exceptions mean you couldn’t reach the Clockwork server
+                return "Web Exception: " + ex.Message;
+            }
+            catch (ArgumentException ex)
+            {
+                // Argument exceptions are thrown for missing parameters,
+                // such as forgetting to set the username
+                return "Argument Exception: " + ex.Message;
+            }
             catch (Exception ex)
             {
-
-                return $"Error: {ex.Message}";
+                // Something else went wrong, the error message should help
+                return "Unknown Exception: " + ex.Message;
             }
         }
 

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TicketManagement.Models.Entities.ApplicationUser>
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<TicketManagement.Models.Entities.ApplicationUser>
 
 @{
     ViewBag.Title = "Users";
@@ -36,7 +37,10 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        string rowColour = string.Empty;
+        if (item.Id == User.Identity.GetUserId()) { rowColour = "class=warning"; }
+
+        <tr @rowColour>
             <td>
                 @Html.DisplayFor(modelItem => item.UserExtra.Id)
             </td>
