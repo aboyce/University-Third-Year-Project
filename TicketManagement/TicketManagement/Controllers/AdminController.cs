@@ -114,12 +114,28 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                int teamId = 0;
+                Team team = null;
+
+                if (int.TryParse(Request.Form["UserExtra.Teams"], out teamId))
+                    team = db.Teams.FirstOrDefault(t => t.Id == teamId);
+
+                if (team != null)
+                {
+                    applicationUser.UserExtra.Team = team;
+                    applicationUser.UserExtra.TeamId = team.Id;
+                }
+                
                 applicationUser.PhoneNumber = PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                applicationUser.UserExtra.LastUpdated = DateTime.Now;
+
                 db.Entry(applicationUser).State = EntityState.Modified;
                 db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Users", "Admin", new { Message = UserController.ManageMessageId.ProfileUpdated });
             }
+
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
             return View(applicationUser);
         }

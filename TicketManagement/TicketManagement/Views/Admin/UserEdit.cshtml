@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "User Edit";
-    ApplicationUser user = Model;
 }
 
 <h2>Admin Panel</h2>
@@ -11,7 +10,7 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()  
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <h4>Edit - User</h4>
@@ -19,7 +18,6 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.UserExtraId)
-        @Html.HiddenFor(model => model.UserExtra)
         @Html.HiddenFor(model => model.PasswordHash)
         @Html.HiddenFor(model => model.SecurityStamp)
         @Html.HiddenFor(model => model.EmailConfirmed)
@@ -29,21 +27,7 @@
         @Html.HiddenFor(model => model.LockoutEnabled)
         @Html.HiddenFor(model => model.AccessFailedCount)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtra.FirstName, htmlAttributes: new {@class = "control-label col-md-4"})
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.UserExtra.FirstName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.UserExtra.FirstName, "", new {@class = "text-danger"})
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtra.LastName, htmlAttributes: new {@class = "control-label col-md-4"})
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.UserExtra.LastName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.UserExtra.LastName, "", new {@class = "text-danger"})
-            </div>
-        </div>
+        @Html.EditorFor(model => model.UserExtra)
 
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-4"})
@@ -66,44 +50,6 @@
             <div class="col-md-6">
                 @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtra.IsArchived, htmlAttributes: new {@class = "control-label col-md-4"})
-            <div class="col-md-6">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.UserExtra.IsArchived)
-                    @Html.ValidationMessageFor(model => model.UserExtra.IsArchived, "", new {@class = "text-danger"})
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtraId, "Team", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-6">
-                @Html.DropDownList("Teams", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserExtraId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtra.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
-            <div class="col-md-6">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.UserExtra.IsTeamLeader)
-                    @Html.ValidationMessageFor(model => model.UserExtra.IsTeamLeader, "", new {@class = "text-danger"})
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserExtra.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-6">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.UserExtra.IsTeamLeader)
-                    @Html.ValidationMessageFor(model => model.UserExtra.IsTeamLeader, "", new { @class = "text-danger" })
-                </div>
             </div>
         </div>
 
