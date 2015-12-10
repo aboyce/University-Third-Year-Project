@@ -104,7 +104,6 @@ namespace TicketManagement.Controllers
 
             return View(user);
 
-            //return View(db.Users.Select(u => u).ToList().ToDictionary(user => user, user => UserManager.GetRoles(user.Id)));
         }
 
         // POST: UserEdit

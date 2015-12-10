@@ -57,24 +57,41 @@ namespace TicketManagement.Controllers
                 return View("Error");
             }
 
-            ViewBag.UserExtraId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", user.UserExtraId);
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.UserExtra.TeamId);
+
             return View(user);
         }
 
         // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Id,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Index([Bind(Include = "Id,UserExtra,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
-                applicationUser.PhoneNumber =
-                    Helpers.PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                int teamId = 0;
+                Team team = null;
+
+                if (int.TryParse(Request.Form["UserExtra.Teams"], out teamId))
+                    team = db.Teams.FirstOrDefault(t => t.Id == teamId);
+
+                if (team != null)
+                {
+                    applicationUser.UserExtra.Team = team;
+                    applicationUser.UserExtra.TeamId = team.Id;
+                }
+
+                applicationUser.PhoneNumber = Helpers.PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                applicationUser.UserExtra.LastUpdated = DateTime.Now;
+
                 db.Entry(applicationUser).State = EntityState.Modified;
+                db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index", "Tickets", new { Message = ManageMessageId.ProfileUpdated });
             }
-            ViewBag.UserExtraId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", applicationUser.UserExtraId);
+
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
             return View(applicationUser);
         }
 

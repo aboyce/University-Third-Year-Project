@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "User Edit";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
 <h2>Admin Panel</h2>
@@ -27,8 +28,6 @@
         @Html.HiddenFor(model => model.LockoutEnabled)
         @Html.HiddenFor(model => model.AccessFailedCount)
 
-        @Html.EditorFor(model => model.UserExtra)
-
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-4"})
             <div class="col-md-6">
@@ -52,6 +51,8 @@
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
             </div>
         </div>
+
+        @Html.EditorFor(model => model.UserExtra, new { Admin = User.IsInRole("Administrator") })
 
         @*<td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsTeamLeader) </td>
         <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
