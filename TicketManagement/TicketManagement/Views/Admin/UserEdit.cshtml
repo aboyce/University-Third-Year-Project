@@ -1,9 +1,60 @@
-﻿@using TicketManagement.Models.Entities
+﻿@using TicketManagement.Controllers
+@using TicketManagement.Models.Entities
+@using TicketManagement.ViewModels
 @model TicketManagement.Models.Entities.ApplicationUser
 
 @{
     ViewBag.Title = "User Edit";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+    const string isChecked = "checked=checked";
+}
+
+@if (Request.Params["Message"] == "RoleAdded")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The role has been added.
+    </div>
+}
+
+@if (Request.Params["Message"] == "RoleNotAdded")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> The role has not been added.
+    </div>
+}
+
+@if (Request.Params["Message"] == "AlreadyInRole")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Warning</b> The role has not been added as the user was already in the role.
+    </div>
+}
+
+@if (Request.Params["Message"] == "RoleRemoved")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The role has been removed.
+    </div>
+}
+
+@if (Request.Params["Message"] == "RoleNotRemoved")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> The role has not been removed.
+    </div>
+}
+
+@if (Request.Params["Message"] == "NotInRole")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Warning</b> The role has not been removed as the user was not in the role.
+    </div>
 }
 
 <h2>Admin Panel</h2>
@@ -29,10 +80,10 @@
         @Html.HiddenFor(model => model.AccessFailedCount)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-4"})
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.UserName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.UserName, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -45,27 +96,39 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new {@class = "control-label col-md-4"})
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
         @Html.EditorFor(model => model.UserExtra, new { Admin = User.IsInRole("Administrator") })
 
-        @*<td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsTeamLeader) </td>
-        <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
-        <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
-        <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>
-        <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("TextMessage") ? isChecked : "")></td>
-        <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Social") ? isChecked : "")></td>*@
+        <div class="form-group">
+            <label class="control-label col-md-4">Is Approved</label>
+            <div class="col-md-6">
+                <input class="check-box" disabled="disabled" type="checkbox" @*@(UserMan ? isChecked : "")*@>
+            </div>
+        </div>
+
+        @*<td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
+            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
+            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>
+            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("TextMessage") ? isChecked : "")></td>
+            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Social") ? isChecked : "")></td>*@
 
         <div class="form-group">
             <div class="col-md-offset-4 col-md-6">
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Save" class="btn btn-default" />
                 @Html.ActionLink("Cancel", "Users", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
+
+@Html.Partial("_Partial_AddRole", new AddRemoveRoleViewmodel { ApplicationUserId = Model.Id })
+
+@Html.Partial("_Partial_RemoveRole", new AddRemoveRoleViewmodel { ApplicationUserId = Model.Id })
+
+<br/>

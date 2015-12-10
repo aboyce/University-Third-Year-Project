@@ -14,6 +14,11 @@ namespace TicketManagement.ViewModels
     {
     }
 
+    public class AddRemoveRoleViewmodel
+    {
+        public string ApplicationUserId { get; set; }
+    }
+
     public class ManageUsersViewModel
     {
         [EmailAddress]

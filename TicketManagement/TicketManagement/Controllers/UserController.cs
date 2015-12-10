@@ -221,6 +221,15 @@ namespace TicketManagement.Controllers
         public enum ManageMessageId
         {
             AddPhoneSuccess,
+
+            RoleAdded,
+            RoleNotAdded,
+            AlreadyInRole,
+
+            RoleRemoved,
+            RoleNotRemoved,
+            NotInRole,
+
             ProfileUpdated,
             PendingApproval,
             ChangePasswordSuccess,

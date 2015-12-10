@@ -13,6 +13,8 @@ using Microsoft.Owin.Security;
 using TicketManagement.ViewModels;
 using TicketManagement.Models.Context;
 using System.Web.Security;
+using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Entities;
 
@@ -102,6 +104,11 @@ namespace TicketManagement.Controllers
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.UserExtra.TeamId);
 
+            //var roles = (from role in db.Roles.ToList() where role.Users.Count > 0 from userRole in role.Users where userRole.UserId == user.Id select role.Name);
+
+            ViewBag.RolesToAdd = new SelectList(db.Roles, "Id", "Name", user.Roles);
+            ViewBag.RolesToRemove = new SelectList(db.Roles, "Id", "Name", user.Roles);
+
             return View(user);
 
         }
@@ -137,6 +144,44 @@ namespace TicketManagement.Controllers
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
             return View(applicationUser);
+        }
+
+        // POST: AddRole
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddRole(AddRemoveRoleViewmodel vm)
+        {
+            string roleId = Request.Form["RolesToAdd"];
+            string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleNotAdded });
+
+            if (UserManager.IsInRole(vm.ApplicationUserId, roleName))
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.AlreadyInRole });
+
+            UserManager.AddToRole(vm.ApplicationUserId, roleName);
+
+            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleAdded });
+        }
+
+        // POST: RemoveRole
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveRole(AddRemoveRoleViewmodel vm)
+        {
+            string roleId = Request.Form["RolesToRemove"];
+            string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleNotRemoved });
+
+            if (!UserManager.IsInRole(vm.ApplicationUserId, roleName))
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.NotInRole });
+
+            UserManager.RemoveFromRole(vm.ApplicationUserId, roleName);
+
+            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleRemoved });
         }
 
 
