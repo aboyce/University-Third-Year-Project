@@ -1,4 +1,5 @@
-﻿@using TicketManagement.Controllers
+﻿@using Microsoft.AspNet.Identity
+@using TicketManagement.Controllers
 @using TicketManagement.Models.Entities
 @using TicketManagement.ViewModels
 @model TicketManagement.Models.Entities.ApplicationUser
@@ -7,6 +8,7 @@
     ViewBag.Title = "User Edit";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
     const string isChecked = "checked=checked";
+    AdminController controller = ViewContext.Controller as AdminController;
 }
 
 @if (Request.Params["Message"] == "RoleAdded")
@@ -108,15 +110,37 @@
         <div class="form-group">
             <label class="control-label col-md-4">Is Approved</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @*@(UserMan ? isChecked : "")*@>
+                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Approved") ? isChecked : "")>
             </div>
         </div>
 
-        @*<td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
-            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
-            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>
-            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("TextMessage") ? isChecked : "")></td>
-            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Social") ? isChecked : "")></td>*@
+        <div class="form-group">
+            <label class="control-label col-md-4">Is Admin</label>
+            <div class="col-md-6">
+                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Administrator") ? isChecked : "")>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Is Internal</label>
+            <div class="col-md-6">
+                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Internal") ? isChecked : "")>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Is Social</label>
+            <div class="col-md-6">
+                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Social") ? isChecked : "")>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-md-4">Can Send Text Messages</label>
+            <div class="col-md-6">
+                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "TextMessage") ? isChecked : "")>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-4 col-md-6">
