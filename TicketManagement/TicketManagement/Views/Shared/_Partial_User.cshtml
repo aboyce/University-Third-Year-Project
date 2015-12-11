@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
         @Html.AntiForgeryToken()
 
@@ -9,18 +9,42 @@
             <li>
                 @Html.ActionLink("Hi " + User.Identity.GetUserName(), "Index", "User", routeValues: null, htmlAttributes: new {title = "Manage"})
             </li>
+            @if (!User.IsInRole("TextMessage"))
+            {
+                <li><a href="@Url.Action("Index", "TextMessage")"><i class="fa fa-mobile"></i></a></li>
+            }
             @if (User.IsInRole("Administrator"))
             {
-                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-bell" @*style="color: #ff0000"*@></i></a></li>
+                <li class="dropdown">
+                    <a href="@Url.Action("Index", "Admin")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Index", "Admin")">Admin Panel</a></li>
+                        <li role="separator" class="divider"></li>
+
+                        <li class="dropdown-header">Notifications</li>
+                        <li><a href="#">Pending Approvals</a></li>
+                        <li role="separator" class="divider"></li>
+
+                        <li class="dropdown-header">Manage Groups</li>
+                        <li><a href="@Url.Action("Index", "Organisations")">Organisations</a></li>
+                        <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
+                        <li><a href="@Url.Action("Index", "Projects")">Projects</a></li>
+                        <li><a href="@Url.Action("Index", "Teams")">Teams</a></li>
+                        <li><a href="@Url.Action("Index", "Tickets")">Tickets</a></li>
+                        <li><a href="@Url.Action("Index", "TicketCategories")">Ticket Categories</a></li>
+                        <li><a href="#">??Ticket Logs</a></li>
+                        <li><a href="@Url.Action("Index", "TicketLogTypes")">Ticket Log Types</a></li>
+                        <li><a href="@Url.Action("Index", "TicketPriorities")">Ticket Priorities</a></li>
+                        <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>@Html.ActionLink("Register", "Register", "Home", routeValues: null, htmlAttributes: new {id = "registerLink"})</li>
+                <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
         </ul>
     }
-}
-else
-{
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Register", "Register", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
-    </ul>
 }

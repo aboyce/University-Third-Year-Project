@@ -14,6 +14,7 @@ using TicketManagement.ViewModels;
 using Microsoft.Owin.Security;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -81,7 +82,7 @@ namespace TicketManagement.Controllers
                     applicationUser.UserExtra.TeamId = team.Id;
                 }
 
-                applicationUser.PhoneNumber = Helpers.PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                applicationUser.PhoneNumber = Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
                 applicationUser.UserExtra.LastUpdated = DateTime.Now;
 
                 db.Entry(applicationUser).State = EntityState.Modified;
@@ -217,29 +218,6 @@ namespace TicketManagement.Controllers
         //}
 
         #endregion
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-
-            RoleAdded,
-            RoleNotAdded,
-            AlreadyInRole,
-
-            RoleRemoved,
-            RoleNotRemoved,
-            NotInRole,
-
-            ProfileUpdated,
-            PendingApproval,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            LoggedOff,
-            Error
-        }
 
         #region Helpers
 

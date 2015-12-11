@@ -1,11 +1,12 @@
-﻿@using TicketManagement.Helpers
+﻿@using System.Configuration
+@using TicketManagement.Helpers
 @model IEnumerable<TicketManagement.Models.Entities.Ticket>
 
 @{
     ViewBag.Title = "Tickets";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 
-    TicketConfiguration conf = Configuration.GetTicketConfiguration();
+    TicketConfiguration conf = ConfigurationHelper.GetTicketConfiguration();
     var now = DateTime.Now;
     string rowColour = string.Empty;
 }

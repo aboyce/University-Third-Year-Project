@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
@@ -201,9 +202,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Configuration.cs" />
-    <Compile Include="Helpers\PhoneNumberChecker.cs" />
-    <Compile Include="Helpers\TextMessageManager.cs" />
+    <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Helpers\PhoneNumberHelper.cs" />
+    <Compile Include="Helpers\TextMessageHelper.cs" />
     <Compile Include="Migrations\Application\201511121219008_Initial.cs" />
     <Compile Include="Migrations\Application\201511121219008_Initial.Designer.cs">
       <DependentUpon>201511121219008_Initial.cs</DependentUpon>
@@ -236,6 +238,10 @@
     <Compile Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.Designer.cs">
       <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.cs" />
+    <Compile Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.Designer.cs">
+      <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -251,10 +257,15 @@
     <Compile Include="Models\Entities\TicketPriority.cs" />
     <Compile Include="Models\Entities\TicketState.cs" />
     <Compile Include="Models\Entities\UserExtra.cs" />
+    <Compile Include="Models\Management\EnumeratedTypes.cs" />
+    <Compile Include="Models\Management\NotificationBase.cs" />
+    <Compile Include="Models\Management\UserNotification.cs" />
+    <Compile Include="Models\Management\RoleNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
+    <Compile Include="ViewModels\NotificationViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +393,7 @@
     <Content Include="Views\Shared\EditorTemplates\UserExtra.cshtml" />
     <Content Include="Views\Admin\_Partial_AddRole.cshtml" />
     <Content Include="Views\Admin\_Partial_RemoveRole.cshtml" />
+    <Content Include="Views\Notification\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -417,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.resx">
       <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.resx">
+      <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

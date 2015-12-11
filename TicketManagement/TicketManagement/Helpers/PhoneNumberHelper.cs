@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.Helpers
 {
-    public static class PhoneNumberChecker
+    public static class PhoneNumberHelper
     {
         /// <summary>
         /// Method to check that a mobile number either starts with '44', if not will replace '07' with '447'.

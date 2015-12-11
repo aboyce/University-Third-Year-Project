@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Models.Context
 {
@@ -55,6 +56,9 @@ namespace TicketManagement.Models.Context
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         public DbSet<TicketState> TicketStates { get; set; }
         public DbSet<TextMessage> TextMessages { get; set; }
+
+        public DbSet<RoleNotification> RoleNotifications { get; set; }
+        public DbSet<UserNotification> UserNotifications { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

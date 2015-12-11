@@ -11,6 +11,7 @@ using System.Web.Security;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -47,7 +48,7 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(message))
                 ModelState.AddModelError("Message", "Please ensure there is a Message body.");
 
-            int? maxLength = Helpers.Configuration.GetTextMessageMaxLength();
+            int? maxLength = Helpers.ConfigurationHelper.GetTextMessageMaxLength();
 
             if (maxLength == null)
                 ModelState.AddModelError(string.Empty, "Problem reading max text message length from the config, please see a system administrator.");
@@ -57,7 +58,7 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                TextMessageManager txtManager = new TextMessageManager();
+                TextMessageHelper txtManager = new TextMessageHelper();
                 TextMessage txt;
                 ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == id);
 
@@ -92,11 +93,6 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        public enum TextResult
-        {
-            SendSuccess,
-            SendFailure
-        }
 
         protected override void Dispose(bool disposing)
         {

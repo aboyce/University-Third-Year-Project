@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
@@ -114,7 +115,7 @@ namespace TicketManagement.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home", new { Message = UserController.ManageMessageId.LoggedOff });
+            return RedirectToAction("Index", "Home", new { Message = ManageMessageId.LoggedOff });
         }
 
         //
@@ -133,7 +134,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser applicationUser = new ApplicationUser(model.Email, model.FirstName, model.LastName, model.UserName, Helpers.PhoneNumberChecker.FormatPhoneNumberForClockwork(model.PhoneNumber), model.IsArchived);
+                ApplicationUser applicationUser = new ApplicationUser(model.Email, model.FirstName, model.LastName, model.UserName, Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(model.PhoneNumber), model.IsArchived);
 
                 var result = await UserManager.CreateAsync(applicationUser, model.Password);
                 if (result.Succeeded)
@@ -149,7 +150,7 @@ namespace TicketManagement.Controllers
                     if (model.IsInternal) // If they are internal
                     {
                         AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                        return RedirectToAction("Index", new { Message = UserController.ManageMessageId.PendingApproval });
+                        return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
                     }
 
                     return RedirectToAction("Index", "Tickets");

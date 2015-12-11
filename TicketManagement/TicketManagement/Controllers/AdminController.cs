@@ -17,6 +17,7 @@ using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 
 namespace TicketManagement.Controllers
@@ -66,7 +67,7 @@ namespace TicketManagement.Controllers
                 {'e', db.TicketStates.Select(e => e.Id).Count()},
             };
 
-            TicketConfiguration conf = Configuration.GetTicketConfiguration();
+            TicketConfiguration conf = ConfigurationHelper.GetTicketConfiguration();
 
             if (conf == null) return View(totals);
 
@@ -132,14 +133,14 @@ namespace TicketManagement.Controllers
                     applicationUser.UserExtra.TeamId = team.Id;
                 }
                 
-                applicationUser.PhoneNumber = PhoneNumberChecker.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
+                applicationUser.PhoneNumber = PhoneNumberHelper.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
                 applicationUser.UserExtra.LastUpdated = DateTime.Now;
 
                 db.Entry(applicationUser).State = EntityState.Modified;
                 db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Users", "Admin", new { Message = UserController.ManageMessageId.ProfileUpdated });
+                return RedirectToAction("Users", "Admin", new { Message = ManageMessageId.ProfileUpdated });
             }
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
@@ -155,14 +156,14 @@ namespace TicketManagement.Controllers
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
             if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleNotAdded });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleNotAdded });
 
             if (UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.AlreadyInRole });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.AlreadyInRole });
 
             UserManager.AddToRole(vm.ApplicationUserId, roleName);
 
-            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleAdded });
+            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, Message = ManageMessageId.RoleAdded });
         }
 
         // POST: RemoveRole
@@ -174,14 +175,14 @@ namespace TicketManagement.Controllers
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
             if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleNotRemoved });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleNotRemoved });
 
             if (!UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.NotInRole });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.NotInRole });
 
             UserManager.RemoveFromRole(vm.ApplicationUserId, roleName);
 
-            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = UserController.ManageMessageId.RoleRemoved });
+            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleRemoved });
         }
 
 
@@ -191,7 +192,7 @@ namespace TicketManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
-            UserController.ManageMessageId? message;
+            ManageMessageId? message;
             var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
@@ -200,22 +201,22 @@ namespace TicketManagement.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                message = UserController.ManageMessageId.RemoveLoginSuccess;
+                message = ManageMessageId.RemoveLoginSuccess;
             }
             else
             {
-                message = UserController.ManageMessageId.Error;
+                message = ManageMessageId.Error;
             }
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
         //
         // GET: /Admin/ExternalLogins
-        public async Task<ActionResult> ExternalLogins(UserController.ManageMessageId? message)
+        public async Task<ActionResult> ExternalLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == UserController.ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == UserController.ManageMessageId.Error ? "An error has occurred."
+                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)

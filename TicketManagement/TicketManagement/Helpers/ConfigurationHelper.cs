@@ -8,7 +8,7 @@ using Microsoft.Ajax.Utilities;
 namespace TicketManagement.Helpers
 {
 
-    public static class Configuration
+    public static class ConfigurationHelper
     {
         const int CLOCKWORK_FROM_MAX_LENGTH = 11;
 

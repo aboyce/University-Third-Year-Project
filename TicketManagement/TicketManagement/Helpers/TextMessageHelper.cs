@@ -11,14 +11,14 @@ using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Helpers
 {
-    public class TextMessageManager
+    public class TextMessageHelper
     {
         private string _apiKey = string.Empty;
 
         private bool LoadInConfiguration()
         {
             if (_apiKey == string.Empty)
-                _apiKey = Helpers.Configuration.GetClockworkApiKey();
+                _apiKey = Helpers.ConfigurationHelper.GetClockworkApiKey();
 
             return !string.IsNullOrEmpty(_apiKey);
         }

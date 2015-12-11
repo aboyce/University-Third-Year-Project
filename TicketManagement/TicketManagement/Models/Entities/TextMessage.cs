@@ -35,7 +35,7 @@ namespace TicketManagement.Models.Entities
         public string Message { get; set; }
 
         [Required]
-        public string From { get; } = Helpers.Configuration.GetTextMessageFromCode();
+        public string From { get; } = Helpers.ConfigurationHelper.GetTextMessageFromCode();
 
         [Required]
         public DateTime Sent { get; set; } = DateTime.Now;
