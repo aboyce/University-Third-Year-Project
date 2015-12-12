@@ -140,7 +140,7 @@ namespace TicketManagement.Controllers
                 db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Users", "Admin", new { Message = ManageMessageId.ProfileUpdated });
+                return RedirectToAction("Users", "Admin", new { ViewMessage = ViewMessage.ProfileUpdated });
             }
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
@@ -156,14 +156,14 @@ namespace TicketManagement.Controllers
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
             if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleNotAdded });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleNotAdded });
 
             if (UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.AlreadyInRole });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.AlreadyInRole });
 
             UserManager.AddToRole(vm.ApplicationUserId, roleName);
 
-            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, Message = ManageMessageId.RoleAdded });
+            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleAdded });
         }
 
         // POST: RemoveRole
@@ -175,14 +175,14 @@ namespace TicketManagement.Controllers
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
             if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleNotRemoved });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleNotRemoved });
 
             if (!UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.NotInRole });
+                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.NotInRole });
 
             UserManager.RemoveFromRole(vm.ApplicationUserId, roleName);
 
-            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, Message = ManageMessageId.RoleRemoved });
+            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleRemoved });
         }
 
 
@@ -207,7 +207,7 @@ namespace TicketManagement.Controllers
             {
                 message = ManageMessageId.Error;
             }
-            return RedirectToAction("ManageLogins", new { Message = message });
+            return RedirectToAction("ManageLogins", new { ViewMessage = message });
         }
 
         //

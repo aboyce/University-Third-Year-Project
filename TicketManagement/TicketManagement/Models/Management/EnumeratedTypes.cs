@@ -6,11 +6,31 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Management
 {
-    public enum NotificationType
+    public enum NotificationCategory
     {
-        PendingApproval,
-        PendingInternalApproval
+        Role = 0,
+        User = 1
     }
+
+    /// <summary>
+    /// When adding types here also add how to handle them in the NotificationHelper and NotificationController.
+    /// </summary>
+    public enum RoleNotificationType
+    {
+        PendingApproval = 0,
+        PendingInternalApproval = 1
+    }
+
+    /// <summary>
+    /// When adding types here also add how to handle them in the NotificationHelper and NotificationController.
+    /// </summary>
+    public enum UserNotificationType
+    {
+        PendingApproval = 0,
+        PendingInternalApproval = 1
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     public enum TextResult
     {
@@ -18,9 +38,16 @@ namespace TicketManagement.Models.Management
         SendFailure
     }
 
-    public enum ManageMessageId
+    // ----------------------------------------------------------------------------------------------------------------
+
+    public enum ViewMessage
     {
+        ProfileUpdated,
+
         PendingApproval,
+
+        AppliedRoleFromNotification,
+        FailedToApplyRoleFromNotification,
 
         RoleAdded,
         RoleNotAdded,
@@ -29,8 +56,13 @@ namespace TicketManagement.Models.Management
         RoleRemoved,
         RoleNotRemoved,
         NotInRole,
+    }
 
-        ProfileUpdated,
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    public enum ManageMessageId
+    {
         AddPhoneSuccess,
         SetPasswordSuccess,
         ChangePasswordSuccess,

@@ -11,7 +11,7 @@
     AdminController controller = ViewContext.Controller as AdminController;
 }
 
-@if (Request.Params["Message"] == "RoleAdded")
+@if (Request.Params["ViewMessage"] == "RoleAdded")
 {
     <div class="alert alert-success alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -19,7 +19,7 @@
     </div>
 }
 
-@if (Request.Params["Message"] == "RoleNotAdded")
+@if (Request.Params["ViewMessage"] == "RoleNotAdded")
 {
     <div class="alert alert-danger alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -27,7 +27,7 @@
     </div>
 }
 
-@if (Request.Params["Message"] == "AlreadyInRole")
+@if (Request.Params["ViewMessage"] == "AlreadyInRole")
 {
     <div class="alert alert-warning alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -35,7 +35,7 @@
     </div>
 }
 
-@if (Request.Params["Message"] == "RoleRemoved")
+@if (Request.Params["ViewMessage"] == "RoleRemoved")
 {
     <div class="alert alert-success alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -43,7 +43,7 @@
     </div>
 }
 
-@if (Request.Params["Message"] == "RoleNotRemoved")
+@if (Request.Params["ViewMessage"] == "RoleNotRemoved")
 {
     <div class="alert alert-danger alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -51,7 +51,7 @@
     </div>
 }
 
-@if (Request.Params["Message"] == "NotInRole")
+@if (Request.Params["ViewMessage"] == "NotInRole")
 {
     <div class="alert alert-warning alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

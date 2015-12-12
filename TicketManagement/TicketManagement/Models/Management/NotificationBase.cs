@@ -20,9 +20,6 @@ namespace TicketManagement.Models.Management
         [Required]
         public ApplicationUser NotificationAbout { get; set; }
 
-        [Required]
-        public NotificationType Type { get; set; }
-
         public string Message { get; set; }
     }
 }

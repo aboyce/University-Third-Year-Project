@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Models.Context;
@@ -49,6 +50,25 @@ namespace TicketManagement.Controllers
             vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return PartialView(vm);
+        }
+
+        public ActionResult AutoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
+        {
+            bool success = false;
+
+            if (notificationId > 0)
+            {
+                if (notificationCategory == NotificationCategory.User)
+                {
+                    success = Helpers.NotificationHelper.UndertakeNotification(db, UserManager, un: db.UserNotifications.FirstOrDefault(un => un.Id == notificationId));
+                }
+                else if (notificationCategory == NotificationCategory.Role)
+                {
+                    success = Helpers.NotificationHelper.UndertakeNotification(db, UserManager, rn: db.RoleNotifications.FirstOrDefault(rn => rn.Id == notificationId));
+                }
+            }
+
+            return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.AppliedRoleFromNotification } : new { ViewMessage = ViewMessage.FailedToApplyRoleFromNotification });
         }
 
         [HttpPost]

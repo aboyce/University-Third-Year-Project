@@ -1,11 +1,27 @@
 ﻿@using Microsoft.AspNet.Identity
 @using TicketManagement.Controllers
+@using TicketManagement.Models.Management
 @model TicketManagement.ViewModels.NotificationViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
-    NotificationController controller = ViewContext.Controller as NotificationController;
+}
+
+@if (Request.Params["ViewMessage"] == "AppliedRoleFromNotification")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The Notification has been handled and the role has been applied.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "FailedToApplyRoleFromNotification")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occurred when trying to handle the Notification.
+    </div>
 }
 
 <h2>Notifications</h2>
@@ -22,10 +38,13 @@
             <th>Notification About</th>
             <th>Type</th>
             <th>Message</th>
+            <th>Authorise</th>
         </tr>
 
         @foreach (var notification in Model.UserNotifications)
         {
+            @Html.HiddenFor(modelItem => notification.NotificationAbout)
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => notification.Id)
@@ -38,6 +57,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => notification.Message)
+                </td>
+                <td>
+                    <a href="@Url.Action("AutoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-warning"><i class="fa fa-check"></i></a>
                 </td>
             </tr>
         }
@@ -61,10 +83,15 @@ else
             <th>Notification About</th>
             <th>Type</th>
             <th>Message</th>
+            <th>Authorise</th>
         </tr>
 
         @foreach (var notification in Model.RoleNotifications)
         {
+
+            @Html.HiddenFor(modelItem => notification.NotificationAbout)
+            @Html.HiddenFor(modelItem => notification.Role)
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => notification.Id)
@@ -80,6 +107,9 @@ else
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => notification.Message)
+                </td>
+                <td>
+                    <a href="@Url.Action("AutoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role })" class="btn btn-warning"><i class="fa fa-check"></i></a>
                 </td>
             </tr>
         }

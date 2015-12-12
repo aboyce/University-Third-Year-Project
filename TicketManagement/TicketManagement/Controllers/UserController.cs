@@ -89,7 +89,7 @@ namespace TicketManagement.Controllers
                 db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Index", "Tickets", new { Message = ManageMessageId.ProfileUpdated });
+                return RedirectToAction("Index", "Tickets", new { ViewMessage = ViewMessage.ProfileUpdated });
             }
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
@@ -121,7 +121,7 @@ namespace TicketManagement.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index", new { ViewMessage = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);

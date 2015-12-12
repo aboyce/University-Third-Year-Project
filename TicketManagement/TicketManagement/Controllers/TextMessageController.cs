@@ -15,7 +15,7 @@ using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
-    //[Authorize(Roles = "TextMessage")] TODO: Add this back in.
+    [Authorize(Roles = "TextMessage")]
     public class TextMessageController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

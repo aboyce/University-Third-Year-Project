@@ -16,5 +16,8 @@ namespace TicketManagement.Models.Management
 
         [Required]
         public IdentityRole Role { get; set; }
+
+        [Required]
+        public RoleNotificationType Type { get; set; }
     }
 }

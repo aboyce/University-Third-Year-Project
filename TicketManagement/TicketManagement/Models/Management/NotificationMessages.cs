@@ -9,13 +9,13 @@ namespace TicketManagement.Models.Management
 {
     public static class NotificationMessages
     {
-        private static readonly Dictionary<NotificationType, string> NotificationMessage = new Dictionary<NotificationType, string>
+        private static readonly Dictionary<RoleNotificationType, string> NotificationMessage = new Dictionary<RoleNotificationType, string>
         {
-            { NotificationType.PendingApproval, "The user is awaiting approval before being allowed to login." },
-            { NotificationType.PendingInternalApproval, "The user is awaiting approval to be confirmed as an internal user." }
+            { RoleNotificationType.PendingApproval, "The user is awaiting approval before being allowed to login." },
+            { RoleNotificationType.PendingInternalApproval, "The user is awaiting approval to be confirmed as an internal user." }
         };
 
-        public static string GetMessageOrNull(NotificationType type)
+        public static string GetMessageOrNull(RoleNotificationType type)
         {
             string notificationMessage;
 

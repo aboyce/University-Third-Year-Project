@@ -111,7 +111,7 @@ namespace TicketManagement.Controllers
             if (!User.IsInRole("Approved"))
             {
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.PendingApproval });
             }
 
             if (returnUrl != string.Empty)
@@ -127,7 +127,7 @@ namespace TicketManagement.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home", new { Message = ManageMessageId.LoggedOff });
+            return RedirectToAction("Index", "Home", new { ViewMessage = ManageMessageId.LoggedOff });
         }
 
         //
@@ -182,8 +182,8 @@ namespace TicketManagement.Controllers
                         Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
                         NotificationAboutId = userId,
                         NotificationAbout = user,
-                        Type = NotificationType.PendingInternalApproval,
-                        Message = NotificationMessages.GetMessageOrNull(NotificationType.PendingInternalApproval)
+                        Type = RoleNotificationType.PendingInternalApproval,
+                        Message = NotificationMessages.GetMessageOrNull(RoleNotificationType.PendingInternalApproval)
                     });
             }
 
@@ -193,12 +193,12 @@ namespace TicketManagement.Controllers
                         Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
                         NotificationAboutId = userId,
                         NotificationAbout = user,
-                        Type = NotificationType.PendingApproval,
-                        Message = NotificationMessages.GetMessageOrNull(NotificationType.PendingApproval)
+                        Type = RoleNotificationType.PendingApproval,
+                        Message = NotificationMessages.GetMessageOrNull(RoleNotificationType.PendingApproval)
                     });
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.PendingApproval });
         }
 
         #region Helpers
