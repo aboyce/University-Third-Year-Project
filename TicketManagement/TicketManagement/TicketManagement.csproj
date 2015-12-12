@@ -393,7 +393,8 @@
     <Content Include="Views\Shared\EditorTemplates\UserExtra.cshtml" />
     <Content Include="Views\Admin\_Partial_AddRole.cshtml" />
     <Content Include="Views\Admin\_Partial_RemoveRole.cshtml" />
-    <Content Include="Views\Notification\Notifications.cshtml" />
+    <Content Include="Views\Notification\_Partial_Notifications.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

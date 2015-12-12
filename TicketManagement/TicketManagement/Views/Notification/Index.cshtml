@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNet.Identity
+@using TicketManagement.Controllers
+@model TicketManagement.ViewModels.NotificationViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+    NotificationController controller = ViewContext.Controller as NotificationController;
+}
+
+<h2>Notifications</h2>
+<hr />
+
+<h4>For You</h4>
+<hr/>
+
+@if (Model.UserNotifications.Any())
+{
+    <table class="table table-hover table-striped table-responsive">
+        <tr>
+            <th>Id</th>
+            <th>Notification About</th>
+            <th>Type</th>
+            <th>Message</th>
+        </tr>
+
+        @foreach (var notification in Model.UserNotifications)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => controller.UserManager.FindById(notification.UserIdNotificationOn).UserExtra.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.NotificationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.NotificationMessage)
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>You have no notifications!</p>
+    <br/>
+}
+
+<h4>For the Roles you are in</h4>
+<hr />
+
+@if (Model.RoleNotifications.Any())
+{
+    <table class="table table-hover table-striped table-responsive">
+        <tr>
+            <th>Id</th>
+            <th>Role</th>
+            <th>Notification About</th>
+            <th>Type</th>
+            <th>Message</th>
+        </tr>
+
+        @foreach (var notification in Model.RoleNotifications)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.RoleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => controller.UserManager.FindById(notification.UserIdNotificationOn).UserExtra.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.NotificationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.NotificationMessage)
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>You have no notifications for any of your roles!</p>
+}
+

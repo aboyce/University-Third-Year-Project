@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Management
 {
-    public enum NotificationCategory
-    {
-        Role,
-        User
-    }
-
     public enum NotificationType
     {
         PendingApproval
@@ -26,7 +20,7 @@ namespace TicketManagement.Models.Management
 
     public enum ManageMessageId
     {
-        AddPhoneSuccess,
+        PendingApproval,
 
         RoleAdded,
         RoleNotAdded,
@@ -37,10 +31,10 @@ namespace TicketManagement.Models.Management
         NotInRole,
 
         ProfileUpdated,
-        PendingApproval,
+        AddPhoneSuccess,
+        SetPasswordSuccess,
         ChangePasswordSuccess,
         SetTwoFactorSuccess,
-        SetPasswordSuccess,
         RemoveLoginSuccess,
         RemovePhoneSuccess,
         LoggedOff,

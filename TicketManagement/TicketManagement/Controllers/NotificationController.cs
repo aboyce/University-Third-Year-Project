@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Models.Context;
+using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
 using TicketManagement.ViewModels;
 
@@ -16,11 +20,34 @@ namespace TicketManagement.Controllers
     public class NotificationController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
+        }
+
+        //
+        //// GET: Index
+        public ActionResult Index(NotificationViewModel vm)
+        {
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+
+            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, UserManager.GetRoles(user.Id), user.Id);
+            vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
+
+            return View(vm);
+        }
 
         [ChildActionOnly]
-        public ActionResult Notifications(NotificationViewModel vm)
+        public ActionResult _Partial_Notifications(NotificationViewModel vm)
         {
-            vm.Notification = "Yippie Kaya";
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+
+            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, UserManager.GetRoles(user.Id), user.Id);
+            vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
+
             return PartialView(vm);
         }
 

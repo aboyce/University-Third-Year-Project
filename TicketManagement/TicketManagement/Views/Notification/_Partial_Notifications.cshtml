@@ -1,0 +1,15 @@
+﻿@model TicketManagement.ViewModels.NotificationViewModel
+
+@using Microsoft.AspNet.Identity
+<ul class="nav navbar-nav">
+    
+    @if (Model.RoleNotifications.Count > 0 || Model.UserNotifications.Count > 0)
+    {
+        <li><a href="@Url.Action("Index", "Notification")"><i class="fa fa-bell-o" style="color: #ff0000"></i></a></li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Index", "Notification")"><i class="fa fa-bell-o"></i></a></li>
+    }
+
+</ul>

@@ -11,22 +11,59 @@ namespace TicketManagement.Helpers
 {
     public static class NotificationHelper
     {
-        public static List<NotificationCategory> CheckForNotificationsForUser(ApplicationContext db, IList<string> userRolesByName, string userId)
+        public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
-            List<NotificationCategory> notifications = new List<NotificationCategory>();
+            db.UserNotifications.Add(notification);
+            db.SaveChangesAsync();
 
-            if (db.UserNotifications.Count(un => un.UserIdNotificationOn == userId) > 0)
-                notifications.Add(NotificationCategory.User);
+            return true;
+        }
 
-            var roleIdsForUserId = (from roleName in userRolesByName from role in db.Roles where roleName == role.Name select db.Roles.Where(r => r.Name == role.Name).Select(r => r.Id).FirstOrDefault()).ToList();
+        public static bool AddRoleNotificationToDb(ApplicationContext db, RoleNotification notification)
+        {
+            db.RoleNotifications.Add(notification);
+            db.SaveChangesAsync();
 
-            if (roleIdsForUserId.Any(role => db.RoleNotifications.Count(rn => rn.RoleId == role) > 0))
+            return true;
+        }
+
+        public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
+        {
+            return db.UserNotifications.Where(userNotification => userNotification.UserIdNotificationOn == userId).ToList();
+        }
+
+        public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, IList<string> userRolesByName, string userId)
+        {
+            List<string> roleIdsForUserId = GetRoleIdsForUser(db, userRolesByName);
+
+            //foreach (var roleNotification in db.RoleNotifications)
+            //{
+            //    foreach (var roleId in roleIdsForUserId)
+            //    {
+            //        if (roleNotification.RoleId == roleId)
+            //            notifications.Add(roleNotification);
+            //    }
+            //}
+
+
+            return (from roleNotification in db.RoleNotifications from roleId in roleIdsForUserId where roleNotification.RoleId == roleId select roleNotification).ToList();
+        }
+
+
+        private static List<string> GetRoleIdsForUser(ApplicationContext db, IList<string> userRolesByName)
+        {
+            List<string> roleIdsForUserId = new List<string>();
+
+            foreach (var roleName in userRolesByName)
             {
-                notifications.Add(NotificationCategory.Role);
-                return notifications;
+                foreach (var role in db.Roles)
+                {
+                    if(role.Name == roleName)
+                        roleIdsForUserId.Add(role.Name);
+                }
             }
 
-            return notifications;
+            return roleIdsForUserId;
         }
     }
 }

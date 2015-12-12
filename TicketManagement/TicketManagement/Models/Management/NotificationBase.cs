@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Management
 {
-    public class NotificationBase
+    public abstract class NotificationBase
     {
         [Key]
         [Editable(false)]
