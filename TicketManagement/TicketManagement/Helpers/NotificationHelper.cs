@@ -14,7 +14,7 @@ namespace TicketManagement.Helpers
         public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
             db.UserNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }
@@ -22,31 +22,35 @@ namespace TicketManagement.Helpers
         public static bool AddRoleNotificationToDb(ApplicationContext db, RoleNotification notification)
         {
             db.RoleNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }
 
         public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
         {
-            return db.UserNotifications.Where(userNotification => userNotification.UserIdNotificationOn == userId).ToList();
+            return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
         }
 
-        public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, IList<string> userRolesByName, string userId)
+        public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
         {
-            List<string> roleIdsForUserId = GetRoleIdsForUser(db, userRolesByName);
+            List<RoleNotification> notifications = new List<RoleNotification>();
 
-            //foreach (var roleNotification in db.RoleNotifications)
-            //{
-            //    foreach (var roleId in roleIdsForUserId)
-            //    {
-            //        if (roleNotification.RoleId == roleId)
-            //            notifications.Add(roleNotification);
-            //    }
-            //}
+            foreach (var rn in db.RoleNotifications.ToList())
+            {
+                foreach (var roleId in GetRoleIdsForUser(db, userRolesByName))
+                {
+                    if (rn.Role.Id == roleId)
+                    {
+                        if (rn.NotificationAbout == null)
+                            rn.NotificationAbout = db.Users.FirstOrDefault(u => u.Id == rn.NotificationAboutId);
 
+                        notifications.Add(rn);
+                    }
+                }
+            }
 
-            return (from roleNotification in db.RoleNotifications from roleId in roleIdsForUserId where roleNotification.RoleId == roleId select roleNotification).ToList();
+            return notifications;
         }
 
 
@@ -59,7 +63,7 @@ namespace TicketManagement.Helpers
                 foreach (var role in db.Roles)
                 {
                     if(role.Name == roleName)
-                        roleIdsForUserId.Add(role.Name);
+                        roleIdsForUserId.Add(role.Id);
                 }
             }
 

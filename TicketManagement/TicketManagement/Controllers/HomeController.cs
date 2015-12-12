@@ -93,10 +93,8 @@ namespace TicketManagement.Controllers
             {
                 case SignInStatus.Success:
                 {
-                    if (returnUrl != string.Empty)
-                        return RedirectToLocal(returnUrl);
-                    return RedirectToAction("Index", "Organisations");
-                }
+                        return RedirectToAction("CheckLogIn", "Home", new { returnUrl = returnUrl });
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 //case SignInStatus.RequiresVerification:
@@ -106,6 +104,20 @@ namespace TicketManagement.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        public ActionResult CheckLogIn(string returnUrl)
+        {
+            if (!User.IsInRole("Approved"))
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
+            }
+
+            if (returnUrl != string.Empty)
+                return RedirectToLocal(returnUrl);
+
+            return RedirectToAction("Index", "Tickets");
         }
 
         //
@@ -147,19 +159,46 @@ namespace TicketManagement.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    if (model.IsInternal) // If they are internal
-                    {
-                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                        return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
-                    }
-
-                    return RedirectToAction("Index", "Tickets");
+                    return RedirectToAction("CheckRegister", "Home", new { isInternal = model.IsInternal });
                 }
+
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public ActionResult CheckRegister(bool isInternal)
+        {
+            string userId = User.Identity.GetUserId();
+            var user = db.Users.Where(u => u.Id == userId).Select(u => u).FirstOrDefault();
+
+            if (isInternal)
+            {
+                Helpers.NotificationHelper.AddRoleNotificationToDb(db,
+                    new RoleNotification
+                    {
+                        Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
+                        NotificationAboutId = userId,
+                        NotificationAbout = user,
+                        Type = NotificationType.PendingInternalApproval,
+                        Message = NotificationMessages.GetMessageOrNull(NotificationType.PendingInternalApproval)
+                    });
+            }
+
+            Helpers.NotificationHelper.AddRoleNotificationToDb(db,
+                    new RoleNotification
+                    {
+                        Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
+                        NotificationAboutId = userId,
+                        NotificationAbout = user,
+                        Type = NotificationType.PendingApproval,
+                        Message = NotificationMessages.GetMessageOrNull(NotificationType.PendingApproval)
+                    });
+
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", new { Message = ManageMessageId.PendingApproval });
         }
 
         #region Helpers

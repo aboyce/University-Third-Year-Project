@@ -34,7 +34,7 @@ namespace TicketManagement.Controllers
         {
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, UserManager.GetRoles(user.Id), user.Id);
+            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
             vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return View(vm);
@@ -45,10 +45,16 @@ namespace TicketManagement.Controllers
         {
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, UserManager.GetRoles(user.Id), user.Id);
+            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
             vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return PartialView(vm);
+        }
+
+        [HttpPost]
+        public ActionResult Test()
+        {
+            return View("Index");
         }
 
         //// GET: Notification/Create

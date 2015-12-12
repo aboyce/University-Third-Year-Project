@@ -242,6 +242,18 @@
     <Compile Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.Designer.cs">
       <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512121647133_Refactored the Notifications.cs" />
+    <Compile Include="Migrations\Application\201512121647133_Refactored the Notifications.Designer.cs">
+      <DependentUpon>201512121647133_Refactored the Notifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.cs" />
+    <Compile Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.Designer.cs">
+      <DependentUpon>201512121758403_Added a UserId to the Notification Base.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.cs" />
+    <Compile Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.Designer.cs">
+      <DependentUpon>201512121800378_Added a RoleId to the Role Notification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\ApplicationUser.cs" />
@@ -259,6 +271,7 @@
     <Compile Include="Models\Entities\UserExtra.cs" />
     <Compile Include="Models\Management\EnumeratedTypes.cs" />
     <Compile Include="Models\Management\NotificationBase.cs" />
+    <Compile Include="Models\Management\NotificationMessages.cs" />
     <Compile Include="Models\Management\UserNotification.cs" />
     <Compile Include="Models\Management\RoleNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -433,6 +446,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.resx">
       <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512121647133_Refactored the Notifications.resx">
+      <DependentUpon>201512121647133_Refactored the Notifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.resx">
+      <DependentUpon>201512121758403_Added a UserId to the Notification Base.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.resx">
+      <DependentUpon>201512121800378_Added a RoleId to the Role Notification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Models.Management
 {
@@ -14,11 +15,14 @@ namespace TicketManagement.Models.Management
         public int Id { get; set; }
 
         [Required]
-        public string UserIdNotificationOn { get; set; }
+        public string NotificationAboutId { get; set; }
 
         [Required]
-        public NotificationType NotificationType { get; set; }
+        public ApplicationUser NotificationAbout { get; set; }
 
-        public string NotificationMessage { get; set; }
+        [Required]
+        public NotificationType Type { get; set; }
+
+        public string Message { get; set; }
     }
 }

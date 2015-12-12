@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Management;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TicketManagement.Models.Management
 {
@@ -12,5 +13,8 @@ namespace TicketManagement.Models.Management
     {
         [Required]
         public string RoleId { get; set; }
+
+        [Required]
+        public IdentityRole Role { get; set; }
     }
 }

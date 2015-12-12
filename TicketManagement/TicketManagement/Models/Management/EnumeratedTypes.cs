@@ -8,9 +8,9 @@ namespace TicketManagement.Models.Management
 {
     public enum NotificationType
     {
-        PendingApproval
+        PendingApproval,
+        PendingInternalApproval
     }
-
 
     public enum TextResult
     {

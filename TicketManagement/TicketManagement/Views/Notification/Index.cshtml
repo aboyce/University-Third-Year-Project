@@ -31,13 +31,13 @@
                     @Html.DisplayFor(modelItem => notification.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => controller.UserManager.FindById(notification.UserIdNotificationOn).UserExtra.FullName)
+                    @Html.DisplayFor(modelItem => notification.NotificationAbout.UserExtra.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationType)
+                    @Html.DisplayFor(modelItem => notification.Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationMessage)
+                    @Html.DisplayFor(modelItem => notification.Message)
                 </td>
             </tr>
         }
@@ -57,7 +57,7 @@ else
     <table class="table table-hover table-striped table-responsive">
         <tr>
             <th>Id</th>
-            <th>Role</th>
+            <th>Associated Role</th>
             <th>Notification About</th>
             <th>Type</th>
             <th>Message</th>
@@ -70,16 +70,16 @@ else
                     @Html.DisplayFor(modelItem => notification.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.RoleId)
+                    @Html.DisplayFor(modelItem => notification.Role.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => controller.UserManager.FindById(notification.UserIdNotificationOn).UserExtra.FullName)
+                    @Html.DisplayFor(modelItem => notification.NotificationAbout.UserExtra.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationType)
+                    @Html.DisplayFor(modelItem => notification.Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationMessage)
+                    @Html.DisplayFor(modelItem => notification.Message)
                 </td>
             </tr>
         }
@@ -90,3 +90,9 @@ else
     <p>You have no notifications for any of your roles!</p>
 }
 
+@using (Html.BeginForm("Test", "Notification", FormMethod.Post))
+{
+    <!-- form goes here -->
+
+    <input type="submit" value="Test" />
+}
