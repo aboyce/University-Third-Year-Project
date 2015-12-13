@@ -47,7 +47,7 @@ namespace TicketManagement.Controllers
 
         #region GET/POST
 
-        // GET: Incex
+        // GET: Index
         public ActionResult Index()
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
@@ -66,7 +66,7 @@ namespace TicketManagement.Controllers
         // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
+        public ActionResult Index([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {

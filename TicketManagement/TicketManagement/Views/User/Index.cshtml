@@ -1,9 +1,11 @@
-﻿@using System.Diagnostics.Eventing.Reader
-@model TicketManagement.Models.Entities.User
+﻿@model TicketManagement.Models.Entities.User
 
 @{
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+
+    string archived = @Model.IsArchived ? "checked=\"checked\"" : string.Empty;
+    string teamLeader = @Model.IsTeamLeader ? "checked=\"checked\"" : string.Empty;
 }
 
 <h2>My Account</h2>
@@ -27,17 +29,24 @@
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.PasswordHash)
-        @Html.HiddenFor(model => model.SecurityStamp)
-        @Html.HiddenFor(model => model.EmailConfirmed)
-        @Html.HiddenFor(model => model.PhoneNumberConfirmed)
-        @Html.HiddenFor(model => model.TwoFactorEnabled)
-        @Html.HiddenFor(model => model.LockoutEndDateUtc)
-        @Html.HiddenFor(model => model.LockoutEnabled)
-        @Html.HiddenFor(model => model.AccessFailedCount)
 
         @*Form Elements*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         @if (User.IsInRole("Administrator"))
         {
@@ -50,10 +59,34 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+                @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-4"})
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsArchived, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.IsArchived)
+                    @Html.ValidationMessageFor(model => model.IsArchived, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.IsTeamLeader)
+                    @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Team, "Team", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-6">
+                    @Html.DropDownList("Teams", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Team, "", new { @class = "text-danger" })
                 </div>
             </div>
         }
@@ -63,29 +96,74 @@
                 @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
                     <input class="form-control" type="text" placeholder="@Model.UserName" disabled="disabled">
-                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+                @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-4"})
                 <div class="col-md-6">
                     <input class="form-control" type="text" placeholder="@Model.Email" disabled="disabled">
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsArchived, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-6">
+                    <input class="check-box" @archived disabled="disabled" type="checkbox">
+                    @Html.ValidationMessageFor(model => model.IsArchived, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
+                <div class="col-md-6">
+                    <input class="check-box" @teamLeader disabled="disabled" type="checkbox">
+                    @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            if (Model.Team != null)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Team.Name, "Team", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" placeholder="@Model.Team.Name" disabled="disabled">
+                        @Html.ValidationMessageFor(model => model.Team.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-4">Team Assigned</label>
+                    <div class="col-md-6">
+                        <input class="check-box" disabled="disabled" type="checkbox">
+                    </div>
+                </div>
+            }
         }
 
-
         <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new {@class = "control-label col-md-4"})
             <div class="col-md-6">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
             </div>
         </div>
 
-        @Html.EditorFor(model => model, new { Admin = User.IsInRole("Administrator") })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UserName)
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.PasswordHash)
+        @Html.HiddenFor(model => model.SecurityStamp)
+        @Html.HiddenFor(model => model.EmailConfirmed)
+        @Html.HiddenFor(model => model.PhoneNumberConfirmed)
+        @Html.HiddenFor(model => model.TwoFactorEnabled)
+        @Html.HiddenFor(model => model.LockoutEndDateUtc)
+        @Html.HiddenFor(model => model.LockoutEnabled)
+        @Html.HiddenFor(model => model.AccessFailedCount)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.LastUpdated)
 
         @*Form Buttons*@
         <div class="form-group">
@@ -102,7 +180,7 @@
     <div class="col-md-4">
         <h3>Change Password</h3>
         <hr />
-        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-default col-md-offset-6" })
+        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-info col-md-offset-6" })
     </div>
 </div>
 

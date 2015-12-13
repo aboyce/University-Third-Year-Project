@@ -358,7 +358,6 @@
     <Content Include="Views\TextMessage\Index.cshtml" />
     <Content Include="Views\TextMessage\Send.cshtml" />
     <Content Include="Views\Admin\UserEdit.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\UserExtra.cshtml" />
     <Content Include="Views\Admin\_Partial_AddRole.cshtml" />
     <Content Include="Views\Admin\_Partial_RemoveRole.cshtml" />
     <Content Include="Views\Notification\_Partial_Notifications.cshtml" />
@@ -366,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

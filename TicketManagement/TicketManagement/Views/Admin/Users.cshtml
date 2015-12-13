@@ -1,5 +1,4 @@
-﻿@using System.Collections
-@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity
 @model   Dictionary<TicketManagement.Models.Entities.User, IList<string>>
 
 @{
@@ -55,7 +54,7 @@
 
             <td>
                 <a data-toggle="popover" data-placement="left" @*Linked with Shared/table_popover.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
-                   title="Roles for @Html.DisplayFor(modelItem => userRoles.Key.FullName)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)"><i class="fa fa-users" style="font-size: 20px;"></i></a>
+                   title="Roles for @Html.DisplayFor(modelItem => userRoles.Key.FullName)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => userRoles.Key.Id)"><i class="fa fa-users" style="font-size: 20px;"></i></a>
 
                 <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => userRoles.Key.Id)">
                     <table class="table">

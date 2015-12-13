@@ -22,7 +22,7 @@
                         <li role="separator" class="divider"></li>
 
                         <li class="dropdown-header">Notifications</li>
-                        <li><a href="#">Pending Approvals</a></li>
+                        <li><a href="@Url.Action("Index", "Notification")">Notification Panel</a></li>
                         <li role="separator" class="divider"></li>
 
                         <li class="dropdown-header">Manage Groups</li>
@@ -38,11 +38,6 @@
                         <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
                     </ul>
                 </li>
-            }
-            else
-            {
-                <li>@Html.ActionLink("Register", "Register", "Home", routeValues: null, htmlAttributes: new {id = "registerLink"})</li>
-                <li>@Html.ActionLink("Log in", "Login", "Home", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
         </ul>

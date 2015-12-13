@@ -117,7 +117,7 @@ namespace TicketManagement.Controllers
         // POST: UserEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserEdit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
+        public ActionResult UserEdit([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -141,6 +141,9 @@ namespace TicketManagement.Controllers
 
                 return RedirectToAction("Users", "Admin", new { ViewMessage = ViewMessage.ProfileUpdated });
             }
+
+            ViewBag.RolesToAdd = new SelectList(db.Roles, "Id", "Name", user.Roles);
+            ViewBag.RolesToRemove = new SelectList(db.Roles, "Id", "Name", user.Roles);
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
             return View(user);
