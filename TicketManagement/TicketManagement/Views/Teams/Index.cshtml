@@ -5,6 +5,30 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+@if (Request.Params["ViewMessage"] == "TeamAdded")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The team has been added.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "TeamUpdated")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The team has been updated.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "TeamDeleted")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The team has been deleted.
+    </div>
+}
+
 <h2>Teams</h2>
 <hr/>
 
