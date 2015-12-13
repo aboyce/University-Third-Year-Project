@@ -56,6 +56,10 @@ namespace TicketManagement.Models.Management
         RoleRemoved,
         RoleNotRemoved,
         NotInRole,
+
+        OrganisationAdded,
+        OrganisationUpdated,
+        OrganisationDeleted,
     }
 
 

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -42,7 +43,7 @@ namespace TicketManagement.Controllers
         // GET: Organisations/Create
         public ActionResult Create()
         {
-            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 
@@ -51,16 +52,21 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,IsInternal,ContactUserId,LastUpdated")] Organisation organisation)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,IsInternal,DefaultContactId,LastUpdated")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {
+                string defaulContactId = Request.Form["PossibleDefaultContacts"];
+
+                organisation.DefaultContactId = defaulContactId;
+                organisation.DefaultContact = db.Users.FirstOrDefault(u => u.Id == defaulContactId);
+
                 db.Organisations.Add(organisation);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationUpdated});
             }
 
-            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
+            ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
             return View(organisation);
         }
 
@@ -76,7 +82,7 @@ namespace TicketManagement.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
+            ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
             return View(organisation);
         }
 
@@ -85,15 +91,23 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,IsInternal,ContactUserId,LastUpdated")] Organisation organisation)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,IsInternal,DefaultContactId,LastUpdated")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {
+                string defaulContactId = Request.Form["PossibleDefaultContacts"];
+
+                organisation.DefaultContactId = defaulContactId;
+                organisation.DefaultContact = db.Users.FirstOrDefault(u => u.Id == defaulContactId);
+                organisation.LastUpdated = DateTime.Now;
+
                 db.Entry(organisation).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationUpdated });
             }
-            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
+
+            ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
+
             return View(organisation);
         }
 
@@ -120,7 +134,7 @@ namespace TicketManagement.Controllers
             Organisation organisation = await db.Organisations.FindAsync(id);
             db.Organisations.Remove(organisation);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationDeleted });
         }
 
         protected override void Dispose(bool disposing)
