@@ -23,11 +23,19 @@ namespace TicketManagement
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap_datepicker_js").Include(
+                      "~/Scripts/bootstrap-datepicker.min.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/bootstrap_datepicker_css").Include(
+                      "~/Content/bootstrap-datepicker.min.css",
+                      "~/Content/bootstrap-datepicker.standalone.min.css",
+                      "~/Content/bootstrap-datepicker3.min.css",
+                      "~/Content/bootstrap-datepicker3.standalone.min.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css"));
-
         }
     }
 }
