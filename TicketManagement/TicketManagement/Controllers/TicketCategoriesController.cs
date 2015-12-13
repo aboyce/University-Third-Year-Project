@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -56,7 +57,7 @@ namespace TicketManagement.Controllers
             {
                 db.TicketCategories.Add(ticketCategory);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryAdded });
             }
 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketCategory.ProjectId);
@@ -90,7 +91,7 @@ namespace TicketManagement.Controllers
             {
                 db.Entry(ticketCategory).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryUpdated });
             }
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketCategory.ProjectId);
             return View(ticketCategory);
@@ -119,7 +120,7 @@ namespace TicketManagement.Controllers
             TicketCategory ticketCategory = db.TicketCategories.Find(id);
             db.TicketCategories.Remove(ticketCategory);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryDeleted });
         }
 
         protected override void Dispose(bool disposing)

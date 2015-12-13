@@ -5,6 +5,30 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+@if (Request.Params["ViewMessage"] == "TicketPriorityAdded")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The ticket priority has been added.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "TicketPriorityUpdated")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The ticket priority has been updated.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "TicketPriorityDeleted")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The ticket priority has been deleted.
+    </div>
+}
+
 <h2>Ticket Priorities</h2>
 <hr/>
 

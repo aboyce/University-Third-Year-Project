@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -54,7 +55,7 @@ namespace TicketManagement.Controllers
             {
                 db.TicketLogTypes.Add(ticketLogType);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketLogTypeAdded });
             }
 
             return View(ticketLogType);
@@ -86,7 +87,7 @@ namespace TicketManagement.Controllers
             {
                 db.Entry(ticketLogType).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketLogTypeUpdated });
             }
             return View(ticketLogType);
         }
@@ -114,7 +115,7 @@ namespace TicketManagement.Controllers
             TicketLogType ticketLogType = db.TicketLogTypes.Find(id);
             db.TicketLogTypes.Remove(ticketLogType);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketLogTypeDeleted });
         }
 
         protected override void Dispose(bool disposing)

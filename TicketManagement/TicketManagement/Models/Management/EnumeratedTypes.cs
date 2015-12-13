@@ -68,6 +68,22 @@ namespace TicketManagement.Models.Management
         TeamAdded,
         TeamUpdated,
         TeamDeleted,
+
+        TicketCategoryAdded,
+        TicketCategoryUpdated,
+        TicketCategoryDeleted,
+
+        TicketLogTypeAdded,
+        TicketLogTypeUpdated,
+        TicketLogTypeDeleted,
+
+        TicketPriorityAdded,
+        TicketPriorityUpdated,
+        TicketPriorityDeleted,
+
+        TicketStateAdded,
+        TicketStateUpdated,
+        TicketStateDeleted,
     }
 
 
