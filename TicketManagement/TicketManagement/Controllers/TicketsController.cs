@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
@@ -60,6 +61,13 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                var applicationUser = db.Users.FirstOrDefault(u => u.Id == User.Identity.GetUserId());
+                if (applicationUser != null)
+                {
+                    ticket.OpenedBy = applicationUser.UserExtra;
+                    ticket.OpenedById = applicationUser.UserExtra.Id;
+                }
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
