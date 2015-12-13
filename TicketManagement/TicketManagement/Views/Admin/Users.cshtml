@@ -25,7 +25,6 @@
 
 <table class="table table-hover table-striped table-responsive">
     <tr>
-        <th> Id </th>
         <th> Name </th>
         <th> UserName </th>
         <th> Email </th>
@@ -37,11 +36,11 @@
 
     @foreach (var userRoles in Model)
     {
+        @Html.HiddenFor(modelItem => userRoles.Key.Id)
         string rowColour = string.Empty;
         if (userRoles.Key.Id == User.Identity.GetUserId()) { rowColour = "class=warning"; }
 
         <tr @rowColour>
-            <td> @Html.DisplayFor(modelItem => userRoles.Key.Id) </td>
             <td> @Html.DisplayFor(modelItem => userRoles.Key.FullName) </td>
             <td> @Html.DisplayFor(modelItem => userRoles.Key.UserName) </td>
             <td> @Html.DisplayFor(modelItem => userRoles.Key.Email) </td>

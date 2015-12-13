@@ -60,6 +60,10 @@ namespace TicketManagement.Models.Management
         OrganisationAdded,
         OrganisationUpdated,
         OrganisationDeleted,
+
+        ProjectAdded,
+        ProjectUpdated,
+        ProjectDeleted,
     }
 
 
