@@ -37,10 +37,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ContactUserId, "Default Contact", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DefaultContactId, "Default Contact", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ContactUserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ContactUserId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.DefaultContactId, "", new { @class = "text-danger" })
             </div>
         </div>
 

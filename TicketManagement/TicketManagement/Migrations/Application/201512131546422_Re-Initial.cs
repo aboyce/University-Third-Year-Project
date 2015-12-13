@@ -3,7 +3,7 @@ namespace TicketManagement.Migrations.Application
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class ReInitial : DbMigration
     {
         public override void Up()
         {
@@ -14,36 +14,80 @@ namespace TicketManagement.Migrations.Application
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         IsInternal = c.Boolean(nullable: false),
-                        ContactUserId = c.Int(),
+                        DefaultContactId = c.String(maxLength: 128),
                         Created = c.DateTime(nullable: false),
                         LastUpdated = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.ContactUserId)
-                .Index(t => t.ContactUserId);
+                .ForeignKey("dbo.Users", t => t.DefaultContactId)
+                .Index(t => t.DefaultContactId);
             
             CreateTable(
                 "dbo.Users",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        ApplicationUserId = c.String(),
+                        Id = c.String(nullable: false, maxLength: 128),
                         FirstName = c.String(nullable: false, maxLength: 50),
                         LastName = c.String(nullable: false, maxLength: 50),
-                        UserName = c.String(nullable: false, maxLength: 50),
-                        Email = c.String(maxLength: 50),
-                        Telephone = c.String(maxLength: 50),
-                        IsInternal = c.Boolean(nullable: false),
-                        IsAdmin = c.Boolean(nullable: false),
                         IsArchived = c.Boolean(nullable: false),
                         TeamId = c.Int(),
                         IsTeamLeader = c.Boolean(nullable: false),
+                        PhoneNumber = c.String(nullable: false),
                         Created = c.DateTime(nullable: false),
                         LastUpdated = c.DateTime(nullable: false),
+                        Email = c.String(maxLength: 256),
+                        EmailConfirmed = c.Boolean(nullable: false),
+                        PasswordHash = c.String(),
+                        SecurityStamp = c.String(),
+                        PhoneNumberConfirmed = c.Boolean(nullable: false),
+                        TwoFactorEnabled = c.Boolean(nullable: false),
+                        LockoutEndDateUtc = c.DateTime(),
+                        LockoutEnabled = c.Boolean(nullable: false),
+                        AccessFailedCount = c.Int(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Teams", t => t.TeamId)
-                .Index(t => t.TeamId);
+                .Index(t => t.TeamId)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
+            
+            CreateTable(
+                "dbo.UserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        ClaimType = c.String(),
+                        ClaimValue = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.UserLogins",
+                c => new
+                    {
+                        LoginProvider = c.String(nullable: false, maxLength: 128),
+                        ProviderKey = c.String(nullable: false, maxLength: 128),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.UserRoles",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
             
             CreateTable(
                 "dbo.Teams",
@@ -77,6 +121,22 @@ namespace TicketManagement.Migrations.Application
                 .Index(t => t.TeamAssignedToId);
             
             CreateTable(
+                "dbo.RoleNotifications",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                        Type = c.Int(nullable: false),
+                        NotificationAboutId = c.String(nullable: false, maxLength: 128),
+                        Message = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Users", t => t.NotificationAboutId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
+                .Index(t => t.RoleId)
+                .Index(t => t.NotificationAboutId);
+            
+            CreateTable(
                 "dbo.Roles",
                 c => new
                     {
@@ -87,17 +147,19 @@ namespace TicketManagement.Migrations.Application
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
-                "dbo.UserRoles",
+                "dbo.TextMessages",
                 c => new
                     {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
+                        Id = c.Int(nullable: false, identity: true),
+                        ApplicationUserToId = c.String(nullable: false),
+                        Number = c.String(nullable: false),
+                        Message = c.String(nullable: false),
+                        Sent = c.DateTime(nullable: false),
+                        UserTo_Id = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.ApplicationUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Users", t => t.UserTo_Id, cascadeDelete: true)
+                .Index(t => t.UserTo_Id);
             
             CreateTable(
                 "dbo.TicketCategories",
@@ -136,9 +198,9 @@ namespace TicketManagement.Migrations.Application
                         Id = c.Int(nullable: false, identity: true),
                         Title = c.String(nullable: false, maxLength: 100),
                         Description = c.String(maxLength: 250),
-                        OpenedById = c.Int(nullable: false),
+                        OpenedById = c.String(nullable: false, maxLength: 128),
                         TicketPriorityId = c.Int(nullable: false),
-                        UserAssignedToId = c.Int(),
+                        UserAssignedToId = c.String(maxLength: 128),
                         TeamAssignedToId = c.Int(),
                         OrganisationAssignedToId = c.Int(),
                         TicketStateId = c.Int(nullable: false),
@@ -204,61 +266,23 @@ namespace TicketManagement.Migrations.Application
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.ApplicationUsers",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        UserId = c.Int(),
-                        Email = c.String(maxLength: 256),
-                        EmailConfirmed = c.Boolean(nullable: false),
-                        PasswordHash = c.String(),
-                        SecurityStamp = c.String(),
-                        PhoneNumber = c.String(),
-                        PhoneNumberConfirmed = c.Boolean(nullable: false),
-                        TwoFactorEnabled = c.Boolean(nullable: false),
-                        LockoutEndDateUtc = c.DateTime(),
-                        LockoutEnabled = c.Boolean(nullable: false),
-                        AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(nullable: false, maxLength: 256),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.UserId)
-                .Index(t => t.UserId)
-                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
-            
-            CreateTable(
-                "dbo.UserClaims",
+                "dbo.UserNotifications",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        ClaimType = c.String(),
-                        ClaimValue = c.String(),
+                        Type = c.Int(nullable: false),
+                        NotificationAboutId = c.String(nullable: false, maxLength: 128),
+                        Message = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ApplicationUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId);
-            
-            CreateTable(
-                "dbo.UserLogins",
-                c => new
-                    {
-                        LoginProvider = c.String(nullable: false, maxLength: 128),
-                        ProviderKey = c.String(nullable: false, maxLength: 128),
-                        UserId = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
-                .ForeignKey("dbo.ApplicationUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId);
+                .ForeignKey("dbo.Users", t => t.NotificationAboutId, cascadeDelete: true)
+                .Index(t => t.NotificationAboutId);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.ApplicationUsers", "UserId", "dbo.Users");
-            DropForeignKey("dbo.UserRoles", "UserId", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.UserLogins", "UserId", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.UserClaims", "UserId", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.UserNotifications", "NotificationAboutId", "dbo.Users");
             DropForeignKey("dbo.TicketLogs", "TicketLogTypeId", "dbo.TicketLogTypes");
             DropForeignKey("dbo.TicketLogs", "TicketId", "dbo.Tickets");
             DropForeignKey("dbo.Tickets", "UserAssignedToId", "dbo.Users");
@@ -270,16 +294,19 @@ namespace TicketManagement.Migrations.Application
             DropForeignKey("dbo.Tickets", "OrganisationAssignedToId", "dbo.Organisations");
             DropForeignKey("dbo.Tickets", "OpenedById", "dbo.Users");
             DropForeignKey("dbo.TicketCategories", "ProjectId", "dbo.Projects");
+            DropForeignKey("dbo.TextMessages", "UserTo_Id", "dbo.Users");
+            DropForeignKey("dbo.RoleNotifications", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.UserRoles", "RoleId", "dbo.Roles");
+            DropForeignKey("dbo.RoleNotifications", "NotificationAboutId", "dbo.Users");
             DropForeignKey("dbo.Projects", "TeamAssignedToId", "dbo.Teams");
             DropForeignKey("dbo.Projects", "OrganisationId", "dbo.Organisations");
-            DropForeignKey("dbo.Organisations", "ContactUserId", "dbo.Users");
+            DropForeignKey("dbo.Organisations", "DefaultContactId", "dbo.Users");
             DropForeignKey("dbo.Users", "TeamId", "dbo.Teams");
             DropForeignKey("dbo.Teams", "OrganisationId", "dbo.Organisations");
-            DropIndex("dbo.UserLogins", new[] { "UserId" });
-            DropIndex("dbo.UserClaims", new[] { "UserId" });
-            DropIndex("dbo.ApplicationUsers", "UserNameIndex");
-            DropIndex("dbo.ApplicationUsers", new[] { "UserId" });
+            DropForeignKey("dbo.UserRoles", "UserId", "dbo.Users");
+            DropForeignKey("dbo.UserLogins", "UserId", "dbo.Users");
+            DropForeignKey("dbo.UserClaims", "UserId", "dbo.Users");
+            DropIndex("dbo.UserNotifications", new[] { "NotificationAboutId" });
             DropIndex("dbo.Tickets", new[] { "TicketCategoryId" });
             DropIndex("dbo.Tickets", new[] { "ProjectId" });
             DropIndex("dbo.Tickets", new[] { "TicketStateId" });
@@ -291,27 +318,35 @@ namespace TicketManagement.Migrations.Application
             DropIndex("dbo.TicketLogs", new[] { "TicketLogTypeId" });
             DropIndex("dbo.TicketLogs", new[] { "TicketId" });
             DropIndex("dbo.TicketCategories", new[] { "ProjectId" });
-            DropIndex("dbo.UserRoles", new[] { "RoleId" });
-            DropIndex("dbo.UserRoles", new[] { "UserId" });
+            DropIndex("dbo.TextMessages", new[] { "UserTo_Id" });
             DropIndex("dbo.Roles", "RoleNameIndex");
+            DropIndex("dbo.RoleNotifications", new[] { "NotificationAboutId" });
+            DropIndex("dbo.RoleNotifications", new[] { "RoleId" });
             DropIndex("dbo.Projects", new[] { "TeamAssignedToId" });
             DropIndex("dbo.Projects", new[] { "OrganisationId" });
             DropIndex("dbo.Teams", new[] { "OrganisationId" });
+            DropIndex("dbo.UserRoles", new[] { "RoleId" });
+            DropIndex("dbo.UserRoles", new[] { "UserId" });
+            DropIndex("dbo.UserLogins", new[] { "UserId" });
+            DropIndex("dbo.UserClaims", new[] { "UserId" });
+            DropIndex("dbo.Users", "UserNameIndex");
             DropIndex("dbo.Users", new[] { "TeamId" });
-            DropIndex("dbo.Organisations", new[] { "ContactUserId" });
-            DropTable("dbo.UserLogins");
-            DropTable("dbo.UserClaims");
-            DropTable("dbo.ApplicationUsers");
+            DropIndex("dbo.Organisations", new[] { "DefaultContactId" });
+            DropTable("dbo.UserNotifications");
             DropTable("dbo.TicketLogTypes");
             DropTable("dbo.TicketStates");
             DropTable("dbo.TicketPriorities");
             DropTable("dbo.Tickets");
             DropTable("dbo.TicketLogs");
             DropTable("dbo.TicketCategories");
-            DropTable("dbo.UserRoles");
+            DropTable("dbo.TextMessages");
             DropTable("dbo.Roles");
+            DropTable("dbo.RoleNotifications");
             DropTable("dbo.Projects");
             DropTable("dbo.Teams");
+            DropTable("dbo.UserRoles");
+            DropTable("dbo.UserLogins");
+            DropTable("dbo.UserClaims");
             DropTable("dbo.Users");
             DropTable("dbo.Organisations");
         }

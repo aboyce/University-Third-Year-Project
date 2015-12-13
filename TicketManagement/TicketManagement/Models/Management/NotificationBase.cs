@@ -18,7 +18,7 @@ namespace TicketManagement.Models.Management
         public string NotificationAboutId { get; set; }
 
         [Required]
-        public ApplicationUser NotificationAbout { get; set; }
+        public User NotificationAbout { get; set; }
 
         public string Message { get; set; }
     }

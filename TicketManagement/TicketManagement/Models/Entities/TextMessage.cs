@@ -10,10 +10,10 @@ namespace TicketManagement.Models.Entities
     {
         public TextMessage() { }
 
-        public TextMessage(string userToId, ApplicationUser userTo, string number, string message)
+        public TextMessage(string userToId, User userTo, string number, string message)
         {
             ApplicationUserToId = userToId;
-            ApplicationUserTo = userTo;
+            UserTo = userTo;
             Number = number;
             Message = message;
         }
@@ -26,7 +26,7 @@ namespace TicketManagement.Models.Entities
         public string ApplicationUserToId { get; set; }
 
         [Required]
-        public ApplicationUser ApplicationUserTo { get; set; }
+        public User UserTo { get; set; }
 
         [Required]
         public string Number { get; set; }

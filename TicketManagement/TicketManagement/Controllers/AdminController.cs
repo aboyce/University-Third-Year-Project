@@ -95,7 +95,7 @@ namespace TicketManagement.Controllers
                 return View("Error");
             }
 
-            ApplicationUser user = UserManager.FindById(id);
+            User user = UserManager.FindById(id);
 
             if (user == null)
             {
@@ -103,7 +103,7 @@ namespace TicketManagement.Controllers
                 return View("Error");
             }
 
-            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.UserExtra.TeamId);
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
 
             //var roles = (from role in db.Roles.ToList() where role.Users.Count > 0 from userRole in role.Users where userRole.UserId == user.Id select role.Name);
 
@@ -117,34 +117,33 @@ namespace TicketManagement.Controllers
         // POST: UserEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserEdit([Bind(Include = "Id,UserExtra,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult UserEdit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
         {
             if (ModelState.IsValid)
             {
                 int teamId = 0;
                 Team team = null;
 
-                if (int.TryParse(Request.Form["UserExtra.Teams"], out teamId))
+                if (int.TryParse(Request.Form["Teams"], out teamId))
                     team = db.Teams.FirstOrDefault(t => t.Id == teamId);
 
                 if (team != null)
                 {
-                    applicationUser.UserExtra.Team = team;
-                    applicationUser.UserExtra.TeamId = team.Id;
+                    user.Team = team;
+                    user.TeamId = team.Id;
                 }
                 
-                applicationUser.PhoneNumber = PhoneNumberHelper.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
-                applicationUser.UserExtra.LastUpdated = DateTime.Now;
+                user.PhoneNumber = PhoneNumberHelper.FormatPhoneNumberForClockwork(user.PhoneNumber);
+                user.LastUpdated = DateTime.Now;
 
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Users", "Admin", new { ViewMessage = ViewMessage.ProfileUpdated });
             }
 
-            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
-            return View(applicationUser);
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
+            return View(user);
         }
 
         // POST: AddRole
@@ -155,15 +154,15 @@ namespace TicketManagement.Controllers
             string roleId = Request.Form["RolesToAdd"];
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleNotAdded });
+            if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
+                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotAdded });
 
-            if (UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.AlreadyInRole });
+            if (UserManager.IsInRole(vm.UserId, roleName))
+                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.AlreadyInRole });
 
-            UserManager.AddToRole(vm.ApplicationUserId, roleName);
+            UserManager.AddToRole(vm.UserId, roleName);
 
-            return RedirectToAction("UserEdit", new {id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleAdded });
+            return RedirectToAction("UserEdit", new {id = vm.UserId, ViewMessage = ViewMessage.RoleAdded });
         }
 
         // POST: RemoveRole
@@ -174,15 +173,15 @@ namespace TicketManagement.Controllers
             string roleId = Request.Form["RolesToRemove"];
             string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(vm.ApplicationUserId) || string.IsNullOrEmpty(roleId))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleNotRemoved });
+            if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
+                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotRemoved });
 
-            if (!UserManager.IsInRole(vm.ApplicationUserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.NotInRole });
+            if (!UserManager.IsInRole(vm.UserId, roleName))
+                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInRole });
 
-            UserManager.RemoveFromRole(vm.ApplicationUserId, roleName);
+            UserManager.RemoveFromRole(vm.UserId, roleName);
 
-            return RedirectToAction("UserEdit", new { id = vm.ApplicationUserId, ViewMessage = ViewMessage.RoleRemoved });
+            return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleRemoved });
         }
 
 

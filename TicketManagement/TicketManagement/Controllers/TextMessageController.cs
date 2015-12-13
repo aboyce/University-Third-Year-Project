@@ -30,7 +30,7 @@ namespace TicketManagement.Controllers
         // GET: Send
         public ActionResult Send()
         {
-            ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+            ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
 
             return View();
         }
@@ -60,7 +60,7 @@ namespace TicketManagement.Controllers
             {
                 TextMessageHelper txtManager = new TextMessageHelper();
                 TextMessage txt;
-                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == id);
+                User user = db.Users.FirstOrDefault(u => u.Id == id);
 
                 string number = user?.PhoneNumber;
 
@@ -73,7 +73,7 @@ namespace TicketManagement.Controllers
                 if (result != null)
                 {
                     ViewBag.ErrorMessage = result;
-                    ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+                    ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
                     ViewBag.TextResult = TextResult.SendFailure;
                     return View();
                 }
@@ -82,14 +82,14 @@ namespace TicketManagement.Controllers
                     db.TextMessages.Add(txt);
                     db.SaveChangesAsync();
 
-                    ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+                    ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
                     ViewBag.TextResult = TextResult.SendSuccess;
                     ViewBag.RemainingBalance = txtManager.CheckBalance();
                     return View();
                 }
             }
 
-            ViewBag.Id = new SelectList(db.UserExtras, "ApplicationUserId", "FullName");
+            ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 

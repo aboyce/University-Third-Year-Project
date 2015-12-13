@@ -19,7 +19,7 @@ namespace TicketManagement.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
-            var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState).Include(t => t.UserExtraAssignedTo);
+            var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
             return View(tickets.ToList());
         }
 
@@ -41,14 +41,14 @@ namespace TicketManagement.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
-            ViewBag.OpenedById = new SelectList(db.UserExtras, "Id", "ApplicationUserId");
+            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id");
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name");
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name");
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name");
-            ViewBag.UserExtraAssignedToId = new SelectList(db.UserExtras, "Id", "ApplicationUserId");
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id");
             return View();
         }
 
@@ -57,15 +57,15 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,UserExtraAssignedToId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 var applicationUser = db.Users.FirstOrDefault(u => u.Id == User.Identity.GetUserId());
                 if (applicationUser != null)
                 {
-                    ticket.OpenedBy = applicationUser.UserExtra;
-                    ticket.OpenedById = applicationUser.UserExtra.Id;
+                    //ticket.OpenedBy = applicationUser;
+                    //ticket.OpenedById = applicationUser.Id;
                 }
 
                 db.Tickets.Add(ticket);
@@ -73,14 +73,14 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OpenedById = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.OpenedById);
+            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id", ticket.OpenedById);
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            ViewBag.UserExtraAssignedToId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.UserExtraAssignedToId);
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
             return View(ticket);
         }
 
@@ -96,14 +96,14 @@ namespace TicketManagement.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OpenedById = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.OpenedById);
+            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id", ticket.OpenedById);
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            ViewBag.UserExtraAssignedToId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.UserExtraAssignedToId);
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
             return View(ticket);
         }
 
@@ -112,7 +112,7 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,UserExtraAssignedToId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -120,14 +120,14 @@ namespace TicketManagement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OpenedById = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.OpenedById);
+            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id", ticket.OpenedById);
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            ViewBag.UserExtraAssignedToId = new SelectList(db.UserExtras, "Id", "ApplicationUserId", ticket.UserExtraAssignedToId);
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
             return View(ticket);
         }
 

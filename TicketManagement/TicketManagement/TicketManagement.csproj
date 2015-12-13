@@ -206,57 +206,13 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
-    <Compile Include="Migrations\Application\201511121219008_Initial.cs" />
-    <Compile Include="Migrations\Application\201511121219008_Initial.Designer.cs">
-      <DependentUpon>201511121219008_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201511121418194_Added Entity Base Class to User.cs" />
-    <Compile Include="Migrations\Application\201511121418194_Added Entity Base Class to User.Designer.cs">
-      <DependentUpon>201511121418194_Added Entity Base Class to User.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.cs" />
-    <Compile Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.Designer.cs">
-      <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.cs" />
-    <Compile Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.Designer.cs">
-      <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512051504300_Updated User to UserExtra.cs" />
-    <Compile Include="Migrations\Application\201512051504300_Updated User to UserExtra.Designer.cs">
-      <DependentUpon>201512051504300_Updated User to UserExtra.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512062117216_Fixing problem with dates getting overridden.cs" />
-    <Compile Include="Migrations\Application\201512062117216_Fixing problem with dates getting overridden.Designer.cs">
-      <DependentUpon>201512062117216_Fixing problem with dates getting overridden.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512071843500_Override PhoneNumber.cs" />
-    <Compile Include="Migrations\Application\201512071843500_Override PhoneNumber.Designer.cs">
-      <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.cs" />
-    <Compile Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.Designer.cs">
-      <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.cs" />
-    <Compile Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.Designer.cs">
-      <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512121647133_Refactored the Notifications.cs" />
-    <Compile Include="Migrations\Application\201512121647133_Refactored the Notifications.Designer.cs">
-      <DependentUpon>201512121647133_Refactored the Notifications.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.cs" />
-    <Compile Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.Designer.cs">
-      <DependentUpon>201512121758403_Added a UserId to the Notification Base.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.cs" />
-    <Compile Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.Designer.cs">
-      <DependentUpon>201512121800378_Added a RoleId to the Role Notification.cs</DependentUpon>
+    <Compile Include="Migrations\Application\201512131546422_Re-Initial.cs" />
+    <Compile Include="Migrations\Application\201512131546422_Re-Initial.Designer.cs">
+      <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
-    <Compile Include="Models\Entities\ApplicationUser.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Entities\EntityBase.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
@@ -268,7 +224,6 @@
     <Compile Include="Models\Entities\TicketLogType.cs" />
     <Compile Include="Models\Entities\TicketPriority.cs" />
     <Compile Include="Models\Entities\TicketState.cs" />
-    <Compile Include="Models\Entities\UserExtra.cs" />
     <Compile Include="Models\Management\EnumeratedTypes.cs" />
     <Compile Include="Models\Management\NotificationBase.cs" />
     <Compile Include="Models\Management\NotificationMessages.cs" />
@@ -420,41 +375,8 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\Application\201511121219008_Initial.resx">
-      <DependentUpon>201511121219008_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201511121418194_Added Entity Base Class to User.resx">
-      <DependentUpon>201511121418194_Added Entity Base Class to User.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201511121438007_Added Users %28UserExtra%29 to the DBContext.resx">
-      <DependentUpon>201511121438007_Added Users %28UserExtra%29 to the DBContext.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201511121914193_Entities using base class, Added User Roles.resx">
-      <DependentUpon>201511121914193_Entities using base class, Added User Roles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512051504300_Updated User to UserExtra.resx">
-      <DependentUpon>201512051504300_Updated User to UserExtra.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512062117216_Fixing problem with dates getting overridden.resx">
-      <DependentUpon>201512062117216_Fixing problem with dates getting overridden.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512071843500_Override PhoneNumber.resx">
-      <DependentUpon>201512071843500_Override PhoneNumber.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512082230556_Added TextMessage class to the Database.resx">
-      <DependentUpon>201512082230556_Added TextMessage class to the Database.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512111050017_Added basic User and Role Notification classes.resx">
-      <DependentUpon>201512111050017_Added basic User and Role Notification classes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512121647133_Refactored the Notifications.resx">
-      <DependentUpon>201512121647133_Refactored the Notifications.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512121758403_Added a UserId to the Notification Base.resx">
-      <DependentUpon>201512121758403_Added a UserId to the Notification Base.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512121800378_Added a RoleId to the Role Notification.resx">
-      <DependentUpon>201512121800378_Added a RoleId to the Role Notification.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\Application\201512131546422_Re-Initial.resx">
+      <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

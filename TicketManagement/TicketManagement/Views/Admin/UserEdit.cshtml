@@ -2,7 +2,7 @@
 @using TicketManagement.Controllers
 @using TicketManagement.Models.Entities
 @using TicketManagement.ViewModels
-@model TicketManagement.Models.Entities.ApplicationUser
+@model TicketManagement.Models.Entities.User
 
 @{
     ViewBag.Title = "User Edit";
@@ -71,7 +71,6 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.UserExtraId)
         @Html.HiddenFor(model => model.PasswordHash)
         @Html.HiddenFor(model => model.SecurityStamp)
         @Html.HiddenFor(model => model.EmailConfirmed)
@@ -105,7 +104,7 @@
             </div>
         </div>
 
-        @Html.EditorFor(model => model.UserExtra, new { Admin = User.IsInRole("Administrator") })
+        @Html.EditorFor(model => model, new { Admin = User.IsInRole("Administrator") })
 
         <div class="form-group">
             <label class="control-label col-md-4">Is Approved</label>
@@ -151,8 +150,8 @@
     </div>
 }
 
-@Html.Partial("_Partial_AddRole", new AddRemoveRoleViewmodel { ApplicationUserId = Model.Id })
+@Html.Partial("_Partial_AddRole", new AddRemoveRoleViewmodel { UserId = Model.Id })
 
-@Html.Partial("_Partial_RemoveRole", new AddRemoveRoleViewmodel { ApplicationUserId = Model.Id })
+@Html.Partial("_Partial_RemoveRole", new AddRemoveRoleViewmodel { UserId = Model.Id })
 
 <br/>

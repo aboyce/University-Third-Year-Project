@@ -9,12 +9,12 @@ namespace TicketManagement.Models.Entities
     {
         private string _title;
         private string _description;
-        private int _openedById;
-        private UserExtra _openedBy;
+        private string _openedById;
+        private User _openedBy;
         private int _ticketPriorityId;
         private TicketPriority _ticketPriority;
-        private int? _userExtraAssignedToId = null;
-        private UserExtra _userExtraAssignedTo = null;
+        private string _userAssignedToId = null;
+        private User _userAssignedTo = null;
         private int? _teamAssignedToId = null;
         private Team _teamAssignedTo = null;
         private int? _organisationAssignedToId = null;
@@ -47,13 +47,13 @@ namespace TicketManagement.Models.Entities
         [Required]
         [ForeignKey("OpenedBy")]
         [DisplayName("Opened By")]
-        public int OpenedById
+        public string OpenedById
         {
             get { return _openedById; }
             set { _openedById = value; Updated(); }
         }
 
-        virtual public UserExtra OpenedBy
+        virtual public User OpenedBy
         {
             get { return _openedBy; }
             set { _openedBy = value; Updated(); }
@@ -81,18 +81,18 @@ namespace TicketManagement.Models.Entities
 
         //virtual public TicketPriority TicketPriorityInternal { get; set; }
 
-        [ForeignKey("UserExtraAssignedTo")]
+        [ForeignKey("UserAssignedTo")]
         [DisplayName("User Assigned To")]
-        public int? UserExtraAssignedToId
+        public string UserAssignedToId
         {
-            get { return _userExtraAssignedToId; }
-            set { _userExtraAssignedToId = value; Updated(); }
+            get { return _userAssignedToId; }
+            set { _userAssignedToId = value; Updated(); }
         }
 
-        virtual public UserExtra UserExtraAssignedTo
+        virtual public User UserAssignedTo
         {
-            get { return _userExtraAssignedTo; }
-            set { _userExtraAssignedTo = value; Updated(); }
+            get { return _userAssignedTo; }
+            set { _userAssignedTo = value; Updated(); }
         }
 
         [ForeignKey("TeamAssignedTo")]

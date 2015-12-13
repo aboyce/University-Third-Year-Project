@@ -50,7 +50,7 @@ namespace TicketManagement.Controllers
         // GET: Incex
         public ActionResult Index()
         {
-            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            User user = UserManager.FindById(User.Identity.GetUserId());
 
             if (user == null)
             {
@@ -58,7 +58,7 @@ namespace TicketManagement.Controllers
                 return View("Error");
             }
 
-            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.UserExtra.TeamId);
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
 
             return View(user);
         }
@@ -66,34 +66,33 @@ namespace TicketManagement.Controllers
         // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Id,UserExtra,UserExtraId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Index([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
         {
             if (ModelState.IsValid)
             {
                 int teamId = 0;
                 Team team = null;
 
-                if (int.TryParse(Request.Form["UserExtra.Teams"], out teamId))
+                if (int.TryParse(Request.Form["Teams"], out teamId))
                     team = db.Teams.FirstOrDefault(t => t.Id == teamId);
 
                 if (team != null)
                 {
-                    applicationUser.UserExtra.Team = team;
-                    applicationUser.UserExtra.TeamId = team.Id;
+                    user.Team = team;
+                    user.TeamId = team.Id;
                 }
 
-                applicationUser.PhoneNumber = Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(applicationUser.PhoneNumber);
-                applicationUser.UserExtra.LastUpdated = DateTime.Now;
+                user.PhoneNumber = Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(user.PhoneNumber);
+                user.LastUpdated = DateTime.Now;
 
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.Entry(applicationUser.UserExtra).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index", "Tickets", new { ViewMessage = ViewMessage.ProfileUpdated });
             }
 
-            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", applicationUser.UserExtra.TeamId);
-            return View(applicationUser);
+            ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
+            return View(user);
         }
 
         //
@@ -199,7 +198,7 @@ namespace TicketManagement.Controllers
         //        {
         //            return View("ExternalLoginFailure");
         //        }
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        //        var user = new User { UserName = model.Email, Email = model.Email };
         //        var result = await UserManager.CreateAsync(user);
         //        if (result.Succeeded)
         //        {

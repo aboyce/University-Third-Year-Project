@@ -33,7 +33,7 @@ namespace TicketManagement.Controllers
         //// GET: Index
         public ActionResult Index(NotificationViewModel vm)
         {
-            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            User user = UserManager.FindById(User.Identity.GetUserId());
 
             vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
             vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
@@ -44,7 +44,7 @@ namespace TicketManagement.Controllers
         [ChildActionOnly]
         public ActionResult _Partial_Notifications(NotificationViewModel vm)
         {
-            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            User user = UserManager.FindById(User.Identity.GetUserId());
 
             vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
             vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);

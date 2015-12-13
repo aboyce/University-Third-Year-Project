@@ -13,7 +13,7 @@ namespace TicketManagement.Helpers
     public static class NotificationHelper
     {
         /* PERFORM THE ACTION ON THE NOTIFICATION */
-        public static bool UndertakeNotification(ApplicationContext db, UserManager<ApplicationUser> um, UserNotification un = null, RoleNotification rn = null)
+        public static bool UndertakeNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {
@@ -27,14 +27,16 @@ namespace TicketManagement.Helpers
                 {
                     case RoleNotificationType.PendingApproval:
                         {
-                            um.AddToRole(rn.NotificationAboutId, "Approved");
+                            if (!um.IsInRole(rn.NotificationAboutId, "Approved"))
+                                um.AddToRole(rn.NotificationAboutId, "Approved");
                             db.RoleNotifications.Remove(rn);
                             db.SaveChanges();
                             return true;
                         }
                     case RoleNotificationType.PendingInternalApproval:
                         {
-                            um.AddToRole(rn.NotificationAboutId, "Internal");
+                            if (!um.IsInRole(rn.NotificationAboutId, "Internal"))
+                                um.AddToRole(rn.NotificationAboutId, "Internal");
                             db.RoleNotifications.Remove(rn);
                             db.SaveChanges();
                             return true;

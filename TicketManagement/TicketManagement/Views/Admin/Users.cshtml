@@ -1,6 +1,6 @@
 ﻿@using System.Collections
 @using Microsoft.AspNet.Identity
-@model   Dictionary<TicketManagement.Models.Entities.ApplicationUser, IList<string>>
+@model   Dictionary<TicketManagement.Models.Entities.User, IList<string>>
 
 @{
     ViewBag.Title = "Users";
@@ -42,22 +42,22 @@
         if (userRoles.Key.Id == User.Identity.GetUserId()) { rowColour = "class=warning"; }
 
         <tr @rowColour>
-            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id) </td>
-            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.FullName) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.Id) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.FullName) </td>
             <td> @Html.DisplayFor(modelItem => userRoles.Key.UserName) </td>
             <td> @Html.DisplayFor(modelItem => userRoles.Key.Email) </td>
-            @if (userRoles.Key.UserExtra.Team == null)
+            @if (userRoles.Key.Team == null)
                 { <td>--</td> }
             else
-                { <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Team.Name) </td> }
+                { <td> @Html.DisplayFor(modelItem => userRoles.Key.Team.Name) </td> }
 
-            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsArchived) </td>
+            <td> @Html.DisplayFor(modelItem => userRoles.Key.IsArchived) </td>
 
             <td>
                 <a data-toggle="popover" data-placement="left" @*Linked with Shared/table_popover.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
-                   title="Roles for @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.FullName)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)"><i class="fa fa-users" style="font-size: 20px;"></i></a>
+                   title="Roles for @Html.DisplayFor(modelItem => userRoles.Key.FullName)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)"><i class="fa fa-users" style="font-size: 20px;"></i></a>
 
-                <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => userRoles.Key.UserExtra.Id)">
+                <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => userRoles.Key.Id)">
                     <table class="table">
                         <tr>
                             <th> Team Leader </th>
@@ -68,7 +68,7 @@
                             <th> Social </th>
                         </tr>
                         <tr>
-                            <td> @Html.DisplayFor(modelItem => userRoles.Key.UserExtra.IsTeamLeader) </td>
+                            <td> @Html.DisplayFor(modelItem => userRoles.Key.IsTeamLeader) </td>
                             <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
                             <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
                             <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>

@@ -42,7 +42,7 @@ namespace TicketManagement.Controllers
         // GET: Organisations/Create
         public ActionResult Create()
         {
-            ViewBag.ContactUserId = new SelectList(db.UserExtras, "Id", "FullName");
+            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 
@@ -60,7 +60,7 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ContactUserId = new SelectList(db.UserExtras, "Id", "FullName", organisation.ContactUserId);
+            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
             return View(organisation);
         }
 
@@ -76,7 +76,7 @@ namespace TicketManagement.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ContactUserId = new SelectList(db.UserExtras, "Id", "FullName", organisation.ContactUserId);
+            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
             return View(organisation);
         }
 
@@ -93,7 +93,7 @@ namespace TicketManagement.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.ContactUserId = new SelectList(db.UserExtras, "Id", "FullName", organisation.ContactUserId);
+            ViewBag.ContactUserId = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
             return View(organisation);
         }
 

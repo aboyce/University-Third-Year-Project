@@ -7,13 +7,13 @@ namespace TicketManagement.Migrations.Application
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedUsersUserExtratotheDBContext : IMigrationMetadata
+    public sealed partial class ReInitial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedUsersUserExtratotheDBContext));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ReInitial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201511121438007_Added Users (UserExtra) to the DBContext"; }
+            get { return "201512131546422_Re-Initial"; }
         }
         
         string IMigrationMetadata.Source

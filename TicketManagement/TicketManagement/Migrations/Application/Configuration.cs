@@ -25,19 +25,20 @@ namespace TicketManagement.Migrations.Application
                 new IdentityRole("Internal"),
                 new IdentityRole("Social"),
                 new IdentityRole("TextMessage"),
-                new IdentityRole("Administrator"));
+                new IdentityRole("Administrator")); 
 
-            //User adminUser = new User { FirstName = "Admin", LastName = "" };
-            //ApplicationUser admin = new ApplicationUser { UserName = "Admin", Email = "admin@email.com", User = adminUser, UserId = adminUser.Id };
+
+            //UserExtra adminUser = new UserExtra { FirstName = "Admin", LastName = "Admin", IsArchived = false};
+            //User admin = new User { UserName = "Admin", Email = "admin@email.com", UserExtra = adminUser, UserExtraId = adminUser.Id, PasswordHash = "AKZ158r4VoQTWkCp12qBlRydNbWc/n8wNs7ysjxXGr5ktfKN4j37RGAqcTd/T2ZGmg==" };
 
             //if (!context.Users.Contains(admin))
             //{
             //    context.UserExtras.AddOrUpdate(adminUser);
             //    context.Users.AddOrUpdate(admin);
-            //}
 
-            //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            //userManager.AddToRole(admin.Id, "Administrator");
+            //    var userManager = new UserManager<User>(new UserStore<User>(context));
+            //    userManager.AddToRole(admin.Id, "Administrator");
+            //}
 
             if (!context.Organisations.Any(org => org.Name == "My Company"))
             {

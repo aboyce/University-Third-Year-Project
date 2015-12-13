@@ -11,7 +11,7 @@ using TicketManagement.Models.Management;
 
 namespace TicketManagement.Models.Context
 {
-    public class ApplicationContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
             : base("TicketManagement", throwIfV1Schema: false)
@@ -48,7 +48,6 @@ namespace TicketManagement.Models.Context
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<UserExtra> UserExtras { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketCategory> TicketCategories { get; set; }
         public DbSet<TicketLog> TicketLogs { get; set; }
@@ -64,13 +63,13 @@ namespace TicketManagement.Models.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUsers");
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles");
             modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins");
             modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
         }
 
-        //public System.Data.Entity.DbSet<TicketManagement.Models.Entities.ApplicationUser> ApplicationUsers { get; set; }
+        //public System.Data.Entity.DbSet<TicketManagement.Models.Entities.User> ApplicationUsers { get; set; }
     }
 }
