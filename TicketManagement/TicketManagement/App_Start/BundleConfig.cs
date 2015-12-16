@@ -34,6 +34,7 @@ namespace TicketManagement
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/Custom/bootstrap-custom-buttons.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css"));
         }
