@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
@@ -57,9 +58,19 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (deadlineString.IsNullOrWhiteSpace())
+                ModelState.AddModelError("Deadline", "The deadline is required");
+            else
+            {
+                DateTime deadline;
+                deadlineString += " 12:00:00";
+                if (DateTime.TryParse(deadlineString, out deadline))
+                    ticket.Deadline = deadline;
+                else
+                    ModelState.AddModelError("Deadline", "The deadline not in the correct format 'dd/mm/yyyy'");
+            }
 
             if (ModelState.IsValid)
             {
