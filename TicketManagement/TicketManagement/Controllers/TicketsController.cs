@@ -74,11 +74,12 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                var applicationUser = db.Users.FirstOrDefault(u => u.Id == User.Identity.GetUserId());
+                string userId = User.Identity.GetUserId();
+                var applicationUser = db.Users.FirstOrDefault(u => u.Id == userId);
                 if (applicationUser != null)
                 {
-                    //ticket.OpenedBy = applicationUser;
-                    //ticket.OpenedById = applicationUser.Id;
+                    ticket.OpenedBy = applicationUser;
+                    ticket.OpenedById = applicationUser.Id;
                 }
 
                 db.Tickets.Add(ticket);
@@ -109,14 +110,13 @@ namespace TicketManagement.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id", ticket.OpenedById);
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
             return View(ticket);
         }
 
@@ -125,22 +125,34 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
+            if (deadlineString.IsNullOrWhiteSpace())
+                ModelState.AddModelError("Deadline", "The deadline is required");
+            else
+            {
+                DateTime deadline;
+                if (!deadlineString.Contains(":")) // Assume the time hasn't been set
+                    deadlineString += " 12:00:00";
+                if (DateTime.TryParse(deadlineString, out deadline))
+                    ticket.Deadline = deadline;
+                else
+                    ModelState.AddModelError("Deadline", "The deadline not in the correct format 'dd/mm/yyyy'");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id", ticket.OpenedById);
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
             ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
+            ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
             return View(ticket);
         }
 

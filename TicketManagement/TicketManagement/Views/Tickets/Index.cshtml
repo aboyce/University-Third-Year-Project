@@ -1,5 +1,6 @@
 ﻿@using System.Configuration
 @using TicketManagement.Helpers
+@using TicketManagement.Models.Management
 @model IEnumerable<TicketManagement.Models.Entities.Ticket>
 
 @{
@@ -16,6 +17,16 @@
 
 <h2>Tickets</h2>
 <hr/>
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"> <a href="#home" role="tab" data-toggle="tab">Open</a></li>
+        <li><a href="#profile"  role="tab" data-toggle="tab">Closed</a></li>
+        <li><a href="#messages" role="tab" data-toggle="tab">Unanswered</a></li>
+        <li><a href="#settings" role="tab" data-toggle="tab">Mine</a></li>
+        <li><a href="#help" role="tab" data-toggle="tab">All</a></li>
+    </ul>
+</div>
 
 @if (Request.Params["ViewMessage"] == "ProfileUpdated")
 {
