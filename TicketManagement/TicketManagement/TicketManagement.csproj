@@ -359,6 +359,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Site\Shared\date_picker.js" />
     <Content Include="Scripts\Site\Shared\table_popover.js" />
     <Content Include="Scripts\Site\Ticket\ticket.js" />
     <Content Include="Scripts\_references.js" />

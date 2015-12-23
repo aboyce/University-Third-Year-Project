@@ -19,12 +19,13 @@
 <hr/>
 
 <div>
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active"> <a href="#home" role="tab" data-toggle="tab">Open</a></li>
-        <li><a href="#profile"  role="tab" data-toggle="tab">Closed</a></li>
-        <li><a href="#messages" role="tab" data-toggle="tab">Unanswered</a></li>
-        <li><a href="#settings" role="tab" data-toggle="tab">Mine</a></li>
-        <li><a href="#help" role="tab" data-toggle="tab">All</a></li>
+    <ul id="ticketSortTabs" class="nav nav-tabs" role="tablist">
+        <li>@Html.ActionLink("Open", "Index", "Tickets", new {sort = TicketSort.Open}, new {id=TicketSort.Open})</li>
+        <li>@Html.ActionLink("Closed", "Index", "Tickets", new {sort = TicketSort.Closed}, new { id = TicketSort.Closed })</li>
+        <li>@Html.ActionLink("Unanswered", "Index", "Tickets", new {sort = TicketSort.Unanswered}, new { id = TicketSort.Unanswered })</li>
+        <li>@Html.ActionLink("Pending Approval", "Index", "Tickets", new {sort = TicketSort.PendingApproval}, new { id = TicketSort.PendingApproval })</li>
+        <li>@Html.ActionLink("Mine", "Index", "Tickets", new {sort = TicketSort.Mine}, new { id = TicketSort.Mine })</li>
+        <li>@Html.ActionLink("All", "Index", "Tickets", new {sort = TicketSort.All}, new { id = TicketSort.All})</li>
     </ul>
 </div>
 
@@ -114,4 +115,6 @@
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
 </p>
 
+
 @Scripts.Render("/Scripts/Site/Shared/table_popover.js")
+@Scripts.Render("/Scripts/Site/Ticket/ticket.js")

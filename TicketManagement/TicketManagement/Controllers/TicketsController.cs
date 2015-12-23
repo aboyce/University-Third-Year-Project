@@ -10,6 +10,7 @@ using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
@@ -20,7 +21,34 @@ namespace TicketManagement.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
+            TicketSort sortType; // Defaults to the first one.
             var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+
+            if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
+            {
+                switch (sortType)
+                {
+                        case TicketSort.Open:
+                        tickets = tickets.Where(t => t.TicketState.Name == "Open");
+                        break;
+                        case TicketSort.Closed:
+                        tickets = tickets.Where(t => t.TicketState.Name == "Closed");
+                        break;
+                        case TicketSort.Unanswered:
+                        tickets = tickets.Where(t => t.TicketState.Name == "Awaiting Response");
+                        break;
+                        case TicketSort.PendingApproval:
+                        tickets = tickets.Where(t => t.TicketState.Name == "Pending Approval");
+                        break;
+                        case TicketSort.Mine:
+                        string id = User.Identity.GetUserId();
+                        tickets = tickets.Where(t => t.UserAssignedToId == id);
+                        break;
+                        case TicketSort.All: default:
+                        break;
+                }
+            }
+
             return View(tickets.ToList());
         }
 

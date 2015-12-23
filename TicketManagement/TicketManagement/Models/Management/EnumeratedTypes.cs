@@ -40,6 +40,18 @@ namespace TicketManagement.Models.Management
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    public enum TicketSort
+    {
+        Open = 0,
+        Closed = 1,
+        Unanswered = 2,
+        PendingApproval = 3,
+        Mine = 4,
+        All = 5
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     public enum ViewMessage
     {
         ProfileUpdated,
