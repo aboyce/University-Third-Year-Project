@@ -443,6 +443,7 @@
     <Content Include="Views\Admin\_Partial_RemoveRole.cshtml" />
     <Content Include="Views\Notification\_Partial_Notifications.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\Tickets\Ticket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

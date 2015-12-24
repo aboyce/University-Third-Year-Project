@@ -52,6 +52,28 @@ namespace TicketManagement.Controllers
             return View(tickets.ToList());
         }
 
+        // GET: Tickets/Ticket
+        public ActionResult Ticket(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
+            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+            //ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
+            //ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
+            //ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            //ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
+            //ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
+            return View(ticket);
+        }
+
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
         {
@@ -155,6 +177,8 @@ namespace TicketManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
+            ticket.UserAssignedToId = Request.Form["UserAssignedToId"];
+
             if (deadlineString.IsNullOrWhiteSpace())
                 ModelState.AddModelError("Deadline", "The deadline is required");
             else

@@ -14,7 +14,6 @@
 
 @Styles.Render("~/Content/Custom/Shared/table_popover.css")
 
-
 <h2>Tickets</h2>
 <hr/>
 
@@ -56,13 +55,13 @@
     {
         if (conf != null)
         {
-            if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "class=danger"; }
-            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "class=warning"; }
-            else if ((now - item.Created).Duration() >= conf.TimeSpanGreen) { rowColour = "class=success"; }
-            else { rowColour = "class=info"; }
+            if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "danger"; }
+            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "warning"; }
+            else if ((now - item.Created).Duration() >= conf.TimeSpanGreen) { rowColour = "success"; }
+            else { rowColour = "info"; }
         }
 
-        <tr @rowColour>
+        <tr class="clickable-row @rowColour" data-url="/Tickets/Ticket/@item.Id">
             <td> @Html.DisplayFor(modelItem => item.Id) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketCategory.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketPriority.Name) </td>
@@ -112,7 +111,7 @@
 </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>
 
 

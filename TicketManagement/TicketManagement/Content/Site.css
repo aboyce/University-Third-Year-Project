@@ -23,6 +23,16 @@ textarea {
     max-width: 280px;
 }
 
+.nav-tabs > li > a{
+    border: medium;
+    background-color: #f8f8f8;
+    color: gray;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
 /*#stickyfooter{
     position:fixed;
     bottom: 0;
