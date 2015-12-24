@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
@@ -64,15 +65,25 @@ namespace TicketManagement.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
-            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            //ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
-            //ViewBag.TicketCategoryId = new SelectList(db.TicketCategories, "Id", "Name", ticket.TicketCategoryId);
-            //ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            //ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
-            //ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
+
+            ViewBag.TicketLogTypes = new SelectList(db.TicketLogTypes, "Id", "Name");
+
             return View(ticket);
         }
+
+        // POST: Tickets/NewTicketLog
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewTicketLog(NewTicketLogViewModel vm)
+        {
+            TicketLog ticketLog = new TicketLog
+            {
+                TicketId = 0
+            };
+
+            return View();
+        }
+
 
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)

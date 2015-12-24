@@ -1,0 +1,39 @@
+﻿@model TicketManagement.ViewModels.NewTicketLogViewModel
+
+@Styles.Render("~/bundles/bootstrap_toggle_css")
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <strong>New Response</strong>
+        <div style="float: right">
+        </div>
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#message" aria-controls="message" role="tab" data-toggle="tab">Message</a></li>
+            <li role="presentation"><a href="#file" aria-controls="file" role="tab" data-toggle="tab">File</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+
+            <div role="tabpanel" class="tab-pane active" id="message">
+
+
+                <hr/>
+                <div style="float: right">
+                    <input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                    @Html.ActionLink("Send", "Create", null, new { @class = "btn btn-xs btn-warning" })
+                </div>
+                
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="file">
+                <p>Feature coming soon...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/bootstrap_toggle_js")

@@ -8,6 +8,9 @@ namespace TicketManagement
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            /* -------------------- SCRIPTS -------------------- */
+            /* ------------------------------------------------- */
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -26,17 +29,36 @@ namespace TicketManagement
             bundles.Add(new ScriptBundle("~/bundles/bootstrap_datepicker_js").Include(
                       "~/Scripts/bootstrap-datepicker.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap_toggle_js").Include(
+                      "~/Scripts/bootstrap-toggle.js"));
+
+
+            /* -------------------- STYLES -------------------- */
+            /* ------------------------------------------------ */
+
             bundles.Add(new StyleBundle("~/bundles/bootstrap_datepicker_css").Include(
                       "~/Content/bootstrap-datepicker.min.css",
                       "~/Content/bootstrap-datepicker.standalone.min.css",
                       "~/Content/bootstrap-datepicker3.min.css",
                       "~/Content/bootstrap-datepicker3.standalone.min.css"));
 
+            bundles.Add(new StyleBundle("~/bundles/bootstrap_toggle_css").Include(
+                      "~/Content/Custom/bootstrap-custom-toggle.min.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Custom/bootstrap-custom-buttons.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css"));
+
+            /* -------------------- REFERENCES -------------------- */
+            /* ---------------------------------------------------- */
+
+            // bootstrap-datepicker == https://github.com/eternicode/bootstrap-datepicker
+
+            // bootstrap-toggle == http://www.bootstraptoggle.com/
+
+
         }
     }
 }

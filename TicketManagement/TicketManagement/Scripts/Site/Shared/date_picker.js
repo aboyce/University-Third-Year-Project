@@ -1,5 +1,4 @@
 ﻿(function () {
-    //https://github.com/eternicode/bootstrap-datepicker
 
     $('.datepicker').datepicker({
         format: "dd/mm/yyyy",
