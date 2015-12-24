@@ -167,6 +167,7 @@ namespace TicketManagement.Models.Entities
             set { _ticketCategory = value; Updated(); }
         }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Deadline
         {
             get { return _deadline; }
@@ -174,6 +175,7 @@ namespace TicketManagement.Models.Entities
         }
 
         [DisplayName("Last Message")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? LastMessage
         {
             get { return _lastMessage; }
@@ -181,6 +183,7 @@ namespace TicketManagement.Models.Entities
         }
 
         [DisplayName("Last Response")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? LastResponse
         {
             get { return _lastResponse; }

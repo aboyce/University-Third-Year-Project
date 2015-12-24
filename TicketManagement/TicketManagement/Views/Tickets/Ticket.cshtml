@@ -4,135 +4,102 @@
     ViewBag.Title = "Ticket";
 }
 
-<h2>Ticket</h2>
+<h2>Tickets</h2>
+<hr/>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OpenedBy.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OpenedBy.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrganisationAssignedTo.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrganisationAssignedTo.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TeamAssignedTo.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TeamAssignedTo.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketCategory.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketCategory.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketState.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketState.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserAssignedTo.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserAssignedTo.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Deadline)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Deadline)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastMessage)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastMessage)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastResponse)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastResponse)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdated)
-        </dd>
-
-    </dl>
+<div class="panel panel-warning">
+    <div class="panel-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>@Html.DisplayNameFor(model => model.Title): </strong>
+                    @Html.DisplayFor(model => model.Title)
+                </div>
+                <div class="col-md-6">
+                    <strong>@Html.DisplayNameFor(model => model.Description): </strong>
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+                <div class="col-md-3">
+                    <strong>@Html.DisplayNameFor(model => model.Created): </strong>
+                    @Html.DisplayFor(model => model.Created)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>State: </strong>
+                    @Html.DisplayFor(model => model.TicketState.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Priority: </strong>
+                    @Html.DisplayFor(model => model.TicketPriority.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Category: </strong>
+                    @Html.DisplayFor(model => model.TicketCategory.Name)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Assigned to: </strong>
+                    @Html.DisplayFor(model => model.UserAssignedTo.FullName)
+                </div>
+                <div class="col-md-3">
+                    <strong>Team: </strong>
+                    @Html.DisplayFor(model => model.TeamAssignedTo.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Project: </strong>
+                    @Html.DisplayFor(model => model.Project.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Organisation: </strong>
+                    @Html.DisplayFor(model => model.OrganisationAssignedTo.Name)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Opened By: </strong>
+                    @Html.DisplayFor(model => model.OpenedBy.FullName)
+                </div>
+                <div class="col-md-3">
+                    <strong>Deadline: </strong>
+                    @Html.DisplayFor(model => model.Deadline)
+                </div>
+                <div class="col-md-3">
+                    <strong>Last Message: </strong>
+                    @Html.DisplayFor(model => model.LastMessage)
+                </div>
+                <div class="col-md-3">
+                    <strong>Last Response: </strong>
+                    @Html.DisplayFor(model => model.LastResponse)
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>@Html.DisplayFor(model => model.Title)</strong>
+        <div style="float: right">
+            @Html.DisplayFor(model => model.Deadline)
+        </div>
+    </div>
+    <div class="panel-body"></div>
+    @*<div class="panel-footer">
+        @Html.ActionLink("Create New", "Create", null, new {@class = "btn btn-success"})
+    </div>*@
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>@Html.DisplayFor(model => model.Title)</strong>
+        <div style="float: right">
+            @Html.DisplayFor(model => model.Deadline)
+        </div>
+    </div>
+    <div class="panel-body"></div>
+    @*<div class="panel-footer">
+            @Html.ActionLink("Create New", "Create", null, new {@class = "btn btn-success"})
+        </div>*@
+</div>

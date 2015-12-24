@@ -16,10 +16,12 @@ namespace TicketManagement.Models.Entities
         public int Id { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Created { get; set; } = DateTime.Now;
 
         [Required]
         [DisplayName("Last Updated")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
 
         protected void Updated()
