@@ -194,7 +194,6 @@
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\TextMessageController.cs" />
     <Compile Include="Controllers\TicketCategoriesController.cs" />
-    <Compile Include="Controllers\TicketLogTypesController.cs" />
     <Compile Include="Controllers\TicketPrioritiesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\TicketStatesController.cs" />
@@ -210,6 +209,10 @@
     <Compile Include="Migrations\Application\201512131546422_Re-Initial.Designer.cs">
       <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.cs" />
+    <Compile Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.Designer.cs">
+      <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\User.cs" />
@@ -221,7 +224,6 @@
     <Compile Include="Models\Entities\Ticket.cs" />
     <Compile Include="Models\Entities\TicketCategory.cs" />
     <Compile Include="Models\Entities\TicketLog.cs" />
-    <Compile Include="Models\Entities\TicketLogType.cs" />
     <Compile Include="Models\Entities\TicketPriority.cs" />
     <Compile Include="Models\Entities\TicketState.cs" />
     <Compile Include="Models\Management\EnumeratedTypes.cs" />
@@ -421,11 +423,6 @@
     <Content Include="Views\TicketCategories\Details.cshtml" />
     <Content Include="Views\TicketCategories\Edit.cshtml" />
     <Content Include="Views\TicketCategories\Index.cshtml" />
-    <Content Include="Views\TicketLogTypes\Create.cshtml" />
-    <Content Include="Views\TicketLogTypes\Delete.cshtml" />
-    <Content Include="Views\TicketLogTypes\Details.cshtml" />
-    <Content Include="Views\TicketLogTypes\Edit.cshtml" />
-    <Content Include="Views\TicketLogTypes\Index.cshtml" />
     <Content Include="Views\TicketPriorities\Create.cshtml" />
     <Content Include="Views\TicketPriorities\Delete.cshtml" />
     <Content Include="Views\TicketPriorities\Details.cshtml" />
@@ -465,6 +462,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\Application\201512131546422_Re-Initial.resx">
       <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.resx">
+      <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

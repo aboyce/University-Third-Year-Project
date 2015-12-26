@@ -43,10 +43,6 @@ protected override void Seed(TicketManagement.Models.Context.TicketManagementCon
                 new TicketCategory { Name = "Bug", Created = DateTime.Now, LastUpdated = DateTime.Now },
                 new TicketCategory { Name = "Feature", Created = DateTime.Now, LastUpdated = DateTime.Now });
 
-            context.TicketLogTypes.AddOrUpdate(
-                new TicketLogType { Name = "Message", Created = DateTime.Now, LastUpdated = DateTime.Now },
-                new TicketLogType { Name = "Message", Created = DateTime.Now, LastUpdated = DateTime.Now });
-
             context.TicketPriorities.AddOrUpdate(
                 new TicketPriority { Name = "Feature", Colour = "#0066FF", Created = DateTime.Now, LastUpdated = DateTime.Now },
                 new TicketPriority { Name = "Low", Colour = "#00CC00", Created = DateTime.Now, LastUpdated = DateTime.Now },

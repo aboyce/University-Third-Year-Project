@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.ViewModels
 {
@@ -13,7 +14,7 @@ namespace TicketManagement.ViewModels
 
     public class NewTicketLogViewModel
     {
-        public Ticket Ticket { get; set; }
+        public int TicketId { get; set; }
 
         public TicketLogType TicketLogType { get; set; }
 

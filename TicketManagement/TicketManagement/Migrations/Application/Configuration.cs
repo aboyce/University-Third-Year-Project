@@ -69,13 +69,6 @@ namespace TicketManagement.Migrations.Application
                 new TicketCategory { Name = "Feature" });
             }
 
-            if (!context.TicketLogTypes.Any(tlt => tlt.Name == "Message"))
-            {
-                context.TicketLogTypes.AddOrUpdate(
-                new TicketLogType { Name = "Message" },
-                new TicketLogType { Name = "Message" });
-            }
-
             if (!context.TicketPriorities.Any(tc => tc.Name == "Low"))
             {
                 context.TicketPriorities.AddOrUpdate(

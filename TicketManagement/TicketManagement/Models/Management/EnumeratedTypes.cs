@@ -40,6 +40,14 @@ namespace TicketManagement.Models.Management
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    public enum TicketLogType
+    {
+        Message,
+        File
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     public enum TicketSort
     {
         Open = 0,
@@ -86,10 +94,6 @@ namespace TicketManagement.Models.Management
         TicketCategoryAdded,
         TicketCategoryUpdated,
         TicketCategoryDeleted,
-
-        TicketLogTypeAdded,
-        TicketLogTypeUpdated,
-        TicketLogTypeDeleted,
 
         TicketPriorityAdded,
         TicketPriorityUpdated,

@@ -1,4 +1,5 @@
-﻿@model TicketManagement.ViewModels.NewTicketLogViewModel
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.ViewModels.NewTicketLogViewModel
 
 @Styles.Render("~/bundles/bootstrap_toggle_css")
 
@@ -12,27 +13,33 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#message" aria-controls="message" role="tab" data-toggle="tab">Message</a></li>
             <li role="presentation"><a href="#file" aria-controls="file" role="tab" data-toggle="tab">File</a></li>
-
         </ul>
 
         <div class="tab-content">
-
+            
+            @* MESSAGE TAB SECTION *@
             <div role="tabpanel" class="tab-pane active" id="message">
 
-                <br/>
-                <textarea id="data" name="Data" class="form-control" style="max-width: 100%"></textarea>
-                @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
+                @using (Html.BeginForm("NewTicketLog", "Tickets"))
+                {
+                    <br/>
+                    <textarea id="data" name="Data" class="form-control" style="max-width: 100%"></textarea>
+                    @Html.ValidationMessageFor(model => model.Data, "", new {@class = "text-danger"})
+                    <br/>
 
-                <br/>
+                    @Html.HiddenFor(model => model.TicketId)
+                    Model.TicketLogType = TicketLogType.Message;
 
-                <div style="float: right">
-                    <input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
-                    @Html.ActionLink("Send", "Create", null, new {@id = "btn-message-send", @class = "btn btn-xs btn-warning", disabled = "disabled"})
-                </div>
-
+                    <div style="float: right">
+                        <input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                        <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled"/>
+                    </div>
+                }
             </div>
 
+            @* FILE TAB SECTION *@
             <div role="tabpanel" class="tab-pane" id="file">
+                <br/>
                 <p>Feature coming soon...</p>
             </div>
 

@@ -62,7 +62,6 @@ namespace TicketManagement.Controllers
                 {'t', db.Tickets.Select(t => t.Id).Count()},
                 {'g', db.TicketCategories.Select(g => g.Id).Count()},
                 {'l', db.TicketLogs.Select(l => l.Id).Count()},
-                {'y', db.TicketLogTypes.Select(y => y.Id).Count()},
                 {'i', db.TicketPriorities.Select(i => i.Id).Count()},
                 {'e', db.TicketStates.Select(e => e.Id).Count()},
             };

@@ -71,15 +71,16 @@ namespace TicketManagement.Controllers
 
         // POST: Tickets/NewTicketLog
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult NewTicketLog(NewTicketLogViewModel vm)
         {
             TicketLog ticketLog = new TicketLog
             {
-                TicketId = 0
+                Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
+                TicketId = vm.TicketId
+
             };
 
-            return RedirectToAction("Ticket", new { ViewMessage = ViewMessage.TicketMessageAdded });
+            return RedirectToAction("Ticket", new {id = 1, ViewMessage = ViewMessage.TicketMessageAdded });
         }
 
 

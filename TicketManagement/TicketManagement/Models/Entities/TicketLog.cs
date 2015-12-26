@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Models.Entities
 {
@@ -19,11 +20,8 @@ namespace TicketManagement.Models.Entities
         virtual public Ticket Ticket { get; set; }
 
         [Required]
-        [ForeignKey("TicketLogType")]
         [DisplayName("Ticket Log Type")]
-        public int TicketLogTypeId { get; set; }
-
-        virtual public TicketLogType TicketLogType { get; set; }
+        public TicketLogType TicketLogType { get; set; }
 
         [Required]
         [DisplayName("Log Data")]
