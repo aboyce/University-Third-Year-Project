@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -54,33 +55,46 @@ namespace TicketManagement.Controllers
         }
 
         // GET: Tickets/Ticket
-        public ActionResult Ticket(int? id)
+        public async Task<ActionResult> Ticket(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
+            
 
-            return View(ticket);
+            TicketViewModel vm = new TicketViewModel
+            {
+                Ticket = await db.Tickets.FindAsync(id),
+                TicketLogs = await db.TicketLogs.Where(tl => tl.TicketId == id).ToListAsync()
+            };
+
+            if (vm.Ticket == null)
+                return HttpNotFound();
+
+            return View(vm);
         }
 
         // POST: Tickets/NewTicketLog
         [HttpPost]
-        public ActionResult NewTicketLog(NewTicketLogViewModel vm)
+        public async Task<ActionResult> NewTicketLog(NewTicketLogViewModel vm)
         {
+            string userId = User.Identity.GetUserId();
+
             TicketLog ticketLog = new TicketLog
             {
                 Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
-                TicketId = vm.TicketId
-
+                TicketId = vm.TicketId,
+                TicketLogType = vm.TicketLogType,
+                SubmittedByUserId = userId,
+                SubmittedByUser = db.Users.Find(userId),
+                Data = vm.Data,
+                IsInternal = vm.IsInternal,
+                TimeOfLog = DateTime.Now
             };
 
-            return RedirectToAction("Ticket", new {id = 1, ViewMessage = ViewMessage.TicketMessageAdded });
+            db.TicketLogs.Add(ticketLog);
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Ticket", new {id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
         }
 
 

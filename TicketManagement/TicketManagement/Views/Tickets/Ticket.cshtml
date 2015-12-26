@@ -1,8 +1,11 @@
-﻿@using TicketManagement.ViewModels
-@model TicketManagement.Models.Entities.Ticket
+﻿@using TicketManagement.Models.Entities
+@using TicketManagement.Models.Management
+@using TicketManagement.ViewModels
+@model TicketViewModel
 
 @{
     ViewBag.Title = "Ticket";
+    string panelColour = "panel-";
 }
 
 @if (Request.Params["ViewMessage"] == "TicketMessageAdded")
@@ -13,74 +16,91 @@
     </div>
 }
 
+@switch (Request.Params["PanelType"])
+    {
+        case "danger":
+            panelColour += "danger";
+            break;
+        case "success":
+            panelColour += "success";
+            break;
+        case "info":
+            panelColour += "info";
+            break;
+        case "warning":
+        default:
+            panelColour += "warning";
+            break;
+    }
+
 <h2>Tickets</h2>
 <hr/>
 
-<div class="panel panel-warning">
+<div class="panel @panelColour">
     <div class="panel-body">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <strong>@Html.DisplayNameFor(model => model.Title): </strong>
-                    @Html.DisplayFor(model => model.Title)
+                    <strong>@Html.DisplayNameFor(model => model.Ticket.Title): </strong>
+                    @Html.DisplayFor(model => model.Ticket.Title)
                 </div>
                 <div class="col-md-6">
-                    <strong>@Html.DisplayNameFor(model => model.Description): </strong>
-                    @Html.DisplayFor(model => model.Description)
+                    <strong>@Html.DisplayNameFor(model => model.Ticket.Description): </strong>
+                    @Html.DisplayFor(model => model.Ticket.Description)
                 </div>
                 <div class="col-md-3">
-                    <strong>@Html.DisplayNameFor(model => model.Created): </strong>
-                    @Html.DisplayFor(model => model.Created)
+                    <strong>@Html.DisplayNameFor(model => model.Ticket.Created): </strong>
+                    @Html.DisplayFor(model => model.Ticket.Created)
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <strong>State: </strong>
-                    @Html.DisplayFor(model => model.TicketState.Name)
+                    @Html.DisplayFor(model => model.Ticket.TicketState.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>Priority: </strong>
-                    @Html.DisplayFor(model => model.TicketPriority.Name)
+                    @Html.DisplayFor(model => model.Ticket.TicketPriority.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>Category: </strong>
-                    @Html.DisplayFor(model => model.TicketCategory.Name)
+                    @Html.DisplayFor(model => model.Ticket.TicketCategory.Name)
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <strong>Assigned to: </strong>
-                    @Html.DisplayFor(model => model.UserAssignedTo.FullName)
+                    @Html.DisplayFor(model => model.Ticket.UserAssignedTo.FullName)
                 </div>
                 <div class="col-md-3">
                     <strong>Team: </strong>
-                    @Html.DisplayFor(model => model.TeamAssignedTo.Name)
+                    @Html.DisplayFor(model => model.Ticket.TeamAssignedTo.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>Project: </strong>
-                    @Html.DisplayFor(model => model.Project.Name)
+                    @Html.DisplayFor(model => model.Ticket.Project.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>Organisation: </strong>
-                    @Html.DisplayFor(model => model.OrganisationAssignedTo.Name)
+                    @Html.DisplayFor(model => model.Ticket.OrganisationAssignedTo.Name)
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <strong>Opened By: </strong>
-                    @Html.DisplayFor(model => model.OpenedBy.FullName)
+                    @Html.DisplayFor(model => model.Ticket.OpenedBy.FullName)
                 </div>
                 <div class="col-md-3">
                     <strong>Deadline: </strong>
-                    @Html.DisplayFor(model => model.Deadline)
+                    @Html.DisplayFor(model => model.Ticket.Deadline)
                 </div>
                 <div class="col-md-3">
                     <strong>Last Message: </strong>
-                    @Html.DisplayFor(model => model.LastMessage)
+                    @Html.DisplayFor(model => model.Ticket.LastMessage)
                 </div>
                 <div class="col-md-3">
                     <strong>Last Response: </strong>
-                    @Html.DisplayFor(model => model.LastResponse)
+                    @Html.DisplayFor(model => model.Ticket.LastResponse)
                 </div>
             </div>
         </div>
@@ -89,9 +109,9 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>@Html.DisplayFor(model => model.Title)</strong>
+        <strong>@Html.DisplayFor(model => model.Ticket.Title)</strong>
         <div style="float: right">
-            @Html.DisplayFor(model => model.Deadline)
+            @Html.DisplayFor(model => model.Ticket.Deadline)
         </div>
     </div>
     <div class="panel-body"></div>
@@ -100,4 +120,23 @@
     </div>*@
 </div>
 
-@Html.Partial("_Partial_NewTicketLog", new NewTicketLogViewModel { TicketId = Model.Id })
+@foreach (TicketLog tl in Model.TicketLogs)
+{
+    <div class="panel panel-@(tl.IsInternal ? "info" : "primary")">
+        <div class="panel-heading">
+            <strong>@tl.TicketLogType</strong>
+            <div style="float: right">
+                @tl.SubmittedByUser.FullName @@ @tl.TimeOfLog
+            </div>
+        </div>
+        <div class="panel-body">
+            @if (tl.TicketLogType == TicketLogType.Message)
+            {
+                @tl.Data
+            }
+            
+        </div>
+    </div>
+}
+
+@Html.Partial("_Partial_NewTicketLog", new NewTicketLogViewModel { TicketId = Model.Ticket.Id })

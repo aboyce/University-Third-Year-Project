@@ -213,6 +213,14 @@
     <Compile Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.Designer.cs">
       <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.cs" />
+    <Compile Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.Designer.cs">
+      <DependentUpon>201512262223009_Added Internal-External bool on TicketLogType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.cs" />
+    <Compile Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.Designer.cs">
+      <DependentUpon>201512262320509_Added a Submittion User to the TicketLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\User.cs" />
@@ -450,6 +458,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Migrations\Application\201512262222499_Added Internal\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -465,6 +474,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.resx">
       <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.resx">
+      <DependentUpon>201512262223009_Added Internal-External bool on TicketLogType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.resx">
+      <DependentUpon>201512262320509_Added a Submittion User to the TicketLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

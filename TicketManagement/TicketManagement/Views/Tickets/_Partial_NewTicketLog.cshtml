@@ -31,7 +31,12 @@
                     Model.TicketLogType = TicketLogType.Message;
 
                     <div style="float: right">
-                        <input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                        @*@Html.EditorFor(model => model.IsInternal)*@
+
+                        <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                        <input name="IsInternal" type="hidden" value="true" />
+
+                        @*<input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">*@
                         <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled"/>
                     </div>
                 }

@@ -60,7 +60,7 @@
             else { rowColour = "info"; }
         }
 
-        <tr class="clickable-row @rowColour" data-url="/Tickets/Ticket/@item.Id">
+        <tr class="clickable-row @rowColour" data-url="/Tickets/Ticket/@item.Id?PanelType=@rowColour">
             <td> @Html.DisplayFor(modelItem => item.Id) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketCategory.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketPriority.Name) </td>

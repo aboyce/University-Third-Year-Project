@@ -12,6 +12,13 @@ namespace TicketManagement.ViewModels
     {
     }
 
+    public class TicketViewModel
+    {
+        public Ticket Ticket { get; set; }
+
+        public List<TicketLog> TicketLogs { get; set; } 
+    }
+
     public class NewTicketLogViewModel
     {
         public int TicketId { get; set; }
@@ -19,5 +26,7 @@ namespace TicketManagement.ViewModels
         public TicketLogType TicketLogType { get; set; }
 
         public string Data { get; set; }
+
+        public bool IsInternal { get; set; }
     }
 }

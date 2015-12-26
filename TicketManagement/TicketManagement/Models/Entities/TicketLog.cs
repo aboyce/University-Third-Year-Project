@@ -19,6 +19,11 @@ namespace TicketManagement.Models.Entities
 
         virtual public Ticket Ticket { get; set; }
 
+        [ForeignKey("SubmittedByUser")]
+        public string SubmittedByUserId { get; set; }
+
+        virtual public User SubmittedByUser { get; set; }
+
         [Required]
         [DisplayName("Ticket Log Type")]
         public TicketLogType TicketLogType { get; set; }
@@ -26,6 +31,10 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Log Data")]
         public string Data { get; set; }
+
+        [Required]
+        [DisplayName("Is Internal")]
+        public bool IsInternal { get; set; }
 
         [Required]
         [DisplayName("Time of Log")]

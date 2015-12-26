@@ -42,8 +42,8 @@ namespace TicketManagement.Models.Management
 
     public enum TicketLogType
     {
-        Message,
-        File
+        Message = 0,
+        File = 1
     }
 
     // ----------------------------------------------------------------------------------------------------------------
