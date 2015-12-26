@@ -19,13 +19,17 @@
 
             <div role="tabpanel" class="tab-pane active" id="message">
 
+                <br/>
+                <textarea id="data" name="Data" class="form-control" style="max-width: 100%"></textarea>
+                @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
 
-                <hr/>
+                <br/>
+
                 <div style="float: right">
                     <input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
-                    @Html.ActionLink("Send", "Create", null, new { @class = "btn btn-xs btn-warning" })
+                    @Html.ActionLink("Send", "Create", null, new {@id = "btn-message-send", @class = "btn btn-xs btn-warning", disabled = "disabled"})
                 </div>
-                
+
             </div>
 
             <div role="tabpanel" class="tab-pane" id="file">
@@ -37,3 +41,4 @@
 </div>
 
 @Scripts.Render("~/bundles/bootstrap_toggle_js")
+@Scripts.Render("/Scripts/Site/Ticket/ticket.js")

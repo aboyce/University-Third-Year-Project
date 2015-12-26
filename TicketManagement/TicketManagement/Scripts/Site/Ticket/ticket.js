@@ -40,12 +40,24 @@
         }
     }
 
-    $(document).ready(function () {
+    function toggleSendButton() {
+        if ($('#data').val() === "")
+            $('#btn-message-send').attr('disabled', 'disabled');
+        else
+            $('#btn-message-send').attr("disabled", false);
+    }
+
+    $(document).ready(function() {
 
         makeCurrentSortTypeTabActive();
+        toggleSendButton();
 
         $('.clickable-row').click(function() {
             window.document.location = $(this).data("url");
+        });
+
+        $('#data').keyup(function () {
+            toggleSendButton();
         });
     });
 

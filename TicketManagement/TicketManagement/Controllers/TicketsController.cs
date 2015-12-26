@@ -66,8 +66,6 @@ namespace TicketManagement.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.TicketLogTypes = new SelectList(db.TicketLogTypes, "Id", "Name");
-
             return View(ticket);
         }
 
@@ -81,7 +79,7 @@ namespace TicketManagement.Controllers
                 TicketId = 0
             };
 
-            return View();
+            return RedirectToAction("Ticket", new { ViewMessage = ViewMessage.TicketMessageAdded });
         }
 
 

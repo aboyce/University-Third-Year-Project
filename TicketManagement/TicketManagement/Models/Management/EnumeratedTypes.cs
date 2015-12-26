@@ -81,6 +81,8 @@ namespace TicketManagement.Models.Management
         TeamUpdated,
         TeamDeleted,
 
+        TicketMessageAdded,
+
         TicketCategoryAdded,
         TicketCategoryUpdated,
         TicketCategoryDeleted,
