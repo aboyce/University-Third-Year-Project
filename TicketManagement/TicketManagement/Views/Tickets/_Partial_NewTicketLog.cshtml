@@ -43,7 +43,7 @@
                 @using (Html.BeginForm("NewTicketLogFile", "Tickets", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <br/>
-                    <strong>Select File: </strong>
+                    <strong>Select File: </strong> @:(Valid types are .txt, .pdf or an image)
                     <input type="file" id="upload" name="upload" />
                     <br />
 

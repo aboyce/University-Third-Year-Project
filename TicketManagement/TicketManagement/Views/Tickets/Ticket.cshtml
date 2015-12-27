@@ -130,7 +130,7 @@
     <div class="panel panel-@(ticketLog.IsInternal ? "info" : "primary")">
         <div class="panel-heading">
             <strong>@ticketLog.TicketLogType</strong>
-            @(ticketLog.File != null ? $" - ({@ticketLog.File.FileType}) {@ticketLog.File.FileName}" : "")
+            @(ticketLog.File != null ? $" - ({@ticketLog.File.FileType})": "")
             <div style="float: right">
                 @ticketLog.SubmittedByUser.FullName @@ @ticketLog.TimeOfLog
             </div>
@@ -142,9 +142,9 @@
             }
             else if (ticketLog.TicketLogType == TicketLogType.File)
             {
-                if (ticketLog.File != null/* && ticketLog.File.FileType == FileType.Image*/)
+                if (ticketLog.File != null)
                 {
-                    <strong><a href="~/File?id=@ticketLog.File.Id" target="blank">Preview</a></strong>
+                    <a href="~/File?id=@ticketLog.File.Id" target="blank">@ticketLog.File.FileName</a>
                 }
             }
         </div>

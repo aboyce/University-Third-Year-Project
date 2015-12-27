@@ -115,13 +115,13 @@ namespace TicketManagement.Controllers
                     file.FileType = FileType.Image;
                 else if(upload.ContentType.Contains("text"))
                     file.FileType = FileType.Text;
+                else if (upload.ContentType.Contains("pdf"))
+                    file.FileType = FileType.PDF;
                 else
                     ModelState.AddModelError("", "Unsupported file type.");
 
                 using (BinaryReader reader = new BinaryReader(upload.InputStream))
-                {
                     file.Content = reader.ReadBytes(upload.ContentLength);
-                }
 
                 db.Files.Add(file);
                 await db.SaveChangesAsync();
