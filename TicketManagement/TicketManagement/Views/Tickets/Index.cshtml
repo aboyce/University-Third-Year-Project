@@ -21,8 +21,9 @@
         <li>@Html.ActionLink("Open", "Index", "Tickets", new { sort = TicketSort.Open }, new { id = TicketSort.Open })</li>
         <li>@Html.ActionLink("Closed", "Index", "Tickets", new { sort = TicketSort.Closed }, new { id = TicketSort.Closed })</li>
         <li>@Html.ActionLink("Unanswered", "Index", "Tickets", new { sort = TicketSort.Unanswered }, new { id = TicketSort.Unanswered })</li>
-        <li>@Html.ActionLink("Pending Approval", "Index", "Tickets", new { sort = TicketSort.PendingApproval }, new { id = TicketSort.PendingApproval })</li>
-        <li>@Html.ActionLink("Mine", "Index", "Tickets", new { sort = TicketSort.Mine }, new { id = TicketSort.Mine })</li>
+        <li>@Html.ActionLink("Pending Approval", "Index", "Tickets", new {sort = TicketSort.PendingApproval}, new {id = TicketSort.PendingApproval})</li>
+        @if (User.IsInRole("Internal"))
+            { <li>@Html.ActionLink("Mine", "Index", "Tickets", new { sort = TicketSort.Mine }, new { id = TicketSort.Mine })</li> } 
         <li>@Html.ActionLink("All", "Index", "Tickets", new { sort = TicketSort.All }, new { id = TicketSort.All })</li>
     </ul>
 </div>

@@ -23,37 +23,44 @@ namespace TicketManagement.Controllers
         private ApplicationContext db = new ApplicationContext();
 
         // GET: Tickets
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             TicketSort sortType; // Defaults to the first one.
             var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+
+            if (!User.IsInRole("Internal")) // If the user is not internal than they should only be able to see thier tickets.
+            {
+                string id = User.Identity.GetUserId();
+                tickets = tickets.Where(t => t.OpenedById == id);
+            }
 
             if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
             {
                 switch (sortType)
                 {
-                        case TicketSort.Open:
+                    case TicketSort.Open:
                         tickets = tickets.Where(t => t.TicketState.Name == "Open");
                         break;
-                        case TicketSort.Closed:
+                    case TicketSort.Closed:
                         tickets = tickets.Where(t => t.TicketState.Name == "Closed");
                         break;
-                        case TicketSort.Unanswered:
+                    case TicketSort.Unanswered:
                         tickets = tickets.Where(t => t.TicketState.Name == "Awaiting Response");
                         break;
-                        case TicketSort.PendingApproval:
+                    case TicketSort.PendingApproval:
                         tickets = tickets.Where(t => t.TicketState.Name == "Pending Approval");
                         break;
-                        case TicketSort.Mine:
+                    case TicketSort.Mine:
                         string id = User.Identity.GetUserId();
                         tickets = tickets.Where(t => t.UserAssignedToId == id);
                         break;
-                        case TicketSort.All: default:
+                    case TicketSort.All:
+                    default:
                         break;
                 }
             }
 
-            return View(tickets.ToList());
+            return View(await tickets.ToListAsync());
         }
 
         // GET: Tickets/Ticket
@@ -61,7 +68,7 @@ namespace TicketManagement.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
 
             TicketViewModel vm = new TicketViewModel
             {
@@ -96,7 +103,7 @@ namespace TicketManagement.Controllers
             db.TicketLogs.Add(ticketLog);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("Ticket", new {id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+            return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
         }
 
         // POST: Tickets/NewTicketLogFlie
@@ -113,7 +120,7 @@ namespace TicketManagement.Controllers
 
                 if (upload.ContentType.Contains("image"))
                     file.FileType = FileType.Image;
-                else if(upload.ContentType.Contains("text"))
+                else if (upload.ContentType.Contains("text"))
                     file.FileType = FileType.Text;
                 else if (upload.ContentType.Contains("pdf"))
                     file.FileType = FileType.PDF;

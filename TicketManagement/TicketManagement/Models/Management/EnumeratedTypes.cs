@@ -81,6 +81,7 @@ namespace TicketManagement.Models.Management
         RoleAdded,
         RoleNotAdded,
         AlreadyInRole,
+        NotInternal,
 
         RoleRemoved,
         RoleNotRemoved,

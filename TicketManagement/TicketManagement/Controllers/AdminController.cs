@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,13 +10,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.ViewModels;
 using TicketManagement.Models.Context;
-using System.Web.Security;
-using System.Web.UI.WebControls;
-using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
-
 
 namespace TicketManagement.Controllers
 {
@@ -51,19 +45,19 @@ namespace TicketManagement.Controllers
 
         #endregion
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             Dictionary<char, int> totals = new Dictionary<char, int>
             {
-                {'o', db.Organisations.Select(o => o.Id).Count()},
-                {'u', db.Users.Select(u => u.Id).Count()},
-                {'p', db.Projects.Select(p => p.Id).Count()},
-                {'m', db.Teams.Select(m => m.Id).Count()},
-                {'t', db.Tickets.Select(t => t.Id).Count()},
-                {'g', db.TicketCategories.Select(g => g.Id).Count()},
-                {'l', db.TicketLogs.Select(l => l.Id).Count()},
-                {'i', db.TicketPriorities.Select(i => i.Id).Count()},
-                {'e', db.TicketStates.Select(e => e.Id).Count()},
+                {'o', await db.Organisations.Select(o => o.Id).CountAsync()},
+                {'u', await db.Users.Select(u => u.Id).CountAsync()},
+                {'p', await db.Projects.Select(p => p.Id).CountAsync()},
+                {'m', await db.Teams.Select(m => m.Id).CountAsync()},
+                {'t', await db.Tickets.Select(t => t.Id).CountAsync()},
+                {'g', await db.TicketCategories.Select(g => g.Id).CountAsync()},
+                {'l', await db.TicketLogs.Select(l => l.Id).CountAsync()},
+                {'i', await db.TicketPriorities.Select(i => i.Id).CountAsync()},
+                {'e', await db.TicketStates.Select(e => e.Id).CountAsync()},
             };
 
             TicketConfiguration conf = ConfigurationHelper.GetTicketConfiguration();
@@ -103,14 +97,10 @@ namespace TicketManagement.Controllers
             }
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
-
-            //var roles = (from role in db.Roles.ToList() where role.Users.Count > 0 from userRole in role.Users where userRole.UserId == user.Id select role.Name);
-
             ViewBag.RolesToAdd = new SelectList(db.Roles, "Id", "Name", user.Roles);
             ViewBag.RolesToRemove = new SelectList(db.Roles, "Id", "Name", user.Roles);
 
             return View(user);
-
         }
 
         // POST: UserEdit
@@ -143,24 +133,27 @@ namespace TicketManagement.Controllers
 
             ViewBag.RolesToAdd = new SelectList(db.Roles, "Id", "Name", user.Roles);
             ViewBag.RolesToRemove = new SelectList(db.Roles, "Id", "Name", user.Roles);
-
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
+
             return View(user);
         }
 
         // POST: AddRole
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddRole(AddRemoveRoleViewmodel vm)
+        public async Task<ActionResult> AddRole(AddRemoveRoleViewmodel vm)
         {
             string roleId = Request.Form["RolesToAdd"];
-            string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
+            string roleName = await db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefaultAsync();
 
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotAdded });
 
-            if (UserManager.IsInRole(vm.UserId, roleName))
-                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.AlreadyInRole });
+            if (!await UserManager.IsInRoleAsync(vm.UserId, "Internal"))
+                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInternal });
+
+            if (await UserManager.IsInRoleAsync(vm.UserId, roleName))
+                return RedirectToAction("UserEdit", new {id = vm.UserId, ViewMessage = ViewMessage.AlreadyInRole});
 
             UserManager.AddToRole(vm.UserId, roleName);
 
@@ -178,7 +171,7 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotRemoved });
 
-            if (!UserManager.IsInRole(vm.UserId, roleName))
+            if (!UserManager.IsInRole(vm.UserId, roleName)) // TODO: Check the type of Role, this will block everything...
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInRole });
 
             UserManager.RemoveFromRole(vm.UserId, roleName);
