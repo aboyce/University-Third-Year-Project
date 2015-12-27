@@ -48,6 +48,13 @@ namespace TicketManagement.Models.Management
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    public enum FileType
+    {
+        Image = 0
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     public enum TicketSort
     {
         Open = 0,
@@ -90,6 +97,8 @@ namespace TicketManagement.Models.Management
         TeamDeleted,
 
         TicketMessageAdded,
+        TicketFileAdded,
+        TicketFileNotAdded,
 
         TicketCategoryAdded,
         TicketCategoryUpdated,

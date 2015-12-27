@@ -7,13 +7,13 @@ namespace TicketManagement.Migrations.Application
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedaSubmittionUsertotheTicketLog : IMigrationMetadata
+    public sealed partial class ChangestoTicket : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedaSubmittionUsertotheTicketLog));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangestoTicket));
         
         string IMigrationMetadata.Id
         {
-            get { return "201512262320509_Added a Submittion User to the TicketLog"; }
+            get { return "201512270130490_Changes to Ticket"; }
         }
         
         string IMigrationMetadata.Source

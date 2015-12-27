@@ -28,6 +28,11 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket Log Type")]
         public TicketLogType TicketLogType { get; set; }
 
+        [ForeignKey("File")]
+        public int? FileId { get; set; } = null;
+
+        public virtual File File { get; set; } = null;
+
         [Required]
         [DisplayName("Log Data")]
         public string Data { get; set; }

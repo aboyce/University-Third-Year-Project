@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
 using TicketManagement.ViewModels;
+using File = TicketManagement.Models.Entities.File;
 
 namespace TicketManagement.Controllers
 {
@@ -73,9 +75,9 @@ namespace TicketManagement.Controllers
             return View(vm);
         }
 
-        // POST: Tickets/NewTicketLog
+        // POST: Tickets/NewTicketLogMessage
         [HttpPost]
-        public async Task<ActionResult> NewTicketLog(NewTicketLogViewModel vm)
+        public async Task<ActionResult> NewTicketLogMessage(NewTicketLogViewModel vm)
         {
             string userId = User.Identity.GetUserId();
 
@@ -83,7 +85,7 @@ namespace TicketManagement.Controllers
             {
                 Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
                 TicketId = vm.TicketId,
-                TicketLogType = vm.TicketLogType,
+                TicketLogType = TicketLogType.Message,
                 SubmittedByUserId = userId,
                 SubmittedByUser = db.Users.Find(userId),
                 Data = vm.Data,
@@ -95,6 +97,50 @@ namespace TicketManagement.Controllers
             await db.SaveChangesAsync();
 
             return RedirectToAction("Ticket", new {id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+        }
+
+        // POST: Tickets/NewTicketLogFlie
+        [HttpPost]
+        public async Task<ActionResult> NewTicketLogFile(NewTicketLogViewModel vm, HttpPostedFileBase upload)
+        {
+            if (upload != null && upload.ContentLength > 0)
+            {
+                var file = new File
+                {
+                    FileName = System.IO.Path.GetFileName(upload.FileName),
+                    FileType = FileType.Image,
+                    ContentType = upload.ContentType,
+                };
+
+                using (BinaryReader reader = new BinaryReader(upload.InputStream))
+                {
+                    file.Content = reader.ReadBytes(upload.ContentLength);
+                }
+
+                db.Files.Add(file);
+                await db.SaveChangesAsync();
+
+                string userId = User.Identity.GetUserId();
+
+                TicketLog ticketLog = new TicketLog
+                {
+                    Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
+                    TicketId = vm.TicketId,
+                    TicketLogType = TicketLogType.File,
+                    SubmittedByUserId = userId,
+                    SubmittedByUser = db.Users.Find(userId),
+                    FileId = file.Id,
+                    IsInternal = vm.IsInternal,
+                    TimeOfLog = DateTime.Now
+                };
+
+                db.TicketLogs.Add(ticketLog);
+                await db.SaveChangesAsync();
+
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
+            }
+
+            return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileNotAdded });
         }
 
 

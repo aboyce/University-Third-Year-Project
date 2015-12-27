@@ -205,24 +205,21 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
-    <Compile Include="Migrations\Application\201512131546422_Re-Initial.cs" />
-    <Compile Include="Migrations\Application\201512131546422_Re-Initial.Designer.cs">
-      <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
+    <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.cs" />
+    <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.Designer.cs">
+      <DependentUpon>201512270115218_Re-Re-Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.cs" />
-    <Compile Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.Designer.cs">
-      <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
+    <Compile Include="Migrations\Application\201512270121467_Changes to File.cs" />
+    <Compile Include="Migrations\Application\201512270121467_Changes to File.Designer.cs">
+      <DependentUpon>201512270121467_Changes to File.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.cs" />
-    <Compile Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.Designer.cs">
-      <DependentUpon>201512262223009_Added Internal-External bool on TicketLogType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.cs" />
-    <Compile Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.Designer.cs">
-      <DependentUpon>201512262320509_Added a Submittion User to the TicketLog.cs</DependentUpon>
+    <Compile Include="Migrations\Application\201512270130490_Changes to Ticket.cs" />
+    <Compile Include="Migrations\Application\201512270130490_Changes to Ticket.Designer.cs">
+      <DependentUpon>201512270130490_Changes to Ticket.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
+    <Compile Include="Models\Entities\File.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Entities\EntityBase.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
@@ -458,7 +455,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Migrations\Application\201512262222499_Added Internal\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -469,17 +465,14 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\Application\201512131546422_Re-Initial.resx">
-      <DependentUpon>201512131546422_Re-Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\Application\201512270115218_Re-Re-Initial.resx">
+      <DependentUpon>201512270115218_Re-Re-Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512262115149_Removed the Enitity TicketLogType.resx">
-      <DependentUpon>201512262115149_Removed the Enitity TicketLogType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\Application\201512270121467_Changes to File.resx">
+      <DependentUpon>201512270121467_Changes to File.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512262223009_Added Internal-External bool on TicketLogType.resx">
-      <DependentUpon>201512262223009_Added Internal-External bool on TicketLogType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Application\201512262320509_Added a Submittion User to the TicketLog.resx">
-      <DependentUpon>201512262320509_Added a Submittion User to the TicketLog.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\Application\201512270130490_Changes to Ticket.resx">
+      <DependentUpon>201512270130490_Changes to Ticket.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

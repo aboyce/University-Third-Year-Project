@@ -11,43 +11,51 @@
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#message" aria-controls="message" role="tab" data-toggle="tab">Message</a></li>
-            <li role="presentation"><a href="#file" aria-controls="file" role="tab" data-toggle="tab">File</a></li>
+            <li role="presentation" class="active"><a href="#message_tab" aria-controls="message_tab" role="tab" data-toggle="tab">Message</a></li>
+            <li role="presentation"><a href="#file_tab" aria-controls="file_tab" role="tab" data-toggle="tab">File</a></li>
         </ul>
 
         <div class="tab-content">
-            
-            @* MESSAGE TAB SECTION *@
-            <div role="tabpanel" class="tab-pane active" id="message">
 
-                @using (Html.BeginForm("NewTicketLog", "Tickets"))
+            @* MESSAGE TAB SECTION *@
+            <div role="tabpanel" class="tab-pane active" id="message_tab">
+
+                @using (Html.BeginForm("NewTicketLogMessage", "Tickets"))
                 {
-                    <br/>
-                    <textarea id="data" name="Data" class="form-control" style="max-width: 100%"></textarea>
-                    @Html.ValidationMessageFor(model => model.Data, "", new {@class = "text-danger"})
-                    <br/>
+                    <br />
+                    <textarea id="data" name="Data" class="form-control" style="max-width: 100%; height: 200px"></textarea>
+                    @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
+                    <br />
 
                     @Html.HiddenFor(model => model.TicketId)
-                    Model.TicketLogType = TicketLogType.Message;
 
                     <div style="float: right">
-                        @*@Html.EditorFor(model => model.IsInternal)*@
-
                         <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
                         <input name="IsInternal" type="hidden" value="true" />
-
-                        @*<input id="toggle_internal_external" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">*@
-                        <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled"/>
+                        <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled" />
                     </div>
                 }
             </div>
 
             @* FILE TAB SECTION *@
-            <div role="tabpanel" class="tab-pane" id="file">
-                <br/>
-                <p>Feature coming soon...</p>
-            </div>
+            <div role="tabpanel" class="tab-pane active" id="file_tab">
 
+                @using (Html.BeginForm("NewTicketLogFile", "Tickets", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <br/>
+                    <strong>Select File: </strong>
+                    <input type="file" id="upload" name="upload" />
+                    <br />
+
+                    @Html.HiddenFor(model => model.TicketId)
+
+                    <div style="float: right">
+                        <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                        <input name="IsInternal" type="hidden" value="true" />
+                        <input id="btn-message-upload" type="submit" value="Upload" class="btn btn-xs btn-warning" disabled="disabled" />
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

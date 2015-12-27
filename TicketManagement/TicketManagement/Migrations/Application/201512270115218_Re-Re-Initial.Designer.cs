@@ -7,13 +7,13 @@ namespace TicketManagement.Migrations.Application
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ReInitial : IMigrationMetadata
+    public sealed partial class ReReInitial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ReInitial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ReReInitial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201512131546422_Re-Initial"; }
+            get { return "201512270115218_Re-Re-Initial"; }
         }
         
         string IMigrationMetadata.Source

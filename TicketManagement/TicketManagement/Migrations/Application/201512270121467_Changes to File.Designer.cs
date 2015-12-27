@@ -7,13 +7,13 @@ namespace TicketManagement.Migrations.Application
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RemovedtheEnitityTicketLogType : IMigrationMetadata
+    public sealed partial class ChangestoFile : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovedtheEnitityTicketLogType));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangestoFile));
         
         string IMigrationMetadata.Id
         {
-            get { return "201512262115149_Removed the Enitity TicketLogType"; }
+            get { return "201512270121467_Changes to File"; }
         }
         
         string IMigrationMetadata.Source

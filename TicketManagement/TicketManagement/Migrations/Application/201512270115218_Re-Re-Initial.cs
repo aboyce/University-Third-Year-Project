@@ -3,10 +3,25 @@ namespace TicketManagement.Migrations.Application
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ReInitial : DbMigration
+    public partial class ReReInitial : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Files",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FileName = c.String(nullable: false, maxLength: 255),
+                        ContentType = c.String(maxLength: 100),
+                        Content = c.Binary(),
+                        FileType = c.Int(nullable: false),
+                        Ticket_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Tickets", t => t.Ticket_Id)
+                .Index(t => t.Ticket_Id);
+            
             CreateTable(
                 "dbo.Organisations",
                 c => new
@@ -181,15 +196,20 @@ namespace TicketManagement.Migrations.Application
                     {
                         Id = c.Int(nullable: false, identity: true),
                         TicketId = c.Int(nullable: false),
-                        TicketLogTypeId = c.Int(nullable: false),
+                        SubmittedByUserId = c.String(maxLength: 128),
+                        TicketLogType = c.Int(nullable: false),
+                        FileId = c.Int(nullable: false),
                         Data = c.String(nullable: false),
+                        IsInternal = c.Boolean(nullable: false),
                         TimeOfLog = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Files", t => t.FileId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.SubmittedByUserId)
                 .ForeignKey("dbo.Tickets", t => t.TicketId, cascadeDelete: true)
-                .ForeignKey("dbo.TicketLogTypes", t => t.TicketLogTypeId, cascadeDelete: true)
                 .Index(t => t.TicketId)
-                .Index(t => t.TicketLogTypeId);
+                .Index(t => t.SubmittedByUserId)
+                .Index(t => t.FileId);
             
             CreateTable(
                 "dbo.Tickets",
@@ -255,17 +275,6 @@ namespace TicketManagement.Migrations.Application
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.TicketLogTypes",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 50),
-                        Created = c.DateTime(nullable: false),
-                        LastUpdated = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.UserNotifications",
                 c => new
                     {
@@ -283,7 +292,6 @@ namespace TicketManagement.Migrations.Application
         public override void Down()
         {
             DropForeignKey("dbo.UserNotifications", "NotificationAboutId", "dbo.Users");
-            DropForeignKey("dbo.TicketLogs", "TicketLogTypeId", "dbo.TicketLogTypes");
             DropForeignKey("dbo.TicketLogs", "TicketId", "dbo.Tickets");
             DropForeignKey("dbo.Tickets", "UserAssignedToId", "dbo.Users");
             DropForeignKey("dbo.Tickets", "TicketStateId", "dbo.TicketStates");
@@ -293,6 +301,9 @@ namespace TicketManagement.Migrations.Application
             DropForeignKey("dbo.Tickets", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.Tickets", "OrganisationAssignedToId", "dbo.Organisations");
             DropForeignKey("dbo.Tickets", "OpenedById", "dbo.Users");
+            DropForeignKey("dbo.Files", "Ticket_Id", "dbo.Tickets");
+            DropForeignKey("dbo.TicketLogs", "SubmittedByUserId", "dbo.Users");
+            DropForeignKey("dbo.TicketLogs", "FileId", "dbo.Files");
             DropForeignKey("dbo.TicketCategories", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.TextMessages", "UserTo_Id", "dbo.Users");
             DropForeignKey("dbo.RoleNotifications", "RoleId", "dbo.Roles");
@@ -315,7 +326,8 @@ namespace TicketManagement.Migrations.Application
             DropIndex("dbo.Tickets", new[] { "UserAssignedToId" });
             DropIndex("dbo.Tickets", new[] { "TicketPriorityId" });
             DropIndex("dbo.Tickets", new[] { "OpenedById" });
-            DropIndex("dbo.TicketLogs", new[] { "TicketLogTypeId" });
+            DropIndex("dbo.TicketLogs", new[] { "FileId" });
+            DropIndex("dbo.TicketLogs", new[] { "SubmittedByUserId" });
             DropIndex("dbo.TicketLogs", new[] { "TicketId" });
             DropIndex("dbo.TicketCategories", new[] { "ProjectId" });
             DropIndex("dbo.TextMessages", new[] { "UserTo_Id" });
@@ -332,8 +344,8 @@ namespace TicketManagement.Migrations.Application
             DropIndex("dbo.Users", "UserNameIndex");
             DropIndex("dbo.Users", new[] { "TeamId" });
             DropIndex("dbo.Organisations", new[] { "DefaultContactId" });
+            DropIndex("dbo.Files", new[] { "Ticket_Id" });
             DropTable("dbo.UserNotifications");
-            DropTable("dbo.TicketLogTypes");
             DropTable("dbo.TicketStates");
             DropTable("dbo.TicketPriorities");
             DropTable("dbo.Tickets");
@@ -349,6 +361,7 @@ namespace TicketManagement.Migrations.Application
             DropTable("dbo.UserClaims");
             DropTable("dbo.Users");
             DropTable("dbo.Organisations");
+            DropTable("dbo.Files");
         }
     }
 }

@@ -23,8 +23,6 @@ namespace TicketManagement.ViewModels
     {
         public int TicketId { get; set; }
 
-        public TicketLogType TicketLogType { get; set; }
-
         public string Data { get; set; }
 
         public bool IsInternal { get; set; }
