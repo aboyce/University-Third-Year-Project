@@ -50,7 +50,8 @@ namespace TicketManagement.Models.Management
 
     public enum FileType
     {
-        Image = 0
+        Image = 0,
+        Text = 1
     }
 
     // ----------------------------------------------------------------------------------------------------------------

@@ -186,6 +186,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
@@ -216,6 +217,10 @@
     <Compile Include="Migrations\Application\201512270130490_Changes to Ticket.cs" />
     <Compile Include="Migrations\Application\201512270130490_Changes to Ticket.Designer.cs">
       <DependentUpon>201512270130490_Changes to Ticket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.cs" />
+    <Compile Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.Designer.cs">
+      <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
@@ -455,6 +460,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\File\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -473,6 +479,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512270130490_Changes to Ticket.resx">
       <DependentUpon>201512270130490_Changes to Ticket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.resx">
+      <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

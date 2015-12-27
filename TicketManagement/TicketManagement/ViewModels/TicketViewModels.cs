@@ -23,7 +23,7 @@ namespace TicketManagement.ViewModels
     {
         public int TicketId { get; set; }
 
-        public string Data { get; set; }
+        public string Message { get; set; }
 
         public bool IsInternal { get; set; }
     }

@@ -23,8 +23,8 @@
                 @using (Html.BeginForm("NewTicketLogMessage", "Tickets"))
                 {
                     <br />
-                    <textarea id="data" name="Data" class="form-control" style="max-width: 100%; height: 200px"></textarea>
-                    @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
+                    <textarea id="message" name="Message" class="form-control" style="max-width: 100%; height: 200px"></textarea>
+                    @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
                     <br />
 
                     @Html.HiddenFor(model => model.TicketId)

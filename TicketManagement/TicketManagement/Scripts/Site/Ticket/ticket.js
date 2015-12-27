@@ -41,7 +41,7 @@
     }
 
     function toggleSendButton() {
-        if ($('#data').val() === "")
+        if ($('#message').val() === "")
             $('#btn-message-send').attr('disabled', 'disabled');
         else
             $('#btn-message-send').attr("disabled", false);
@@ -66,7 +66,7 @@
         });
 
         // Check that there is text entered in the 'TicketLog - Message' input box, to enable/disable the 'Send' button.
-        $('#data').keyup(function () {
+        $('#message').keyup(function () {
             toggleSendButton();
         });
 

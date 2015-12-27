@@ -33,9 +33,7 @@ namespace TicketManagement.Models.Entities
 
         public virtual File File { get; set; } = null;
 
-        [Required]
-        [DisplayName("Log Data")]
-        public string Data { get; set; }
+        public string Message { get; set; }
 
         [Required]
         [DisplayName("Is Internal")]

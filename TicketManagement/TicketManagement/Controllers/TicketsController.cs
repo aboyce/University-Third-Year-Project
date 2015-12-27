@@ -88,7 +88,7 @@ namespace TicketManagement.Controllers
                 TicketLogType = TicketLogType.Message,
                 SubmittedByUserId = userId,
                 SubmittedByUser = db.Users.Find(userId),
-                Data = vm.Data,
+                Message = vm.Message,
                 IsInternal = vm.IsInternal,
                 TimeOfLog = DateTime.Now
             };
@@ -108,9 +108,15 @@ namespace TicketManagement.Controllers
                 var file = new File
                 {
                     FileName = System.IO.Path.GetFileName(upload.FileName),
-                    FileType = FileType.Image,
                     ContentType = upload.ContentType,
                 };
+
+                if (upload.ContentType.Contains("image"))
+                    file.FileType = FileType.Image;
+                else if(upload.ContentType.Contains("text"))
+                    file.FileType = FileType.Text;
+                else
+                    ModelState.AddModelError("", "Unsupported file type.");
 
                 using (BinaryReader reader = new BinaryReader(upload.InputStream))
                 {
@@ -139,6 +145,8 @@ namespace TicketManagement.Controllers
 
                 return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
             }
+
+            ModelState.AddModelError("", "Problem with the uploaded file.");
 
             return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileNotAdded });
         }
