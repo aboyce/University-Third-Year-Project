@@ -78,6 +78,9 @@ namespace TicketManagement.Models.Management
         AppliedRoleFromNotification,
         FailedToApplyRoleFromNotification,
 
+        DeclinedRoleFromNotification,
+        FailedToDeclineRoleFromNotification,
+
         RoleAdded,
         RoleNotAdded,
         AlreadyInRole,

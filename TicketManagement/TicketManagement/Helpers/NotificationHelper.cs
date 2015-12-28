@@ -13,15 +13,14 @@ namespace TicketManagement.Helpers
     public static class NotificationHelper
     {
         /* PERFORM THE ACTION ON THE NOTIFICATION */
-        public static bool UndertakeNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
+        public static async Task<bool> UndertakeNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {
-                un = FillInMissingClasses(db, un); // Currently no UserNotifications
+                // Currently no User Notifications
             }
             else if (rn != null)
             {
-                rn = FillInMissingClasses(db, rn);
 
                 switch (rn.Type)
                 {
@@ -29,19 +28,43 @@ namespace TicketManagement.Helpers
                         {
                             if (!um.IsInRole(rn.NotificationAboutId, "Approved"))
                                 um.AddToRole(rn.NotificationAboutId, "Approved");
+
                             db.RoleNotifications.Remove(rn);
-                            db.SaveChanges();
+                            await db.SaveChangesAsync();
+
                             return true;
                         }
                     case RoleNotificationType.PendingInternalApproval:
                         {
                             if (!um.IsInRole(rn.NotificationAboutId, "Internal"))
                                 um.AddToRole(rn.NotificationAboutId, "Internal");
+
                             db.RoleNotifications.Remove(rn);
-                            db.SaveChanges();
+                            await db.SaveChangesAsync();
+
                             return true;
                         }
                 }
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> DeclineNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
+        {
+            if (un != null)
+            {
+                db.UserNotifications.Remove(un);
+                await db.SaveChangesAsync();
+
+                return true;
+            }
+            else if (rn != null)
+            {
+                db.RoleNotifications.Remove(rn);
+                await db.SaveChangesAsync();
+
+                return true;
             }
 
             return false;
@@ -61,25 +84,6 @@ namespace TicketManagement.Helpers
             db.SaveChanges();
 
             return true;
-        }
-
-        /* FILL IN MISSING CLASSES */
-        public static UserNotification FillInMissingClasses(ApplicationContext db, UserNotification un)
-        {
-            if (un.NotificationAbout == null)
-                un.NotificationAbout = db.Users.FirstOrDefault(u => u.Id == un.NotificationAboutId);
-
-            return un;
-        }
-        public static RoleNotification FillInMissingClasses(ApplicationContext db, RoleNotification rn)
-        {
-            if (rn.NotificationAbout == null)
-                rn.NotificationAbout = db.Users.FirstOrDefault(u => u.Id == rn.NotificationAboutId);
-
-            if (rn.Role == null)
-                rn.Role = db.Roles.FirstOrDefault(r => r.Id == rn.RoleId);
-
-            return rn;
         }
 
         /* GET NOTIFICATIONS FOR USERS */

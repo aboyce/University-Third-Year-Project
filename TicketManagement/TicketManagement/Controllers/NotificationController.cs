@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Models.Context;
@@ -52,7 +46,7 @@ namespace TicketManagement.Controllers
             return PartialView(vm);
         }
 
-        public ActionResult AutoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
+        public async Task<ActionResult> AutoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
         {
             bool success = false;
 
@@ -60,56 +54,41 @@ namespace TicketManagement.Controllers
             {
                 if (notificationCategory == NotificationCategory.User)
                 {
-                    success = Helpers.NotificationHelper.UndertakeNotification(db, UserManager, un: db.UserNotifications.FirstOrDefault(un => un.Id == notificationId));
+                    success = await Helpers.NotificationHelper.UndertakeNotification(db, UserManager,
+                        un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId));
                 }
                 else if (notificationCategory == NotificationCategory.Role)
                 {
-                    success = Helpers.NotificationHelper.UndertakeNotification(db, UserManager, rn: db.RoleNotifications.FirstOrDefault(rn => rn.Id == notificationId));
+                    success = await Helpers.NotificationHelper.UndertakeNotification(db, UserManager,
+                        rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
                 }
             }
 
             return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.AppliedRoleFromNotification } : new { ViewMessage = ViewMessage.FailedToApplyRoleFromNotification });
         }
 
-        [HttpPost]
-        public ActionResult Test()
+        public async Task<ActionResult> DeclineNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
         {
-            return View("Index");
+            bool success = false;
+
+            if (notificationId > 0)
+            {
+                if (notificationCategory == NotificationCategory.User)
+                {
+                    success = await Helpers.NotificationHelper.DeclineNotification(db, UserManager,
+                        un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId)); 
+                }
+                else if (notificationCategory == NotificationCategory.Role)
+                {
+                    success =
+                        await
+                            Helpers.NotificationHelper.DeclineNotification(db, UserManager,
+                                rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
+                }
+            }
+
+            return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.DeclinedRoleFromNotification } : new { ViewMessage = ViewMessage.FailedToDeclineRoleFromNotification });
         }
-
-        //// GET: Notification/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Notification/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Create([Bind(Include = "Id,UserIdNotificationOn,NotificationType,NotificationMessage")] UserNotification userNotification)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.UserNotifications.Add(userNotification);
-        //        await db.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(userNotification);
-        //}
-
-        //// POST: Notification/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(int id)
-        //{
-        //    UserNotification userNotification = await db.UserNotifications.FindAsync(id);
-        //    db.UserNotifications.Remove(userNotification);
-        //    await db.SaveChangesAsync();
-        //    return RedirectToAction("Index");
-        //}
 
         protected override void Dispose(bool disposing)
         {

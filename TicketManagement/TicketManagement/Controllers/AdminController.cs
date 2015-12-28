@@ -149,8 +149,9 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotAdded });
 
-            if (!await UserManager.IsInRoleAsync(vm.UserId, "Internal"))
-                return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInternal });
+            if (roleName != "Approved" && roleName != "Internal") // If it is a significant role, check they are internal.
+                if (!await UserManager.IsInRoleAsync(vm.UserId, "Internal"))
+                    return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInternal });
 
             if (await UserManager.IsInRoleAsync(vm.UserId, roleName))
                 return RedirectToAction("UserEdit", new {id = vm.UserId, ViewMessage = ViewMessage.AlreadyInRole});
@@ -171,7 +172,7 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotRemoved });
 
-            if (!UserManager.IsInRole(vm.UserId, roleName)) // TODO: Check the type of Role, this will block everything...
+            if (!UserManager.IsInRole(vm.UserId, roleName))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInRole });
 
             UserManager.RemoveFromRole(vm.UserId, roleName);
