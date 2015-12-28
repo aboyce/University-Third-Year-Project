@@ -31,29 +31,48 @@ namespace TicketManagement.Migrations.Application
             {
                 UserManager<User> userManager = new UserManager<User>(new UserStore<User>(context));
 
-                User user = new User { FirstName = "Admin", LastName = "Admin", UserName = "Admin", Email = "admin@email.com", IsArchived = false };
+                User user = new User
+                {
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    UserName = "Admin",
+                    Email = "admin@email.com",
+                    IsArchived = false
+                };
 
                 userManager.Create(user, "admin!23");
                 userManager.AddToRoles(user.Id, "Approved", "Internal", "Administrator", "Social", "TextMessage");
             }
 
-            if (!context.Organisations.Any(org => org.Name == "Ticket System"))
+            if (!context.Organisations.Any(org => org.Name == "Your Company Name"))
             {
-                context.Organisations.AddOrUpdate(new Organisation
+                Organisation org = new Organisation
                 {
-                    Name = "Ticket System",
+                    Name = "Your Company Name",
                     IsInternal = true,
                     DefaultContact = null
-                });
+                };
 
+                context.Organisations.AddOrUpdate(org);
+                context.SaveChanges();
 
-            }
+                Team supportTeam = new Team
+                {
+                    Name = "Support",
+                    OrganisationId = org.Id,
+                    Organisation = org
+                };
 
-            if (!context.Teams.Any(t => t.Name == "Support"))
-            {
-                context.Teams.AddOrUpdate(
-                new Team { Name = "Support" },
-                new Team { Name = "Management" });
+                Team managementTeam = new Team
+                {
+                    Name = "Management",
+                    OrganisationId = org.Id,
+                    Organisation = org
+                };
+
+                context.Teams.AddOrUpdate(supportTeam);
+                context.Teams.AddOrUpdate(managementTeam);
+                context.SaveChanges();
             }
 
             if (!context.TicketCategories.Any(tc => tc.Name == "Question"))
