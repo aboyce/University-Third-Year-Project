@@ -203,6 +203,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Helpers\DataPopulationHelper.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />

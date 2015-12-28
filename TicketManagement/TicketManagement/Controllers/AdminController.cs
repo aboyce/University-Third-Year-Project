@@ -143,8 +143,10 @@ namespace TicketManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> PopulateData()
         {
-            // TODO: Add population data method here
-            return RedirectToAction("Index", new {ViewMessage = ViewMessage.DataPopulated });
+            if (await DataPopulationHelper.PopulateDemoDataAsync())
+                return RedirectToAction("Index", new {ViewMessage = ViewMessage.DataPopulated });
+            else
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.DataNotPopulated });
         }
 
         // POST: AddRole

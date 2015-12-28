@@ -37,11 +37,16 @@ namespace TicketManagement.Migrations.Application
                 userManager.AddToRoles(user.Id, "Approved", "Internal", "Administrator", "Social", "TextMessage");
             }
 
-            if (!context.Organisations.Any(org => org.Name == "My Company"))
+            if (!context.Organisations.Any(org => org.Name == "Ticket System"))
             {
-                context.Organisations.AddOrUpdate(
-                new Organisation { Name = "My Company", IsInternal = true, DefaultContact = null },
-                new Organisation { Name = "Client", IsInternal = false, DefaultContact = null });
+                context.Organisations.AddOrUpdate(new Organisation
+                {
+                    Name = "Ticket System",
+                    IsInternal = true,
+                    DefaultContact = null
+                });
+
+
             }
 
             if (!context.Teams.Any(t => t.Name == "Support"))
@@ -49,13 +54,6 @@ namespace TicketManagement.Migrations.Application
                 context.Teams.AddOrUpdate(
                 new Team { Name = "Support" },
                 new Team { Name = "Management" });
-            }
-
-            if (!context.Projects.Any(p => p.Name == "First Application"))
-            {
-                context.Projects.AddOrUpdate(
-                new Project { Name = "First Application" },
-                new Project { Name = "Second Application" });
             }
 
             if (!context.TicketCategories.Any(tc => tc.Name == "Question"))

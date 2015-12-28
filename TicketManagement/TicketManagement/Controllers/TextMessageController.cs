@@ -40,7 +40,7 @@ namespace TicketManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Send(string id, string message)
+        public async Task<ActionResult> Send(string id, string message)
         {
             if (string.IsNullOrEmpty(id))
                 ModelState.AddModelError("Id", "Please ensure there is a Recipient selected.");
@@ -58,17 +58,13 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                TextMessageHelper txtManager = new TextMessageHelper();
-                TextMessage txt;
-                User user = db.Users.FirstOrDefault(u => u.Id == id);
+                TextMessageHelper txtManager = new TextMessageHelper();              
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+                TextMessage txt = new TextMessage(id, user, user?.PhoneNumber, message);
 
-                string number = user?.PhoneNumber;
-
-                txt = new TextMessage(id, user, number, message);
-
-                string result;// = txtmsg.SendTextMessage(txt);
-
-                result = null;
+                // TODO: Convert this back
+                string result;// = txtmsg.SendTextMessageAsync(txt);
+                result = null; // To be removed as above
 
                 if (result != null)
                 {
@@ -80,16 +76,17 @@ namespace TicketManagement.Controllers
                 else
                 {
                     db.TextMessages.Add(txt);
-                    db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
 
                     ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
                     ViewBag.TextResult = TextResult.SendSuccess;
-                    ViewBag.RemainingBalance = txtManager.CheckBalance();
+                    ViewBag.RemainingBalance = await txtManager.CheckBalanceAsync();
                     return View();
                 }
             }
 
             ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
+
             return View();
         }
 

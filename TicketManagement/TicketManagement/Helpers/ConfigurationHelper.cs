@@ -22,7 +22,7 @@ namespace TicketManagement.Helpers
         /// Will try to get the Clockwork API key from the Web.Config
         /// </summary>
         /// <returns>The key if it is found, null if not.</returns>
-        public static string GetClockworkApiKey()
+        public static async Task<string> GetClockworkApiKeyAsync()
         {
             string api = System.Configuration.ConfigurationManager.AppSettings["ClockworkAPIKey"];
             return !string.IsNullOrEmpty(api) ? api : null;
