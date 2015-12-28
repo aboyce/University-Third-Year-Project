@@ -75,6 +75,8 @@ namespace TicketManagement.Models.Management
 
         PendingApproval,
 
+        DataPopulated,
+
         AppliedRoleFromNotification,
         FailedToApplyRoleFromNotification,
 

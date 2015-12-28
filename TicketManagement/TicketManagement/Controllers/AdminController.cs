@@ -138,6 +138,15 @@ namespace TicketManagement.Controllers
             return View(user);
         }
 
+
+        // POST: PopulateData
+        [HttpPost]
+        public async Task<ActionResult> PopulateData()
+        {
+            // TODO: Add population data method here
+            return RedirectToAction("Index", new {ViewMessage = ViewMessage.DataPopulated });
+        }
+
         // POST: AddRole
         [HttpPost]
         [ValidateAntiForgeryToken]

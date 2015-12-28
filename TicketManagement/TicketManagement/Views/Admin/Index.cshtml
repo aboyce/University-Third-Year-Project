@@ -4,8 +4,18 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+@Styles.Render("~/bundles/bootstrap_toggle_css")
+
+@if (Request.Params["ViewMessage"] == "DataPopulated")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The data has been populated.
+    </div>
+}
+
 <h2>Admin Panel</h2>
-<hr/>
+<hr />
 
 <div class="container">
     <div class="row">
@@ -22,31 +32,31 @@
                         @switch (kvp.Key)
                         {
                             case 'o':
-                                @Html.ActionLink("Organisations", "Index", "Organisations", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Organisations", "Index", "Organisations", null, new { @class = "btn btn-default" })
                                 break;
                             case 'u':
-                                @Html.ActionLink("Users", "Users", "Admin", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Users", "Users", "Admin", null, new { @class = "btn btn-default" })
                                 break;
                             case 'p':
-                                @Html.ActionLink("Projects", "Index", "Projects", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Projects", "Index", "Projects", null, new { @class = "btn btn-default" })
                                 break;
                             case 'm':
-                                @Html.ActionLink("Teams", "Index", "Teams", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Teams", "Index", "Teams", null, new { @class = "btn btn-default" })
                                 break;
                             case 't':
-                                @Html.ActionLink("*Tickets", "Index", "Admin", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("*Tickets", "Index", "Admin", null, new { @class = "btn btn-default" })
                                 break;
                             case 'g':
-                                @Html.ActionLink("Ticket Categories", "Index", "TicketCategories", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Ticket Categories", "Index", "TicketCategories", null, new { @class = "btn btn-default" })
                                 break;
                             case 'l':
-                                @Html.ActionLink("*Ticket Logs", "Index", "Admin", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("*Ticket Logs", "Index", "Admin", null, new { @class = "btn btn-default" })
                                 break;
                             case 'i':
-                                @Html.ActionLink("Ticket Priorities", "Index", "TicketPriorities", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Ticket Priorities", "Index", "TicketPriorities", null, new { @class = "btn btn-default" })
                                 break;
                             case 'e':
-                                @Html.ActionLink("Ticket States", "Index", "TicketStates", null, new {@class = "btn btn-default"})
+                                @Html.ActionLink("Ticket States", "Index", "TicketStates", null, new { @class = "btn btn-default" })
                                 break;
                         }
 
@@ -54,6 +64,25 @@
                 }
 
             </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>Add Demo Data</h3>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-3 col-md-offset-3">
+                        <input id="cb-enable-populate-data" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="Enabled" data-off="Disabled">
+                    </div>
+                    <div class="col-md-3">
+                        @using (Html.BeginForm("PopulateData", "Admin"))
+                        {
+                            <input id="btn-populate-data" type="submit" value="Populate" class="btn btn-xs btn-danger" disabled="disabled" />
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -72,19 +101,19 @@
                         @switch (kvp.Key)
                         {
                             case '1':
-                            {
-                                <td>Green Time Span</td>
-                            }
+                                {
+                                    <td>Green Time Span</td>
+                                }
                                 break;
                             case '2':
-                            {
-                                <td>Amber Time Span</td>
-                            }
+                                {
+                                    <td>Amber Time Span</td>
+                                }
                                 break;
                             case '3':
-                            {
-                                <td>Red Time Span</td>
-                            }
+                                {
+                                    <td>Red Time Span</td>
+                                }
                                 break;
                         }
 
@@ -94,10 +123,11 @@
             </table>
         </div>
     </div>
-
-
 </div>
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
 </p>
+
+@Scripts.Render("~/Scripts/Site/Admin/admin.js")
+@Scripts.Render("~/bundles/bootstrap_toggle_js")
