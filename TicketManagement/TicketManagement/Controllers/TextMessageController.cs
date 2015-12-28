@@ -48,7 +48,7 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(message))
                 ModelState.AddModelError("Message", "Please ensure there is a Message body.");
 
-            int? maxLength = Helpers.ConfigurationHelper.GetTextMessageMaxLength();
+            int? maxLength = await Helpers.ConfigurationHelper.GetTextMessageMaxLengthAsync();
 
             if (maxLength == null)
                 ModelState.AddModelError(string.Empty, "Problem reading max text message length from the config, please see a system administrator.");
@@ -62,9 +62,7 @@ namespace TicketManagement.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
                 TextMessage txt = new TextMessage(id, user, user?.PhoneNumber, message);
 
-                // TODO: Convert this back
-                string result;// = txtmsg.SendTextMessageAsync(txt);
-                result = null; // To be removed as above
+                string result = await txtManager.SendTextMessageAsync(txt);
 
                 if (result != null)
                 {

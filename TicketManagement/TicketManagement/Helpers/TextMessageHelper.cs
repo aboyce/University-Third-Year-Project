@@ -15,18 +15,20 @@ namespace TicketManagement.Helpers
     {
         private string _apiKey = string.Empty;
 
-        private async Task<bool> LoadInConfigurationAsync()
+        private bool LoadInConfiguration()
         {
             if (_apiKey == string.Empty)
-                _apiKey = await Helpers.ConfigurationHelper.GetClockworkApiKeyAsync();
+                _apiKey = ConfigurationHelper.GetClockworkApiKey();
 
             return !string.IsNullOrEmpty(_apiKey);
         }
 
 
-        public async Task<string> CheckBalanceAsync()
+        public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(() => CheckBalance()); }
+
+        private string CheckBalance()
         {
-            if (!await LoadInConfigurationAsync())
+            if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
 
             try
@@ -59,9 +61,11 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public async Task<string> SendTextMessageAsync(TextMessage txt)
+        public Task<string> SendTextMessageAsync(TextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
+
+        private string SendTextMessage(TextMessage txt)
         {
-            if (!await LoadInConfigurationAsync())
+            if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
 
             try

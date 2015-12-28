@@ -60,7 +60,7 @@ namespace TicketManagement.Controllers
                 {'e', await db.TicketStates.Select(e => e.Id).CountAsync()},
             };
 
-            TicketConfiguration conf = ConfigurationHelper.GetTicketConfiguration();
+            TicketConfiguration conf = await ConfigurationHelper.GetTicketConfigurationAsync();
 
             if (conf == null) return View(totals);
 
@@ -143,7 +143,9 @@ namespace TicketManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> PopulateData()
         {
-            if (await DataPopulationHelper.PopulateDemoDataAsync())
+            DataPopulationHelper dataPopulationHelper = new DataPopulationHelper();
+
+            if (await dataPopulationHelper.PopulateDemoDataAsync(db, UserManager))
                 return RedirectToAction("Index", new {ViewMessage = ViewMessage.DataPopulated });
             else
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.DataNotPopulated });

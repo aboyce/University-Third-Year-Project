@@ -12,35 +12,28 @@ namespace TicketManagement.Helpers
     {
         const int CLOCKWORK_FROM_MAX_LENGTH = 11;
 
+        public static Task<TicketConfiguration> GetTicketConfigurationAsync() { return Task.Factory.StartNew(() => GetTicketConfiguration()); }
         public static TicketConfiguration GetTicketConfiguration()
         {
             TicketConfiguration tconf = new TicketConfiguration();
             return tconf.Populate() ? tconf : null;
         }
 
-        /// <summary>
-        /// Will try to get the Clockwork API key from the Web.Config
-        /// </summary>
-        /// <returns>The key if it is found, null if not.</returns>
-        public static async Task<string> GetClockworkApiKeyAsync()
+        public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(() => GetClockworkApiKey()); }
+        public static string GetClockworkApiKey()
         {
             string api = System.Configuration.ConfigurationManager.AppSettings["ClockworkAPIKey"];
             return !string.IsNullOrEmpty(api) ? api : null;
         }
 
-        /// <summary>
-        /// Will try to get the 'from' work from the Web.Config
-        /// </summary>
-        /// <returns>The value if it is found, null if not.</returns>
+        public static Task<string> GetTextMessageFromCodeAsync() { return Task.Factory.StartNew(() => GetTextMessageFromCode()); }
         public static string GetTextMessageFromCode()
         {
             string from = System.Configuration.ConfigurationManager.AppSettings["TextMessageFrom"];
-
-            //from = from.Substring(0, CLOCKWORK_FROM_MAX_LENGTH);
-
             return !string.IsNullOrEmpty(from) ? from : null;
         }
 
+        public static Task<int?> GetTextMessageMaxLengthAsync() { return Task.Factory.StartNew(() => GetTextMessageMaxLength()); }
         public static int? GetTextMessageMaxLength()
         {
             int length;
@@ -50,7 +43,6 @@ namespace TicketManagement.Helpers
 
             return null;
         }
-
     }
 
     public class TicketConfiguration
@@ -59,6 +51,7 @@ namespace TicketManagement.Helpers
         public TimeSpan TimeSpanAmber { get; private set; }
         public TimeSpan TimeSpanRed { get; private set; }
 
+        public Task<bool> PopulateAsync() { return Task.Factory.StartNew(() => Populate()); }
         public bool Populate()
         {
             try
