@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Helpers
 {
@@ -374,6 +375,41 @@ namespace TicketManagement.Helpers
             db.Tickets.AddOrUpdate(org1Ticket2);
             db.Tickets.AddOrUpdate(org2Ticket1);
             db.Tickets.AddOrUpdate(org3Ticket1);
+
+            await db.SaveChangesAsync();
+
+            #endregion
+
+            #region Ticket Logs
+
+            TicketLog ticket1Log1 = new TicketLog
+            {
+                TicketId = org1Ticket1.Id,
+                Ticket = org1Ticket1,
+                SubmittedByUserId = org2User1.Id,
+                SubmittedByUser = org2User1,
+                TicketLogType = TicketLogType.Message,
+                Message = "Hello, would you be able to look at this for us please. Thanks",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now
+            };
+
+            TicketLog ticket1Log2 = new TicketLog
+            {
+                TicketId = org1Ticket1.Id,
+                Ticket = org1Ticket1,
+                SubmittedByUserId = internalUser2.Id,
+                SubmittedByUser = internalUser2,
+                TicketLogType = TicketLogType.Message,
+                Message = "Hello, yes we will look into this and get back to you as soon as possible. Thanks",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now
+            };
+
+            db.TicketLogs.Add(ticket1Log1);
+            db.TicketLogs.Add(ticket1Log2);
+
+            await db.SaveChangesAsync();
 
             #endregion
 

@@ -106,7 +106,7 @@ namespace TicketManagement.Controllers
         // POST: UserEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserEdit([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
+        public async Task<ActionResult> UserEdit([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace TicketManagement.Controllers
                 Team team = null;
 
                 if (int.TryParse(Request.Form["Teams"], out teamId))
-                    team = db.Teams.FirstOrDefault(t => t.Id == teamId);
+                    team = await db.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
                 if (team != null)
                 {
@@ -122,11 +122,11 @@ namespace TicketManagement.Controllers
                     user.TeamId = team.Id;
                 }
                 
-                user.PhoneNumber = PhoneNumberHelper.FormatPhoneNumberForClockwork(user.PhoneNumber);
+                user.PhoneNumber = await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
                 user.LastUpdated = DateTime.Now;
 
                 db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return RedirectToAction("Users", "Admin", new { ViewMessage = ViewMessage.ProfileUpdated });
             }

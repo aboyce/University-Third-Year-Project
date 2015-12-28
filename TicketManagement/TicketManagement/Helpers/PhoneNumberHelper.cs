@@ -13,6 +13,7 @@ namespace TicketManagement.Helpers
         /// </summary>
         /// <param name="number">The phone number to be formatted</param>
         /// <returns>Either the parameter if it is ok or incorrect, else the modified number.</returns>
+        public static Task<string> FormatPhoneNumberForClockworkAsync(string number) { return Task.Factory.StartNew(() => FormatPhoneNumberForClockwork(number)); }
         public static string FormatPhoneNumberForClockwork(string number)
         {
             char [] numberArray = number.ToCharArray();

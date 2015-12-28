@@ -66,7 +66,7 @@ namespace TicketManagement.Controllers
         // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
+        public async Task<ActionResult> Index([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -82,11 +82,11 @@ namespace TicketManagement.Controllers
                     user.TeamId = team.Id;
                 }
 
-                user.PhoneNumber = Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(user.PhoneNumber);
+                user.PhoneNumber = await Helpers.PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
                 user.LastUpdated = DateTime.Now;
 
                 db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Tickets", new { ViewMessage = ViewMessage.ProfileUpdated });
             }

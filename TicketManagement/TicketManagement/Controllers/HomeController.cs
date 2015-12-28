@@ -146,7 +146,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, Helpers.PhoneNumberHelper.FormatPhoneNumberForClockwork(model.PhoneNumber), model.IsArchived);
+                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await Helpers.PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

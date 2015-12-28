@@ -68,7 +68,7 @@
                     @Html.DisplayFor(modelItem => notification.Message)
                 </td>
                 <td>
-                    <a href="@Url.Action("AutoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
+                    <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
                 </td>
                 <td>
                     <a href="@Url.Action("DeclineNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-danger"><i class="fa fa-times"></i></a>
@@ -122,7 +122,7 @@ else
                     @Html.DisplayFor(modelItem => notification.Message)
                 </td>
                 <td>
-                    <a href="@Url.Action("AutoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role})" class="btn btn-success"><i class="fa fa-check"></i></a>
+                    <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role})" class="btn btn-success"><i class="fa fa-check"></i></a>
                 </td>
                 <td>
                     <a href="@Url.Action("DeclineNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role })" class="btn btn-danger"><i class="fa fa-times"></i></a>

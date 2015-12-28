@@ -13,7 +13,7 @@ namespace TicketManagement.Helpers
     public static class NotificationHelper
     {
         /* PERFORM THE ACTION ON THE NOTIFICATION */
-        public static async Task<bool> UndertakeNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
+        public static async Task<bool> UndertakeNotificationAsync(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {
@@ -50,7 +50,7 @@ namespace TicketManagement.Helpers
             return false;
         }
 
-        public static async Task<bool> DeclineNotification(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
+        public static async Task<bool> DeclineNotificationAsync(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {

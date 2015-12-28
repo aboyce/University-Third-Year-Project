@@ -46,7 +46,7 @@ namespace TicketManagement.Controllers
             return PartialView(vm);
         }
 
-        public async Task<ActionResult> AutoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
+        public async Task<ActionResult> AuthoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
         {
             bool success = false;
 
@@ -54,12 +54,12 @@ namespace TicketManagement.Controllers
             {
                 if (notificationCategory == NotificationCategory.User)
                 {
-                    success = await Helpers.NotificationHelper.UndertakeNotification(db, UserManager,
+                    success = await Helpers.NotificationHelper.UndertakeNotificationAsync(db, UserManager,
                         un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId));
                 }
                 else if (notificationCategory == NotificationCategory.Role)
                 {
-                    success = await Helpers.NotificationHelper.UndertakeNotification(db, UserManager,
+                    success = await Helpers.NotificationHelper.UndertakeNotificationAsync(db, UserManager,
                         rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
                 }
             }
@@ -75,14 +75,12 @@ namespace TicketManagement.Controllers
             {
                 if (notificationCategory == NotificationCategory.User)
                 {
-                    success = await Helpers.NotificationHelper.DeclineNotification(db, UserManager,
-                        un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId)); 
+                    success = await Helpers.NotificationHelper.DeclineNotificationAsync(db, UserManager,
+                                un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId)); 
                 }
                 else if (notificationCategory == NotificationCategory.Role)
                 {
-                    success =
-                        await
-                            Helpers.NotificationHelper.DeclineNotification(db, UserManager,
+                    success = await Helpers.NotificationHelper.DeclineNotificationAsync(db, UserManager,
                                 rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
                 }
             }
