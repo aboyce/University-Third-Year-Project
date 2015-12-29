@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 
 namespace TicketManagement.Helpers
@@ -18,14 +19,14 @@ namespace TicketManagement.Helpers
         public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(() => GetClockworkApiKey()); }
         public static string GetClockworkApiKey()
         {
-            string api = System.Configuration.ConfigurationManager.AppSettings["ClockworkAPIKey"];
+            string api = ConfigurationManager.AppSettings["ClockworkAPIKey"];
             return !string.IsNullOrEmpty(api) ? api : null;
         }
 
         public static Task<string> GetTextMessageFromCodeAsync() { return Task.Factory.StartNew(() => GetTextMessageFromCode()); }
         public static string GetTextMessageFromCode()
         {
-            string from = System.Configuration.ConfigurationManager.AppSettings["TextMessageFrom"];
+            string from = ConfigurationManager.AppSettings["TextMessageFrom"];
             return !string.IsNullOrEmpty(from) ? from : null;
         }
 
@@ -34,7 +35,7 @@ namespace TicketManagement.Helpers
         {
             int length;
 
-            if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["TextMessageMaxLength"], out length) && length > 0)
+            if (int.TryParse(ConfigurationManager.AppSettings["TextMessageMaxLength"], out length) && length > 0)
                 return length;
 
             return null;
@@ -52,9 +53,9 @@ namespace TicketManagement.Helpers
         {
             try
             {
-                TimeSpanGreen = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanGreen"]));
-                TimeSpanAmber = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanAmber"]));
-                TimeSpanRed = TimeSpan.FromHours(int.Parse(System.Configuration.ConfigurationManager.AppSettings["TicketTimeSpanRed"]));
+                TimeSpanGreen = TimeSpan.FromHours(int.Parse(ConfigurationManager.AppSettings["TicketTimeSpanGreen"]));
+                TimeSpanAmber = TimeSpan.FromHours(int.Parse(ConfigurationManager.AppSettings["TicketTimeSpanAmber"]));
+                TimeSpanRed = TimeSpan.FromHours(int.Parse(ConfigurationManager.AppSettings["TicketTimeSpanRed"]));
             }
             catch
             { return false; }

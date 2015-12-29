@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Owin.Security;
-using TicketManagement.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.ViewModels
 {

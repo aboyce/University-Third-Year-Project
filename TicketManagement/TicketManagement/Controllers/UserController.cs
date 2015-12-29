@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using TicketManagement.ViewModels;
 using Microsoft.Owin.Security;
+using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
@@ -70,7 +67,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                int teamId = 0;
+                int teamId;
                 Team team = null;
 
                 if (int.TryParse(Request.Form["Teams"], out teamId))
@@ -82,7 +79,7 @@ namespace TicketManagement.Controllers
                     user.TeamId = team.Id;
                 }
 
-                user.PhoneNumber = await Helpers.PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
+                user.PhoneNumber = await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
                 user.LastUpdated = DateTime.Now;
 
                 db.Entry(user).State = EntityState.Modified;
@@ -250,14 +247,6 @@ namespace TicketManagement.Controllers
 
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
 
         internal class ChallengeResult : HttpUnauthorizedResult
         {

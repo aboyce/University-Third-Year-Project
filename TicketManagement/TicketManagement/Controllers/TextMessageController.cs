@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.Properties;
 
 namespace TicketManagement.Controllers
 {
@@ -43,15 +38,15 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> Send(string id, string message)
         {
             if (string.IsNullOrEmpty(id))
-                ModelState.AddModelError("Id", "Please ensure there is a Recipient selected.");
+                ModelState.AddModelError("Id", Resources.TextMessageController_Send_RecipientSelectionRequired);
 
             if (string.IsNullOrEmpty(message))
-                ModelState.AddModelError("Message", "Please ensure there is a Message body.");
+                ModelState.AddModelError("Message", Resources.TextMessageController_Send_MessageBodyRequired);
 
-            int? maxLength = await Helpers.ConfigurationHelper.GetTextMessageMaxLengthAsync();
+            int? maxLength = await ConfigurationHelper.GetTextMessageMaxLengthAsync();
 
             if (maxLength == null)
-                ModelState.AddModelError(string.Empty, "Problem reading max text message length from the config, please see a system administrator.");
+                ModelState.AddModelError(string.Empty, Resources.TextMessageController_Send_ErrorMaxLengthFromConfig);
 
             if (message != null && message.Length > maxLength)
                 ModelState.AddModelError("Message", $"Please ensure the message is less than {maxLength} characters.");

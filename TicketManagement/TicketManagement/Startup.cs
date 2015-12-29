@@ -1,7 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using TicketManagement;
 
-[assembly: OwinStartupAttribute(typeof(TicketManagement.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 namespace TicketManagement
 {
     public partial class Startup

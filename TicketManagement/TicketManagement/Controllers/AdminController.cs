@@ -8,11 +8,11 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using TicketManagement.ViewModels;
-using TicketManagement.Models.Context;
 using TicketManagement.Helpers;
+using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {

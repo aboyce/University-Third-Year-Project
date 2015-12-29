@@ -243,6 +243,11 @@
     <Compile Include="Models\Management\UserNotification.cs" />
     <Compile Include="Models\Management\RoleNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
@@ -484,6 +489,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.resx">
       <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

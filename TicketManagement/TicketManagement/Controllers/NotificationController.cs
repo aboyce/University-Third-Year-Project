@@ -1,10 +1,10 @@
 ﻿using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
@@ -29,8 +29,8 @@ namespace TicketManagement.Controllers
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
+            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
+            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return View(vm);
         }
@@ -40,8 +40,8 @@ namespace TicketManagement.Controllers
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = Helpers.NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = Helpers.NotificationHelper.GetUserNotificationsForUser(db, user.Id);
+            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
+            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return PartialView(vm);
         }
@@ -54,12 +54,12 @@ namespace TicketManagement.Controllers
             {
                 if (notificationCategory == NotificationCategory.User)
                 {
-                    success = await Helpers.NotificationHelper.UndertakeNotificationAsync(db, UserManager,
+                    success = await NotificationHelper.UndertakeNotificationAsync(db, UserManager,
                         un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId));
                 }
                 else if (notificationCategory == NotificationCategory.Role)
                 {
-                    success = await Helpers.NotificationHelper.UndertakeNotificationAsync(db, UserManager,
+                    success = await NotificationHelper.UndertakeNotificationAsync(db, UserManager,
                         rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
                 }
             }
@@ -75,12 +75,12 @@ namespace TicketManagement.Controllers
             {
                 if (notificationCategory == NotificationCategory.User)
                 {
-                    success = await Helpers.NotificationHelper.DeclineNotificationAsync(db, UserManager,
+                    success = await NotificationHelper.DeclineNotificationAsync(db, UserManager,
                                 un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId)); 
                 }
                 else if (notificationCategory == NotificationCategory.Role)
                 {
-                    success = await Helpers.NotificationHelper.DeclineNotificationAsync(db, UserManager,
+                    success = await NotificationHelper.DeclineNotificationAsync(db, UserManager,
                                 rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
                 }
             }

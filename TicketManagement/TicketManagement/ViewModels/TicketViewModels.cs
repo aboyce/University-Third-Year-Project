@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 
 namespace TicketManagement.ViewModels
 {

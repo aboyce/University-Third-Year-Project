@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -13,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.Properties;
 using TicketManagement.ViewModels;
 using File = TicketManagement.Models.Entities.File;
 
@@ -54,9 +53,9 @@ namespace TicketManagement.Controllers
                         string id = User.Identity.GetUserId();
                         tickets = tickets.Where(t => t.UserAssignedToId == id);
                         break;
-                    case TicketSort.All:
-                    default:
-                        break;
+                    //case TicketSort.All:
+                    //default:
+                    //    break;
                 }
             }
 
@@ -112,9 +111,9 @@ namespace TicketManagement.Controllers
         {
             if (upload != null && upload.ContentLength > 0)
             {
-                var file = new File
+                File file = new File
                 {
-                    FileName = System.IO.Path.GetFileName(upload.FileName),
+                    FileName = Path.GetFileName(upload.FileName),
                     ContentType = upload.ContentType,
                 };
 
@@ -125,7 +124,7 @@ namespace TicketManagement.Controllers
                 else if (upload.ContentType.Contains("pdf"))
                     file.FileType = FileType.PDF;
                 else
-                    ModelState.AddModelError("", "Unsupported file type.");
+                    ModelState.AddModelError("", Resources.TicketsController_NewTicketLogFile_UnsupportedFileTypes);
 
                 using (BinaryReader reader = new BinaryReader(upload.InputStream))
                     file.Content = reader.ReadBytes(upload.ContentLength);
@@ -153,7 +152,7 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
             }
 
-            ModelState.AddModelError("", "Problem with the uploaded file.");
+            ModelState.AddModelError("", Resources.TicketsController_NewTicketLogFile_ProblemWithUploadedFile);
 
             return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileNotAdded });
         }
@@ -196,7 +195,7 @@ namespace TicketManagement.Controllers
         public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
             if (deadlineString.IsNullOrWhiteSpace())
-                ModelState.AddModelError("Deadline", "The deadline is required");
+                ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
             else
             {
                 DateTime deadline;
@@ -204,7 +203,7 @@ namespace TicketManagement.Controllers
                 if (DateTime.TryParse(deadlineString, out deadline))
                     ticket.Deadline = deadline;
                 else
-                    ModelState.AddModelError("Deadline", "The deadline not in the correct format 'dd/mm/yyyy'");
+                    ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
             }
 
             if (ModelState.IsValid)
@@ -265,7 +264,7 @@ namespace TicketManagement.Controllers
             ticket.UserAssignedToId = Request.Form["UserAssignedToId"];
 
             if (deadlineString.IsNullOrWhiteSpace())
-                ModelState.AddModelError("Deadline", "The deadline is required");
+                ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
             else
             {
                 DateTime deadline;
@@ -274,7 +273,7 @@ namespace TicketManagement.Controllers
                 if (DateTime.TryParse(deadlineString, out deadline))
                     ticket.Deadline = deadline;
                 else
-                    ModelState.AddModelError("Deadline", "The deadline not in the correct format 'dd/mm/yyyy'");
+                    ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
             }
 
             if (ModelState.IsValid)

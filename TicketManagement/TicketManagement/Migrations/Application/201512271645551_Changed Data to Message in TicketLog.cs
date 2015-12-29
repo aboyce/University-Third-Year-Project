@@ -1,8 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace TicketManagement.Migrations.Application
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class ChangedDatatoMessageinTicketLog : DbMigration
     {
         public override void Up()

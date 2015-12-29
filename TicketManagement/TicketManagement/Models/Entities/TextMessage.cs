@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using TicketManagement.Helpers;
 
 namespace TicketManagement.Models.Entities
 {
@@ -35,7 +33,7 @@ namespace TicketManagement.Models.Entities
         public string Message { get; set; }
 
         [Required]
-        public string From { get; } = Helpers.ConfigurationHelper.GetTextMessageFromCode();
+        public string From { get; } = ConfigurationHelper.GetTextMessageFromCode();
 
         [Required]
         public DateTime Sent { get; set; } = DateTime.Now;

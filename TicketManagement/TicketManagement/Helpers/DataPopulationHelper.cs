@@ -1,38 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.Properties;
 
 namespace TicketManagement.Helpers
 {
     public class DataPopulationHelper
     {
+        private const string demoPassword = "$56Def";
+        private const string internalEmailEnd = "@yourcompanyname.com";
+        private const string org1Name = "John's Complete Solutions";
+        private const string org1Email = "@johnscompletesolutions.com";
+        private const string org2Name = "Sally's Software";
+        private const string org2Email = "@sallys-software.com";
+        private const string org3Name = "Bob's Bytes";
+        private const string org3Email = "@bobsbytes.com";
+
         public async Task<bool> PopulateDemoDataAsync(ApplicationContext db, UserManager<User> um)
         {
-            if (!await PopulateEntitiesAsync(db, um)) return false;
-
-            return true;
-        }
-
-        private async Task<bool> PopulateEntitiesAsync(ApplicationContext db, UserManager<User> um)
-        {
-            const string demoPassword = "$56Def";
-            const string internalEmailEnd = "@yourcompanyname.com";
-            const string org1Name = "John's Complete Solutions";
-            const string org1Email = "@johnscompletesolutions.com";
-            const string org2Name = "Sally's Software";
-            const string org2Email = "@sallys-software.com";
-            const string org3Name = "Bob's Bytes";
-            const string org3Email = "@bobsbytes.com";
-
             #region Internal Users
 
             User internalUser1 = new User
@@ -41,6 +32,7 @@ namespace TicketManagement.Helpers
                 LastName = "Brown",
                 UserName = "Steve_Brown",
                 Email = $"steve{internalEmailEnd}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -50,6 +42,7 @@ namespace TicketManagement.Helpers
                 LastName = "Green",
                 UserName = "Shelly_Green",
                 Email = $"shelly{internalEmailEnd}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -59,6 +52,7 @@ namespace TicketManagement.Helpers
                 LastName = "Roberts",
                 UserName = "Guy_Roberts",
                 Email = $"guy{internalEmailEnd}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -80,6 +74,7 @@ namespace TicketManagement.Helpers
                 LastName = "Smith",
                 UserName = "John_Smith",
                 Email = $"john{org1Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -89,6 +84,7 @@ namespace TicketManagement.Helpers
                 LastName = "Tompson",
                 UserName = "Barry_Tompson",
                 Email = $"barry{org1Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -98,6 +94,7 @@ namespace TicketManagement.Helpers
                 LastName = "Dry",
                 UserName = "Susie_Dry",
                 Email = $"susie{org1Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -115,6 +112,7 @@ namespace TicketManagement.Helpers
                 LastName = "Jones",
                 UserName = "Sally_Jones",
                 Email = $"sally{org2Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -130,6 +128,7 @@ namespace TicketManagement.Helpers
                 LastName = "Angon",
                 UserName = "Bob_Angon",
                 Email = $"bob{org3Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -139,6 +138,7 @@ namespace TicketManagement.Helpers
                 LastName = "Angon",
                 UserName = "Clair_Angon",
                 Email = $"clair{org3Email}",
+                PhoneNumber = "01234567890",
                 IsArchived = false
             };
 
@@ -147,27 +147,68 @@ namespace TicketManagement.Helpers
 
             #endregion
 
+            await PopulateDataAsync(db);
+
+            return true;
+        }
+
+        private async Task<bool> PopulateDataAsync(ApplicationContext db)
+        {
+            #region Internal Users
+
+            User internalUser1 = await db.Users.Where(u => u.UserName == "Steve_Brown").Select(u => u).FirstOrDefaultAsync();
+
+            User internalUser2 = await db.Users.Where(u => u.UserName == "Shelly_Green").Select(u => u).FirstOrDefaultAsync();
+
+            User internalUser3 = await db.Users.Where(u => u.UserName == "Guy_Roberts").Select(u => u).FirstOrDefaultAsync();
+
+            #endregion
+
+            #region Organisation Users (John's Complete Solutions)
+
+            User org1User1 = await db.Users.Where(u => u.UserName == "John_Smith").Select(u => u).FirstOrDefaultAsync();
+
+            User org1User2 = await db.Users.Where(u => u.UserName == "Barry_Tompson").Select(u => u).FirstOrDefaultAsync();
+
+            User org1User3 = await db.Users.Where(u => u.UserName == "Susie_Dry").Select(u => u).FirstOrDefaultAsync();
+
+            #endregion
+
+            #region Organisation Users (Sally's Software)
+
+            User org2User1 = await db.Users.Where(u => u.UserName == "Sally_Jones").Select(u => u).FirstOrDefaultAsync();
+
+            #endregion
+
+            #region Organisation Users (Bobs's Bytes)
+
+            User org3User1 = await db.Users.Where(u => u.UserName == "Bob_Angon").Select(u => u).FirstOrDefaultAsync();
+
+            User org3User2 = await db.Users.Where(u => u.UserName == "Clair_Angon").Select(u => u).FirstOrDefaultAsync();
+
+            #endregion
+
             #region Organisations
 
             Organisation org1 = new Organisation
             {
-                Name = org1Name,
+                Name = $"{org1Name}",
                 IsInternal = false,
-                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Email == $"john{org1Email}")
+                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == org1User1.Id)
             };
 
             Organisation org2 = new Organisation
             {
-                Name = org2Name,
+                Name = $"{org2Name}",
                 IsInternal = false,
-                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Email == $"sally{org2Email}")
+                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == org2User1.Id)
             };
 
             Organisation org3 = new Organisation
             {
-                Name = org3Name,
+                Name = $"{org3Name}",
                 IsInternal = false,
-                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Email == $"bob{org3Email}")
+                DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == org3User1.Id)
             };
 
             db.Organisations.AddOrUpdate(org1);
@@ -232,7 +273,7 @@ namespace TicketManagement.Helpers
 
             Project org1Pro2 = new Project
             {
-                Name = $"{org1Name} - Estimates for Work on Location",
+                Name = $"{org1Name} - Estimates for Work",
                 OrganisationId = org1.Id,
                 Organisation = org1,
                 TeamAssignedToId = internalManagementTeam.Id,
@@ -305,7 +346,8 @@ namespace TicketManagement.Helpers
                 Project = org1Pro1,
                 TicketCategoryId = await db.TicketCategories.Where(tc => tc.Name == "Bug").Select(tc => tc.Id).FirstOrDefaultAsync(),
                 TicketCategory = await db.TicketCategories.Where(tc => tc.Name == "Bug").Select(tc => tc).FirstOrDefaultAsync(),
-                Deadline = DateTime.Now.AddDays(5)
+                Deadline = DateTime.Now.AddDays(5),
+                Created = DateTime.Now.AddDays(-2)
             };
 
             Ticket org1Ticket2 = new Ticket
@@ -326,7 +368,8 @@ namespace TicketManagement.Helpers
                 Project = org1Pro2,
                 TicketCategoryId = await db.TicketCategories.Where(tc => tc.Name == "Question").Select(tc => tc.Id).FirstOrDefaultAsync(),
                 TicketCategory = await db.TicketCategories.Where(tc => tc.Name == "Question").Select(tc => tc).FirstOrDefaultAsync(),
-                Deadline = DateTime.Now.AddDays(5)
+                Deadline = DateTime.Now.AddDays(5),
+                Created = DateTime.Now.AddDays(-1)
             };
 
             Ticket org2Ticket1 = new Ticket
@@ -347,7 +390,8 @@ namespace TicketManagement.Helpers
                 Project = org2Pro1,
                 TicketCategoryId = await db.TicketCategories.Where(tc => tc.Name == "Question").Select(tc => tc.Id).FirstOrDefaultAsync(),
                 TicketCategory = await db.TicketCategories.Where(tc => tc.Name == "Question").Select(tc => tc).FirstOrDefaultAsync(),
-                Deadline = DateTime.Now.AddDays(7)
+                Deadline = DateTime.Now.AddDays(7),
+                Created = DateTime.Now.AddDays(-1)
             };
 
             Ticket org3Ticket1 = new Ticket
@@ -368,7 +412,8 @@ namespace TicketManagement.Helpers
                 Project = org3Pro1,
                 TicketCategoryId = await db.TicketCategories.Where(tc => tc.Name == "Feature").Select(tc => tc.Id).FirstOrDefaultAsync(),
                 TicketCategory = await db.TicketCategories.Where(tc => tc.Name == "Feature").Select(tc => tc).FirstOrDefaultAsync(),
-                Deadline = DateTime.Now.AddDays(20)
+                Deadline = DateTime.Now.AddDays(20),
+                Created = DateTime.Now.AddDays(-5)
             };
 
             db.Tickets.AddOrUpdate(org1Ticket1);
@@ -380,18 +425,33 @@ namespace TicketManagement.Helpers
 
             #endregion
 
+            #region Files
+
+            byte[] file1Content = new byte[Resources.DataPopulation_File1_Content.Length * sizeof(char)];
+            Buffer.BlockCopy(Resources.DataPopulation_File1_Content.ToCharArray(), 0, file1Content, 0, file1Content.Length);
+
+            File file1 = new File
+            {
+                FileName = "PDF of Related Data",
+                FileType = FileType.PDF,
+                ContentType = "application/pdf",
+                Content = file1Content
+            };
+
+            #endregion
+
             #region Ticket Logs
 
             TicketLog ticket1Log1 = new TicketLog
             {
                 TicketId = org1Ticket1.Id,
                 Ticket = org1Ticket1,
-                SubmittedByUserId = org2User1.Id,
-                SubmittedByUser = org2User1,
+                SubmittedByUserId = org1User2.Id,
+                SubmittedByUser = org1User2,
                 TicketLogType = TicketLogType.Message,
                 Message = "Hello, would you be able to look at this for us please. Thanks",
                 IsInternal = false,
-                TimeOfLog = DateTime.Now
+                TimeOfLog = DateTime.Now.AddHours(-3)
             };
 
             TicketLog ticket1Log2 = new TicketLog
@@ -403,11 +463,104 @@ namespace TicketManagement.Helpers
                 TicketLogType = TicketLogType.Message,
                 Message = "Hello, yes we will look into this and get back to you as soon as possible. Thanks",
                 IsInternal = false,
-                TimeOfLog = DateTime.Now
+                TimeOfLog = DateTime.Now.AddHours(-2)
             };
 
-            db.TicketLogs.Add(ticket1Log1);
+            TicketLog ticket1Log3 = new TicketLog
+            {
+                TicketId = org1Ticket1.Id,
+                Ticket = org1Ticket1,
+                SubmittedByUserId = internalUser2.Id,
+                SubmittedByUser = internalUser2,
+                TicketLogType = TicketLogType.Message,
+                Message = "Guy, can you look into this?",
+                IsInternal = true,
+                TimeOfLog = DateTime.Now.AddHours(-1)
+            };
+
+            TicketLog ticket2Log1 = new TicketLog
+            {
+                TicketId = org1Ticket2.Id,
+                Ticket = org1Ticket2,
+                SubmittedByUserId = org1User1.Id,
+                SubmittedByUser = org1User1,
+                TicketLogType = TicketLogType.Message,
+                Message = "Hello, sorry to bug you, but we could do with an update on this matter. Thanks",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-8)
+            };
+
+            TicketLog ticket2Log2 = new TicketLog
+            {
+                TicketId = org1Ticket2.Id,
+                Ticket = org1Ticket2,
+                SubmittedByUserId = internalUser3.Id,
+                SubmittedByUser = internalUser3,
+                TicketLogType = TicketLogType.Message,
+                Message = "No problem, we have emailed the new estimate, we will now close this ticket. Thanks",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-7)
+            };
+
+            TicketLog ticket3Log1 = new TicketLog
+            {
+                TicketId = org2Ticket1.Id,
+                Ticket = org2Ticket1,
+                SubmittedByUserId = org2User1.Id,
+                SubmittedByUser = org2User1,
+                TicketLogType = TicketLogType.Message,
+                Message = "We have had our team look at this overnight but we cannot get it to turn on, would you be able to assist please.",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-6)
+            };
+
+            TicketLog ticket3Log2 = new TicketLog
+            {
+                TicketId = org2Ticket1.Id,
+                Ticket = org2Ticket1,
+                SubmittedByUserId = internalUser1.Id,
+                SubmittedByUser = internalUser1,
+                TicketLogType = TicketLogType.Message,
+                Message = "We will send a team down, please expect a call within 24 hours.",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-5)
+            };
+
+            TicketLog ticket4Log1 = new TicketLog
+            {
+                TicketId = org3Ticket1.Id,
+                Ticket = org3Ticket1,
+                SubmittedByUserId = org3User2.Id,
+                SubmittedByUser = org3User2,
+                TicketLogType = TicketLogType.Message,
+                Message = "Unfortunately we have made a mistake and require the workload to be reinvestigated.",
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-5)
+            };
+
+            TicketLog ticket4Log2 = new TicketLog
+            {
+                TicketId = org3Ticket1.Id,
+                Ticket = org3Ticket1,
+                SubmittedByUserId = org3User2.Id,
+                SubmittedByUser = org3User2,
+                TicketLogType = TicketLogType.File,
+                FileId = file1.Id,
+                File = file1,
+                IsInternal = false,
+                TimeOfLog = DateTime.Now.AddHours(-5)
+            };
+
+
+            db.TicketLogs.Add(ticket1Log1); 
             db.TicketLogs.Add(ticket1Log2);
+            db.TicketLogs.Add(ticket1Log3);
+            db.TicketLogs.Add(ticket2Log1);
+            db.TicketLogs.Add(ticket2Log2);
+            db.TicketLogs.Add(ticket3Log1);
+            db.TicketLogs.Add(ticket3Log2);
+            db.TicketLogs.Add(ticket4Log1);
+            db.TicketLogs.Add(ticket4Log2);
 
             await db.SaveChangesAsync();
 

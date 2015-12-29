@@ -1,15 +1,13 @@
+using System.Data.Entity.Migrations;
+using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Migrations.Application
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<TicketManagement.Models.Context.ApplicationContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationContext>
     {
         public Configuration()
         {
@@ -17,7 +15,7 @@ namespace TicketManagement.Migrations.Application
             MigrationsDirectory = @"Migrations\Application";
         }
 
-        protected override void Seed(TicketManagement.Models.Context.ApplicationContext context)
+        protected override void Seed(ApplicationContext context)
         {
             if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context)).RoleExists("Administrator"))
                 context.Roles.AddOrUpdate(
@@ -37,6 +35,7 @@ namespace TicketManagement.Migrations.Application
                     LastName = "Admin",
                     UserName = "Admin",
                     Email = "admin@email.com",
+                    PhoneNumber = "00000000000",
                     IsArchived = false
                 };
 

@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.Properties;
 using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
@@ -101,7 +101,7 @@ namespace TicketManagement.Controllers
                 //    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", Resources.HomeController_Login_InvalidLoginAttempt);
                     return View(model);
             }
         }
@@ -146,7 +146,7 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await Helpers.PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
+                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -176,7 +176,7 @@ namespace TicketManagement.Controllers
 
             if (isInternal)
             {
-                Helpers.NotificationHelper.AddRoleNotificationToDb(db,
+                NotificationHelper.AddRoleNotificationToDb(db,
                     new RoleNotification
                     {
                         Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
@@ -187,7 +187,7 @@ namespace TicketManagement.Controllers
                     });
             }
 
-            Helpers.NotificationHelper.AddRoleNotificationToDb(db,
+            NotificationHelper.AddRoleNotificationToDb(db,
                     new RoleNotification
                     {
                         Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
