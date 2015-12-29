@@ -1,4 +1,6 @@
-﻿namespace TicketManagement.Models.Management
+﻿using System.Collections.Generic;
+
+namespace TicketManagement.Models.Management
 {
     public enum NotificationCategory
     {
@@ -40,6 +42,17 @@
         MessageFromInternalUser = 1,
         FileFromExternalUser = 2,
         FileFromInternalUser = 3
+    }
+
+    public static class EnumeratedTypesHelper
+    {
+        public static Dictionary<TicketLogType, string> TicketLogTypeDisplay = new Dictionary<TicketLogType, string>
+        {
+            { TicketLogType.FileFromExternalUser, "File"},
+            { TicketLogType.FileFromInternalUser, "File"},
+            { TicketLogType.MessageFromExternalUser, "Message"},
+            { TicketLogType.MessageFromInternalUser, "Message"}
+        };
     }
 
     // ----------------------------------------------------------------------------------------------------------------

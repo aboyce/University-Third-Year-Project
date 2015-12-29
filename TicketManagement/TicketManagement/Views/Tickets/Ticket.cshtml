@@ -1,4 +1,5 @@
-﻿@using TicketManagement.Models.Entities
+﻿@using Microsoft.AspNet.Identity
+@using TicketManagement.Models.Entities
 @using TicketManagement.Models.Management
 @using TicketManagement.ViewModels
 @model TicketViewModel
@@ -6,6 +7,7 @@
 @{
     ViewBag.Title = "Ticket";
     string panelColour = "panel-";
+    string ticketType;
 }
 
 @if (Request.Params["ViewMessage"] == "TicketMessageAdded")
@@ -127,20 +129,22 @@
 
 @foreach (TicketLog ticketLog in Model.TicketLogs)
 {
-    <div class="panel panel-@(ticketLog.IsInternal ? "info" : "primary")">
+    EnumeratedTypesHelper.TicketLogTypeDisplay.TryGetValue(ticketLog.TicketLogType, out ticketType);
+
+    <div class="panel panel-@(ticketLog.IsInternal ? "default" : (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser || ticketLog.TicketLogType == TicketLogType.FileFromInternalUser) ? "success" : "primary")">
         <div class="panel-heading">
-            <strong>@ticketLog.TicketLogType</strong>
+            <strong>@ticketType @(ticketLog.SubmittedByUserId == User.Identity.GetUserId() ? " (You)" : "")</strong>
             @(ticketLog.File != null ? $" - ({@ticketLog.File.FileType})": "")
             <div style="float: right">
                 @ticketLog.SubmittedByUser.FullName @@ @ticketLog.TimeOfLog
             </div>
         </div>
         <div class="panel-body">
-            @if (ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
+            @if (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser || ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
             {
                 @ticketLog.Message
             }
-            else if (ticketLog.TicketLogType == TicketLogType.FileFromExternalUser)
+            else if (ticketLog.TicketLogType == TicketLogType.FileFromInternalUser || ticketLog.TicketLogType == TicketLogType.FileFromExternalUser)
             {
                 if (ticketLog.File != null)
                 {

@@ -48,7 +48,7 @@
     }
 
     function toggleUploadButton() {
-        if ($('#file').val() === "")
+        if ($('#upload').val() === "")
             $('#btn-message-upload').attr('disabled', 'disabled');
         else
             $('#btn-message-upload').attr("disabled", false);

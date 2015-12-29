@@ -2,7 +2,12 @@
 
 @Styles.Render("~/bundles/bootstrap_toggle_css")
 
-<div class="panel panel-success">
+@{
+    bool isInternal = User.IsInRole("Internal");
+}
+
+
+<div class="panel panel-@(isInternal ? "success" : "primary")">
     <div class="panel-heading">
         <strong>New Response</strong>
         <div style="float: right">
@@ -29,8 +34,11 @@
                     @Html.HiddenFor(model => model.TicketId)
 
                     <div style="float: right">
-                        <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
-                        <input name="IsInternal" type="hidden" value="true" />
+                        @if (isInternal)
+                        {
+                            <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                            <input name="IsInternal" type="hidden" value="true" />
+                        }
                         <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled" />
                     </div>
                 }
@@ -49,9 +57,12 @@
                     @Html.HiddenFor(model => model.TicketId)
 
                     <div style="float: right">
-                        <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
-                        <input name="IsInternal" type="hidden" value="true" />
-                        <input id="btn-message-upload" type="submit" value="Upload" class="btn btn-xs btn-warning" disabled="disabled" />
+                        @if(isInternal)
+                        {
+                            <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                            <input name="IsInternal" type="hidden" value="true" />
+                        }
+                        <input id="btn-message-upload" type="submit" value="Upload" class="btn btn-xs btn-warning" disabled="disabled"/>
                     </div>
                 }
             </div>
