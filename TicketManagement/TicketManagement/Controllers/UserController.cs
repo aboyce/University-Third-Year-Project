@@ -15,7 +15,7 @@ using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Approved")]
     public class UserController : Controller
     {
         #region Properties

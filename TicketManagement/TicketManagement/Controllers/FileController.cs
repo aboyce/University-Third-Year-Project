@@ -4,6 +4,7 @@ using TicketManagement.Models.Context;
 
 namespace TicketManagement.Controllers
 {
+    [Authorize(Roles = "Approved")]
     public class FileController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

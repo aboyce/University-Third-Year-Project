@@ -10,7 +10,7 @@ using TicketManagement.Properties;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "TextMessage")]
+    [Authorize(Roles = "Administrator, TextMessage")]
     public class TextMessageController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

@@ -12,6 +12,7 @@ using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
+    [Authorize(Roles = "Approved")]
     public class NotificationController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

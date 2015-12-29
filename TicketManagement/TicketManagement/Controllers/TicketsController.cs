@@ -17,6 +17,7 @@ using File = TicketManagement.Models.Entities.File;
 
 namespace TicketManagement.Controllers
 {
+    [Authorize(Roles = "Approved")]
     public class TicketsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
