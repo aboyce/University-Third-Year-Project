@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
@@ -58,30 +59,41 @@ namespace TicketManagement.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            TicketState ticketState = await db.TicketStates.FindAsync(id);
+         
+            EditTicketStateViewModel vm = new EditTicketStateViewModel
+            {
+                TicketState = await db.TicketStates.FindAsync(id),
+                IsEditable = true
+            };
 
-            if (ticketState == null)
+            if (vm.TicketState == null)
                 return HttpNotFound();
-            
-            return View(ticketState);
+
+            if (vm.TicketState.Name == "Pending Approval" || vm.TicketState.Name == "Open" ||
+                vm.TicketState.Name == "Closed" || vm.TicketState.Name == "Awaiting Response")
+                vm.IsEditable = false;
+
+            return View(vm);
         }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Colour,LastUpdated")] TicketState ticketState)
+        public async Task<ActionResult> Edit([Bind(Include = "TicketState")] EditTicketStateViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticketState).State = EntityState.Modified;
+                if (vm.TicketState == null)
+                    return HttpNotFound();
+
+                db.Entry(vm.TicketState).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketStateUpdated });
             }
 
-            return View(ticketState);
+            return View(vm);
         }
 
         public async Task<ActionResult> Delete(int? id)

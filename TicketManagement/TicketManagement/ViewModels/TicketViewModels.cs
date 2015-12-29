@@ -21,5 +21,7 @@ namespace TicketManagement.ViewModels
         public string Message { get; set; }
 
         public bool IsInternal { get; set; }
+
+        public bool CloseOnReply { get; set; }
     }
 }

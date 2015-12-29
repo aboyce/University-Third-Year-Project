@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
@@ -30,7 +31,7 @@ namespace TicketManagement.Controllers
 
             if (!User.IsInRole("Internal")) // If the user is not internal than they should only be able to see thier tickets.
                 tickets = tickets.Where(t => t.OpenedById == id);
-            
+
             if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
             {
                 switch (sortType)
@@ -48,11 +49,11 @@ namespace TicketManagement.Controllers
                         tickets = tickets.Where(t => t.TicketState.Name == "Pending Approval");
                         break;
                     case TicketSort.Mine:
-                          tickets = tickets.Where(t => t.UserAssignedToId == id);
+                        tickets = tickets.Where(t => t.UserAssignedToId == id);
                         break;
-                    //case TicketSort.All:
-                    //default:
-                    //    break;
+                        //case TicketSort.All:
+                        //default:
+                        //    break;
                 }
             }
 
@@ -84,26 +85,12 @@ namespace TicketManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> NewTicketLogMessage(NewTicketLogViewModel vm)
         {
-            string userId = User.Identity.GetUserId();
-
             TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
 
-            TicketLog ticketLog = new TicketLog
-            {
-                Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
-                TicketId = vm.TicketId,
-                TicketLogType = type,
-                SubmittedByUserId = userId,
-                SubmittedByUser = db.Users.Find(userId),
-                Message = vm.Message,
-                IsInternal = vm.IsInternal,
-                TimeOfLog = DateTime.Now
-            };
-
-            db.TicketLogs.Add(ticketLog);
-            await db.SaveChangesAsync();
-
-            return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+            if(await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message:vm.Message))
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+            else
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
         }
 
         [HttpPost]
@@ -132,26 +119,12 @@ namespace TicketManagement.Controllers
                 db.Files.Add(file);
                 await db.SaveChangesAsync();
 
-                string userId = User.Identity.GetUserId();
-
                 TicketLogType type = User.IsInRole("Internal") ? TicketLogType.FileFromInternalUser : TicketLogType.FileFromExternalUser;
 
-                TicketLog ticketLog = new TicketLog
-                {
-                    Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
-                    TicketId = vm.TicketId,
-                    TicketLogType = type,
-                    SubmittedByUserId = userId,
-                    SubmittedByUser = db.Users.Find(userId),
-                    FileId = file.Id,
-                    IsInternal = vm.IsInternal,
-                    TimeOfLog = DateTime.Now
-                };
-
-                db.TicketLogs.Add(ticketLog);
-                await db.SaveChangesAsync();
-
-                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
+                if (await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message: vm.Message))
+                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
+                else
+                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
             }
 
             ModelState.AddModelError("", Resources.TicketsController_NewTicketLogFile_ProblemWithUploadedFile);
@@ -164,12 +137,12 @@ namespace TicketManagement.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
             Ticket ticket = await db.Tickets.FindAsync(id);
 
             if (ticket == null)
                 return HttpNotFound();
-            
+
             return View(ticket);
         }
 
@@ -237,12 +210,12 @@ namespace TicketManagement.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
             Ticket ticket = db.Tickets.Find(id);
 
             if (ticket == null)
                 return HttpNotFound();
-            
+
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
@@ -297,12 +270,12 @@ namespace TicketManagement.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
             Ticket ticket = await db.Tickets.FindAsync(id);
 
             if (ticket == null)
                 return HttpNotFound();
-            
+
             return View(ticket);
         }
 

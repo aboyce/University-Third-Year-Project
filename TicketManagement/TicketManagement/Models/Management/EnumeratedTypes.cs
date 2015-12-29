@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Models.Management
 {
@@ -32,27 +33,6 @@ namespace TicketManagement.Models.Management
     {
         SendSuccess,
         SendFailure
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------
-
-    public enum TicketLogType
-    {
-        MessageFromExternalUser = 0,
-        MessageFromInternalUser = 1,
-        FileFromExternalUser = 2,
-        FileFromInternalUser = 3
-    }
-
-    public static class EnumeratedTypesHelper
-    {
-        public static Dictionary<TicketLogType, string> TicketLogTypeDisplay = new Dictionary<TicketLogType, string>
-        {
-            { TicketLogType.FileFromExternalUser, "File"},
-            { TicketLogType.FileFromInternalUser, "File"},
-            { TicketLogType.MessageFromExternalUser, "Message"},
-            { TicketLogType.MessageFromInternalUser, "Message"}
-        };
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -115,6 +95,7 @@ namespace TicketManagement.Models.Management
         TeamDeleted,
 
         TicketMessageAdded,
+        TicketMessageNotAdded,
         TicketFileAdded,
         TicketFileNotAdded,
 

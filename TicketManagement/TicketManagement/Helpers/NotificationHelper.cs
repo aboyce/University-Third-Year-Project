@@ -86,22 +86,22 @@ namespace TicketManagement.Helpers
         }
 
         /* GET NOTIFICATIONS FOR USERS */
-        public static async Task<List<UserNotification>> GetUserNotificationsForUserAsync(ApplicationContext db, string userId)
+        public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
         {
-            return await db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToListAsync();
+            return  db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
         }
-        public static async Task<List<RoleNotification>> GetRoleNotificationsForUserAsync(ApplicationContext db, string userId, IList<string> userRolesByName)
+        public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
         {
             List<RoleNotification> notifications = new List<RoleNotification>();
 
-            foreach (var rn in await db.RoleNotifications.ToListAsync())
+            foreach (var rn in db.RoleNotifications.ToList())
             {
                 foreach (var roleId in GetRoleIdsForUser(db, userRolesByName))
                 {
                     if (rn.Role.Id == roleId)
                     {
                         if (rn.NotificationAbout == null)
-                            rn.NotificationAbout = await db.Users.FirstOrDefaultAsync(u => u.Id == rn.NotificationAboutId);
+                            rn.NotificationAbout = db.Users.FirstOrDefault(u => u.Id == rn.NotificationAboutId);
 
                         notifications.Add(rn);
                     }

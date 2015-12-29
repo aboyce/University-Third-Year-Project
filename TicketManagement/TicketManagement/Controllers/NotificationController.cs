@@ -24,23 +24,23 @@ namespace TicketManagement.Controllers
             private set { _userManager = value; }
         }
 
-        public async Task<ActionResult> Index(NotificationViewModel vm)
+        public ActionResult Index(NotificationViewModel vm)
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = await NotificationHelper.GetRoleNotificationsForUserAsync(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = await NotificationHelper.GetUserNotificationsForUserAsync(db, user.Id);
+            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
+            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return View(vm);
         }
 
         [ChildActionOnly]
-        public async Task<ActionResult> _Partial_Notifications(NotificationViewModel vm)
+        public ActionResult _Partial_Notifications(NotificationViewModel vm)
         {
-            User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            User user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = await NotificationHelper.GetRoleNotificationsForUserAsync(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = await NotificationHelper.GetUserNotificationsForUserAsync(db, user.Id);
+            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
+            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
 
             return PartialView(vm);
         }

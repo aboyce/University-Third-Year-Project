@@ -207,6 +207,7 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
+    <Compile Include="Helpers\TicketLogTypeHelper.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.Designer.cs">
       <DependentUpon>201512270115218_Re-Re-Initial.cs</DependentUpon>
@@ -252,6 +253,7 @@
     <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\NotificationViewModels.cs" />
+    <Compile Include="ViewModels\TicketStateViewModels.cs" />
     <Compile Include="ViewModels\TicketViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
