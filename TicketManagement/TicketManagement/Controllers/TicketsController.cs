@@ -68,11 +68,15 @@ namespace TicketManagement.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id);
+
+            if (!User.IsInRole("Internal"))
+                ticketLogs = ticketLogs.Where(tl => tl.IsInternal == false);
 
             TicketViewModel vm = new TicketViewModel
             {
                 Ticket = await db.Tickets.FindAsync(id),
-                TicketLogs = await db.TicketLogs.Where(tl => tl.TicketId == id).ToListAsync()
+                TicketLogs = await ticketLogs.ToListAsync()
             };
 
             if (vm.Ticket == null)
@@ -87,11 +91,13 @@ namespace TicketManagement.Controllers
         {
             string userId = User.Identity.GetUserId();
 
+            TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
+
             TicketLog ticketLog = new TicketLog
             {
                 Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
                 TicketId = vm.TicketId,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = type,
                 SubmittedByUserId = userId,
                 SubmittedByUser = db.Users.Find(userId),
                 Message = vm.Message,
@@ -134,11 +140,13 @@ namespace TicketManagement.Controllers
 
                 string userId = User.Identity.GetUserId();
 
+                TicketLogType type = User.IsInRole("Internal") ? TicketLogType.FileFromInternalUser : TicketLogType.FileFromExternalUser;
+
                 TicketLog ticketLog = new TicketLog
                 {
                     Ticket = db.Tickets.FirstOrDefault(t => t.Id == vm.TicketId),
                     TicketId = vm.TicketId,
-                    TicketLogType = TicketLogType.File,
+                    TicketLogType = type,
                     SubmittedByUserId = userId,
                     SubmittedByUser = db.Users.Find(userId),
                     FileId = file.Id,

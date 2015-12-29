@@ -36,8 +36,10 @@
 
     public enum TicketLogType
     {
-        Message = 0,
-        File = 1
+        MessageFromExternalUser = 0,
+        MessageFromInternalUser = 1,
+        FileFromExternalUser = 2,
+        FileFromInternalUser = 3
     }
 
     // ----------------------------------------------------------------------------------------------------------------

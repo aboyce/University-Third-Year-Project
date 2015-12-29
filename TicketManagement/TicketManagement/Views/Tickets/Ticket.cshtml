@@ -1,7 +1,7 @@
 ﻿@using TicketManagement.Models.Entities
 @using TicketManagement.Models.Management
 @using TicketManagement.ViewModels
-@model TicketManagement.ViewModels.TicketViewModel
+@model TicketViewModel
 
 @{
     ViewBag.Title = "Ticket";
@@ -136,11 +136,11 @@
             </div>
         </div>
         <div class="panel-body">
-            @if (ticketLog.TicketLogType == TicketLogType.Message)
+            @if (ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
             {
                 @ticketLog.Message
             }
-            else if (ticketLog.TicketLogType == TicketLogType.File)
+            else if (ticketLog.TicketLogType == TicketLogType.FileFromExternalUser)
             {
                 if (ticketLog.File != null)
                 {

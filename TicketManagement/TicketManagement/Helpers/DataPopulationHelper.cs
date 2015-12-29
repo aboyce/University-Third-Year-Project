@@ -26,11 +26,14 @@ namespace TicketManagement.Helpers
         {
             #region Internal Users
 
+            if (await db.Users.Where(u => u.UserName == "Steve_Brown").CountAsync() > 0)
+                return false;
+
             User internalUser1 = new User
             {
                 FirstName = "Steve",
                 LastName = "Brown",
-                UserName = "Steve_Brown",
+                UserName = "Steve_Brown", // Update the check above if this changes.
                 Email = $"steve{internalEmailEnd}",
                 PhoneNumber = "01234567890",
                 IsArchived = false
@@ -102,6 +105,10 @@ namespace TicketManagement.Helpers
             um.Create(org1User2, demoPassword);
             um.Create(org1User3, demoPassword);
 
+            await um.AddToRoleAsync(org1User1.Id, "Approved");
+            await um.AddToRoleAsync(org1User2.Id, "Approved");
+            await um.AddToRoleAsync(org1User3.Id, "Approved");
+
             #endregion
 
             #region Organisation Users (Sally's Software)
@@ -117,6 +124,8 @@ namespace TicketManagement.Helpers
             };
 
             um.Create(org2User1, demoPassword);
+
+            await um.AddToRoleAsync(org2User1.Id, "Approved");
 
             #endregion
 
@@ -144,6 +153,9 @@ namespace TicketManagement.Helpers
 
             um.Create(org3User1, demoPassword);
             um.Create(org3User2, demoPassword);
+
+            await um.AddToRoleAsync(org3User1.Id, "Approved");
+            await um.AddToRoleAsync(org3User2.Id, "Approved");
 
             #endregion
 
@@ -448,7 +460,7 @@ namespace TicketManagement.Helpers
                 Ticket = org1Ticket1,
                 SubmittedByUserId = org1User2.Id,
                 SubmittedByUser = org1User2,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 Message = "Hello, would you be able to look at this for us please. Thanks",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-3)
@@ -460,7 +472,7 @@ namespace TicketManagement.Helpers
                 Ticket = org1Ticket1,
                 SubmittedByUserId = internalUser2.Id,
                 SubmittedByUser = internalUser2,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromInternalUser,
                 Message = "Hello, yes we will look into this and get back to you as soon as possible. Thanks",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-2)
@@ -472,7 +484,7 @@ namespace TicketManagement.Helpers
                 Ticket = org1Ticket1,
                 SubmittedByUserId = internalUser2.Id,
                 SubmittedByUser = internalUser2,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromInternalUser,
                 Message = "Guy, can you look into this?",
                 IsInternal = true,
                 TimeOfLog = DateTime.Now.AddHours(-1)
@@ -484,7 +496,7 @@ namespace TicketManagement.Helpers
                 Ticket = org1Ticket2,
                 SubmittedByUserId = org1User1.Id,
                 SubmittedByUser = org1User1,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 Message = "Hello, sorry to bug you, but we could do with an update on this matter. Thanks",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-8)
@@ -496,7 +508,7 @@ namespace TicketManagement.Helpers
                 Ticket = org1Ticket2,
                 SubmittedByUserId = internalUser3.Id,
                 SubmittedByUser = internalUser3,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromInternalUser,
                 Message = "No problem, we have emailed the new estimate, we will now close this ticket. Thanks",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-7)
@@ -508,7 +520,7 @@ namespace TicketManagement.Helpers
                 Ticket = org2Ticket1,
                 SubmittedByUserId = org2User1.Id,
                 SubmittedByUser = org2User1,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 Message = "We have had our team look at this overnight but we cannot get it to turn on, would you be able to assist please.",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-6)
@@ -520,7 +532,7 @@ namespace TicketManagement.Helpers
                 Ticket = org2Ticket1,
                 SubmittedByUserId = internalUser1.Id,
                 SubmittedByUser = internalUser1,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromInternalUser,
                 Message = "We will send a team down, please expect a call within 24 hours.",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-5)
@@ -532,7 +544,7 @@ namespace TicketManagement.Helpers
                 Ticket = org3Ticket1,
                 SubmittedByUserId = org3User2.Id,
                 SubmittedByUser = org3User2,
-                TicketLogType = TicketLogType.Message,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 Message = "Unfortunately we have made a mistake and require the workload to be reinvestigated.",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-5)
@@ -544,7 +556,7 @@ namespace TicketManagement.Helpers
                 Ticket = org3Ticket1,
                 SubmittedByUserId = org3User2.Id,
                 SubmittedByUser = org3User2,
-                TicketLogType = TicketLogType.File,
+                TicketLogType = TicketLogType.FileFromExternalUser,
                 FileId = file1.Id,
                 File = file1,
                 IsInternal = false,
