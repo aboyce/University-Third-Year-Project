@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
@@ -13,109 +14,107 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        // GET: TicketCategories
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             var ticketCategories = db.TicketCategories.Include(t => t.Project);
-            return View(ticketCategories.ToList());
+            return View(await ticketCategories.ToListAsync());
         }
 
-        // GET: TicketCategories/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketCategory ticketCategory = db.TicketCategories.Find(id);
+            
+            TicketCategory ticketCategory = await db.TicketCategories.FindAsync(id);
+
             if (ticketCategory == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(ticketCategory);
         }
 
-        // GET: TicketCategories/Create
         public ActionResult Create()
         {
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+
             return View();
         }
 
-        // POST: TicketCategories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ProjectId,LastUpdated")] TicketCategory ticketCategory)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ProjectId,LastUpdated")] TicketCategory ticketCategory)
         {
             if (ModelState.IsValid)
             {
                 db.TicketCategories.Add(ticketCategory);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
+
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryAdded });
             }
 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketCategory.ProjectId);
+
             return View(ticketCategory);
         }
 
-        // GET: TicketCategories/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketCategory ticketCategory = db.TicketCategories.Find(id);
+            
+            TicketCategory ticketCategory = await db.TicketCategories.FindAsync(id);
+
             if (ticketCategory == null)
-            {
                 return HttpNotFound();
-            }
+            
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketCategory.ProjectId);
+
             return View(ticketCategory);
         }
 
-        // POST: TicketCategories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ProjectId,LastUpdated")] TicketCategory ticketCategory)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ProjectId,LastUpdated")] TicketCategory ticketCategory)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(ticketCategory).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
+
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryUpdated });
             }
+
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketCategory.ProjectId);
+
             return View(ticketCategory);
         }
 
-        // GET: TicketCategories/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketCategory ticketCategory = db.TicketCategories.Find(id);
+            
+            TicketCategory ticketCategory = await db.TicketCategories.FindAsync(id);
+
             if (ticketCategory == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(ticketCategory);
         }
 
-        // POST: TicketCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            TicketCategory ticketCategory = db.TicketCategories.Find(id);
+            TicketCategory ticketCategory = await db.TicketCategories.FindAsync(id);
+
             db.TicketCategories.Remove(ticketCategory);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryDeleted });
         }
 

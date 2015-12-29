@@ -15,14 +15,12 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        // GET: Index
         public async Task<ActionResult> Index()
         {
             var textMessages = db.TextMessages.Select(tm => tm);
             return View(await textMessages.ToListAsync());
         }
 
-        // GET: Send
         public ActionResult Send()
         {
             ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
@@ -30,7 +28,6 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        // POST: Send
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -82,7 +79,6 @@ namespace TicketManagement.Controllers
 
             return View();
         }
-
 
         protected override void Dispose(bool disposing)
         {

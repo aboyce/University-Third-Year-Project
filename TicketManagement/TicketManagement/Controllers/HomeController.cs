@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -61,8 +62,6 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        //
-        // GET: /Home/Login
         public ActionResult Login(string returnUrl)
         {
             if (returnUrl != string.Empty && User.Identity.IsAuthenticated) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
@@ -72,11 +71,10 @@ namespace TicketManagement.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
+
             return View();
         }
 
-        //
-        // POST: /Home/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
@@ -114,14 +112,9 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.PendingApproval });
             }
 
-            if (returnUrl != string.Empty)
-                return RedirectToLocal(returnUrl);
-
-            return RedirectToAction("Index", "Tickets");
+            return returnUrl != string.Empty ? RedirectToLocal(returnUrl) : RedirectToAction("Index", "Tickets");
         }
 
-        //
-        // POST: /Home/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -130,16 +123,12 @@ namespace TicketManagement.Controllers
             return RedirectToAction("Index", "Home", new { ViewMessage = ManageMessageId.LoggedOff });
         }
 
-        //
-        // GET: /Home/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //
-        // POST: /Home/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
@@ -169,10 +158,10 @@ namespace TicketManagement.Controllers
             return View(model);
         }
 
-        public ActionResult CheckRegister(bool isInternal)
+        public async Task<ActionResult> CheckRegister(bool isInternal)
         {
             string userId = User.Identity.GetUserId();
-            var user = db.Users.Where(u => u.Id == userId).Select(u => u).FirstOrDefault();
+            var user = await db.Users.Where(u => u.Id == userId).Select(u => u).FirstOrDefaultAsync();
 
             if (isInternal)
             {

@@ -15,36 +15,31 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        // GET: Organisations
         public async Task<ActionResult> Index()
         {
             var organisations = db.Organisations.Include(o => o.DefaultContact);
             return View(await organisations.ToListAsync());
         }
 
-        // GET: Organisations/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             Organisation organisation = await db.Organisations.FindAsync(id);
+
             if (organisation == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(organisation);
         }
 
-        // GET: Organisations/Create
         public ActionResult Create()
         {
             ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 
-        // POST: Organisations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -56,10 +51,11 @@ namespace TicketManagement.Controllers
                 string defaulContactId = Request.Form["PossibleDefaultContacts"];
 
                 organisation.DefaultContactId = defaulContactId;
-                organisation.DefaultContact = db.Users.FirstOrDefault(u => u.Id == defaulContactId);
+                organisation.DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == defaulContactId);
 
                 db.Organisations.Add(organisation);
                 await db.SaveChangesAsync();
+
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationUpdated});
             }
 
@@ -67,23 +63,21 @@ namespace TicketManagement.Controllers
             return View(organisation);
         }
 
-        // GET: Organisations/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             Organisation organisation = await db.Organisations.FindAsync(id);
+
             if (organisation == null)
-            {
                 return HttpNotFound();
-            }
+            
             ViewBag.PossibleDefaultContacts = new SelectList(db.Users, "Id", "FullName", organisation.DefaultContactId);
+
             return View(organisation);
         }
 
-        // POST: Organisations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -95,11 +89,12 @@ namespace TicketManagement.Controllers
                 string defaulContactId = Request.Form["PossibleDefaultContacts"];
 
                 organisation.DefaultContactId = defaulContactId;
-                organisation.DefaultContact = db.Users.FirstOrDefault(u => u.Id == defaulContactId);
+                organisation.DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == defaulContactId);
                 organisation.LastUpdated = DateTime.Now;
 
                 db.Entry(organisation).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationUpdated });
             }
 
@@ -108,29 +103,28 @@ namespace TicketManagement.Controllers
             return View(organisation);
         }
 
-        // GET: Organisations/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             Organisation organisation = await db.Organisations.FindAsync(id);
+
             if (organisation == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(organisation);
         }
 
-        // POST: Organisations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Organisation organisation = await db.Organisations.FindAsync(id);
+
             db.Organisations.Remove(organisation);
             await db.SaveChangesAsync();
+
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationDeleted });
         }
 

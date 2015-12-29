@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -72,35 +73,35 @@ namespace TicketManagement.Helpers
         public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
             db.UserNotifications.Add(notification);
-            db.SaveChanges();
+            db.SaveChangesAsync();
 
             return true;
         }
         public static bool AddRoleNotificationToDb(ApplicationContext db, RoleNotification notification)
         {
             db.RoleNotifications.Add(notification);
-            db.SaveChanges();
+            db.SaveChangesAsync();
 
             return true;
         }
 
         /* GET NOTIFICATIONS FOR USERS */
-        public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
+        public static async Task<List<UserNotification>> GetUserNotificationsForUserAsync(ApplicationContext db, string userId)
         {
-            return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
+            return await db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToListAsync();
         }
-        public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
+        public static async Task<List<RoleNotification>> GetRoleNotificationsForUserAsync(ApplicationContext db, string userId, IList<string> userRolesByName)
         {
             List<RoleNotification> notifications = new List<RoleNotification>();
 
-            foreach (var rn in db.RoleNotifications.ToList())
+            foreach (var rn in await db.RoleNotifications.ToListAsync())
             {
                 foreach (var roleId in GetRoleIdsForUser(db, userRolesByName))
                 {
                     if (rn.Role.Id == roleId)
                     {
                         if (rn.NotificationAbout == null)
-                            rn.NotificationAbout = db.Users.FirstOrDefault(u => u.Id == rn.NotificationAboutId);
+                            rn.NotificationAbout = await db.Users.FirstOrDefaultAsync(u => u.Id == rn.NotificationAboutId);
 
                         notifications.Add(rn);
                     }

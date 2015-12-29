@@ -9,7 +9,6 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        // GET: File
         public async Task<ActionResult> Index(int id)
         {
             var fileToRetrieve = await db.Files.FindAsync(id);

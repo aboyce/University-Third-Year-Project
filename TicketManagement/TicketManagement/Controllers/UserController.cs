@@ -44,10 +44,9 @@ namespace TicketManagement.Controllers
 
         #region GET/POST
 
-        // GET: Index
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            User user = UserManager.FindById(User.Identity.GetUserId());
+            User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
             {
@@ -60,7 +59,6 @@ namespace TicketManagement.Controllers
             return View(user);
         }
 
-        // POST: Index
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
@@ -71,7 +69,7 @@ namespace TicketManagement.Controllers
                 Team team = null;
 
                 if (int.TryParse(Request.Form["Teams"], out teamId))
-                    team = db.Teams.FirstOrDefault(t => t.Id == teamId);
+                    team = await db.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
                 if (team != null)
                 {
@@ -89,37 +87,36 @@ namespace TicketManagement.Controllers
             }
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
+
             return View(user);
         }
 
-        //
-        // GET: /User/ChangePassword
         public ActionResult ChangePassword()
         {
             return View();
         }
 
-        //
-        // POST: /User/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
+            
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
                 if (user != null)
-                {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
+                
                 return RedirectToAction("Index", new { ViewMessage = ManageMessageId.ChangePasswordSuccess });
             }
+
             AddErrors(result);
+
             return View(model);
         }
 
@@ -127,8 +124,6 @@ namespace TicketManagement.Controllers
 
         #region ExternalLogin
 
-        ////
-        //// GET: /Account/ExternalLoginFailure
         //[AllowAnonymous]
         //public ActionResult ExternalLoginFailure()
         //{

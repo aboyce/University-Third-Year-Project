@@ -71,16 +71,12 @@ namespace TicketManagement.Controllers
             return View(totals);
         }
 
-        //
-        // GET: Users
         public ActionResult Users()
         {
             return View(db.Users.Select(u => u).ToList().ToDictionary(user => user, user => UserManager.GetRoles(user.Id)));
         }
-        
-        //
-        // GET: UserEdit
-        public ActionResult UserEdit(string id)
+
+        public async Task<ActionResult> UserEdit(string id)
         {
             if (id == null)
             {
@@ -88,7 +84,7 @@ namespace TicketManagement.Controllers
                 return View("Error");
             }
 
-            User user = UserManager.FindById(id);
+            User user = await UserManager.FindByIdAsync(id);
 
             if (user == null)
             {
@@ -103,7 +99,6 @@ namespace TicketManagement.Controllers
             return View(user);
         }
 
-        // POST: UserEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UserEdit([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
@@ -138,8 +133,6 @@ namespace TicketManagement.Controllers
             return View(user);
         }
 
-
-        // POST: PopulateData
         [HttpPost]
         public async Task<ActionResult> PopulateData()
         {
@@ -151,7 +144,6 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.DataNotPopulated });
         }
 
-        // POST: AddRole
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddRole(AddRemoveRoleViewmodel vm)
@@ -169,18 +161,17 @@ namespace TicketManagement.Controllers
             if (await UserManager.IsInRoleAsync(vm.UserId, roleName))
                 return RedirectToAction("UserEdit", new {id = vm.UserId, ViewMessage = ViewMessage.AlreadyInRole});
 
-            UserManager.AddToRole(vm.UserId, roleName);
+            await UserManager.AddToRoleAsync(vm.UserId, roleName);
 
             return RedirectToAction("UserEdit", new {id = vm.UserId, ViewMessage = ViewMessage.RoleAdded });
         }
 
-        // POST: RemoveRole
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RemoveRole(AddRemoveRoleViewmodel vm)
+        public async Task<ActionResult> RemoveRole(AddRemoveRoleViewmodel vm)
         {
             string roleId = Request.Form["RolesToRemove"];
-            string roleName = db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefault();
+            string roleName = await db.Roles.Where(r => r.Id == roleId).Select(rn => rn.Name).FirstOrDefaultAsync();
 
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotRemoved });
@@ -188,14 +179,11 @@ namespace TicketManagement.Controllers
             if (!UserManager.IsInRole(vm.UserId, roleName))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInRole });
 
-            UserManager.RemoveFromRole(vm.UserId, roleName);
+            await UserManager.RemoveFromRoleAsync(vm.UserId, roleName);
 
             return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleRemoved });
         }
 
-
-        //
-        // POST: /Admin/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
@@ -218,8 +206,6 @@ namespace TicketManagement.Controllers
             return RedirectToAction("ManageLogins", new { ViewMessage = message });
         }
 
-        //
-        // GET: /Admin/ExternalLogins
         public async Task<ActionResult> ExternalLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =

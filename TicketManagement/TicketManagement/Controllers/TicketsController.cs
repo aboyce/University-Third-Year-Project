@@ -22,18 +22,15 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        // GET: Tickets
         public async Task<ActionResult> Index()
         {
+            string id = User.Identity.GetUserId();
             TicketSort sortType; // Defaults to the first one.
             var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
 
             if (!User.IsInRole("Internal")) // If the user is not internal than they should only be able to see thier tickets.
-            {
-                string id = User.Identity.GetUserId();
                 tickets = tickets.Where(t => t.OpenedById == id);
-            }
-
+            
             if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
             {
                 switch (sortType)
@@ -51,8 +48,7 @@ namespace TicketManagement.Controllers
                         tickets = tickets.Where(t => t.TicketState.Name == "Pending Approval");
                         break;
                     case TicketSort.Mine:
-                        string id = User.Identity.GetUserId();
-                        tickets = tickets.Where(t => t.UserAssignedToId == id);
+                          tickets = tickets.Where(t => t.UserAssignedToId == id);
                         break;
                     //case TicketSort.All:
                     //default:
@@ -63,7 +59,6 @@ namespace TicketManagement.Controllers
             return View(await tickets.ToListAsync());
         }
 
-        // GET: Tickets/Ticket
         public async Task<ActionResult> Ticket(int? id)
         {
             if (id == null)
@@ -86,7 +81,6 @@ namespace TicketManagement.Controllers
             return View(vm);
         }
 
-        // POST: Tickets/NewTicketLogMessage
         [HttpPost]
         public async Task<ActionResult> NewTicketLogMessage(NewTicketLogViewModel vm)
         {
@@ -112,7 +106,6 @@ namespace TicketManagement.Controllers
             return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
         }
 
-        // POST: Tickets/NewTicketLogFlie
         [HttpPost]
         public async Task<ActionResult> NewTicketLogFile(NewTicketLogViewModel vm, HttpPostedFileBase upload)
         {
@@ -167,22 +160,19 @@ namespace TicketManagement.Controllers
         }
 
 
-        // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
+            
+            Ticket ticket = await db.Tickets.FindAsync(id);
+
             if (ticket == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(ticket);
         }
 
-        // GET: Tickets/Create
         public ActionResult Create()
         {
             ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id");
@@ -193,15 +183,15 @@ namespace TicketManagement.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name");
             ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id");
+
             return View();
         }
 
-        // POST: Tickets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
             if (deadlineString.IsNullOrWhiteSpace())
                 ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
@@ -226,7 +216,8 @@ namespace TicketManagement.Controllers
                 }
 
                 db.Tickets.Add(ticket);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
 
@@ -238,21 +229,20 @@ namespace TicketManagement.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
             ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id", ticket.UserAssignedToId);
+
             return View(ticket);
         }
 
-        // GET: Tickets/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             Ticket ticket = db.Tickets.Find(id);
+
             if (ticket == null)
-            {
                 return HttpNotFound();
-            }
+            
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
@@ -260,15 +250,15 @@ namespace TicketManagement.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
             ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
+
             return View(ticket);
         }
 
-        // POST: Tickets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,OpenedById,TicketPriorityId,TeamAssignedToId,OrganisationAssignedToId,TicketStateId,ProjectId,TicketCategoryId,Deadline,LastMessage,LastResponse,LastUpdated")] Ticket ticket, string deadlineString)
         {
             ticket.UserAssignedToId = Request.Form["UserAssignedToId"];
 
@@ -288,9 +278,10 @@ namespace TicketManagement.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(ticket).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name", ticket.OrganisationAssignedToId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TeamAssignedToId = new SelectList(db.Teams, "Id", "Name", ticket.TeamAssignedToId);
@@ -298,32 +289,32 @@ namespace TicketManagement.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name", ticket.TicketStateId);
             ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "FullName", ticket.UserAssignedToId);
+
             return View(ticket);
         }
 
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
+            
+            Ticket ticket = await db.Tickets.FindAsync(id);
+
             if (ticket == null)
-            {
                 return HttpNotFound();
-            }
+            
             return View(ticket);
         }
 
-        // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Ticket ticket = db.Tickets.Find(id);
+            Ticket ticket = await db.Tickets.FindAsync(id);
+
             db.Tickets.Remove(ticket);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 
