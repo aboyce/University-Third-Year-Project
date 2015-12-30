@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Clockwork;
 using TicketManagement.Models.Entities;
 
@@ -56,9 +57,9 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public Task<string> SendTextMessageAsync(TextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
+        public Task<string> SendTextMessageAsync(Base_TextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
 
-        private string SendTextMessage(TextMessage txt)
+        private string SendTextMessage(Base_TextMessage txt)
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
@@ -97,6 +98,19 @@ namespace TicketManagement.Helpers
                 // Something else went wrong, the error message should help
                 return "Unknown Exception: " + ex.Message;
             }
+        }
+
+        public async Task<bool> ReceiveTextMessageAsync(string xmlString)
+        {
+            XDocument xml;
+
+            if (xmlString == null) return false;
+
+            xml = XDocument.Parse(xmlString);
+
+
+
+            return false;
         }
     }
 }

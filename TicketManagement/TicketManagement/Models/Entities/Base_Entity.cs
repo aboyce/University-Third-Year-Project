@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Models.Entities
 {
-    public abstract class EntityBase
+    public abstract class Base_Entity
     {
         [Key]
         [Editable(false)]

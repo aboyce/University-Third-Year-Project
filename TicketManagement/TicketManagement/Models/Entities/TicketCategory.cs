@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class TicketCategory : EntityBase
+    public class TicketCategory : Base_Entity
     {
         private string _name;
         private int? _projectId = null;

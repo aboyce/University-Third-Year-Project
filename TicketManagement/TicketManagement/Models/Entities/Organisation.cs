@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class Organisation : EntityBase
+    public class Organisation : Base_Entity
     {
         private string _name;
         private bool _isInternal = false;
