@@ -224,6 +224,10 @@
     <Compile Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.Designer.cs">
       <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.cs" />
+    <Compile Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.Designer.cs">
+      <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
@@ -494,6 +498,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.resx">
       <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.resx">
+      <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

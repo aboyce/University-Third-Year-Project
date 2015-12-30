@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.Models.Entities
 {
     public class ReceivedTextMessage : Base_TextMessage
     {
+        public ReceivedTextMessage() {}
+
         [Required]
         public string ClockworkId { get; set; }
+
+        [Required]
+        public string ClockworkNetworkCode { get; set; }
+
+        [Required]
+        public string ClockworkNetworkKeyword { get; set; }
 
         [Required]
         public bool Read { get; set; }

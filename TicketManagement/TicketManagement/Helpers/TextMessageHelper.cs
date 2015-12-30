@@ -57,9 +57,9 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public Task<string> SendTextMessageAsync(Base_TextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
+        public Task<string> SendTextMessageAsync(SentTextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
 
-        private string SendTextMessage(Base_TextMessage txt)
+        private string SendTextMessage(SentTextMessage txt)
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
@@ -69,8 +69,8 @@ namespace TicketManagement.Helpers
                 API api = new API(_apiKey);
                 SMSResult result = api.Send(new SMS
                 {
-                    To = txt.Number,
-                    Message = txt.Message,
+                    To = txt.To,
+                    Message = txt.Content,
                     From = txt.From
                 });
 
