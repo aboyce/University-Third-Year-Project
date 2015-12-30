@@ -20,7 +20,7 @@ namespace TicketManagement.Helpers
         }
 
 
-        public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(() => CheckBalance()); }
+        public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(CheckBalance); }
 
         public string CheckBalance()
         {
@@ -100,17 +100,20 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public async Task<bool> ReceiveTextMessageAsync(string xmlString)
+        public ReceivedTextMessage ReceiveTextMessage(string xmlString)
         {
-            XDocument xml;
+            if (string.IsNullOrEmpty(xmlString)) return null;
 
-            if (xmlString == null) return false;
+            XElement xml = XElement.Parse(xmlString);
+            
+            string id = (string)xml.Element("Id");
+            string to = (string) xml.Element("To");
+            string from = (string)xml.Element("From");
+            string networkCode = (string)xml.Element("Network");
+            string keyword = (string)xml.Element("Keyword");
+            string content = (string)xml.Element("Content");
 
-            xml = XDocument.Parse(xmlString);
-
-
-
-            return false;
+            return new ReceivedTextMessage(to, from, content, id, networkCode, keyword);
         }
     }
 }

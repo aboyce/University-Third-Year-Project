@@ -228,6 +228,10 @@
     <Compile Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.Designer.cs">
       <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512302307448_Text Message Changes.cs" />
+    <Compile Include="Migrations\Application\201512302307448_Text Message Changes.Designer.cs">
+      <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
@@ -501,6 +505,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.resx">
       <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512302307448_Text Message Changes.resx">
+      <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -97,16 +97,19 @@ namespace TicketManagement.Controllers
             if (Request.InputStream != null)
             {
                 StreamReader stream = new StreamReader(Request.InputStream);
-                xmlString = HttpUtility.UrlDecode(stream.ReadToEnd());
+                xmlString = HttpUtility.UrlDecode(stream.ReadToEnd()); ;
             }
 
             TextMessageHelper txtHelper = new TextMessageHelper();
+            ReceivedTextMessage txt = txtHelper.ReceiveTextMessage(xmlString);
 
-            if (await txtHelper.ReceiveTextMessageAsync(xmlString))
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
-            else
+            if (txt == null)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
+            db.TextMessagesReceived.Add(txt);
+            await db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)
