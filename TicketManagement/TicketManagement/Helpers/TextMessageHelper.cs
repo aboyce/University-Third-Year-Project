@@ -21,7 +21,7 @@ namespace TicketManagement.Helpers
 
         public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(() => CheckBalance()); }
 
-        private string CheckBalance()
+        public string CheckBalance()
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
