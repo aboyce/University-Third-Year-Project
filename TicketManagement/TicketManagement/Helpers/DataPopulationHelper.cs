@@ -559,6 +559,7 @@ namespace TicketManagement.Helpers
                 TicketLogType = TicketLogType.MessageFromExternalUser,
                 FileId = file1.Id,
                 File = file1,
+                Message = "Here is the copy of the document mentioned on the phone, this should help you out.",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-5)
             };
