@@ -7,9 +7,9 @@
 }
 
 
-<div class="panel panel-@(isInternal ? "success" : "primary")">
+<div id="new-response-panel" class="panel panel-@(isInternal ? "default" : "primary")">
     <div class="panel-heading">
-        <strong>New Response</strong>
+        <strong id="new-response-panel-heading">New Internal Response</strong>
         <div style="float: right">
         </div>
     </div>
@@ -36,7 +36,7 @@
                     <div style="float: right">
                         @if (isInternal)
                         {
-                            <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                            <input id="cb-internal-external-message" name="IsInternal" value="false" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
                             <input name="IsInternal" type="hidden" value="true" />
                         }
                         <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled" />
@@ -49,7 +49,7 @@
 
                 @using (Html.BeginForm("NewTicketLogFile", "Tickets", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <br/>
+                    <br />
                     <strong>Select File: </strong> @:(Valid types are .txt, .pdf or an image)
                     <input type="file" id="upload" name="upload" />
                     <br />
@@ -57,15 +57,16 @@
                     @Html.HiddenFor(model => model.TicketId)
 
                     <div style="float: right">
-                        @if(isInternal)
+                        @if (isInternal)
                         {
-                            <input id="IsInternal" name="IsInternal" value="false" class="check-box" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
-                            <input name="IsInternal" type="hidden" value="true" />
+                            <input id="cb-internal-external-file" name="IsInternal" value="false" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                            <input name="IsInternal" type="hidden" value="true"/>
                         }
-                        <input id="btn-message-upload" type="submit" value="Upload" class="btn btn-xs btn-warning" disabled="disabled"/>
+                        <input id="btn-message-upload" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled"/>
                     </div>
                 }
             </div>
+
         </div>
     </div>
 </div>

@@ -1,16 +1,13 @@
 ﻿(function () {
 
-    function getUrlParameter(parameter)
-    {
+    function getUrlParameter(parameter) {
         var pageUrl = window.location.search.substring(1);
         var urlVariables = pageUrl.split('&');
 
-        for (var i = 0; i < urlVariables.length; i++)
-        {
+        for (var i = 0; i < urlVariables.length; i++) {
             var parameterName = urlVariables[i].split('=');
 
-            if (parameterName[0] == parameter)
-            {
+            if (parameterName[0] == parameter) {
                 return parameterName[1];
             }
         }
@@ -54,14 +51,27 @@
             $('#btn-message-upload').attr("disabled", false);
     }
 
-    $(document).ready(function() {
+    function updateNewResponsePanel(cbInternalExternal) {
+        if ($(cbInternalExternal).prop('checked') === true) {
+            $('#new-response-panel-heading').text("New Response");
+            $('#new-response-panel').removeClass('panel-default');
+            $('#new-response-panel').addClass('panel-success');
+        }
+        else {
+            $('#new-response-panel-heading').text("New Internal Response");
+            $('#new-response-panel').removeClass('panel-success');
+            $('#new-response-panel').addClass('panel-default');
+    }
+}
+
+    $(document).ready(function () {
 
         makeCurrentSortTypeTabActive();
         toggleSendButton();
         toggleUploadButton();
 
         // When one from the list of tickets is clicked on, take it to the correct page.
-        $('.clickable-row').click(function() {
+        $('.clickable-row').click(function () {
             window.document.location = $(this).data("url");
         });
 
@@ -73,6 +83,14 @@
         // Check that there is a file to be uploaded in the 'TicketLog - File' input, to enable/disable the 'Upload' button.
         $('#upload').change(function () {
             toggleUploadButton();
+        });
+
+        // When the user toggles the message to be internal or ecxternal, change the UI as required.
+        $('#cb-internal-external-message').change(function () {
+            updateNewResponsePanel(this);
+        });
+        $('#cb-internal-external-file').change(function () {
+            updateNewResponsePanel(this);
         });
 
     });

@@ -109,7 +109,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.IsArchived, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
-                    <input class="check-box" @archived disabled="disabled" type="checkbox">
+                    <input class="checkbox" @archived disabled="disabled" type="checkbox">
                     @Html.ValidationMessageFor(model => model.IsArchived, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -117,7 +117,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
                 <div class="col-md-6">
-                    <input class="check-box" @teamLeader disabled="disabled" type="checkbox">
+                    <input class="checkbox" @teamLeader disabled="disabled" type="checkbox">
                     @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -137,7 +137,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-4">Team Assigned</label>
                     <div class="col-md-6">
-                        <input class="check-box" disabled="disabled" type="checkbox">
+                        <input class="checkbox" disabled="disabled" type="checkbox">
                     </div>
                 </div>
             }

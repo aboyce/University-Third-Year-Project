@@ -156,35 +156,35 @@
         <div class="form-group">
             <label class="control-label col-md-4">Is Approved</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Approved") ? isChecked : "")>
+                <input class="checkbox" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Approved") ? isChecked : "")>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-4">Is Admin</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Administrator") ? isChecked : "")>
+                <input class="checkbox" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Administrator") ? isChecked : "")>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-4">Is Internal</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Internal") ? isChecked : "")>
+                <input class="checkbox" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Internal") ? isChecked : "")>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-4">Is Social</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Social") ? isChecked : "")>
+                <input class="checkbox" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "Social") ? isChecked : "")>
             </div>
         </div>
         
         <div class="form-group">
             <label class="control-label col-md-4">Can Send Text Messages</label>
             <div class="col-md-6">
-                <input class="check-box" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "TextMessage") ? isChecked : "")>
+                <input class="checkbox" disabled="disabled" type="checkbox" @( @controller.UserManager.IsInRole(Model.Id, "TextMessage") ? isChecked : "")>
             </div>
         </div>
 
