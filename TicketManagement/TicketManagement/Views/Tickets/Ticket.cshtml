@@ -7,7 +7,6 @@
 @{
     ViewBag.Title = "Ticket";
     string panelColour = "panel-";
-    string ticketType;
 }
 
 @if (Request.Params["ViewMessage"] == "TicketMessageAdded")
@@ -23,22 +22,6 @@
     <div class="alert alert-danger alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <b>Error</b> Your message could not be sent.
-    </div>
-}
-
-@if (Request.Params["ViewMessage"] == "TicketFileAdded")
-{
-    <div class="alert alert-success alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <b>Success</b> Your file has been sent.
-    </div>
-}
-
-@if (Request.Params["ViewMessage"] == "TicketFileNotAdded")
-{
-    <div class="alert alert-danger alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <b>Error</b> Your file could not be sent.
     </div>
 }
 
@@ -137,28 +120,20 @@
 
 @foreach (TicketLog ticketLog in Model.TicketLogs)
 {
-    TicketLogTypeHelper.TicketLogTypeDisplay.TryGetValue(ticketLog.TicketLogType, out ticketType);
+    <div class="panel panel-@(ticketLog.IsInternal ? "default" : (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser) ? "success" : "primary")">
 
-    <div class="panel panel-@(ticketLog.IsInternal ? "default" : (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser || ticketLog.TicketLogType == TicketLogType.FileFromInternalUser) ? "success" : "primary")">
         <div class="panel-heading">
-            <strong>@ticketType @(ticketLog.SubmittedByUserId == User.Identity.GetUserId() ? " (You)" : "")</strong>
-            @(ticketLog.File != null ? $" - ({@ticketLog.File.FileType})": "")
+            <strong>Message @(ticketLog.File != null ? $"with File - ({@ticketLog.File.FileType})" : "")</strong>
             <div style="float: right">
+                <strong>@(ticketLog.SubmittedByUserId == User.Identity.GetUserId() ? " (You)" : "")</strong>
                 @ticketLog.SubmittedByUser.FullName @@ @ticketLog.TimeOfLog
             </div>
         </div>
+
         <div class="panel-body">
-            @if (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser || ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
-            {
-                @ticketLog.Message
-            }
-            else if (ticketLog.TicketLogType == TicketLogType.FileFromInternalUser || ticketLog.TicketLogType == TicketLogType.FileFromExternalUser)
-            {
-                if (ticketLog.File != null)
-                {
-                    <a href="~/File?id=@ticketLog.File.Id" target="blank">@ticketLog.File.FileName</a>
-                }
-            }
+            <p>@ticketLog.Message</p>
+            @if (ticketLog.File != null)
+            { <strong>Attached file: </strong> <a href="~/File?id=@ticketLog.File.Id" target="blank">@ticketLog.File.FileName</a> }
         </div>
     </div>
 }

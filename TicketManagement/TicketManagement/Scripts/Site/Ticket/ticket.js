@@ -44,13 +44,6 @@
             $('#btn-message-send').attr("disabled", false);
     }
 
-    function toggleUploadButton() {
-        if ($('#upload').val() === "")
-            $('#btn-message-upload').attr('disabled', 'disabled');
-        else
-            $('#btn-message-upload').attr("disabled", false);
-    }
-
     function updateNewResponsePanel(cbInternalExternal) {
         if ($(cbInternalExternal).prop('checked') === true) {
             $('#new-response-panel-heading').text("New Response");
@@ -67,8 +60,8 @@
     $(document).ready(function () {
 
         makeCurrentSortTypeTabActive();
+
         toggleSendButton();
-        toggleUploadButton();
 
         // When one from the list of tickets is clicked on, take it to the correct page.
         $('.clickable-row').click(function () {
@@ -80,16 +73,8 @@
             toggleSendButton();
         });
 
-        // Check that there is a file to be uploaded in the 'TicketLog - File' input, to enable/disable the 'Upload' button.
-        $('#upload').change(function () {
-            toggleUploadButton();
-        });
-
-        // When the user toggles the message to be internal or ecxternal, change the UI as required.
-        $('#cb-internal-external-message').change(function () {
-            updateNewResponsePanel(this);
-        });
-        $('#cb-internal-external-file').change(function () {
+        // When the user toggles the message to be internal or external, change the UI as required.
+        $('#cb-internal-external').change(function () {
             updateNewResponsePanel(this);
         });
 

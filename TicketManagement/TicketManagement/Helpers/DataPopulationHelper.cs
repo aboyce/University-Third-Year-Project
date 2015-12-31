@@ -556,7 +556,7 @@ namespace TicketManagement.Helpers
                 Ticket = org3Ticket1,
                 SubmittedByUserId = org3User2.Id,
                 SubmittedByUser = org3User2,
-                TicketLogType = TicketLogType.FileFromExternalUser,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 FileId = file1.Id,
                 File = file1,
                 IsInternal = false,

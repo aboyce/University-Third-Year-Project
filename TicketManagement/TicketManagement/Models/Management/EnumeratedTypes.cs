@@ -96,8 +96,6 @@ namespace TicketManagement.Models.Management
 
         TicketMessageAdded,
         TicketMessageNotAdded,
-        TicketFileAdded,
-        TicketFileNotAdded,
 
         TicketCategoryAdded,
         TicketCategoryUpdated,

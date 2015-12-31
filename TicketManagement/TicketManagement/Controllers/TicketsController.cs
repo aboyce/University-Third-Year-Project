@@ -83,22 +83,15 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> NewTicketLogMessage(NewTicketLogViewModel vm)
+        public async Task<ActionResult> NewTicketLog(NewTicketLogViewModel vm, HttpPostedFileBase upload)
         {
+            File file = null;
+
             TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
 
-            if(await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message:vm.Message))
-                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
-            else
-                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> NewTicketLogFile(NewTicketLogViewModel vm, HttpPostedFileBase upload)
-        {
-            if (upload != null && upload.ContentLength > 0)
+            if (upload != null && upload.ContentLength > 0) // We have a file to handle
             {
-                File file = new File
+                file = new File
                 {
                     FileName = Path.GetFileName(upload.FileName),
                     ContentType = upload.ContentType,
@@ -118,18 +111,12 @@ namespace TicketManagement.Controllers
 
                 db.Files.Add(file);
                 await db.SaveChangesAsync();
-
-                TicketLogType type = User.IsInRole("Internal") ? TicketLogType.FileFromInternalUser : TicketLogType.FileFromExternalUser;
-
-                if (await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message: vm.Message))
-                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
-                else
-                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
             }
 
-            ModelState.AddModelError("", Resources.TicketsController_NewTicketLogFile_ProblemWithUploadedFile);
-
-            return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileNotAdded });
+            if (await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, vm.CloseOnReply, db, vm.Message, file))
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+            else
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
         }
 
 

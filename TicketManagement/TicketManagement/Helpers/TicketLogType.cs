@@ -12,20 +12,10 @@ namespace TicketManagement.Helpers
     {
         MessageFromExternalUser = 0,
         MessageFromInternalUser = 1,
-        FileFromExternalUser = 2,
-        FileFromInternalUser = 3
     }
 
     public static class TicketLogTypeHelper
     {
-        public static Dictionary<TicketLogType, string> TicketLogTypeDisplay = new Dictionary<TicketLogType, string>
-        {
-            { TicketLogType.FileFromExternalUser, "File"},
-            { TicketLogType.FileFromInternalUser, "File"},
-            { TicketLogType.MessageFromExternalUser, "Message"},
-            { TicketLogType.MessageFromInternalUser, "Message"}
-        };
-
         public static bool FromInternal(TicketLog log)
         {
             switch (log.TicketLogType)
@@ -33,10 +23,6 @@ namespace TicketManagement.Helpers
                 case (TicketLogType.MessageFromExternalUser):
                     return false;
                 case (TicketLogType.MessageFromInternalUser):
-                    return true;
-                case (TicketLogType.FileFromExternalUser):
-                    return false;
-                case (TicketLogType.FileFromInternalUser):
                     return true;
             }
 
@@ -46,7 +32,7 @@ namespace TicketManagement.Helpers
 
     public static class TicketLogHelper
     {
-        public static async Task<bool> NewTicketLogAsync(string userId, int ticketId, TicketLogType type, bool isInternal, ApplicationContext db, string message = null, File file = null)
+        public static async Task<bool> NewTicketLogAsync(string userId, int ticketId, TicketLogType type, bool isInternal, bool closeOnReply, ApplicationContext db, string message, File file)
         {
             Ticket ticket = db.Tickets.FirstOrDefault(t => t.Id == ticketId);
 
@@ -72,7 +58,10 @@ namespace TicketManagement.Helpers
                 {
                     if (isInternal) // We dont want to update the ticket if it is just internal.
                     {
-                        newState = await db.TicketStates.Where(s => s.Name == "Open").FirstOrDefaultAsync();
+                        if (closeOnReply)
+                            newState = await db.TicketStates.Where(s => s.Name == "Close").FirstOrDefaultAsync();
+                        else
+                            newState = await db.TicketStates.Where(s => s.Name == "Open").FirstOrDefaultAsync();
 
                         ticket.TicketState = newState;
                         ticket.TicketStateId = newState.Id;
