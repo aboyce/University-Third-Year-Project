@@ -42,42 +42,58 @@ namespace TicketManagement.Helpers
 
             return false;
         }
+    }
 
+    public static class TicketLogHelper
+    {
         public static async Task<bool> NewTicketLogAsync(string userId, int ticketId, TicketLogType type, bool isInternal, ApplicationContext db, string message = null, File file = null)
         {
-            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
             Ticket ticket = db.Tickets.FirstOrDefault(t => t.Id == ticketId);
-
-            TicketLog ticketLog = new TicketLog
-            {
-                Ticket = ticket,
-                TicketId = ticket?.Id ?? 0,
-                TicketLogType = type,
-                SubmittedByUserId = user.Id,
-                SubmittedByUser = user,
-                Message = message,
-                File = file,
-                FileId = file?.Id,
-                IsInternal = isInternal,
-                TimeOfLog = DateTime.Now
-            };
 
             if (ticket != null)
             {
-                if (FromInternal(ticketLog))
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                TicketState newState;
+                TicketLog ticketLog = new TicketLog
                 {
-                    ticket.LastResponse = DateTime.Now;
-                }
+                    Ticket = ticket,
+                    TicketId = ticket?.Id ?? 0,
+                    TicketLogType = type,
+                    SubmittedByUserId = user.Id,
+                    SubmittedByUser = user,
+                    Message = message,
+                    File = file,
+                    FileId = file?.Id,
+                    IsInternal = isInternal,
+                    TimeOfLog = DateTime.Now
+                };
 
+                if (TicketLogTypeHelper.FromInternal(ticketLog))
+                {
+                    if (isInternal) // We dont want to update the ticket if it is just internal.
+                    {
+                        newState = await db.TicketStates.Where(s => s.Name == "Open").FirstOrDefaultAsync();
+
+                        ticket.TicketState = newState;
+                        ticket.TicketStateId = newState.Id;
+                        ticket.LastResponse = DateTime.Now;
+                    }
+                }
                 else
                 {
+                    newState = await db.TicketStates.Where(s => s.Name == "Awaiting Response").FirstOrDefaultAsync();
+
+                    ticket.TicketState = newState;
+                    ticket.TicketStateId = newState.Id;
                     ticket.LastMessage = DateTime.Now;
                 }
-            }
 
-            db.Entry(ticket).State = EntityState.Modified;
-            db.TicketLogs.Add(ticketLog);
-            await db.SaveChangesAsync();
+                db.Entry(ticket).State = EntityState.Modified;
+                db.TicketLogs.Add(ticketLog);
+                await db.SaveChangesAsync();
+
+                return true;
+            }
 
             return false;
         }

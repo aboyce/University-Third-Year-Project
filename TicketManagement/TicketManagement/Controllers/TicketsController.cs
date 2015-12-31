@@ -87,7 +87,7 @@ namespace TicketManagement.Controllers
         {
             TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
 
-            if(await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message:vm.Message))
+            if(await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message:vm.Message))
                 return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
             else
                 return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
@@ -121,7 +121,7 @@ namespace TicketManagement.Controllers
 
                 TicketLogType type = User.IsInRole("Internal") ? TicketLogType.FileFromInternalUser : TicketLogType.FileFromExternalUser;
 
-                if (await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message: vm.Message))
+                if (await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message: vm.Message))
                     return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
                 else
                     return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });

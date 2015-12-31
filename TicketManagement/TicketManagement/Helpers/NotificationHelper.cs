@@ -73,14 +73,14 @@ namespace TicketManagement.Helpers
         public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
             db.UserNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }
         public static bool AddRoleNotificationToDb(ApplicationContext db, RoleNotification notification)
         {
             db.RoleNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }
