@@ -106,7 +106,7 @@ namespace TicketManagement.Controllers
 
         public ActionResult CheckLogIn(string returnUrl)
         {
-            if (!User.IsInRole("Approved"))
+            if (!User.IsInRole(MyRoles.Approved))
             {
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.PendingApproval });
@@ -168,7 +168,7 @@ namespace TicketManagement.Controllers
                 NotificationHelper.AddRoleNotificationToDb(db,
                     new RoleNotification
                     {
-                        Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
+                        Role = db.Roles.Where(r => r.Name == MyRoles.Administrator).Select(r => r).FirstOrDefault(),
                         NotificationAboutId = userId,
                         NotificationAbout = user,
                         Type = RoleNotificationType.PendingInternalApproval,
@@ -179,7 +179,7 @@ namespace TicketManagement.Controllers
             NotificationHelper.AddRoleNotificationToDb(db,
                     new RoleNotification
                     {
-                        Role = db.Roles.Where(r => r.Name == "Administrator").Select(r => r).FirstOrDefault(),
+                        Role = db.Roles.Where(r => r.Name == MyRoles.Administrator).Select(r => r).FirstOrDefault(),
                         NotificationAboutId = userId,
                         NotificationAbout = user,
                         Type = RoleNotificationType.PendingApproval,

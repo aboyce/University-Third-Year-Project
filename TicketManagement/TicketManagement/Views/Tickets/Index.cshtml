@@ -6,7 +6,7 @@
     ViewBag.Title = "Tickets";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 
-    TicketConfiguration conf = ConfigurationHelper.GetTicketConfiguration();
+    TicketConfiguration ticketConfiguration = ConfigurationHelper.GetTicketConfiguration();
     var now = DateTime.Now;
     string rowColour = string.Empty;
 }
@@ -22,7 +22,7 @@
         <li>@Html.ActionLink("Closed", "Index", "Tickets", new { sort = TicketSort.Closed }, new { id = TicketSort.Closed })</li>
         <li>@Html.ActionLink("Unanswered", "Index", "Tickets", new { sort = TicketSort.Unanswered }, new { id = TicketSort.Unanswered })</li>
         <li>@Html.ActionLink("Pending Approval", "Index", "Tickets", new {sort = TicketSort.PendingApproval}, new {id = TicketSort.PendingApproval})</li>
-        @if (User.IsInRole("Internal"))
+        @if (User.IsInRole(MyRoles.Internal))
             { <li>@Html.ActionLink("Mine", "Index", "Tickets", new { sort = TicketSort.Mine }, new { id = TicketSort.Mine })</li> } 
         <li>@Html.ActionLink("All", "Index", "Tickets", new { sort = TicketSort.All }, new { id = TicketSort.All })</li>
     </ul>
@@ -53,11 +53,11 @@
 
     @foreach (var item in Model)
     {
-        if (conf != null)
+        if (ticketConfiguration != null)
         {
-            if ((now - item.Created).Duration() >= conf.TimeSpanRed) { rowColour = "danger"; }
-            else if ((now - item.Created).Duration() >= conf.TimeSpanAmber) { rowColour = "warning"; }
-            else if ((now - item.Created).Duration() >= conf.TimeSpanGreen) { rowColour = "success"; }
+            if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanRed) { rowColour = "danger"; }
+            else if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanAmber) { rowColour = "warning"; }
+            else if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanGreen) { rowColour = "success"; }
             else { rowColour = "info"; }
         }
 
@@ -70,16 +70,44 @@
             <td> @Html.DisplayFor(modelItem => item.OrganisationAssignedTo.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.TicketState.Name) </td>
             <td>
-                <a data-toggle="popover" data-placement="left" @*Linked with Shared/table_popover.js, sets the data-content to the div below, ammends the item.id to the id, to differentiate the links.*@
-                   title="@Html.DisplayFor(modelItem => item.Title)" data-content-target="#popover_content_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-question" style="font-size: 20px;"></i></a>
+                <a data-toggle="popover" data-placement="left"
+                   title="<strong>User Information</strong>" data-content-target="#popover_content_users_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-user" style="font-size: 20px;"></i></a>
 
-                <div class="popover" id="popover_content_@Html.DisplayFor(modelItem => item.Id)">
+                <div class="popover" id="popover_content_users_@Html.DisplayFor(modelItem => item.Id)">
                     <table class="table">
                         <tr>
                             <th> Opened By </th>
                             <th> Assigned To </th>
+                        </tr>
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.OpenedBy.FullName) </td>
+                            <td> @Html.DisplayFor(modelItem => item.UserAssignedTo.FullName) </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <a data-toggle="popover" data-placement="left"
+                   title="<strong>General Information</strong>" data-content-target="#popover_content_general_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-info-circle" style="font-size: 20px;"></i></a>
+
+                <div class="popover" id="popover_content_general_@Html.DisplayFor(modelItem => item.Id)">
+                    <table class="table">
+                        <tr>
                             <th> Project </th>
                             <th> @Html.DisplayNameFor(model => model.Description) </th>
+                        </tr>
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.Project.Name) </td>
+                            <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <a data-toggle="popover" data-placement="left"
+                   title="<strong>Date Information</strong>" data-content-target="#popover_content_dates_@Html.DisplayFor(modelItem => item.Id)"><i class="fa fa-calendar" style="font-size: 20px;"></i></a>
+
+                <div class="popover" id="popover_content_dates_@Html.DisplayFor(modelItem => item.Id)">
+                    <table class="table">
+                        <tr>
                             <th> @Html.DisplayNameFor(model => model.Created)</th>
                             <th> @Html.DisplayNameFor(model => model.Deadline) </th>
                             <th> @Html.DisplayNameFor(model => model.LastMessage) </th>
@@ -87,10 +115,6 @@
                             <th> @Html.DisplayNameFor(model => model.LastUpdated) </th>
                         </tr>
                         <tr>
-                            <td> @Html.DisplayFor(modelItem => item.OpenedBy.FullName) </td>
-                            <td> @Html.DisplayFor(modelItem => item.UserAssignedTo.FullName) </td>
-                            <td> @Html.DisplayFor(modelItem => item.Project.Name) </td>
-                            <td> @Html.DisplayFor(modelItem => item.Description) </td>
                             <td> @Html.DisplayFor(modelItem => item.Created) </td>
                             <td> @Html.DisplayFor(modelItem => item.Deadline) </td>
                             <td> @Html.DisplayFor(modelItem => item.LastMessage) </td>
@@ -99,12 +123,14 @@
                         </tr>
                     </table>
                 </div>
+
+                <a href="@Url.Action("Edit", new {id = item.Id})"><i class="fa fa-pencil" style="font-size: 20px;"></i></a>
             </td>
-            <td>
+            @*<td>
                 <a href="@Url.Action("Edit", new {id = item.Id})"><i class="fa fa-pencil"></i></a> |
                 <a href="@Url.Action("Details", new {id = item.Id})"><i class="fa fa-info-circle"></i></a> |
                 <a href="@Url.Action("Delete", new {id = item.Id})"><i class="fa fa-trash"></i></a>
-            </td>
+            </td>*@
         </tr>
     }
 

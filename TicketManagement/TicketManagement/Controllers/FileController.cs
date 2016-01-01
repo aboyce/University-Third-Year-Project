@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Models.Context;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "Approved")]
+    [Authorize(Roles = MyRoles.Approved)]
     public class FileController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

@@ -1,14 +1,15 @@
-﻿@model TicketManagement.ViewModels.NewTicketLogViewModel
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.ViewModels.NewTicketLogViewModel
 
 @Styles.Render("~/bundles/bootstrap_toggle_css")
 
 @{
-    bool isInternal = User.IsInRole("Internal");
+    bool isInternal = User.IsInRole(MyRoles.Internal);
 }
 
 <div id="new-response-panel" class="panel panel-@(isInternal ? "default" : "primary")">
     <div class="panel-heading">
-        <strong id="new-response-panel-heading">New Internal Response</strong>
+        <strong id="new-response-panel-heading">New @(isInternal ? MyRoles.Internal : "") Response</strong>
         <div style="float: right">
         </div>
     </div>
@@ -38,7 +39,7 @@
                 <div style="float: right">
                     @if (isInternal)
                     {
-                        <input id="cb-internal-external" name="IsInternal" value="false" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off="Internal">
+                        <input id="cb-internal-external" name="IsInternal" value="false" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off=Internal>
                         <input name="IsInternal" type="hidden" value="true" />
                     }
                     <input id="btn-message-send" type="submit" value="Send" class="btn btn-xs btn-warning" disabled="disabled" />

@@ -63,9 +63,9 @@ namespace TicketManagement.Helpers
             um.Create(internalUser2, demoPassword);
             um.Create(internalUser3, demoPassword);
 
-            await um.AddToRolesAsync(internalUser1.Id, "Approved", "Internal");
-            await um.AddToRolesAsync(internalUser2.Id, "Approved", "Internal");
-            await um.AddToRolesAsync(internalUser3.Id, "Approved", "Internal");
+            await um.AddToRolesAsync(internalUser1.Id, MyRoles.Approved, MyRoles.Internal);
+            await um.AddToRolesAsync(internalUser2.Id, MyRoles.Approved, MyRoles.Internal);
+            await um.AddToRolesAsync(internalUser3.Id, MyRoles.Approved, MyRoles.Internal);
 
             #endregion
 
@@ -105,9 +105,9 @@ namespace TicketManagement.Helpers
             um.Create(org1User2, demoPassword);
             um.Create(org1User3, demoPassword);
 
-            await um.AddToRoleAsync(org1User1.Id, "Approved");
-            await um.AddToRoleAsync(org1User2.Id, "Approved");
-            await um.AddToRoleAsync(org1User3.Id, "Approved");
+            await um.AddToRoleAsync(org1User1.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org1User2.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org1User3.Id, MyRoles.Approved);
 
             #endregion
 
@@ -125,7 +125,7 @@ namespace TicketManagement.Helpers
 
             um.Create(org2User1, demoPassword);
 
-            await um.AddToRoleAsync(org2User1.Id, "Approved");
+            await um.AddToRoleAsync(org2User1.Id, MyRoles.Approved);
 
             #endregion
 
@@ -154,8 +154,8 @@ namespace TicketManagement.Helpers
             um.Create(org3User1, demoPassword);
             um.Create(org3User2, demoPassword);
 
-            await um.AddToRoleAsync(org3User1.Id, "Approved");
-            await um.AddToRoleAsync(org3User2.Id, "Approved");
+            await um.AddToRoleAsync(org3User1.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org3User2.Id, MyRoles.Approved);
 
             #endregion
 

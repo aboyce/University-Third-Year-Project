@@ -9,7 +9,7 @@ using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = MyRoles.Administrator)]
     public class TicketCategoriesController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

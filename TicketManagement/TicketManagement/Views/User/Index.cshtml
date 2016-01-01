@@ -1,4 +1,5 @@
-﻿@model TicketManagement.Models.Entities.User
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.Models.Entities.User
 
 @{
     ViewBag.Title = "User";
@@ -48,7 +49,7 @@
             </div>
         </div>
 
-        @if (User.IsInRole("Administrator"))
+        @if (User.IsInRole(MyRoles.Administrator))
         {
             <div class="form-group">
                 @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })

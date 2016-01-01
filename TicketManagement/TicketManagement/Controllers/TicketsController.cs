@@ -18,7 +18,7 @@ using File = TicketManagement.Models.Entities.File;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "Approved")]
+    [Authorize(Roles = MyRoles.Approved)]
     public class TicketsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
@@ -29,7 +29,7 @@ namespace TicketManagement.Controllers
             TicketSort sortType; // Defaults to the first one.
             var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
 
-            if (!User.IsInRole("Internal")) // If the user is not internal than they should only be able to see thier tickets.
+            if (!User.IsInRole(MyRoles.Internal)) // If the user is not internal than they should only be able to see thier tickets.
                 tickets = tickets.Where(t => t.OpenedById == id);
 
             if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
@@ -67,7 +67,7 @@ namespace TicketManagement.Controllers
 
             var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id);
 
-            if (!User.IsInRole("Internal"))
+            if (!User.IsInRole(MyRoles.Internal))
                 ticketLogs = ticketLogs.Where(tl => tl.IsInternal == false);
 
             TicketViewModel vm = new TicketViewModel
@@ -87,7 +87,7 @@ namespace TicketManagement.Controllers
         {
             File file = null;
 
-            TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
+            TicketLogType type = User.IsInRole(MyRoles.Internal) ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
 
             if (upload != null && upload.ContentLength > 0) // We have a file to handle
             {
@@ -222,17 +222,20 @@ namespace TicketManagement.Controllers
         {
             ticket.UserAssignedToId = Request.Form["UserAssignedToId"];
 
-            if (deadlineString.IsNullOrWhiteSpace())
-                ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
-            else
+            if (User.IsInRole(MyRoles.Internal))
             {
-                DateTime deadline;
-                if (!deadlineString.Contains(":")) // Assume the time hasn't been set
-                    deadlineString += " 12:00:00";
-                if (DateTime.TryParse(deadlineString, out deadline))
-                    ticket.Deadline = deadline;
+                if (deadlineString.IsNullOrWhiteSpace())
+                    ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
                 else
-                    ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
+                {
+                    DateTime deadline;
+                    if (!deadlineString.Contains(":")) // Assume the time hasn't been set
+                        deadlineString += " 12:00:00";
+                    if (DateTime.TryParse(deadlineString, out deadline))
+                        ticket.Deadline = deadline;
+                    else
+                        ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
+                }
             }
 
             if (ModelState.IsValid)
@@ -253,6 +256,7 @@ namespace TicketManagement.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles=MyRoles.Administrator)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -266,6 +270,7 @@ namespace TicketManagement.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles = MyRoles.Administrator)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

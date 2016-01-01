@@ -16,7 +16,7 @@ using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles="Administrator")]
+    [Authorize(Roles=MyRoles.Administrator)]
     public class AdminController : Controller
     {
         #region Properties
@@ -154,8 +154,8 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(vm.UserId) || string.IsNullOrEmpty(roleId))
                 return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleNotAdded });
 
-            if (roleName != "Approved" && roleName != "Internal") // If it is a significant role, check they are internal.
-                if (!await UserManager.IsInRoleAsync(vm.UserId, "Internal"))
+            if (roleName != MyRoles.Approved && roleName != MyRoles.Internal) // If it is a significant role, check they are internal.
+                if (!await UserManager.IsInRoleAsync(vm.UserId, MyRoles.Internal))
                     return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.NotInternal });
 
             if (await UserManager.IsInRoleAsync(vm.UserId, roleName))

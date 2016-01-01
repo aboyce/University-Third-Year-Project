@@ -251,6 +251,7 @@
     <Compile Include="Models\Management\EnumeratedTypes.cs" />
     <Compile Include="Models\Management\NotificationBase.cs" />
     <Compile Include="Models\Management\NotificationMessages.cs" />
+    <Compile Include="Models\Management\MyRoles.cs" />
     <Compile Include="Models\Management\UserNotification.cs" />
     <Compile Include="Models\Management\RoleNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -425,8 +426,6 @@
     <Content Include="Views\Shared\_Partial_User.cshtml" />
     <Content Include="Views\Home\_Partial_Register.cshtml" />
     <Content Include="Views\Shared\_Layout_Welcome.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\ExternalLogins.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />

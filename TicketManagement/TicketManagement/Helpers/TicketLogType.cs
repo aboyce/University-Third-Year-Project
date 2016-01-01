@@ -56,17 +56,17 @@ namespace TicketManagement.Helpers
 
                 if (TicketLogTypeHelper.FromInternal(ticketLog))
                 {
-                    if (isInternal) // We dont want to update the ticket if it is just internal.
-                    {
-                        if (closeOnReply)
-                            newState = await db.TicketStates.Where(s => s.Name == "Close").FirstOrDefaultAsync();
-                        else
-                            newState = await db.TicketStates.Where(s => s.Name == "Open").FirstOrDefaultAsync();
 
-                        ticket.TicketState = newState;
-                        ticket.TicketStateId = newState.Id;
+                    if (closeOnReply)
+                        newState = await db.TicketStates.Where(s => s.Name == "Closed").FirstOrDefaultAsync();
+                    else
+                        newState = await db.TicketStates.Where(s => s.Name == "Open").FirstOrDefaultAsync();
+
+                    ticket.TicketState = newState;
+                    ticket.TicketStateId = newState.Id;
+
+                    if (!isInternal) // If it is an internal message the external users shouldn't know about them occurring.
                         ticket.LastResponse = DateTime.Now;
-                    }
                 }
                 else
                 {
