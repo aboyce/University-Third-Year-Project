@@ -266,6 +266,30 @@ namespace TicketManagement.Helpers
             db.Teams.AddOrUpdate(org3Team1);
             await db.SaveChangesAsync();
 
+            org1User1.TeamId = org1Team1.Id;
+            org1User1.Team = org1Team1;
+            org1User2.TeamId = org1Team1.Id;
+            org1User2.Team = org1Team1;
+            org1User3.TeamId = org1Team2.Id;
+            org1User3.Team = org1Team2;
+
+            org2User1.TeamId = org2Team1.Id;
+            org2User1.Team = org2Team1;
+
+            org3User1.TeamId = org3Team1.Id;
+            org3User1.Team = org3Team1;
+            org3User2.TeamId = org3Team1.Id;
+            org3User2.Team = org3Team1;
+
+            db.Entry(org1User1).State = EntityState.Modified;
+            db.Entry(org1User2).State = EntityState.Modified;
+            db.Entry(org1User3).State = EntityState.Modified;
+            db.Entry(org2User1).State = EntityState.Modified;
+            db.Entry(org3User1).State = EntityState.Modified;
+            db.Entry(org3User2).State = EntityState.Modified;
+
+            await db.SaveChangesAsync();
+
             #endregion
 
             #region Projects

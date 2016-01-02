@@ -27,27 +27,41 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> Structure()
         {
             OrganisationsStructureViewModel vm = new OrganisationsStructureViewModel();
+            OrganisationTeamsViewModel organisationViewModel;
 
             foreach (Organisation org in await db.Organisations.Include(o => o.DefaultContact).ToListAsync())
             {
-                OrganisationTeamsViewModel organisationViewModel = new OrganisationTeamsViewModel();
-
-                organisationViewModel.Organisation = org;
+                organisationViewModel = new OrganisationTeamsViewModel {Organisation = org};
 
                 foreach (Team team in await db.Teams.Where(t => t.OrganisationId == org.Id).Select(t => t).ToListAsync())
                 {
-                    ProjectsUsersForTeamViewModel teamViewModel = new ProjectsUsersForTeamViewModel();
-
-                    teamViewModel.Team = team;
-
-                    teamViewModel.ProjectsForTeams = await db.Projects.Where(p => p.TeamAssignedToId == team.Id).ToListAsync();
-                    teamViewModel.UsersForTeams = await db.Users.Where(u => u.TeamId == team.Id).ToListAsync();
+                    ProjectsUsersForTeamViewModel teamViewModel = new ProjectsUsersForTeamViewModel
+                    {
+                        Team = team,
+                        ProjectsForTeams = await db.Projects.Where(p => p.TeamAssignedToId == team.Id).ToListAsync(),
+                        UsersForTeams = await db.Users.Where(u => u.TeamId == team.Id).ToListAsync()
+                    };
 
                     organisationViewModel.TeamsForOrganisations.Add(teamViewModel);
                 }
 
                 vm.Organisations.Add(organisationViewModel);
             }        
+
+            organisationViewModel = new OrganisationTeamsViewModel
+            {
+                Organisation = new Organisation { Name = "Unassigned Assets" },
+                TeamsForOrganisations = new List<ProjectsUsersForTeamViewModel>()
+            };
+
+            organisationViewModel.TeamsForOrganisations.Add(new ProjectsUsersForTeamViewModel
+            {
+                Team = new Team { Name = "Usassigned Assets"},
+                ProjectsForTeams = await db.Projects.Where(p => p.TeamAssignedTo == null).Select(p => p).ToListAsync(),
+                UsersForTeams = await db.Users.Where(u => u.TeamId == null).Select(u => u).ToListAsync()
+            });
+
+            vm.Organisations.Add(organisationViewModel);
             
             return View(vm);
         }

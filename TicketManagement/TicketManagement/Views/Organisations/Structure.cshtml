@@ -1,7 +1,9 @@
-﻿@model TicketManagement.ViewModels.OrganisationsStructureViewModel
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.ViewModels.OrganisationsStructureViewModel
 @{
     ViewBag.Title = "Structure";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+    bool isAdmin = User.IsInRole(MyRoles.Administrator);
 }
 
 @Styles.Render("~/bundles/bootstrap_tree_css")
@@ -18,23 +20,27 @@
         @foreach (var org in Model.Organisations)
         {
             <li>
-                <span><i class="fa fa-building-o"></i> @org.Organisation.Name</span> <a href="">Goes somewhere</a>
+                <span><i class="fa fa-building-o"></i> @org.Organisation.Name</span> @if (isAdmin && org.Organisation.Id != 0)
+                { <a href="@Url.Action("Edit", "Organisations", new {id = org.Organisation.Id})"><i class="fa fa-arrow-right" style="color: #555555"></i></a> }
                 <ul>
                     @foreach (var team in org.TeamsForOrganisations)
                     {
                         <li>
-                            <span><i class="fa fa-users"></i> @team.Team.Name</span> <a href="">Goes somewhere</a>
+                            <span><i class="fa fa-users"></i> @team.Team.Name</span> @if (isAdmin && team.Team.Id != 0)
+                            { <a href="@Url.Action("Edit", "Teams", new {id = team.Team.Id})"><i class="fa fa-arrow-right" style="color: #555555"></i></a> }
                             <ul>
                                 @foreach (var project in team.ProjectsForTeams)
                                 {
                                     <li>
-                                        <span><i class="fa fa-tasks"></i> @project.Name</span> <a href="">Goes somewhere</a>
+                                        <span><i class="fa fa-tasks"></i> @project.Name</span> @if (isAdmin && project.Id != 0)
+                                        { <a href="@Url.Action("Edit", "Projects", new {id = project.Id})"><i class="fa fa-arrow-right" style="color: #555555"></i></a> }
                                     </li>
                                 }
                                 @foreach (var user in team.UsersForTeams)
                                 {
                                     <li>
-                                        <span><i class="fa fa-user"></i> @user.FullName</span> <a href="">Goes somewhere</a>
+                                        <span><i class="fa fa-user"></i> @user.FullName</span> @if (isAdmin && user.Id != "")
+                                        { <a href="@Url.Action("UserEdit", "Admin", new {id = user.Id})"><i class="fa fa-arrow-right" style="color: #555555"></i></a> }
                                     </li>
                                 }
                             </ul>
@@ -42,6 +48,7 @@
                     }
                 </ul>
             </li>
+            <li></li>
         }
 
     </ul>
