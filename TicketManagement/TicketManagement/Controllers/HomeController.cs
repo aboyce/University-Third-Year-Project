@@ -44,14 +44,6 @@ namespace TicketManagement.Controllers
 
         #endregion
 
-        public ActionResult Index()
-        {
-            if(User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Tickets");
-            else
-                return View();
-        }
-
         public ActionResult About()
         {
             return View();
@@ -62,12 +54,17 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        public ActionResult Login(string returnUrl)
+        public ActionResult Index(string returnUrl)
         {
-            if (returnUrl != string.Empty && User.Identity.IsAuthenticated) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
+            if (User.Identity.IsAuthenticated)
             {
-                ViewBag.ErrorMessage = "It apears that you don't have permission to view that page.";
-                return View("Error");
+                if (!string.IsNullOrEmpty(returnUrl)) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
+                {
+                    ViewBag.ErrorMessage = "It apears that you don't have permission to view that page.";
+                    return View("Error");
+                }
+
+                return RedirectToAction("Index", "Tickets");
             }
 
             ViewBag.ReturnUrl = returnUrl;
@@ -77,7 +74,7 @@ namespace TicketManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Index(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +87,7 @@ namespace TicketManagement.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                {
+                    {
                         return RedirectToAction("CheckLogIn", "Home", new { returnUrl = returnUrl });
                     }
                 case SignInStatus.LockedOut:
@@ -112,7 +109,7 @@ namespace TicketManagement.Controllers
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.PendingApproval });
             }
 
-            return returnUrl != string.Empty ? RedirectToLocal(returnUrl) : RedirectToAction("Index", "Tickets");
+            return !string.IsNullOrEmpty(returnUrl) ? RedirectToLocal(returnUrl) : RedirectToAction("Index", "Tickets");
         }
 
         [HttpPost]
@@ -121,12 +118,6 @@ namespace TicketManagement.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home", new { ViewMessage = ManageMessageId.LoggedOff });
-        }
-
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -154,8 +145,7 @@ namespace TicketManagement.Controllers
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Home", new { ViewMessage = ManageMessageId.Error });
         }
 
         public async Task<ActionResult> CheckRegister(bool isInternal)

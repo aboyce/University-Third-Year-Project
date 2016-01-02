@@ -31,6 +31,9 @@ namespace TicketManagement
             bundles.Add(new ScriptBundle("~/bundles/bootstrap_toggle_js").Include(
                       "~/Scripts/bootstrap-toggle.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap_tree_js").Include(
+                      "~/Scripts/bootstrap-tree.min.js"));
+
 
             /* -------------------- STYLES -------------------- */
             /* ------------------------------------------------ */
@@ -43,6 +46,9 @@ namespace TicketManagement
 
             bundles.Add(new StyleBundle("~/bundles/bootstrap_toggle_css").Include(
                       "~/Content/Custom/bootstrap-custom-toggle.min.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/bootstrap_tree_css").Include(
+                      "~/Content/Custom/bootstrap-custom-tree.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
@@ -57,6 +63,7 @@ namespace TicketManagement
 
             // bootstrap-toggle == http://www.bootstraptoggle.com/
 
+            // bootstrap-tree == https://github.com/jhfrench/bootstrap-tree
 
         }
     }

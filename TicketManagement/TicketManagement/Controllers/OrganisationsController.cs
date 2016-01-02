@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
@@ -20,6 +22,36 @@ namespace TicketManagement.Controllers
             var organisations = db.Organisations.Include(o => o.DefaultContact);
             return View(await organisations.ToListAsync());
         }
+
+        [Authorize(Roles = MyRoles.Internal)]
+        public async Task<ActionResult> Structure()
+        {
+            OrganisationsStructureViewModel vm = new OrganisationsStructureViewModel();
+
+            foreach (Organisation org in await db.Organisations.Include(o => o.DefaultContact).ToListAsync())
+            {
+                OrganisationTeamsViewModel organisationViewModel = new OrganisationTeamsViewModel();
+
+                organisationViewModel.Organisation = org;
+
+                foreach (Team team in await db.Teams.Where(t => t.OrganisationId == org.Id).Select(t => t).ToListAsync())
+                {
+                    ProjectsUsersForTeamViewModel teamViewModel = new ProjectsUsersForTeamViewModel();
+
+                    teamViewModel.Team = team;
+
+                    teamViewModel.ProjectsForTeams = await db.Projects.Where(p => p.TeamAssignedToId == team.Id).ToListAsync();
+                    teamViewModel.UsersForTeams = await db.Users.Where(u => u.TeamId == team.Id).ToListAsync();
+
+                    organisationViewModel.TeamsForOrganisations.Add(teamViewModel);
+                }
+
+                vm.Organisations.Add(organisationViewModel);
+            }        
+            
+            return View(vm);
+        }
+
 
         public async Task<ActionResult> Details(int? id)
         {

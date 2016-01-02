@@ -1,0 +1,50 @@
+﻿@model TicketManagement.ViewModels.OrganisationsStructureViewModel
+@{
+    ViewBag.Title = "Structure";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+}
+
+@Styles.Render("~/bundles/bootstrap_tree_css")
+
+<h2>Organisations</h2>
+<hr />
+
+<h4>Structure</h4>
+<hr />
+
+<div class="tree">
+    <ul>
+
+        @foreach (var org in Model.Organisations)
+        {
+            <li>
+                <span><i class="fa fa-building-o"></i> @org.Organisation.Name</span> <a href="">Goes somewhere</a>
+                <ul>
+                    @foreach (var team in org.TeamsForOrganisations)
+                    {
+                        <li>
+                            <span><i class="fa fa-users"></i> @team.Team.Name</span> <a href="">Goes somewhere</a>
+                            <ul>
+                                @foreach (var project in team.ProjectsForTeams)
+                                {
+                                    <li>
+                                        <span><i class="fa fa-tasks"></i> @project.Name</span> <a href="">Goes somewhere</a>
+                                    </li>
+                                }
+                                @foreach (var user in team.UsersForTeams)
+                                {
+                                    <li>
+                                        <span><i class="fa fa-user"></i> @user.FullName</span> <a href="">Goes somewhere</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+</div>
+
+@Scripts.Render("~/bundles/bootstrap_tree_js")
