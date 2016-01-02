@@ -31,11 +31,6 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @Html.Action("_Partial_Notifications", "Notification")
-                    @if (User.IsInRole(MyRoles.Internal))
-                    {
-                        <li><a href="@Html.Action("Structure", "Organisations")"><i class="fa fa-sitemap"></i></a></li>
-                    }
-                    <li>|</li>
                     <li><a href="@Url.Action("About", "Home")"><i class="fa fa-info" style="color: #B3B3B3"></i></a></li>
                     <li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-phone" style="color: #B3B3B3"></i></a></li>
                 </ul>
