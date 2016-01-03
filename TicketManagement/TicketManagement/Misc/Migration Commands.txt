@@ -15,14 +15,14 @@ protected override void Seed(TicketManagement.Models.Context.TicketManagementCon
             //  This method will be called after migrating to the latest version.
 
 			context.Roles.AddOrUpdate(
-                new IdentityRole { Name = "Approved" },
-                new IdentityRole { Name = "Internal"},
-                new IdentityRole { Name = "Administrator" });
+                new IdentityRole { Name = MyRoles.Approved },
+                new IdentityRole { Name = MyRoles.Internal},
+                new IdentityRole { Name = MyRoles.Administrator });
 
             ApplicationUser admin = new ApplicationUser { UserName = "Admin", Email = "admin@email.com", EmailConfirmed = true };
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            userManager.AddToRole(admin.Id, "Administrator");
+            userManager.AddToRole(admin.Id, MyRoles.Administrator);
 
             context.Users.AddOrUpdate(admin);
 

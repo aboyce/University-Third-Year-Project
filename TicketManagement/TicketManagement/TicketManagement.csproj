@@ -207,7 +207,7 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
-    <Compile Include="Helpers\TicketLogTypeHelper.cs" />
+    <Compile Include="Helpers\TicketLogType.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.Designer.cs">
       <DependentUpon>201512270115218_Re-Re-Initial.cs</DependentUpon>
@@ -224,15 +224,25 @@
     <Compile Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.Designer.cs">
       <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.cs" />
+    <Compile Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.Designer.cs">
+      <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201512302307448_Text Message Changes.cs" />
+    <Compile Include="Migrations\Application\201512302307448_Text Message Changes.Designer.cs">
+      <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
+    <Compile Include="Models\Entities\ReceivedTextMessage.cs" />
+    <Compile Include="Models\Entities\SentTextMessage.cs" />
     <Compile Include="Models\Entities\User.cs" />
-    <Compile Include="Models\Entities\EntityBase.cs" />
+    <Compile Include="Models\Entities\Base_Entity.cs" />
     <Compile Include="Models\Entities\Organisation.cs" />
     <Compile Include="Models\Entities\Project.cs" />
     <Compile Include="Models\Entities\Team.cs" />
-    <Compile Include="Models\Entities\TextMessage.cs" />
+    <Compile Include="Models\Entities\Base_TextMessage.cs" />
     <Compile Include="Models\Entities\Ticket.cs" />
     <Compile Include="Models\Entities\TicketCategory.cs" />
     <Compile Include="Models\Entities\TicketLog.cs" />
@@ -241,6 +251,7 @@
     <Compile Include="Models\Management\EnumeratedTypes.cs" />
     <Compile Include="Models\Management\NotificationBase.cs" />
     <Compile Include="Models\Management\NotificationMessages.cs" />
+    <Compile Include="Models\Management\MyRoles.cs" />
     <Compile Include="Models\Management\UserNotification.cs" />
     <Compile Include="Models\Management\RoleNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -253,6 +264,8 @@
     <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\NotificationViewModels.cs" />
+    <Compile Include="ViewModels\OrganisationViewModels.cs" />
+    <Compile Include="ViewModels\TextMessageViewModel.cs" />
     <Compile Include="ViewModels\TicketStateViewModels.cs" />
     <Compile Include="ViewModels\TicketViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
@@ -270,6 +283,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Custom\bootstrap-custom-tree.min.css" />
+    <Content Include="Content\Custom\bootstrap-custom-tree.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.min.css" />
     <Content Include="Content\font-awesome.css" />
@@ -289,6 +304,8 @@
     <Content Include="Misc\Migration Commands.txt" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-tree.min.js" />
+    <Content Include="Scripts\bootstrap-tree.js" />
     <Content Include="Scripts\bootstrap-toggle.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -416,8 +433,6 @@
     <Content Include="Views\Shared\_Partial_User.cshtml" />
     <Content Include="Views\Home\_Partial_Register.cshtml" />
     <Content Include="Views\Shared\_Layout_Welcome.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\ExternalLogins.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
@@ -468,6 +483,7 @@
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Tickets\Ticket.cshtml" />
     <Content Include="Views\Tickets\_Partial_NewTicketLog.cshtml" />
+    <Content Include="Views\Organisations\Structure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -493,6 +509,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512271645551_Changed Data to Message in TicketLog.resx">
       <DependentUpon>201512271645551_Changed Data to Message in TicketLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512302216137_Split up text messages into Sent and Received.resx">
+      <DependentUpon>201512302216137_Split up text messages into Sent and Received.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201512302307448_Text Message Changes.resx">
+      <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

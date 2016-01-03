@@ -25,8 +25,8 @@ namespace TicketManagement.Helpers
                 {
                     case RoleNotificationType.PendingApproval:
                         {
-                            if (!um.IsInRole(rn.NotificationAboutId, "Approved"))
-                                um.AddToRole(rn.NotificationAboutId, "Approved");
+                            if (!um.IsInRole(rn.NotificationAboutId, MyRoles.Approved))
+                                um.AddToRole(rn.NotificationAboutId, MyRoles.Approved);
 
                             db.RoleNotifications.Remove(rn);
                             await db.SaveChangesAsync();
@@ -35,8 +35,8 @@ namespace TicketManagement.Helpers
                         }
                     case RoleNotificationType.PendingInternalApproval:
                         {
-                            if (!um.IsInRole(rn.NotificationAboutId, "Internal"))
-                                um.AddToRole(rn.NotificationAboutId, "Internal");
+                            if (!um.IsInRole(rn.NotificationAboutId, MyRoles.Internal))
+                                um.AddToRole(rn.NotificationAboutId, MyRoles.Internal);
 
                             db.RoleNotifications.Remove(rn);
                             await db.SaveChangesAsync();
@@ -73,14 +73,14 @@ namespace TicketManagement.Helpers
         public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
             db.UserNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }
         public static bool AddRoleNotificationToDb(ApplicationContext db, RoleNotification notification)
         {
             db.RoleNotifications.Add(notification);
-            db.SaveChangesAsync();
+            db.SaveChanges();
 
             return true;
         }

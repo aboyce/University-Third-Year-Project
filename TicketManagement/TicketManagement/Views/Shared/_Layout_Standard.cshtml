@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using TicketManagement.Models.Management
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -25,13 +26,13 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="navbar-standard-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    @Html.Partial("_Partial_User")
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @Html.Action("_Partial_Notifications", "Notification")
                     <li><a href="@Url.Action("About", "Home")"><i class="fa fa-info" style="color: #B3B3B3"></i></a></li>
                     <li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-phone" style="color: #B3B3B3"></i></a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-left">
-                    @Html.Partial("_Partial_User")
                 </ul>
             </div>
         </div>

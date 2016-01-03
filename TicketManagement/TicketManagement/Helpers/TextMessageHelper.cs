@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Clockwork;
 using TicketManagement.Models.Entities;
 
@@ -19,9 +20,9 @@ namespace TicketManagement.Helpers
         }
 
 
-        public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(() => CheckBalance()); }
+        public Task<string> CheckBalanceAsync() { return Task.Factory.StartNew(CheckBalance); }
 
-        private string CheckBalance()
+        public string CheckBalance()
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
@@ -56,9 +57,9 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public Task<string> SendTextMessageAsync(TextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
+        public Task<string> SendTextMessageAsync(SentTextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
 
-        private string SendTextMessage(TextMessage txt)
+        private string SendTextMessage(SentTextMessage txt)
         {
             if (!LoadInConfiguration())
                 return "Error: Cannot load details from the web.config";
@@ -68,8 +69,8 @@ namespace TicketManagement.Helpers
                 API api = new API(_apiKey);
                 SMSResult result = api.Send(new SMS
                 {
-                    To = txt.Number,
-                    Message = txt.Message,
+                    To = txt.To,
+                    Message = txt.Content,
                     From = txt.From
                 });
 
@@ -97,6 +98,22 @@ namespace TicketManagement.Helpers
                 // Something else went wrong, the error message should help
                 return "Unknown Exception: " + ex.Message;
             }
+        }
+
+        public ReceivedTextMessage ReceiveTextMessage(string xmlString)
+        {
+            if (string.IsNullOrEmpty(xmlString)) return null;
+
+            XElement xml = XElement.Parse(xmlString);
+            
+            string id = (string)xml.Element("Id");
+            string to = (string) xml.Element("To");
+            string from = (string)xml.Element("From");
+            string networkCode = (string)xml.Element("Network");
+            string keyword = (string)xml.Element("Keyword");
+            string content = (string)xml.Element("Content");
+
+            return new ReceivedTextMessage(to, from, content, id, networkCode, keyword);
         }
     }
 }

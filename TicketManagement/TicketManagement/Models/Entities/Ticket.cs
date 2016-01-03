@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Models.Entities
 {
-    public class Ticket : EntityBase
+    public class Ticket : Base_Entity
     {
         private string _title;
         private string _description;

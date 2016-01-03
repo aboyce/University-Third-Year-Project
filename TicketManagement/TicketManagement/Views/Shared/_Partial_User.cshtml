@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using TicketManagement.Models.Management
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
@@ -9,11 +10,11 @@
             <li>
                 @Html.ActionLink("Hi " + User.Identity.GetUserName(), "Index", "User", routeValues: null, htmlAttributes: new {title = "Manage"})
             </li>
-            @if (User.IsInRole("TextMessage"))
+            @if (User.IsInRole(MyRoles.TextMessage))
             {
                 <li><a href="@Url.Action("Index", "TextMessage")"><i class="fa fa-mobile"></i></a></li>
             }
-            @if (User.IsInRole("Administrator"))
+            @if (User.IsInRole(MyRoles.Administrator))
             {
                 <li class="dropdown">
                     <a href="@Url.Action("Index", "Admin")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>

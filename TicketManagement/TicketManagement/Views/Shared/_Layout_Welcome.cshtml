@@ -28,14 +28,29 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="navbar-welcome-collapse">
+                
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("ABOUT", "About", "Home")</li>
                     <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
                 </ul>
-                <ul class="nav navbar-nav navbar-left">
-                    <li>@Html.ActionLink("LOGIN", "Login", "Home")</li>
-                    <li>@Html.ActionLink("REGISTER", "Register", "Home")</li>
-                </ul>
+
+                @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new {id = "logoutForm_Welcome",}))
+                {
+                    @Html.AntiForgeryToken()
+                    <ul class="nav navbar-nav navbar-left">
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="javascript:document.getElementById('logoutForm_Welcome').submit()">SIGN OUT: @User.Identity.Name.ToUpper()</a></li>
+                            <li>@Html.ActionLink("TICKETS ", "Index", "Tickets")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("REGISTER/LOGIN", "Index", "Home")</li>
+                        }
+
+                    </ul>
+                }
             </div>
         </div>
     </nav>

@@ -18,7 +18,7 @@ using File = TicketManagement.Models.Entities.File;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "Approved")]
+    [Authorize(Roles = MyRoles.Approved)]
     public class TicketsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
@@ -29,7 +29,7 @@ namespace TicketManagement.Controllers
             TicketSort sortType; // Defaults to the first one.
             var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
 
-            if (!User.IsInRole("Internal")) // If the user is not internal than they should only be able to see thier tickets.
+            if (!User.IsInRole(MyRoles.Internal)) // If the user is not internal than they should only be able to see thier tickets.
                 tickets = tickets.Where(t => t.OpenedById == id);
 
             if (Enum.TryParse(Request.QueryString["sort"], out sortType)) // Get the sort type from the tabs on Index. 
@@ -67,7 +67,7 @@ namespace TicketManagement.Controllers
 
             var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id);
 
-            if (!User.IsInRole("Internal"))
+            if (!User.IsInRole(MyRoles.Internal))
                 ticketLogs = ticketLogs.Where(tl => tl.IsInternal == false);
 
             TicketViewModel vm = new TicketViewModel
@@ -83,22 +83,15 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> NewTicketLogMessage(NewTicketLogViewModel vm)
+        public async Task<ActionResult> NewTicketLog(NewTicketLogViewModel vm, HttpPostedFileBase upload)
         {
-            TicketLogType type = User.IsInRole("Internal") ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
+            File file = null;
 
-            if(await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message:vm.Message))
-                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
-            else
-                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
-        }
+            TicketLogType type = User.IsInRole(MyRoles.Internal) ? TicketLogType.MessageFromInternalUser : TicketLogType.MessageFromExternalUser;
 
-        [HttpPost]
-        public async Task<ActionResult> NewTicketLogFile(NewTicketLogViewModel vm, HttpPostedFileBase upload)
-        {
-            if (upload != null && upload.ContentLength > 0)
+            if (upload != null && upload.ContentLength > 0) // We have a file to handle
             {
-                File file = new File
+                file = new File
                 {
                     FileName = Path.GetFileName(upload.FileName),
                     ContentType = upload.ContentType,
@@ -118,18 +111,12 @@ namespace TicketManagement.Controllers
 
                 db.Files.Add(file);
                 await db.SaveChangesAsync();
-
-                TicketLogType type = User.IsInRole("Internal") ? TicketLogType.FileFromInternalUser : TicketLogType.FileFromExternalUser;
-
-                if (await TicketLogTypeHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, db, message: vm.Message))
-                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileAdded });
-                else
-                    return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
             }
 
-            ModelState.AddModelError("", Resources.TicketsController_NewTicketLogFile_ProblemWithUploadedFile);
-
-            return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketFileNotAdded });
+            if (await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, vm.CloseOnReply, db, vm.Message, file))
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
+            else
+                return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageNotAdded });
         }
 
 
@@ -235,17 +222,20 @@ namespace TicketManagement.Controllers
         {
             ticket.UserAssignedToId = Request.Form["UserAssignedToId"];
 
-            if (deadlineString.IsNullOrWhiteSpace())
-                ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
-            else
+            if (User.IsInRole(MyRoles.Internal))
             {
-                DateTime deadline;
-                if (!deadlineString.Contains(":")) // Assume the time hasn't been set
-                    deadlineString += " 12:00:00";
-                if (DateTime.TryParse(deadlineString, out deadline))
-                    ticket.Deadline = deadline;
+                if (deadlineString.IsNullOrWhiteSpace())
+                    ModelState.AddModelError("Deadline", Resources.TicketsController_Create_DeadlineRequired);
                 else
-                    ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
+                {
+                    DateTime deadline;
+                    if (!deadlineString.Contains(":")) // Assume the time hasn't been set
+                        deadlineString += " 12:00:00";
+                    if (DateTime.TryParse(deadlineString, out deadline))
+                        ticket.Deadline = deadline;
+                    else
+                        ModelState.AddModelError("Deadline", Resources.TicketsController_Edit_DeadlineFormat);
+                }
             }
 
             if (ModelState.IsValid)
@@ -266,6 +256,7 @@ namespace TicketManagement.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles=MyRoles.Administrator)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -279,6 +270,7 @@ namespace TicketManagement.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles = MyRoles.Administrator)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

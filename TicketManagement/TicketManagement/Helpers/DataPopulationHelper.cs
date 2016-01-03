@@ -63,9 +63,9 @@ namespace TicketManagement.Helpers
             um.Create(internalUser2, demoPassword);
             um.Create(internalUser3, demoPassword);
 
-            await um.AddToRolesAsync(internalUser1.Id, "Approved", "Internal");
-            await um.AddToRolesAsync(internalUser2.Id, "Approved", "Internal");
-            await um.AddToRolesAsync(internalUser3.Id, "Approved", "Internal");
+            await um.AddToRolesAsync(internalUser1.Id, MyRoles.Approved, MyRoles.Internal);
+            await um.AddToRolesAsync(internalUser2.Id, MyRoles.Approved, MyRoles.Internal);
+            await um.AddToRolesAsync(internalUser3.Id, MyRoles.Approved, MyRoles.Internal);
 
             #endregion
 
@@ -105,9 +105,9 @@ namespace TicketManagement.Helpers
             um.Create(org1User2, demoPassword);
             um.Create(org1User3, demoPassword);
 
-            await um.AddToRoleAsync(org1User1.Id, "Approved");
-            await um.AddToRoleAsync(org1User2.Id, "Approved");
-            await um.AddToRoleAsync(org1User3.Id, "Approved");
+            await um.AddToRoleAsync(org1User1.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org1User2.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org1User3.Id, MyRoles.Approved);
 
             #endregion
 
@@ -125,7 +125,7 @@ namespace TicketManagement.Helpers
 
             um.Create(org2User1, demoPassword);
 
-            await um.AddToRoleAsync(org2User1.Id, "Approved");
+            await um.AddToRoleAsync(org2User1.Id, MyRoles.Approved);
 
             #endregion
 
@@ -154,8 +154,8 @@ namespace TicketManagement.Helpers
             um.Create(org3User1, demoPassword);
             um.Create(org3User2, demoPassword);
 
-            await um.AddToRoleAsync(org3User1.Id, "Approved");
-            await um.AddToRoleAsync(org3User2.Id, "Approved");
+            await um.AddToRoleAsync(org3User1.Id, MyRoles.Approved);
+            await um.AddToRoleAsync(org3User2.Id, MyRoles.Approved);
 
             #endregion
 
@@ -264,6 +264,30 @@ namespace TicketManagement.Helpers
             db.Teams.AddOrUpdate(org1Team2);
             db.Teams.AddOrUpdate(org2Team1);
             db.Teams.AddOrUpdate(org3Team1);
+            await db.SaveChangesAsync();
+
+            org1User1.TeamId = org1Team1.Id;
+            org1User1.Team = org1Team1;
+            org1User2.TeamId = org1Team1.Id;
+            org1User2.Team = org1Team1;
+            org1User3.TeamId = org1Team2.Id;
+            org1User3.Team = org1Team2;
+
+            org2User1.TeamId = org2Team1.Id;
+            org2User1.Team = org2Team1;
+
+            org3User1.TeamId = org3Team1.Id;
+            org3User1.Team = org3Team1;
+            org3User2.TeamId = org3Team1.Id;
+            org3User2.Team = org3Team1;
+
+            db.Entry(org1User1).State = EntityState.Modified;
+            db.Entry(org1User2).State = EntityState.Modified;
+            db.Entry(org1User3).State = EntityState.Modified;
+            db.Entry(org2User1).State = EntityState.Modified;
+            db.Entry(org3User1).State = EntityState.Modified;
+            db.Entry(org3User2).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
             #endregion
@@ -556,9 +580,10 @@ namespace TicketManagement.Helpers
                 Ticket = org3Ticket1,
                 SubmittedByUserId = org3User2.Id,
                 SubmittedByUser = org3User2,
-                TicketLogType = TicketLogType.FileFromExternalUser,
+                TicketLogType = TicketLogType.MessageFromExternalUser,
                 FileId = file1.Id,
                 File = file1,
+                Message = "Here is the copy of the document mentioned on the phone, this should help you out.",
                 IsInternal = false,
                 TimeOfLog = DateTime.Now.AddHours(-5)
             };

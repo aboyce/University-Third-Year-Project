@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.Models.Management;
 
 namespace TicketManagement.Migrations.Application
 {
@@ -17,13 +18,13 @@ namespace TicketManagement.Migrations.Application
 
         protected override void Seed(ApplicationContext context)
         {
-            if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context)).RoleExists("Administrator"))
+            if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context)).RoleExists(MyRoles.Administrator))
                 context.Roles.AddOrUpdate(
-                new IdentityRole("Approved"),
-                new IdentityRole("Internal"),
-                new IdentityRole("Social"),
-                new IdentityRole("TextMessage"),
-                new IdentityRole("Administrator"));
+                new IdentityRole(MyRoles.Approved),
+                new IdentityRole(MyRoles.Internal),
+                new IdentityRole(MyRoles.Social),
+                new IdentityRole(MyRoles.TextMessage),
+                new IdentityRole(MyRoles.Administrator));
 
             if (!context.Users.Any(user => user.UserName == "admin"))
             {
@@ -40,7 +41,7 @@ namespace TicketManagement.Migrations.Application
                 };
 
                 userManager.Create(user, "admin!23");
-                userManager.AddToRoles(user.Id, "Approved", "Internal", "Administrator", "Social", "TextMessage");
+                userManager.AddToRoles(user.Id, MyRoles.Approved, MyRoles.Internal, MyRoles.Administrator, MyRoles.Social, MyRoles.TextMessage);
             }
 
             if (!context.Organisations.Any(org => org.Name == "Your Company Name"))

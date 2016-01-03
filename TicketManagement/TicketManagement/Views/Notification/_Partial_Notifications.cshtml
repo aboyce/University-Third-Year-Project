@@ -1,4 +1,5 @@
-﻿@model TicketManagement.ViewModels.NotificationViewModel
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.ViewModels.NotificationViewModel
 <ul class="nav navbar-nav">
     
     @if (Model.RoleNotifications.Count > 0 || Model.UserNotifications.Count > 0)
@@ -10,4 +11,8 @@
         <li><a href="@Url.Action("Index", "Notification")"><i class="fa fa-bell-o"></i></a></li>
     }
 
+    @if (User.IsInRole(MyRoles.Internal))
+    {
+        <li><a href="@Url.Action("Structure", "Organisations")"><i class="fa fa-sitemap"></i></a></li>
+    }
 </ul>

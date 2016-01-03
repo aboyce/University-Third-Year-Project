@@ -11,7 +11,8 @@ namespace TicketManagement.Models.Context
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
-            : base("TicketManagement", throwIfV1Schema: false)
+        //: base("TicketManagement", throwIfV1Schema: false)
+        : base("TicketManagementLocal", throwIfV1Schema: false)
         {
         }
 
@@ -73,7 +74,8 @@ namespace TicketManagement.Models.Context
         public DbSet<File> Files { get; set; }
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         public DbSet<TicketState> TicketStates { get; set; }
-        public DbSet<TextMessage> TextMessages { get; set; }
+        public DbSet<SentTextMessage> TextMessagesSent { get; set; }
+        public DbSet<ReceivedTextMessage> TextMessagesReceived { get; set; }
 
         public DbSet<RoleNotification> RoleNotifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }

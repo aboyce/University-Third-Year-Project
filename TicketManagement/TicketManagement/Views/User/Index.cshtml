@@ -1,4 +1,5 @@
-﻿@model TicketManagement.Models.Entities.User
+﻿@using TicketManagement.Models.Management
+@model TicketManagement.Models.Entities.User
 
 @{
     ViewBag.Title = "User";
@@ -48,7 +49,7 @@
             </div>
         </div>
 
-        @if (User.IsInRole("Administrator"))
+        @if (User.IsInRole(MyRoles.Administrator))
         {
             <div class="form-group">
                 @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -109,7 +110,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.IsArchived, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
-                    <input class="check-box" @archived disabled="disabled" type="checkbox">
+                    <input class="checkbox" @archived disabled="disabled" type="checkbox">
                     @Html.ValidationMessageFor(model => model.IsArchived, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -117,7 +118,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
                 <div class="col-md-6">
-                    <input class="check-box" @teamLeader disabled="disabled" type="checkbox">
+                    <input class="checkbox" @teamLeader disabled="disabled" type="checkbox">
                     @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -137,7 +138,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-4">Team Assigned</label>
                     <div class="col-md-6">
-                        <input class="check-box" disabled="disabled" type="checkbox">
+                        <input class="checkbox" disabled="disabled" type="checkbox">
                     </div>
                 </div>
             }
@@ -177,10 +178,11 @@
 
 @*Change Password*@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <h3>Change Password</h3>
-        <hr />
-        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-info col-md-offset-6" })
+        <hr/>
+        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new {@class = "btn btn-info col-md-offset-3"})
     </div>
 </div>
-
+<br/>
+<br/>

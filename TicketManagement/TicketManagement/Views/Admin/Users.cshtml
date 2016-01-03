@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using TicketManagement.Models.Management
 @model   Dictionary<TicketManagement.Models.Entities.User, IList<string>>
 
 @{
@@ -67,11 +68,11 @@
                         </tr>
                         <tr>
                             <td> @Html.DisplayFor(modelItem => userRoles.Key.IsTeamLeader) </td>
-                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Approved") ? isChecked : "")></td>
-                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Internal") ? isChecked : "")></td>
-                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Administrator") ? isChecked : "")></td>
-                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("TextMessage") ? isChecked : "")></td>
-                            <td><input class="check-box" disabled="disabled" type="checkbox" @(userRoles.Value.Contains("Social") ? isChecked : "")></td>
+                            <td><input class="checkbox" disabled="disabled" type="checkbox" @(userRoles.Value.Contains(MyRoles.Approved) ? isChecked : "")></td>
+                            <td><input class="checkbox" disabled="disabled" type="checkbox" @(userRoles.Value.Contains(MyRoles.Internal) ? isChecked : "")></td>
+                            <td><input class="checkbox" disabled="disabled" type="checkbox" @(userRoles.Value.Contains(MyRoles.Administrator) ? isChecked : "")></td>
+                            <td><input class="checkbox" disabled="disabled" type="checkbox" @(userRoles.Value.Contains(MyRoles.TextMessage) ? isChecked : "")></td>
+                            <td><input class="checkbox" disabled="disabled" type="checkbox" @(userRoles.Value.Contains(MyRoles.Social) ? isChecked : "")></td>
                         </tr>
                     </table>
                 </div>

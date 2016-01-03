@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Models.Entities
 {
-    public class TicketPriority : EntityBase
+    public class TicketPriority : Base_Entity
     {
         private string _name;
         private string _colour = "#FFFFFF";

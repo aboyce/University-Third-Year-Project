@@ -10,7 +10,7 @@ using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = MyRoles.Administrator)]
     public class TicketStatesController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

@@ -1,12 +1,16 @@
 ﻿using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.Models.Management;
 using TicketManagement.Properties;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers
 {
@@ -17,8 +21,11 @@ namespace TicketManagement.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var textMessages = db.TextMessages.Select(tm => tm);
-            return View(await textMessages.ToListAsync());
+            return View(new AllTextMessagesViewModel
+            {
+                SentMessages = db.TextMessagesSent.Select(tms => tms),
+                ReceivedMessages = db.TextMessagesReceived.Select(tmr => tmr)
+            });
         }
 
         public ActionResult Send()
@@ -50,9 +57,9 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                TextMessageHelper txtManager = new TextMessageHelper();              
+                TextMessageHelper txtManager = new TextMessageHelper();
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
-                TextMessage txt = new TextMessage(id, user, user?.PhoneNumber, message);
+                SentTextMessage txt = new SentTextMessage(id, user, user?.PhoneNumber, message);
 
                 string result = await txtManager.SendTextMessageAsync(txt);
 
@@ -65,7 +72,7 @@ namespace TicketManagement.Controllers
                 }
                 else
                 {
-                    db.TextMessages.Add(txt);
+                    db.TextMessagesSent.Add(txt);
                     await db.SaveChangesAsync();
 
                     ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
@@ -78,6 +85,31 @@ namespace TicketManagement.Controllers
             ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
 
             return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        [AllowAnonymous]
+        public async Task<ActionResult> Receive()
+        {
+            string xmlString = "";
+
+            if (Request.InputStream != null)
+            {
+                StreamReader stream = new StreamReader(Request.InputStream);
+                xmlString = HttpUtility.UrlDecode(stream.ReadToEnd()); ;
+            }
+
+            TextMessageHelper txtHelper = new TextMessageHelper();
+            ReceivedTextMessage txt = txtHelper.ReceiveTextMessage(xmlString);
+
+            if (txt == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+            db.TextMessagesReceived.Add(txt);
+            await db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

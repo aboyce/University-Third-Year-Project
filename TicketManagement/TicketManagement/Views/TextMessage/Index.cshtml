@@ -1,5 +1,6 @@
 ﻿@using TicketManagement.Helpers
-@model IEnumerable<TicketManagement.Models.Entities.TextMessage>
+@model TicketManagement.ViewModels.AllTextMessagesViewModel
+
 
 @{
     ViewBag.Title = "Text Messages";
@@ -16,12 +17,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-2">
-            <button class="btn btn-default btn-lg disabled" type="button">
+            <button class="btn btn-default disabled" type="button" style="width: 100%">
                 Balance <span class="badge">@txtManager.CheckBalance()</span>
             </button>
             <hr/>
             <p>
-                @Html.ActionLink("New Message", "Send", null, new { @class = "btn btn-success" })
+                @Html.ActionLink("New Message", "Send", null, new {@class = "btn btn-success"})
             </p>
         </div>
         <div class="col-md-10">
@@ -29,14 +30,45 @@
                 <tr>
                     <th>Recipient</th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Message)
+                        Message
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Sent)
+                        Sent
                     </th>
                 </tr>
 
-                @foreach (var text in Model)
+                @foreach (var text in Model.SentMessages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => text.UserTo.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => text.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => text.Sent)
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-2">
+            <table class="table table-hover table-striped table-responsive">
+                <tr>
+                    <th>Recipient</th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Received
+                    </th>
+                </tr>
+
+                @*@foreach (var text in Model.ReceivedMessages)
                 {
                     <tr>
                         <td>
@@ -46,10 +78,10 @@
                             @Html.DisplayFor(modelItem => text.Message)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => text.Sent)
+                            @Html.DisplayFor(modelItem => text.)
                         </td>
                     </tr>
-                }
+                }*@
             </table>
 
         </div>
