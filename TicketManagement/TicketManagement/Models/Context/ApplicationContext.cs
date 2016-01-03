@@ -11,8 +11,8 @@ namespace TicketManagement.Models.Context
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
-        //: base("TicketManagement", throwIfV1Schema: false)
-        : base("TicketManagementLocal", throwIfV1Schema: false)
+        : base("TicketManagement", throwIfV1Schema: false)
+        //: base("TicketManagementLocal", throwIfV1Schema: false)
         {
         }
 
