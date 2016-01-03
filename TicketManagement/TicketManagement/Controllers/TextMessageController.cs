@@ -23,8 +23,8 @@ namespace TicketManagement.Controllers
         {
             return View(new AllTextMessagesViewModel
             {
-                SentMessages = db.TextMessagesSent.Select(tms => tms),
-                ReceivedMessages = db.TextMessagesReceived.Select(tmr => tmr)
+                SentMessages = await db.TextMessagesSent.Select(tms => tms).ToListAsync(),
+                ReceivedMessages = await db.TextMessagesReceived.Select(tmr => tmr).ToListAsync()
             });
         }
 

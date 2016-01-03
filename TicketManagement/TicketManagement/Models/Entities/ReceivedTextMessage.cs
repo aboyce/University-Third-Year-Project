@@ -10,12 +10,12 @@ namespace TicketManagement.Models.Entities
         public ReceivedTextMessage(string to, string from, string content, string clockworkId,
             string clockworkNetworkCode, string clockworkKeyword)
         {
-            To = to;
-            From = from;
-            Content = content;
-            ClockworkId = clockworkId;
-            ClockworkNetworkCode = clockworkNetworkCode;
-            ClockworkKeyword = clockworkKeyword;
+            To = to ?? "n/a";
+            From = from ?? "n/a";
+            Content = content ?? "n/a";
+            ClockworkId = clockworkId ?? "n/a";
+            ClockworkNetworkCode = clockworkNetworkCode ?? "n/a";
+            ClockworkKeyword = clockworkKeyword ?? "n/a";
         }
 
         [Required]

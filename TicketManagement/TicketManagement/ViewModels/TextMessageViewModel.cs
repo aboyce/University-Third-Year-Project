@@ -8,8 +8,8 @@ namespace TicketManagement.ViewModels
 
     public class AllTextMessagesViewModel
     {
-        public IEnumerable<Models.Entities.SentTextMessage> SentMessages { get; set; }
+        public List<Models.Entities.SentTextMessage> SentMessages { get; set; }
 
-        public IEnumerable<Models.Entities.ReceivedTextMessage> ReceivedMessages { get; set; }
+        public List<Models.Entities.ReceivedTextMessage> ReceivedMessages { get; set; }
     }
 }

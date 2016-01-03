@@ -105,9 +105,9 @@ namespace TicketManagement.Helpers
             if (string.IsNullOrEmpty(xmlString)) return null;
 
             XElement xml = XElement.Parse(xmlString);
-            
+
             string id = (string)xml.Element("Id");
-            string to = (string) xml.Element("To");
+            string to = (string)xml.Element("To");
             string from = (string)xml.Element("From");
             string networkCode = (string)xml.Element("Network");
             string keyword = (string)xml.Element("Keyword");
