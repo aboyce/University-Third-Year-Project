@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="TicketManagement.Models.Entities.EntityBase">
+  <Class Name="TicketManagement.Models.Entities.Base_Entity">
     <Position X="10.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAEAAAAAAAQAQAAAAAAAAAA=</HashCode>
-      <FileName>Models\Entities\EntityBase.cs</FileName>
+      <FileName>Models\Entities\Base_Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketManagement.Models.Entities.File">
@@ -94,10 +94,10 @@
       <FileName>Models\Entities\TicketLog.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="File" />
-      <Property Name="SubmittedByUser" />
       <Property Name="Ticket" />
+      <Property Name="SubmittedByUser" />
       <Property Name="TicketLogType" />
+      <Property Name="File" />
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.TicketPriority">
@@ -132,8 +132,8 @@
   <Enum Name="TicketManagement.Helpers.TicketLogType" Collapsed="true">
     <Position X="5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAQAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Helpers\TicketLogTypeHelper.cs</FileName>
+      <HashCode>AAIAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\TicketLogHelper.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
