@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TicketManagement.Models.Entities;
 
-namespace TicketManagement.Models.Management
+namespace TicketManagement.Management
 {
     public abstract class NotificationBase
     {

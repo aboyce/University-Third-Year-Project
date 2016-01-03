@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.Models.Management;
+using TicketManagement.Management;
 
 namespace TicketManagement.ViewModels
 {

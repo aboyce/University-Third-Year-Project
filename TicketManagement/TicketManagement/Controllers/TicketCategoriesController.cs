@@ -3,9 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 
 namespace TicketManagement.Controllers
 {

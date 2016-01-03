@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace TicketManagement.Models.Management
+namespace TicketManagement.Management
 {
     public class RoleNotification : NotificationBase
     {

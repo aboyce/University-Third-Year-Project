@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using TicketManagement.Models.Entities;
-
-namespace TicketManagement.Models.Management
+﻿namespace TicketManagement.Management
 {
     public enum NotificationCategory
     {

@@ -3,8 +3,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TicketManagement.Management;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 
 namespace TicketManagement.Models.Context
 {

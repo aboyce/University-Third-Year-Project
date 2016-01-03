@@ -4,9 +4,9 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 using TicketManagement.Properties;
 
 namespace TicketManagement.Helpers

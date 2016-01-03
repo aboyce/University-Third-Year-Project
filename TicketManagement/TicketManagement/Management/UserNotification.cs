@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TicketManagement.Models.Management
+namespace TicketManagement.Management
 {
     public class UserNotification : NotificationBase
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicketManagement.Models.Management
+﻿namespace TicketManagement.Management
 {
     public static class MyRoles
     {

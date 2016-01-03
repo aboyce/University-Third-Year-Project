@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Helpers;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 using TicketManagement.Properties;
 using TicketManagement.ViewModels;
 

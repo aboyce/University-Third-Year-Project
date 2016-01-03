@@ -9,9 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.Helpers;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
-using TicketManagement.Models.Management;
 using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers

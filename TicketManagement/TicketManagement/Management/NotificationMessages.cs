@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Ajax.Utilities;
 
-namespace TicketManagement.Models.Management
+namespace TicketManagement.Management
 {
     public static class NotificationMessages
     {
