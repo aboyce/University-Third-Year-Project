@@ -304,6 +304,8 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Design\Entities.cd" />
+    <Content Include="Design\Controllers.cd" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.ar.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.az.min.js" />

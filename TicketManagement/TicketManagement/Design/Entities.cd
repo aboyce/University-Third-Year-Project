@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TicketManagement.Models.Entities.EntityBase">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAEAAAAAAAQAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\Entities\EntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.File">
+    <Position X="3.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAABAAAA=</HashCode>
+      <FileName>Models\Entities\File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.Organisation">
+    <Position X="11.75" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAAAACAAIAAAAAIQAAAAAAQAAAAAAAAAAACA=</HashCode>
+      <FileName>Models\Entities\Organisation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DefaultContact" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.Project">
+    <Position X="17.25" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAIAEAAAAAAEAAAAAAwCAAAAAAAAAAIAGAAAAAA=</HashCode>
+      <FileName>Models\Entities\Project.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Organisation" />
+      <Property Name="TeamAssignedTo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.TextMessage">
+    <Position X="1" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAEAAQAAAAAAAAACAAAAAIAAAEAA=</HashCode>
+      <FileName>Models\Entities\TextMessage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UserTo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.Team">
+    <Position X="14.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAEAAAAAAwAAAAAAAAAAAIAEAAAAAA=</HashCode>
+      <FileName>Models\Entities\Team.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Organisation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.Ticket">
+    <Position X="7.5" Y="1" Width="2.25" />
+    <AssociationLine Name="TeamAssignedTo" Type="TicketManagement.Models.Entities.Team">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.407" Y="0.179" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CCBCUcYAEIAgAEAEAKAACJSCjgBAAAIQAAEIDAAIgAw=</HashCode>
+      <FileName>Models\Entities\Ticket.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OpenedBy" />
+      <Property Name="TicketPriority" />
+      <Property Name="UserAssignedTo" />
+      <Property Name="TeamAssignedTo" />
+      <Property Name="OrganisationAssignedTo" />
+      <Property Name="TicketState" />
+      <Property Name="Project" />
+      <Property Name="TicketCategory" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.TicketCategory">
+    <Position X="18" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAACAACAQABAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Models\Entities\TicketCategory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Project" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.TicketLog">
+    <Position X="4" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAACAAAAAAAAAAACAAgAAAAQAAAEARAAAAAAIAIAAAA=</HashCode>
+      <FileName>Models\Entities\TicketLog.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="File" />
+      <Property Name="SubmittedByUser" />
+      <Property Name="Ticket" />
+      <Property Name="TicketLogType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.TicketPriority">
+    <Position X="15.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Models\Entities\TicketPriority.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.TicketState">
+    <Position X="13.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Models\Entities\TicketState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Models.Entities.User">
+    <Position X="0.5" Y="1" Width="2.25" />
+    <AssociationLine Name="Team" Type="TicketManagement.Models.Entities.Team">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.155" Y="0.119" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAkAAkAACAAAAIAAAAEAQAECIAAAAAQAEAAAAAAAEAg=</HashCode>
+      <FileName>Models\Entities\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Team" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="TicketManagement.Helpers.TicketLogType" Collapsed="true">
+    <Position X="5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAQAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\TicketLogTypeHelper.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
