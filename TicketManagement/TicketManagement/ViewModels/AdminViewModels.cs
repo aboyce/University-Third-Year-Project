@@ -54,8 +54,6 @@ namespace TicketManagement.ViewModels
         public IList<AuthenticationDescription> OtherLogins { get; set; }
     }
 
-    //
-    //POSSIBLE, DEPENDING ON USE OF 3RD PARTY LOGIN
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
