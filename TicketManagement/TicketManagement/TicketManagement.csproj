@@ -433,7 +433,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Home\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Home\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Partial_User.cshtml" />
     <Content Include="Views\Home\_Partial_Register.cshtml" />
@@ -489,6 +488,7 @@
     <Content Include="Views\Tickets\Ticket.cshtml" />
     <Content Include="Views\Tickets\_Partial_NewTicketLog.cshtml" />
     <Content Include="Views\Organisations\Structure.cshtml" />
+    <Content Include="Views\Shared\Error_Welcome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

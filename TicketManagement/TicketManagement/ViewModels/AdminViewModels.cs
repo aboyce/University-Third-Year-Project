@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
+﻿using System.ComponentModel.DataAnnotations;
 using TicketManagement.Models.Entities;
 
 namespace TicketManagement.ViewModels
@@ -46,23 +43,5 @@ namespace TicketManagement.ViewModels
 
         [Display(Name = "Is Team Leader")]
         public bool IsTeamLeader { get; set; } = false;
-    }
-
-    public class ExternalLoginsViewModel
-    {
-        public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationDescription> OtherLogins { get; set; }
-    }
-
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
-    public class ExternalLoginListViewModel
-    {
-        public string ReturnUrl { get; set; }
     }
 }

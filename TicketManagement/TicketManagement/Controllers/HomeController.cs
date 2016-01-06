@@ -61,7 +61,7 @@ namespace TicketManagement.Controllers
                 if (!string.IsNullOrEmpty(returnUrl)) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
                 {
                     ViewBag.ErrorMessage = "It apears that you don't have permission to view that page.";
-                    return View("Error");
+                    return View("Error_Welcome");
                 }
 
                 return RedirectToAction("Index", "Tickets");
@@ -151,7 +151,7 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> CheckRegister(bool isInternal)
         {
             string userId = User.Identity.GetUserId();
-            var user = await db.Users.Where(u => u.Id == userId).Select(u => u).FirstOrDefaultAsync();
+            User user = await db.Users.Where(u => u.Id == userId).Select(u => u).FirstOrDefaultAsync();
 
             if (isInternal)
             {
@@ -195,7 +195,8 @@ namespace TicketManagement.Controllers
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
-                return RedirectToAction("Index");
+                ViewBag.ErrorMessage = "Struggling to get anything back from external login, please try again.";
+                return View("Error_Welcome");
             }
 
             // Sign in the user with this external login provider if the user already has a login
@@ -214,7 +215,7 @@ namespace TicketManagement.Controllers
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation", new RegisterViewModel { Email = loginInfo.Email, UserName = loginInfo.DefaultUserName });
             }
         }
 
@@ -227,7 +228,8 @@ namespace TicketManagement.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
             {
-                return View("Error");
+                ViewBag.ErrorMessage = "Problem with linking the external log in, please try again.";
+                return View("Error_Welcome");
             }
             var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
@@ -242,12 +244,10 @@ namespace TicketManagement.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(RegisterViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
+                return RedirectToAction("Index", "Tickets");
 
             if (ModelState.IsValid)
             {
@@ -255,17 +255,20 @@ namespace TicketManagement.Controllers
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
-                    return View("ExternalLoginFailure");
+                    ViewBag.ErrorMessage = "Unsuccessful login with service, please try again.";
+                    return View("Error_Welcome");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
+
+                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
+
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        return RedirectToAction("CheckRegister", "Home", new { isInternal = model.IsInternal });
                     }
                 }
                 AddErrors(result);
@@ -273,12 +276,6 @@ namespace TicketManagement.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
         }
 
         #region Helpers
