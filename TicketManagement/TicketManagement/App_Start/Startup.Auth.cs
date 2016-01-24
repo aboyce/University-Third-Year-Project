@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -55,15 +56,15 @@ namespace TicketManagement
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+                appId: ConfigurationManager.AppSettings["Facebook_AppId"],
+                appSecret: ConfigurationManager.AppSettings["Facebook_AppSecret"]);
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "504972632903-4g56g4iuut7c6pnuiu8a3m4o7ad8058l.apps.googleusercontent.com",
-                ClientSecret = "719Q-1xm7he2kkkKoZnk_LGn"
-            });
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "504972632903-4g56g4iuut7c6pnuiu8a3m4o7ad8058l.apps.googleusercontent.com",
+            //    ClientSecret = "719Q-1xm7he2kkkKoZnk_LGn"
+            //});
         }
     }
 }

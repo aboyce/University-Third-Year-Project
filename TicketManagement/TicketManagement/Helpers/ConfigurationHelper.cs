@@ -19,7 +19,7 @@ namespace TicketManagement.Helpers
         public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(() => GetClockworkApiKey()); }
         public static string GetClockworkApiKey()
         {
-            string api = ConfigurationManager.AppSettings["ClockworkAPIKey"];
+            string api = ConfigurationManager.AppSettings["Clockwork_APIKey"];
             return !string.IsNullOrEmpty(api) ? api : null;
         }
 

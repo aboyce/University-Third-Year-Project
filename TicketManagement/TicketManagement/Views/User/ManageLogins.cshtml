@@ -1,0 +1,85 @@
+﻿@model TicketManagement.ViewModels.ManageLoginsViewModel
+@using Microsoft.Owin.Security
+@{
+    ViewBag.Title = "External Logins";
+}
+
+<h2>My Account</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (!loginProviders.Any())
+    {
+        <div>
+            <p>
+                There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
+                for details on setting up this ASP.NET application to support logging in via external services.
+            </p>
+        </div>
+    }
+    else
+    {
+        <h3>Current External Logins</h3>
+        <hr />
+
+        if (Model.CurrentLogins.Count > 0)
+        {
+            foreach (var account in Model.CurrentLogins)
+            {
+                <div class="row">
+                    <div class="col-md-2">
+                        @account.LoginProvider
+                    </div>
+                    <div class="col-md-4">
+                        @if (ViewBag.ShowRemoveButton)
+                        {
+                            using (Html.BeginForm("RemoveLogin", "User"))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div>
+                                    @Html.Hidden("loginProvider", account.LoginProvider)
+                                    @Html.Hidden("providerKey", account.ProviderKey)
+                                    <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @account.LoginProvider login from your account"/>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            @: &nbsp;
+                        }
+
+                    </div>
+                </div>
+                <br/>
+            }
+        }
+        else
+        {
+            <p>There are currently no registered logins for your account</p>
+        }
+
+        <h3>Add New Login</h3>
+        <hr />
+
+        if (Model.OtherLogins.Count > 0)
+        {
+            using (Html.BeginForm("LinkLogin", "User"))
+            {
+                @Html.AntiForgeryToken()
+                <div id="socialLoginList">
+                    <p>
+                        @foreach (AuthenticationDescription p in Model.OtherLogins)
+                        {
+                            <button type="submit" class="btn btn-success" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                        }
+                    </p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>There are currently no other logins to link to your account</p>
+        }
+    }
+}

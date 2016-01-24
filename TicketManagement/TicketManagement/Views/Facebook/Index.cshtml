@@ -1,0 +1,53 @@
+﻿ @model TicketManagement.ViewModels.ManageLoginsViewModel
+@using Microsoft.Owin.Security
+@{
+    ViewBag.Title = "Facebook";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+}
+
+<h2>Facebook Management</h2>
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <button class="btn btn-default disabled" type="button" style="width: 100%">
+                Logged In <span class="badge"><i class="fa fa-times"></i></span>
+            </button>
+            <hr />
+            <p>
+                @*@Html.ActionLink("New Message", "Send", null, new { @class = "btn btn-success" })*@
+            </p>
+        </div>
+        <div class="col-md-10">
+            <h4>Facebooks</h4>
+            <br />
+            @*<table class="table table-hover table-striped table-responsive">
+                    <tr>
+                        <th>Recipient</th>
+                        <th>
+                            Message
+                        </th>
+                        <th>
+                            Sent
+                        </th>
+                    </tr>
+
+                    @foreach (var text in Model.SentMessages)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => text.UserTo.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => text.Content)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => text.Sent)
+                            </td>
+                        </tr>
+                    }
+                </table>*@
+        </div>
+    </div>
+</div>

@@ -247,6 +247,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -494,7 +495,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Home\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\User\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Partial_User.cshtml" />
     <Content Include="Views\Home\_Partial_Register.cshtml" />
@@ -552,6 +553,8 @@
     <Content Include="Views\Organisations\Structure.cshtml" />
     <Content Include="Views\Shared\Error_Welcome.cshtml" />
     <Content Include="Views\Twitter\Index.cshtml" />
+    <Content Include="Views\Facebook\Index.cshtml" />
+    <Content Include="Views\User\ManageLogins.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

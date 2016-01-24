@@ -17,6 +17,7 @@
             @if (User.IsInRole(MyRoles.Social))
             {
                 <li><a href="@Url.Action("Index", "Twitter")"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="@Url.Action("Index", "Facebook")"><i class="fa fa-facebook-official"></i></a></li>
             }
             @if (User.IsInRole(MyRoles.Administrator))
             {
