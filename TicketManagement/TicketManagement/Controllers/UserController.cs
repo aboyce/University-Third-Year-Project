@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -31,11 +34,13 @@ namespace TicketManagement.Controllers
             SignInManager = signInManager;
             UserManager = userManager;
         }
-        public ApplicationSignInManager SignInManager {
+        public ApplicationSignInManager SignInManager
+        {
             get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
             private set { _signInManager = value; }
         }
-        public ApplicationUserManager UserManager {
+        public ApplicationUserManager UserManager
+        {
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
             private set { _userManager = value; }
         }
@@ -102,7 +107,7 @@ namespace TicketManagement.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            
+
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
 
             if (result.Succeeded)
@@ -111,7 +116,7 @@ namespace TicketManagement.Controllers
 
                 if (user != null)
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                
+
                 return RedirectToAction("Index", new { ViewMessage = ManageMessageId.ChangePasswordSuccess });
             }
 
@@ -193,7 +198,7 @@ namespace TicketManagement.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    //return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                //return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
@@ -253,11 +258,38 @@ namespace TicketManagement.Controllers
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
-            {
                 return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+
+            IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+
+            if (result.Succeeded)
+            {
+                User user = await UserManager.FindAsync(loginInfo.Login);
+
+                if (user != null)
+                    await StoreFacebookAuthToken(user);
+
+                return RedirectToAction("ManageLogins");
             }
-            var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+
+            return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        private async Task StoreFacebookAuthToken(User user)
+        {
+            ClaimsIdentity claimsIdentity = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (claimsIdentity != null)
+            {
+                IList<Claim> currentClaims = await UserManager.GetClaimsAsync(user.Id);
+
+                if (currentClaims.Any())
+                    await UserManager.RemoveClaimAsync(user.Id, currentClaims[0]);
+
+                Claim facebookAccessToken = claimsIdentity.FindAll("FacebookAccessToken").FirstOrDefault();
+
+                await UserManager.AddClaimAsync(user.Id, facebookAccessToken);
+            }
         }
 
         [HttpPost]

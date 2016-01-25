@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using TicketManagement.Models.Context;
@@ -56,9 +58,22 @@ namespace TicketManagement
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-                appId: ConfigurationManager.AppSettings["Facebook_AppId"],
-                appSecret: ConfigurationManager.AppSettings["Facebook_AppSecret"]);
+            FacebookAuthenticationOptions facebookOptions = new FacebookAuthenticationOptions
+            {
+                AppId = ConfigurationManager.AppSettings["Facebook_AppId"],
+                AppSecret = ConfigurationManager.AppSettings["Facebook_AppSecret"],
+                Provider = new FacebookAuthenticationProvider
+                {
+                    OnAuthenticated = (context) =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookAccessToken", context.AccessToken));
+                        return Task.FromResult(0);
+                    }
+                }
+            };
+
+            facebookOptions.Scope.Add("email user_friends user_about_me user_birthday user_location");
+            app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
