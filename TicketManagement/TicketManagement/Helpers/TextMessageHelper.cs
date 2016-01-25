@@ -115,5 +115,20 @@ namespace TicketManagement.Helpers
 
             return new ReceivedTextMessage(to, from, content, id, networkCode, keyword);
         }
+
+        public async Task<ReceivedTextMessage> ProcessTextMessage(ReceivedTextMessage txt)
+        {          
+            if (txt.To != null && string.Equals(txt.To, await ConfigurationHelper.GetTextMessageReceiveNumberAsync(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                string toReplacement = await ConfigurationHelper.GetTextMessageYourNameAsync();
+
+                txt.To = toReplacement ?? txt.To;
+
+                if (string.IsNullOrEmpty(txt.Content)) // If the txt.To matches the number above, we must have a Keywork added from Clockwork, we want to remove this.
+                    txt.Content = txt.Content.Remove(0, await ConfigurationHelper.GetTextMessageReceiveKeywordLengthAsync());
+            }
+            
+            return txt;
+        }
     }
 }

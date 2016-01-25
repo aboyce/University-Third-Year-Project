@@ -9,28 +9,56 @@ namespace TicketManagement.Helpers
     {
         const int CLOCKWORK_FROM_MAX_LENGTH = 11;
 
-        public static Task<TicketConfiguration> GetTicketConfigurationAsync() { return Task.Factory.StartNew(() => GetTicketConfiguration()); }
+        public static Task<TicketConfiguration> GetTicketConfigurationAsync() { return Task.Factory.StartNew(GetTicketConfiguration); }
         public static TicketConfiguration GetTicketConfiguration()
         {
             TicketConfiguration tconf = new TicketConfiguration();
             return tconf.Populate() ? tconf : null;
         }
 
-        public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(() => GetClockworkApiKey()); }
+        public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(GetClockworkApiKey); }
         public static string GetClockworkApiKey()
         {
             string api = ConfigurationManager.AppSettings["Clockwork_APIKey"];
             return !string.IsNullOrEmpty(api) ? api : null;
         }
 
-        public static Task<string> GetTextMessageFromCodeAsync() { return Task.Factory.StartNew(() => GetTextMessageFromCode()); }
+        public static Task<string> GetTextMessageFromCodeAsync() { return Task.Factory.StartNew(GetTextMessageFromCode); }
         public static string GetTextMessageFromCode()
         {
             string from = ConfigurationManager.AppSettings["TextMessageFrom"];
             return !string.IsNullOrEmpty(from) ? from : null;
         }
 
-        public static Task<int?> GetTextMessageMaxLengthAsync() { return Task.Factory.StartNew(() => GetTextMessageMaxLength()); }
+        public static Task<string> GetTextMessageYourNameAsync() { return Task.Factory.StartNew(GetTextMessageYourName); }
+        public static string GetTextMessageYourName()
+        {
+            string from = ConfigurationManager.AppSettings["TextMessage_YourName"];
+            return !string.IsNullOrEmpty(from) ? from : null;
+        }
+
+        public static Task<string> GetTextMessageReceiveNumberAsync() { return Task.Factory.StartNew(GetTextMessageReceiveNumber); }
+        public static string GetTextMessageReceiveNumber()
+        {
+            string from = ConfigurationManager.AppSettings["Clockwork_Receive_Number"];
+            return !string.IsNullOrEmpty(from) ? from : null;
+        }
+
+        public static Task<string> GetTextMessageReceiveKeywordAsync() { return Task.Factory.StartNew(GetTextMessageReceiveKeyword); }
+        public static string GetTextMessageReceiveKeyword()
+        {
+            string from = ConfigurationManager.AppSettings["Clockwork_Receive_Keyword"];
+            return !string.IsNullOrEmpty(from) ? from : null;
+        }
+
+        public static Task<int> GetTextMessageReceiveKeywordLengthAsync() { return Task.Factory.StartNew(GetTextMessageReceiveKeywordLength); }
+        public static int GetTextMessageReceiveKeywordLength()
+        {
+            string from = ConfigurationManager.AppSettings["Clockwork_Receive_Keyword"];
+            return string.IsNullOrEmpty(from) ? 0 : from.Length;
+        }
+
+        public static Task<int?> GetTextMessageMaxLengthAsync() { return Task.Factory.StartNew(GetTextMessageMaxLength); }
         public static int? GetTextMessageMaxLength()
         {
             int length;

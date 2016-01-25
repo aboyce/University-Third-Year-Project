@@ -300,9 +300,10 @@ namespace TicketManagement.Controllers
             var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
+                    await RemoveFacebookAuthToken(user);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -312,6 +313,19 @@ namespace TicketManagement.Controllers
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("ManageLogins", new { ViewMessage = message });
+        }
+
+        private async Task RemoveFacebookAuthToken(User user)
+        {
+            ClaimsIdentity claimsIdentity = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (claimsIdentity != null)
+            {
+                IList<Claim> currentClaims = await UserManager.GetClaimsAsync(user.Id);
+
+                if (currentClaims.Any())
+                    await UserManager.RemoveClaimAsync(user.Id, currentClaims[0]);
+            }
         }
 
         #endregion
