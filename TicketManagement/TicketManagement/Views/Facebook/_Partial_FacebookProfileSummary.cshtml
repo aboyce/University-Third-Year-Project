@@ -1,0 +1,24 @@
+﻿@model TicketManagement.ViewModels.FacebookProfileSummaryViewModel
+
+<ul class="list-group list-group-item-info">
+    <li class="list-group-item">@Model.FullName</li>
+    <li class="list-group-item">@Model.Email</li>
+    <li class="list-group-item">@Model.Location</li>
+    <li class="list-group-item">@Model.Locale</li>
+    <li class="list-group-item">@Model.Birthday</li>
+    <li class="list-group-item"><a href="@Model.ExternalLink" target="_blank">View Profile</a></li>
+</ul>
+
+@*<div class="panel panel-info">
+
+    @*<div class="panel-heading">
+        <strong>Message</strong>
+    </div>
+
+    <div class="panel-body">
+        <p>@Model.FullName</p>
+        <p>@Model.FullName</p>
+        <p>@Model.Email</p>
+        <p>@Model.Location</p>
+    </div>
+</div>*@

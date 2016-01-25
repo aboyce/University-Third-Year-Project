@@ -330,6 +330,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
+    <Compile Include="ViewModels\FacebookViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\NotificationViewModels.cs" />
     <Compile Include="ViewModels\OrganisationViewModels.cs" />
@@ -560,6 +561,7 @@
     <Content Include="Views\Twitter\Index.cshtml" />
     <Content Include="Views\Facebook\Index.cshtml" />
     <Content Include="Views\User\ManageLogins.cshtml" />
+    <Content Include="Views\Facebook\_Partial_FacebookProfileSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

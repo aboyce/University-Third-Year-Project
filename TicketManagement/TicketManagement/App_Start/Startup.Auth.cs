@@ -72,7 +72,7 @@ namespace TicketManagement
                 }
             };
 
-            facebookOptions.Scope.Add("email user_friends user_about_me user_birthday user_location");
+            facebookOptions.Scope.Add("email bio user_friends user_about_me user_birthday user_location");
             app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()

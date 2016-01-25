@@ -1,5 +1,4 @@
-﻿ @model TicketManagement.ViewModels.ManageLoginsViewModel
-@using Microsoft.Owin.Security
+﻿@model TicketManagement.ViewModels.FacebookIndexViewModel
 @{
     ViewBag.Title = "Facebook";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
@@ -11,13 +10,24 @@
 <div class="container">
     <div class="row">
         <div class="col-md-2">
-            <button class="btn btn-default disabled" type="button" style="width: 100%">
-                Logged In <span class="badge"><i class="fa fa-times"></i></span>
-            </button>
-            <hr />
-            <p>
-                @*@Html.ActionLink("New Message", "Send", null, new { @class = "btn btn-success" })*@
-            </p>
+            @if (!Model.IsLoggedIn)
+            {
+                <button class="btn btn-danger disabled" type="button" style="width: 100%">
+                    Logged In <span class="badge"><i class="fa fa-times"></i></span>
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-success disabled" type="button" style="width: 100%">
+                    Logged In <span class="badge"><i class="fa fa-check"></i></span>
+                </button>
+                <hr />
+
+                @Html.Partial("_Partial_FacebookProfileSummary", Model.FacebookProfileSummaryViewModel)
+            }
+
+            <hr/>
+
         </div>
         <div class="col-md-10">
             <h4>Facebooks</h4>
