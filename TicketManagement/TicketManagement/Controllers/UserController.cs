@@ -323,8 +323,11 @@ namespace TicketManagement.Controllers
             {
                 IList<Claim> currentClaims = await UserManager.GetClaimsAsync(user.Id);
 
-                if (currentClaims.Any())
-                    await UserManager.RemoveClaimAsync(user.Id, currentClaims[0]);
+                foreach (var claim in currentClaims)
+                {
+                    if (claim.Type == "FacebookAccessToken")
+                        await UserManager.RemoveClaimAsync(user.Id, claim);
+                }
             }
         }
 

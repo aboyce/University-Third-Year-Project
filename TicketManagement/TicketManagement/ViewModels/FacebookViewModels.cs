@@ -52,6 +52,9 @@ namespace TicketManagement.ViewModels
         [FacebookMapping("birthday")]
         public DateTime Birthday { get; set; }
 
+        [FacebookMapping("gender")]
+        public string Gender { get; set; }
+
         [FacebookMapping("link")]
         public string ExternalLink { get; set; }
     }
@@ -72,6 +75,24 @@ namespace TicketManagement.ViewModels
 
         [FacebookMapping("is_published")]
         public bool Published { get; set; }
+
+        [FacebookMapping("category")]
+        public string Category { get; set; }
+
+        [FacebookMapping("business")]
+        public string Business { get; set; }
+
+        [FacebookMapping("can_post")]
+        public bool CanPost { get; set; }
+
+        [FacebookMapping("unread_message_count")]
+        public long UnreadMessages { get; set; }
+
+        [FacebookMapping("unseen_message_count")]
+        public long UnseenMessages { get; set; }
+
+        [FacebookMapping("unread_notif_count")]
+        public long UnreadNotifications { get; set; }
 
         [FacebookMapping("link")]
         public string ExternalLink { get; set; }

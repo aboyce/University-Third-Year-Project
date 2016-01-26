@@ -1,10 +1,35 @@
 ﻿@model TicketManagement.ViewModels.FacebookProfileSummaryViewModel
 
-<ul class="list-group list-group-item-info">
-    <li class="list-group-item">@Model.FirstName @Model.LastName</li>
-    <li class="list-group-item">@Model.Email</li>
-    <li class="list-group-item">@Model.Location</li>
-    <li class="list-group-item">@Model.Locale</li>
-    <li class="list-group-item">@Model.Birthday.ToString("dd MMM yy")</li>
-    <li class="list-group-item"><a href="@Model.ExternalLink" target="_blank">View Profile</a></li>
-</ul>
+@{
+    string fullName = $" - {Model.FirstName} {Model.LastName}";
+}
+
+<div class="panel panel-info" style="text-align: center;">
+    <div class="panel-heading"><strong>Facebook Information</strong></div>
+
+    <ul class="list-group list-group-item-info">
+        <li class="list-group-item">
+            @if (Model.Gender.ToUpper() == "MALE")
+            {
+                <strong><i class="fa fa-male"></i></strong> @fullName
+            }
+
+            @if (Model.Gender.ToUpper() == "FEMALE")
+            {
+                <strong><i class="fa fa-female"></i> - </strong> @fullName
+            }
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-envelope-o"></i></strong> - @Model.Email
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-location-arrow"></i></strong> - @Model.Location
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-birthday-cake"></i></strong> - @Model.Birthday.ToString("dd MMM yy")
+        </li>
+        <li class="list-group-item">
+            <a href="@Model.ExternalLink" target="_blank" class="btn btn-info btn-sm">View Profile</a>
+        </li>
+    </ul>
+</div>

@@ -357,9 +357,10 @@
     <Content Include="Content\Custom\bootstrap-custom-tree.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.min.css" />
-    <Content Include="Content\Images\Shared\loading.gif" />
+    <Content Include="Content\Images\Shared\loading_circle.gif" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\Shared\loading_horizontal.gif" />
     <Content Include="Content\Images\Wallpapers\bg_flower.jpeg" />
     <Content Include="Content\Images\Wallpapers\bg_mountains.jpg" />
     <Content Include="Content\Custom\bootstrap-custom-buttons.css" />
@@ -566,6 +567,7 @@
     <Content Include="Views\User\ManageLogins.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookProfileSummary.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookAdminPage.cshtml" />
+    <Content Include="Views\Shared\_Partial_SocialMediaNotLoggedIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

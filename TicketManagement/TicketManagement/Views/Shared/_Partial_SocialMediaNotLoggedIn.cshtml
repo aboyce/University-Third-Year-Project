@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Not Logged In";
+}
+
+@if (ViewBag.Type != "")
+{
+    <p class="text-info">Your are not logged in with @ViewBag.Type, if you have not already please associate your account @Html.ActionLink("here", "ManageLogins", "User"). If you have previously, please try to remove and re-associate it.</p>
+
+    if (ViewBag.ErrorMessage != "")
+    {
+        <p class="text-info"> Extra: @ViewBag.ErrorMessage</p>
+    }
+
+    @Html.ActionLink("Associate Account", "ManageLogins", "User", null, new { @class = "btn btn-info" })
+}
+

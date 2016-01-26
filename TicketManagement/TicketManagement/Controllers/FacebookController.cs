@@ -29,11 +29,11 @@ namespace TicketManagement.Controllers
             string accessToken = GetAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return PartialView("Error");
+                return Error("");
 
             FacebookClient fb = new FacebookClient(accessToken);
 
-            dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location");
+            dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location,gender");
 
             return PartialView(FacebookHelpers.ToStatic<FacebookProfileSummaryViewModel>(userInfo));
         }
@@ -43,11 +43,12 @@ namespace TicketManagement.Controllers
             string accessToken = GetAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return PartialView("Error");
+                return Error("");
 
             FacebookClient fb = new FacebookClient(accessToken);
 
-            dynamic userPages = await fb.GetTaskAsync("me/accounts?fields=id, name, link, is_published, likes, talking_about_count");
+            //dynamic userPages = await fb.GetTaskAsync("me/accounts?fields=id, name, link, is_published, likes, talking_about_count");
+            dynamic userPages = await fb.GetTaskAsync("me/accounts?fields=id, name, business, likes, can_post, link, is_published, talking_about_count, category, unread_message_count, unseen_message_count, unread_notif_count");
 
             foreach (dynamic page in userPages.data)
             {
@@ -81,8 +82,9 @@ namespace TicketManagement.Controllers
 
         public ActionResult Error(string errorMessage)
         {
-            ViewBag.ErrorMessage = "Cannot find your access token, please try re-associating you account with Facebook";
-            return PartialView("Error");
+            ViewBag.Type = "Facebook";
+            ViewBag.ErrorMessage = errorMessage;
+            return PartialView("_Partial_SocialMediaNotLoggedIn");
         }
     }
 }

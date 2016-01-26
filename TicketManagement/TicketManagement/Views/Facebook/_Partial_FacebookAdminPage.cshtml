@@ -7,8 +7,30 @@
 }
 else
 {
-    <p>@Model.Id</p>
-    <p>@Model.Name</p>
-    <p>@Model.ExternalLink</p>
-    <p>@Model.Likes</p>
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <strong>Page Name: </strong>@Model.Name
+            <div style="float: right; font-size: 16px">
+                <strong><i class="fa fa-envelope"></i> </strong>@Model.UnreadMessages  
+                <strong><i class="fa fa-globe" ></i> </strong>@Model.UnreadNotifications
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <p>Message</p>
+        </div>
+    </div>
 }
+
+<p>@Model.Id</p>
+<p>@Model.Name</p>
+<p>@Model.Likes</p>
+<p>@Model.TalkingCount</p>
+<p>@Model.Published</p>
+<p>@Model.Category</p>
+<p>@Model.Business</p>
+<p>@Model.CanPost</p>
+<p>@Model.UnreadMessages</p>
+<p>@Model.UnreadNotifications</p>
+<p>@Model.UnseenMessages</p>

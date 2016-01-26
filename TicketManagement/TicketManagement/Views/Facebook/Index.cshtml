@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3 col-sm-3">
             @if (!Model.IsLoggedIn)
             {
                 <button class="btn btn-danger disabled" type="button" style="width: 100%">
@@ -19,7 +19,7 @@
             else
             {
                 <button class="btn btn-success disabled" type="button" style="width: 100%">
-                    Logged In <span class="badge"><i class="fa fa-check"></i></span>
+                    Logged in with Facebook <span class="badge"><i class="fa fa-check"></i></span>
                 </button>
                 <hr/>
 
@@ -36,7 +36,7 @@
                     }))
                 {
                     <div id="fb_profile_summary_loading" style="display: none;">
-                        <img src="~/Content/Images/Shared/loading.gif"/>
+                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;"/>
                     </div>
                 }
                 <div id="fb_profile_summary"></div>
@@ -45,9 +45,7 @@
             <hr/>
 
         </div>
-        <div class="col-md-10">
-            <h4>Facebooks</h4>
-            <br/>
+        <div class="col-md-9 col-sm-9">
 
             @using (Ajax.BeginForm("_Partial_FacebookAdminPage", "Facebook", new AjaxOptions
             {
@@ -62,7 +60,7 @@
                 }))
             {
                 <div id="fb_admin_pages_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading.gif"/>
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;"/>
                 </div>
             }
             <div id="fb_admin_pages"></div>
