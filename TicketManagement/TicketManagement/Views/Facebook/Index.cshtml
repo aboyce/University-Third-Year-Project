@@ -30,13 +30,13 @@
                     UpdateTargetId = "fb_profile_summary",
                     LoadingElementId = "fb_profile_summary_loading"
                 },
-                new
-                {
-                    id = "fb_profile_summary_form"
-                }))
+                    new
+                    {
+                        id = "fb_profile_summary_form"
+                    }))
                 {
                     <div id="fb_profile_summary_loading" style="display: none;">
-                        <img src="~/Content/Images/Shared/loading.gif" />
+                        <img src="~/Content/Images/Shared/loading.gif"/>
                     </div>
                 }
                 <div id="fb_profile_summary"></div>
@@ -71,13 +71,9 @@
     </div>
 </div>
 
+@Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
+
 <script type="text/javascript">
     $('#fb_profile_summary_form').submit();
     $('#fb_admin_pages_form').submit();
-
-    function handleError(ajaxContext, updateTargetId) {
-        if (ajaxContext != null && ajaxContext.responseText != null) {
-            $("#" + updateTargetId).html(ajaxContext.responseType);
-        }
-    }
 </script>

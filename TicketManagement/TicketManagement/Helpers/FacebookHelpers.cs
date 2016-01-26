@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using TicketManagement.ViewModels;
@@ -71,7 +72,10 @@ namespace TicketManagement.Helpers
                         mappedValue = entry.Value;
 
                     if (destinationPropertyInfo.FacebookMappedProperty.PropertyType.Name == "DateTime")
-                        destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, DateTime.Parse(mappedValue.ToString()), null);
+                    {
+                        DateTime ukDateTime = DateTime.ParseExact(DateTime.Parse(mappedValue.ToString()).ToString(), "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                        destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, ukDateTime, null);
+                    }
                     else
                         destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, mappedValue, null);
                 }
