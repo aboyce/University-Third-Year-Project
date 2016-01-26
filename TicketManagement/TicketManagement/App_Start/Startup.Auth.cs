@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Owin;
+using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
@@ -60,8 +61,8 @@ namespace TicketManagement
 
             FacebookAuthenticationOptions facebookOptions = new FacebookAuthenticationOptions
             {
-                AppId = ConfigurationManager.AppSettings["Facebook_AppId"],
-                AppSecret = ConfigurationManager.AppSettings["Facebook_AppSecret"],
+                AppId = ConfigurationHelper.GetFacebookAppId(),
+                AppSecret = ConfigurationHelper.GetFacebookAppSecret(),
                 Provider = new FacebookAuthenticationProvider
                 {
                     OnAuthenticated = (context) =>
@@ -72,7 +73,7 @@ namespace TicketManagement
                 }
             };
 
-            facebookOptions.Scope.Add("email bio user_friends user_about_me user_birthday user_location");
+            facebookOptions.Scope.Add(ConfigurationHelper.GetFacebookPermissionScope());
             app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()

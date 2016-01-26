@@ -272,6 +272,7 @@
     </Compile>
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\DataPopulationHelper.cs" />
+    <Compile Include="Helpers\FacebookHelpers.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
@@ -356,6 +357,7 @@
     <Content Include="Content\Custom\bootstrap-custom-tree.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.css" />
     <Content Include="Content\Custom\bootstrap-custom-toggle.min.css" />
+    <Content Include="Content\Images\Shared\loading.gif" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\Wallpapers\bg_flower.jpeg" />
@@ -562,6 +564,7 @@
     <Content Include="Views\Facebook\Index.cshtml" />
     <Content Include="Views\User\ManageLogins.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookProfileSummary.cshtml" />
+    <Content Include="Views\Facebook\_Partial_FacebookAdminPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

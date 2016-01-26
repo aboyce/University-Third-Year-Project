@@ -1,0 +1,14 @@
+﻿@model TicketManagement.ViewModels.FacebookAdminPageViewModel
+
+
+@if (Model == null)
+{
+    <p>Please check that you are an Admin of the Facebook site</p>
+}
+else
+{
+    <p>@Model.Id</p>
+    <p>@Model.Name</p>
+    <p>@Model.ExternalLink</p>
+    <p>@Model.Likes</p>
+}
