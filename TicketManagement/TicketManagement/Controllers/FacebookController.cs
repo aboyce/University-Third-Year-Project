@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using Facebook;
+using Microsoft.Ajax.Utilities;
 using TicketManagement.Filters;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
@@ -11,8 +14,7 @@ using TicketManagement.ViewModels;
 namespace TicketManagement.Controllers
 {
     [Authorize(Roles = MyRoles.Social)]
-    [FacebookAccessToken]
-    public class FacebookController : Controller
+    public class FacebookController : FacebookErrorHandlerController
     {
         public ActionResult Index()
         {
@@ -58,8 +60,30 @@ namespace TicketManagement.Controllers
                     return PartialView(vm);
             }
 
-            return PartialView(null);
+            return PartialView(null); // TODO: Mention that the user is not an admin of the page.
         }
+
+        #region Testing
+
+        public async Task<ActionResult> Test_RevokeAccessToken()
+        {
+            var accessToken = GetAccessToken();
+
+            if (string.IsNullOrEmpty(accessToken))
+                throw new HttpException(404, "Missing Access Token");
+
+            FacebookClient fb = new FacebookClient(accessToken);
+
+            dynamic userFeed = await fb.DeleteTaskAsync("me/permissions");
+            return RedirectToAction("Index", "Tickets");
+        }
+
+        public Action Test_ApiLimit()
+        {
+            throw new FacebookApiLimitException();
+        }
+
+        #endregion
 
         public string GetAccessToken()
         {

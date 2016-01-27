@@ -79,18 +79,12 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> UserEdit(string id)
         {
             if (id == null)
-            {
-                ViewBag.ErrorMessage = "'Admin/UserEdit' has been visited from the wrong location, please ensure you are an admin and try again.";
-                return View("Error");
-            }
+                return View("Error", new ErrorViewModel {Type = ErrorType.Error, Message = "'Admin/UserEdit' has been visited from the wrong location, please ensure you are an admin and try again." });
 
             User user = await UserManager.FindByIdAsync(id);
 
             if (user == null)
-            {
-                ViewBag.ErrorMessage = "Could not find user, please try again.";
-                return View("Error");
-            }
+                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Could not find user, please try again." });
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
             ViewBag.RolesToAdd = new SelectList(db.Roles, "Id", "Name", user.Roles);

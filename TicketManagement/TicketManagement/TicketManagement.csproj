@@ -251,6 +251,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\FacebookErrorHandlerController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -331,6 +332,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
+    <Compile Include="ViewModels\ErrorViewModels.cs" />
     <Compile Include="ViewModels\FacebookViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\NotificationViewModels.cs" />
@@ -568,6 +570,7 @@
     <Content Include="Views\Facebook\_Partial_FacebookProfileSummary.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookAdminPage.cshtml" />
     <Content Include="Views\Shared\_Partial_SocialMediaNotLoggedIn.cshtml" />
+    <Content Include="Views\Facebook\FacebookError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

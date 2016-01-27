@@ -22,6 +22,14 @@
     </div>
 }
 
+@if (Request.Params["FacebookError"] == "Exception")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Exception</b> An error occurred whilst processing your request: @Request.Params["Message"]
+    </div>
+}
+
 <h2>Tickets</h2>
 <hr />
 

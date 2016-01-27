@@ -59,10 +59,7 @@ namespace TicketManagement.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 if (!string.IsNullOrEmpty(returnUrl)) // There is a return address (problem) and the user is logged in, usually means lack of permissions.
-                {
-                    ViewBag.ErrorMessage = "It apears that you don't have permission to view that page.";
-                    return View("Error_Welcome");
-                }
+                    return View("Error_Welcome", new ErrorViewModel {Type = ErrorType.Warning, Message = "It apears that you don't have permission to view that page." });
 
                 return RedirectToAction("Index", "Tickets");
             }

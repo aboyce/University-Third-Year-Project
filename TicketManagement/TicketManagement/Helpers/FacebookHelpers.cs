@@ -62,11 +62,7 @@ namespace TicketManagement.Helpers
                     object mappedValue;
                     if (entry.Value.GetType().Name == "JsonObject")
                     {
-                        var childProperties = entry.Value as IDictionary<string, object>;
-
-                        mappedValue = (from KeyValuePair<string, object> item in childProperties
-                            where item.Key == destinationPropertyInfo.FacebookField
-                            select item.Value).FirstOrDefault() ?? entry.Value;
+                        mappedValue = FindMatchingChildPropertiesRecursively(entry, destinationPropertyInfo);
                     }
                     else
                         mappedValue = entry.Value;
@@ -82,6 +78,25 @@ namespace TicketManagement.Helpers
             }
 
             return entity;
+        }
+
+        private static object FindMatchingChildPropertiesRecursively(KeyValuePair<string, object> entry,
+            PropertyContainer destinationPropertyInfo)
+        {
+            IDictionary<string, object> childProperties = entry.Value as IDictionary<string, object>;
+
+            var mappedValue = (from KeyValuePair<string, object> item in childProperties
+                where item.Key == destinationPropertyInfo.FacebookField
+                select item.Value).FirstOrDefault();
+
+            if (mappedValue != null) return mappedValue;
+
+            foreach (KeyValuePair<string, object> item in childProperties.Where(item => item.Value.GetType().Name == "JsonObject"))
+            {
+                mappedValue = FindMatchingChildPropertiesRecursively(item, destinationPropertyInfo);
+            }
+
+            return mappedValue;
         }
     }
 }

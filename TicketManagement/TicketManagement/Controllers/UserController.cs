@@ -54,10 +54,7 @@ namespace TicketManagement.Controllers
             User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
-            {
-                ViewBag.ErrorMessage = "Could not find user, please try (re)logging in and try again.";
-                return View("Error");
-            }
+                return View("Error", new ErrorViewModel {Type = ErrorType.Error, Message = "Could not find user, please try (re)logging in and try again." });
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
 
@@ -131,10 +128,11 @@ namespace TicketManagement.Controllers
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
+
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
-                return View("Error");
+                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Could not find user, please try (re)logging in and try again." });
 
             var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
             var otherLogins = HttpContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
@@ -154,16 +152,17 @@ namespace TicketManagement.Controllers
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
+
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             if (user == null)
-            {
-                ViewBag.ErrorMessage = "Problem with linking the external log in, please try again.";
-                return View("Error");
-            }
+                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Problem with linking the external log in, please try again." });
+
             var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
             ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ExternalLoginsViewModel()
+
+            return View(new ExternalLoginsViewModel() // TODO: Investigate if this is a problem.
             {
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins
@@ -183,11 +182,9 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+
             if (loginInfo == null)
-            {
-                ViewBag.ErrorMessage = "Struggling to get anything back from external login, please try again.";
-                return View("Error");
-            }
+                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Struggling to get anything back from external login, please try again." });
 
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
@@ -221,11 +218,9 @@ namespace TicketManagement.Controllers
             {
                 // Get the information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+
                 if (info == null)
-                {
-                    ViewBag.ErrorMessage = "Unsuccessful login with service, please try again.";
-                    return View("Error");
-                }
+                    return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Unsuccessful login with service, please try again." });
 
                 User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
 
