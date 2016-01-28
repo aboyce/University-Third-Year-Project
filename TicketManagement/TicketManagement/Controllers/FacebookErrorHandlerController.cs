@@ -25,16 +25,17 @@ namespace TicketManagement.Controllers
 
         #region ActionResults
 
-        public ActionResult Error(ErrorViewModel vm)
-        {
-            return View(vm);
-        }
-
-        public ActionResult Error(string errorMessage)
+        public ActionResult FacebookError(string errorMessage)
         {
             ViewBag.Type = "Facebook";
             ViewBag.ErrorMessage = errorMessage;
             return PartialView("_Partial_SocialMediaNotLoggedIn");
+        }
+
+        public ActionResult RequestNewAccessToken(string facebookUrl)
+        {
+            ViewBag.FacebookUrl = facebookUrl;
+            return PartialView("_Partial_FacebookNewAccessToken");
         }
 
         [Authorize]
@@ -81,18 +82,29 @@ namespace TicketManagement.Controllers
                 if (HandleAsExpiredToken((FacebookOAuthException)filterContext.Exception))
                 {
                     filterContext.ExceptionHandled = true;
-                    filterContext.Result = GetFacebookLoginUrl();
+                    filterContext.Result = RedirectToAction("RequestNewAccessToken", new { facebookUrl = GetFacebookLoginUrlString() });
+                    //filterContext.Result = GetFacebookLoginUrl();
                 }
                 else
                 {
                     filterContext.ExceptionHandled = true;
-                    filterContext.Result = RedirectToAction("Index", "Tickets", new { FacebookError = ErrorType.Exception, Message = $"{filterContext.Exception.Source} controller: {filterContext.Exception.Message}" });
+                    filterContext.Result = RedirectToAction("Index", "Tickets",
+                        new
+                        {
+                            FacebookError = ErrorType.Exception,
+                            Message = $"{filterContext.Exception.Source} controller: {filterContext.Exception.Message}"
+                        });
                 }
             }
             else if (filterContext.Exception is FacebookApiException)
             {
                 filterContext.ExceptionHandled = true;
-                filterContext.Result = RedirectToAction("Index", "Tickets", new { FacebookError = ErrorType.Exception, Message = $"{filterContext.Exception.Source} controller: {filterContext.Exception.Message}" });
+                filterContext.Result = RedirectToAction("Index", "Tickets",
+                    new
+                    {
+                        FacebookError = ErrorType.Exception,
+                        Message = $"{filterContext.Exception.Source} controller: {filterContext.Exception.Message}"
+                    });
             }
             else
                 base.OnException(filterContext);
@@ -129,6 +141,20 @@ namespace TicketManagement.Controllers
             return handleAsExpiredToken;
         }
 
+        private string GetFacebookLoginUrlString()
+        {
+            FacebookClient fb = new FacebookClient();
+            fb.AppId = ConfigurationHelper.GetFacebookAppId();
+
+            return fb.GetLoginUrl(new
+            {
+                scope = ConfigurationHelper.GetFacebookPermissionScope(),
+                redirect_uri = RedirectUri.AbsoluteUri,
+                response_type = "code",
+            }).ToString();
+
+        }
+
         private RedirectResult GetFacebookLoginUrl()
         {
             if (Session[RetryCount] == null || (Session[RetryCount] != null && Session[RetryCount].ToString() == "0"))
@@ -138,25 +164,11 @@ namespace TicketManagement.Controllers
                 FacebookClient fb = new FacebookClient();
                 fb.AppId = ConfigurationHelper.GetFacebookAppId();
 
-                //var uri = fb.GetLoginUrl(new
-                //{
-                //    scope = ConfigurationHelper.GetFacebookPermissionScope(),
-                //    redirect_uri = RedirectUri.AbsoluteUri,
-                //    response_type = "code",
-                //});
-
-                //var redirect = Redirect(fb.GetLoginUrl(new
-                //{
-                //    scope = ConfigurationHelper.GetFacebookPermissionScope(),
-                //    redirect_uri = RedirectUri.AbsoluteUri,
-                //    response_type = "code",
-                //}).ToString());
-
                 return Redirect(fb.GetLoginUrl(new
                 {
                     scope = ConfigurationHelper.GetFacebookPermissionScope(),
                     redirect_uri = RedirectUri.AbsoluteUri,
-                    response_type = "code",                  
+                    response_type = "code",
                 }).ToString());
             }
             else
@@ -187,7 +199,7 @@ namespace TicketManagement.Controllers
         {
             if (!HttpContext.Items.Contains("access_token"))
             {
-                Error("Cannot find your access token, please try re-associating you account with Facebook");
+                FacebookError("Cannot find your access token, please try re-associating you account with Facebook");
                 return null;
             }
 
@@ -195,7 +207,7 @@ namespace TicketManagement.Controllers
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                Error("Cannot find your access token, please try re-associating you account with Facebook");
+                FacebookError("Cannot find your access token, please try re-associating you account with Facebook");
                 return null;
             }
 

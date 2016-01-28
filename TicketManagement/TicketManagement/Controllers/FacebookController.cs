@@ -30,7 +30,7 @@ namespace TicketManagement.Controllers
             string accessToken = GetAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return Error("");
+                return FacebookError("");
 
             FacebookClient fb = new FacebookClient(accessToken);
 
@@ -44,7 +44,7 @@ namespace TicketManagement.Controllers
             string accessToken = GetAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return Error("");
+                return FacebookError("");
 
             FacebookClient fb = new FacebookClient(accessToken);
 

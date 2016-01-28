@@ -1,0 +1,17 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Facebook";
+    Layout = "~/Views/Shared/_Layout_Standard.cshtml";
+}
+
+<h2>Facebook Management</h2>
+<hr/>
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-10">
+        <p class="text-info">Your access token for Facebook is missing or expired, please refresh it with the button below.</p>
+
+        <a href="@Model" class="btn btn-success">Refresh Access Token</a>
+    </div>
+</div>
