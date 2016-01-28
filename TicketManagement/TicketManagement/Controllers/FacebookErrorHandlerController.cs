@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Facebook;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
 using TicketManagement.Filters;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
@@ -20,10 +21,20 @@ namespace TicketManagement.Controllers
     public class FacebookErrorHandlerController : Controller
     {
         const string RetryCount = "AccessTokenRetryCount";
+        const string ProcesssingPermissionRequest = "ProcessingPermissionRequest";
+
+        #region ActionResults
 
         public ActionResult Error(ErrorViewModel vm)
         {
             return View(vm);
+        }
+
+        public ActionResult Error(string errorMessage)
+        {
+            ViewBag.Type = "Facebook";
+            ViewBag.ErrorMessage = errorMessage;
+            return PartialView("_Partial_SocialMediaNotLoggedIn");
         }
 
         [Authorize]
@@ -56,6 +67,8 @@ namespace TicketManagement.Controllers
             return RedirectToAction("Index", "Facebook");
         }
 
+        #endregion
+
         protected override void OnException(ExceptionContext filterContext)
         {
             if (filterContext.Exception is FacebookApiLimitException)
@@ -69,7 +82,6 @@ namespace TicketManagement.Controllers
                 {
                     filterContext.ExceptionHandled = true;
                     filterContext.Result = GetFacebookLoginUrl();
-                    //filterContext.Result = Redirect(GetFacebookLoginUrl().Url);
                 }
                 else
                 {
@@ -126,11 +138,25 @@ namespace TicketManagement.Controllers
                 FacebookClient fb = new FacebookClient();
                 fb.AppId = ConfigurationHelper.GetFacebookAppId();
 
+                //var uri = fb.GetLoginUrl(new
+                //{
+                //    scope = ConfigurationHelper.GetFacebookPermissionScope(),
+                //    redirect_uri = RedirectUri.AbsoluteUri,
+                //    response_type = "code",
+                //});
+
+                //var redirect = Redirect(fb.GetLoginUrl(new
+                //{
+                //    scope = ConfigurationHelper.GetFacebookPermissionScope(),
+                //    redirect_uri = RedirectUri.AbsoluteUri,
+                //    response_type = "code",
+                //}).ToString());
+
                 return Redirect(fb.GetLoginUrl(new
                 {
-                    response_type = "code",
-                    redirect_uri = RedirectUri.AbsoluteUri,                  
-                    scope = Url.Encode(ConfigurationHelper.GetFacebookPermissionScope())
+                    scope = ConfigurationHelper.GetFacebookPermissionScope(),
+                    redirect_uri = RedirectUri.AbsoluteUri,
+                    response_type = "code",                  
                 }).ToString());
             }
             else
@@ -142,8 +168,6 @@ namespace TicketManagement.Controllers
                 //    Type = ErrorType.Error,
                 //    Message = "Unable to obtain a valid Facebook Access Token after multiple attempts, please try again later."
                 //}));
-
-                //return Redirect("/Tickets?FacebookError=Exception&Message=Unable%20to%20obtain%20a%20valid%20Facebook%20Access%20Token%20after%20multiple%20attempts%2C%20please%20try%20again%20later.");
             }
         }
 
@@ -157,6 +181,35 @@ namespace TicketManagement.Controllers
                 uriBuilder.Path = Url.Action("ExternalCallBack", "FacebookErrorHandler");
                 return uriBuilder.Uri;
             }
+        }
+
+        protected string GetAccessToken()
+        {
+            if (!HttpContext.Items.Contains("access_token"))
+            {
+                Error("Cannot find your access token, please try re-associating you account with Facebook");
+                return null;
+            }
+
+            string accessToken = HttpContext.Items["access_token"].ToString();
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                Error("Cannot find your access token, please try re-associating you account with Facebook");
+                return null;
+            }
+
+            return accessToken;
+        }
+
+        protected bool CheckPermission()
+        {
+            bool checkPermission = true;
+
+            if (TempData[ProcesssingPermissionRequest] != null)
+                checkPermission = !((bool)TempData[ProcesssingPermissionRequest]);
+
+            return checkPermission;
         }
     }
 }

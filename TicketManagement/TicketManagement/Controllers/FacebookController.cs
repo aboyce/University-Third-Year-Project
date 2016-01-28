@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -84,31 +83,5 @@ namespace TicketManagement.Controllers
         }
 
         #endregion
-
-        public string GetAccessToken()
-        {
-            if (!HttpContext.Items.Contains("access_token"))
-            {
-                Error("Cannot find your access token, please try re-associating you account with Facebook");
-                return null;
-            }
-
-            string accessToken = HttpContext.Items["access_token"].ToString();
-
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                Error("Cannot find your access token, please try re-associating you account with Facebook");
-                return null;
-            }
-
-            return accessToken;
-        }
-
-        public ActionResult Error(string errorMessage)
-        {
-            ViewBag.Type = "Facebook";
-            ViewBag.ErrorMessage = errorMessage;
-            return PartialView("_Partial_SocialMediaNotLoggedIn");
-        }
     }
 }
