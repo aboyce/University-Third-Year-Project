@@ -48,18 +48,11 @@ namespace TicketManagement.Controllers
 
             FacebookClient fb = new FacebookClient(accessToken);
 
-            //dynamic userPages = await fb.GetTaskAsync("me/accounts?fields=id, name, link, is_published, likes, talking_about_count");
-            dynamic userPages = await fb.GetTaskAsync("me/accounts?fields=id, name, business, likes, can_post, link, is_published, talking_about_count, category, unread_message_count, unseen_message_count, unread_notif_count");
+            dynamic page = await fb.GetTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}?fields=id, name, business, link, can_post, is_published, category, description, likes, new_like_count, unread_message_count, unseen_message_count, unread_notif_count, talking_about_count");
 
-            foreach (dynamic page in userPages.data)
-            {
-                FacebookAdminPageViewModel vm = FacebookHelpers.ToStatic<FacebookAdminPageViewModel>(page);
+            FacebookAdminPageViewModel vm = FacebookHelpers.ToStatic<FacebookAdminPageViewModel>(page);
 
-                if (vm.Id == await ConfigurationHelper.GetFacebookPageIdAsync())
-                    return PartialView(vm);
-            }
-
-            return PartialView(null); // TODO: Mention that the user is not an admin of the page.
+            return PartialView(vm.Id != null ? vm : null);
         }
 
         #region Testing

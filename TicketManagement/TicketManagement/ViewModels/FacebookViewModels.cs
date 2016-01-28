@@ -68,14 +68,14 @@ namespace TicketManagement.ViewModels
         [FacebookMapping("name")]
         public string Name { get; set; }
 
-        [FacebookMapping("likes")]
-        public long Likes { get; set; }
-
-        [FacebookMapping("talking_about_count")]
-        public long TalkingCount { get; set; }
+        [FacebookMapping("description")]
+        public string Description { get; set; }
 
         [FacebookMapping("is_published")]
         public bool Published { get; set; }
+
+        [FacebookMapping("can_post")]
+        public bool CanPost { get; set; }
 
         [FacebookMapping("category")]
         public string Category { get; set; }
@@ -83,8 +83,14 @@ namespace TicketManagement.ViewModels
         [FacebookMapping("business")]
         public string Business { get; set; }
 
-        [FacebookMapping("can_post")]
-        public bool CanPost { get; set; }
+        [FacebookMapping("likes")]
+        public long Likes { get; set; }
+
+        [FacebookMapping("new_like_count")]
+        public long NewLikes { get; set; }
+
+        [FacebookMapping("talking_about_count")]
+        public long TalkingCount { get; set; }
 
         [FacebookMapping("unread_message_count")]
         public long UnreadMessages { get; set; }

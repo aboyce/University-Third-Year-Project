@@ -11,22 +11,22 @@
         <li class="list-group-item">
             @if (Model.Gender.ToUpper() == "MALE")
             {
-                <strong><i class="fa fa-male"></i></strong> @fullName
+                <strong><i class="fa fa-male fa-fw"></i></strong> @fullName
             }
 
             @if (Model.Gender.ToUpper() == "FEMALE")
             {
-                <strong><i class="fa fa-female"></i> - </strong> @fullName
+                <strong><i class="fa fa-female fa-fw"></i> - </strong> @fullName
             }
         </li>
         <li class="list-group-item">
-            <strong><i class="fa fa-envelope-o"></i></strong> - @Model.Email
+            <strong><i class="fa fa-envelope-o fa-fw"></i></strong> - @Model.Email
         </li>
         <li class="list-group-item">
-            <strong><i class="fa fa-location-arrow"></i></strong> - @Model.Location
+            <strong><i class="fa fa-location-arrow fa-fw"></i></strong> - @Model.Location
         </li>
         <li class="list-group-item">
-            <strong><i class="fa fa-birthday-cake"></i></strong> - @Model.Birthday.ToString("dd MMM yy")
+            <strong><i class="fa fa-birthday-cake fa-fw"></i></strong> - @Model.Birthday.ToString("dd MMM yy")
         </li>
         <li class="list-group-item">
             <a href="@Model.ExternalLink" target="_blank" class="btn btn-info btn-sm">View Profile</a>

@@ -11,26 +11,58 @@ else
 
         <div class="panel-heading">
             <strong>Page Name: </strong>@Model.Name
+
+            @if (Model.Published)
+            {
+                @:(<strong><i class="fa fa-eye"></i> : <i class="fa fa-check" title="Published (Can be seen publicly)"></i></strong>)
+            }
+            else
+            {
+                @:(<strong><i class="fa fa-eye"></i> : <i class="fa fa-times" title="Not Published (Cannot be seen publicly)"></i></strong>)
+            }
+
+            @if (Model.CanPost)
+            {
+                @:(<strong><i class="fa fa-pencil-square-o"></i>: <i class="fa fa-check" title="You can post to the page"></i></strong>)
+            }
+            else
+            {
+                @:(<strong><i class="fa fa-pencil-square-o"></i>: <i class="fa fa-times" title="You cannot post to the page"></i></strong>)
+            }
             <div style="float: right; font-size: 16px">
-                <strong><i class="fa fa-envelope"></i> </strong>@Model.UnreadMessages  
-                <strong><i class="fa fa-globe" ></i> </strong>@Model.UnreadNotifications
+                <strong><i class="fa fa-thumbs-o-up fa-lg" title="Likes"></i> </strong>@Model.Likes |
+                <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications  |
+                <strong><i class="fa fa-envelope fa-lg" title="Unread Messages"></i> </strong>@Model.UnreadMessages  |
+                <strong><i class="fa fa-comment fa-lg" title="People Talking About"></i> </strong>@Model.TalkingCount
             </div>
         </div>
 
         <div class="panel-body">
             <p>Message</p>
         </div>
-    </div>
-}
 
-<p>@Model.Id</p>
-<p>@Model.Name</p>
-<p>@Model.Likes</p>
-<p>@Model.TalkingCount</p>
-<p>@Model.Published</p>
-<p>@Model.Category</p>
-<p>@Model.Business</p>
-<p>@Model.CanPost</p>
-<p>@Model.UnreadMessages</p>
-<p>@Model.UnreadNotifications</p>
-<p>@Model.UnseenMessages</p>
+        @*<div class="panel-footer">
+            <div style="float: left;">
+                <strong><i class="fa fa-envelope fa-lg" title="Unread Messages"></i> </strong>@Model.UnreadMessages
+                <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications
+            </div>
+            <div style="float: right; font-size: 16px">
+                
+            </div>
+        </div>*@
+    </div>
+
+    <p>@Model.Id</p>
+    <p>@Model.Name</p> //
+    <p>@Model.Likes</p> //
+    <p>@Model.NewLikes</p>
+    <p>@Model.TalkingCount</p> //
+    <p>@Model.Published</p> //
+    <p>@Model.Category</p>
+    <p>@Model.Description</p>
+    <p>@Model.Business</p>
+    <p>@Model.CanPost</p>
+    <p>@Model.UnreadMessages</p> //
+    <p>@Model.UnreadNotifications</p> //
+    <p>@Model.UnseenMessages</p>
+}
