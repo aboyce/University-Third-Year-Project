@@ -168,7 +168,7 @@ namespace TicketManagement.Controllers
                 {
                     scope = ConfigurationHelper.GetFacebookPermissionScope(),
                     redirect_uri = RedirectUri.AbsoluteUri,
-                    response_type = "code",
+                    response_type = "code"
                 }).ToString());
             }
             else

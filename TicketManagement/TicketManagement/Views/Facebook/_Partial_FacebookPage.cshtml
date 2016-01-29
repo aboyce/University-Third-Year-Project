@@ -1,4 +1,4 @@
-﻿@model TicketManagement.ViewModels.FacebookAdminPageViewModel
+﻿@model TicketManagement.ViewModels.FacebookPageViewModel
 
 
 @if (Model == null)
@@ -11,24 +11,6 @@ else
 
         <div class="panel-heading">
             <strong>Page Name: </strong>@Model.Name
-
-            @if (Model.Published)
-            {
-                @:(<strong><i class="fa fa-eye"></i> : <i class="fa fa-check" title="Published (Can be seen publicly)"></i></strong>)
-            }
-            else
-            {
-                @:(<strong><i class="fa fa-eye"></i> : <i class="fa fa-times" title="Not Published (Cannot be seen publicly)"></i></strong>)
-            }
-
-            @if (Model.CanPost)
-            {
-                @:(<strong><i class="fa fa-pencil-square-o"></i>: <i class="fa fa-check" title="You can post to the page"></i></strong>)
-            }
-            else
-            {
-                @:(<strong><i class="fa fa-pencil-square-o"></i>: <i class="fa fa-times" title="You cannot post to the page"></i></strong>)
-            }
             <div style="float: right; font-size: 16px">
                 <strong><i class="fa fa-thumbs-o-up fa-lg" title="Likes"></i> </strong>@Model.Likes |
                 <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications  |
@@ -38,7 +20,17 @@ else
         </div>
 
         <div class="panel-body">
-            <p>Message</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Business:</strong> @Model.Business
+                </div>
+                <div class="col-md-4">
+                    <strong>Publicly Visible:</strong> @Model.Published
+                </div>
+                <div class="col-md-4">
+                    <strong>You Can Post:</strong> @Model.CanPost
+                </div>
+            </div>
         </div>
 
         @*<div class="panel-footer">

@@ -69,8 +69,13 @@ namespace TicketManagement.Helpers
 
                     if (destinationPropertyInfo.FacebookMappedProperty.PropertyType.Name == "DateTime")
                     {
-                        DateTime ukDateTime = DateTime.ParseExact(DateTime.Parse(mappedValue.ToString()).ToString(), "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                        destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, ukDateTime, null);
+                        if (typeof (T) == typeof (FacebookPagePostViewModel))
+                            destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, DateTime.Parse(mappedValue.ToString()), null);
+                        else
+                        {
+                            DateTime ukDateTime = DateTime.ParseExact(DateTime.Parse(mappedValue.ToString()).ToString(), "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                            destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, ukDateTime, null);
+                        }
                     }
                     else
                         destinationPropertyInfo.FacebookMappedProperty.SetValue(entity, mappedValue, null);

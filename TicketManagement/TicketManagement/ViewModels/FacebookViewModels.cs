@@ -60,7 +60,7 @@ namespace TicketManagement.ViewModels
         public string ExternalLink { get; set; }
     }
 
-    public class FacebookAdminPageViewModel
+    public class FacebookPageViewModel
     {
         [FacebookMapping("id")]
         public string Id { get; set; }
@@ -105,25 +105,95 @@ namespace TicketManagement.ViewModels
         public string ExternalLink { get; set; }
     }
 
-    public class FacebookPermissionRequestViewModel
+    public class FacebookPagePostViewModel
     {
-        public FacebookPermissionRequestViewModel()
-        {
-            MissingPermissions = new List<FacebookPermissionRequest>();
-        }
-        public List<FacebookPermissionRequest> MissingPermissions { get; set; }
-    }
+        [FacebookMapping("id")]
+        public string Id { get; set; }
 
-    public class FacebookPermissionRequest
-    {
-        public bool Requested { get; set; }
+        [FacebookMapping("message")]
+        public string Message { get; set; }
 
-        public string Name { get; set; }
+        [FacebookMapping("name")]
+        public string LinkName { get; set; }
 
+        [FacebookMapping("link")]
+        public string Link { get; set; }
+
+        [FacebookMapping("picture")]
+        public string Image { get; set; }
+
+        [FacebookMapping("description")]
         public string Description { get; set; }
 
-        public string PermissionScope { get; set; }
+        [FacebookMapping("place")]
+        public FacebookPlaceViewModel Place { get; set; }
 
-        public bool  Granted { get; set; }
+        [FacebookMapping("is_hidden")]
+        public bool Hidden { get; set; }
+
+        [FacebookMapping("is_published")]
+        public bool Published { get; set; }
+
+        [FacebookMapping("caption")]
+        public string Caption { get; set; }
+
+        [FacebookMapping("created_time")]
+        public DateTime Created { get; set; }
+
+        [FacebookMapping("updated_time")]
+        public DateTime Updated { get; set; }
     }
+
+    public class FacebookPlaceViewModel
+    {
+        [FacebookMapping("id")]
+        public string Id { get; set; }
+
+        [FacebookMapping("name")]
+        public string Message { get; set; }
+
+        [FacebookMapping("location")]
+        public FacebookLocationViewModel Location { get; set; }
+    }
+
+    public class FacebookLocationViewModel
+    {
+        [FacebookMapping("city")]
+        public string City { get; set; }
+
+        [FacebookMapping("country")]
+        public string Country { get; set; }
+
+        [FacebookMapping("longitude")]
+        public double Longitude { get; set; }
+
+        [FacebookMapping("latitude")]
+        public double Latitude { get; set; }
+
+        [FacebookMapping("zip")]
+        public string PostCode { get; set; }
+    }
+
+
+    //public class FacebookPermissionRequestViewModel
+    //{
+    //    public FacebookPermissionRequestViewModel()
+    //    {
+    //        MissingPermissions = new List<FacebookPermissionRequest>();
+    //    }
+    //    public List<FacebookPermissionRequest> MissingPermissions { get; set; }
+    //}
+
+    //public class FacebookPermissionRequest
+    //{
+    //    public bool Requested { get; set; }
+
+    //    public string Name { get; set; }
+
+    //    public string Description { get; set; }
+
+    //    public string PermissionScope { get; set; }
+
+    //    public bool  Granted { get; set; }
+    //}
 }
