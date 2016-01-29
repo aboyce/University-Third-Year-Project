@@ -8,83 +8,54 @@
 }
 else
 {
-    <div style="overflow-y: scroll; height: 500px">
-        <div>
-            @foreach (FacebookPagePostViewModel post in Model)
-            {
-                <div class="panel panel-info">
 
-                    <div class="panel-heading">
-                        <strong>@post.Message</strong>
-                        <div style="float: right; font-size: 16px">
 
-                        </div>
-                    </div>
 
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-4">
 
-                            </div>
-                            <div class="col-md-4">
+    <div>
+        @foreach (FacebookPagePostViewModel post in Model)
+        {
+        <div class="panel panel-info">
 
-                            </div>
-                            <div class="col-md-4">
+            <div class="panel-heading">
+                <strong>@post.Message</strong>
+                <div style="float: right; font-size: 16px">
 
-                            </div>
-                        </div>
-                    </div>
-
-                    @*<div class="panel-footer">
-                            <div style="float: left;">
-                                <strong><i class="fa fa-envelope fa-lg" title="Unread Messages"></i> </strong>@Model.UnreadMessages
-                                <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications
-                            </div>
-                            <div style="float: right; font-size: 16px">
-
-                            </div>
-                        </div>*@
                 </div>
-            }
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
         </div>
+        }
+    </div>
+
+
+
+    <div id="fb_posts" style="overflow-y: scroll; height: 500px">
+
+
+        <div id="fb_posts_current"></div>
+
+        <div id="fb_posts_load_more"></div>
+
+        <label id="fb_posts_count"></label>
 
     </div>
 
-    @*foreach (FacebookPagePostViewModel post in Model)
-        {
-            <div class="panel panel-info">
 
-                <div class="panel-heading">
-                    <strong>@post.Message</strong>
-                    <div style="float: right; font-size: 16px">
+    if (ViewBag.ShowGetMorePagePosts != null)
+    {
+        <input id="fb_posts_next_page_link" type="hidden" value="@ViewBag.ShowGetMorePagePosts"/>
+    }
 
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-4">
-
-                        </div>
-                        <div class="col-md-4">
-
-                        </div>
-                        <div class="col-md-4">
-
-                        </div>
-                    </div>
-                </div>
-
-                @*<div class="panel-footer">
-                        <div style="float: left;">
-                            <strong><i class="fa fa-envelope fa-lg" title="Unread Messages"></i> </strong>@Model.UnreadMessages
-                            <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications
-                        </div>
-                        <div style="float: right; font-size: 16px">
-
-                        </div>
-                    </div>
-            </div>
-
-        }*@
+    <input id="fb_posts_current_data_count" type="hidden" value="@Model.Count()"/>
 }
