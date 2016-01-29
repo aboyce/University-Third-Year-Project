@@ -8,54 +8,36 @@
 }
 else
 {
-
-
-
-
     <div>
         @foreach (FacebookPagePostViewModel post in Model)
         {
-        <div class="panel panel-info">
+            <div class="panel panel-info">
 
-            <div class="panel-heading">
-                <strong>@post.Message</strong>
-                <div style="float: right; font-size: 16px">
+                <div class="panel-heading">
+                    <strong>@post.Message</strong>
+                    <div style="float: right; font-size: 16px">
 
-                </div>
-            </div>
-
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
                     </div>
                 </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         }
     </div>
 
-
-
-    <div id="fb_posts" style="overflow-y: scroll; height: 500px">
-
-
-        <div id="fb_posts_current"></div>
-
-        <div id="fb_posts_load_more"></div>
-
-        <label id="fb_posts_count"></label>
-
-    </div>
-
-
     if (ViewBag.ShowGetMorePagePosts != null)
-    {
-        <input id="fb_posts_next_page_link" type="hidden" value="@ViewBag.ShowGetMorePagePosts"/>
+                {
+        <input id="fb_posts_next_page_link" type="hidden" value="@ViewBag.ShowGetMorePagePosts" />
     }
 
-    <input id="fb_posts_current_data_count" type="hidden" value="@Model.Count()"/>
+    <input id="fb_posts_current_data_count" type="hidden" value="@Model.Count()" />
 }

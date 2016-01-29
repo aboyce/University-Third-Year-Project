@@ -64,7 +64,7 @@ namespace TicketManagement.Controllers
 
             FacebookClient fb = new FacebookClient(accessToken);
 
-            dynamic pagePosts = await fb.GetTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=2&fields=id,message,name,link,picture,place,story,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares");
+            dynamic pagePosts = await fb.GetTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=3&fields=id,message,name,link,picture,place,story,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares");
 
             foreach (dynamic post in pagePosts.data)
             {

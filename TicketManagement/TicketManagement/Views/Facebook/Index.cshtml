@@ -21,7 +21,7 @@
                 <button class="btn btn-success disabled" type="button" style="width: 100%">
                     Logged in with Facebook <span class="badge"><i class="fa fa-check"></i></span>
                 </button>
-                <hr/>
+                <hr />
 
                 using (Ajax.BeginForm("_Partial_FacebookProfileSummary", "Facebook", new AjaxOptions
                 {
@@ -36,18 +36,18 @@
                     }))
                 {
                     <div id="fb_profile_summary_loading" style="display: none;">
-                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;"/>
+                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
                     </div>
                 }
                 <div id="fb_profile_summary"></div>
             }
 
-            <hr/>
+            <hr />
 
-            @Html.ActionLink("Revoke Access Token", "Test_RevokeAccessToken", "Facebook", null, new {@class = "btn btn-danger"})
+            @Html.ActionLink("Revoke Access Token", "Test_RevokeAccessToken", "Facebook", null, new { @class = "btn btn-danger" })
             @Html.ActionLink("API Limit", "Test_ApiLimit", "Facebook", null, new { @class = "btn btn-danger" })
 
-            <hr/>
+            <hr />
 
         </div>
         <div class="col-md-9 col-sm-9">
@@ -65,7 +65,7 @@
                 }))
             {
                 <div id="fb_admin_page_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;"/>
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;" />
                 </div>
             }
             <div id="fb_admin_page"></div>
@@ -74,7 +74,7 @@
             {
                 OnFailure = "handleError(xhr, 'fb_admin_page_posts')",
                 HttpMethod = "Get",
-                UpdateTargetId = "fb_admin_page_posts",
+                UpdateTargetId = "fb_posts_current",
                 LoadingElementId = "fb_admin_page_posts_loading"
             },
                 new
@@ -86,7 +86,20 @@
                     <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;" />
                 </div>
             }
-            <div id="fb_admin_page_posts"></div>
+            @*<div id="fb_admin_page_posts"></div>*@
+
+            <div>
+                <div id="fb_posts" style="overflow-y: scroll; max-height: 500px">
+
+                    <div id="fb_posts_current"></div>
+
+                    <div id="fb_posts_load_more"></div>
+
+                    <label id="fb_posts_count"></label>
+
+                </div>
+
+            </div>
 
         </div>
     </div>
@@ -95,7 +108,63 @@
 @Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
 
 <script type="text/javascript">
-    $('#fb_profile_summary_form').submit();
+    //$('#fb_profile_summary_form').submit();
     //$('#fb_admin_page_form').submit();
     $('#fb_admin_page_posts_form').submit();
+
+    var allowLoadMore = true;
+    var displayedPostCount = 0;
+
+    $(document).ready(function () {
+
+        $('#fb_posts').scroll(function () {
+
+            var scrollingDiv = $('#fb_posts');
+            buffer = 60;
+
+            if (scrollingDiv.prop('scrollHeight') - scrollingDiv.scrollTop() <= scrollingDiv.height() + buffer) {
+                var nextPageUri = $('#fb_posts_next_page_link').val();
+
+                if (nextPageUri != null && nextPageUri != "") {
+                    getMoreResults(nextPageUri);
+                } else {
+                    allowLoadMore = false;
+                }
+            }
+        });
+    });
+
+    function getMoreResults(nextPageUri) {
+
+        if (allowLoadMore) {
+            allowLoadMore = false;
+            $('#fb_posts_loading_search').show();
+
+            $.ajax({
+                type: "POST",
+                url: "Facebook/GetMorePagePosts",
+                data: { nextPageUri: nextPageUri },
+                cache: false,
+                success: function (result) {
+                    if (result != null && result != "") {
+                        $('#fb_posts_loading_search').hide();
+                        $('#fb_posts_next_page_link').remove();
+                        $('#fb_posts_current_data_count').remove();
+                        $('#fb_posts_load_more').append(result);
+                        completeLoadingMore();
+                    }
+                    allowLoadMore = true;
+                },
+                error: function (result) {
+                    allowLoadMore = false;
+                }
+            });
+        }
+    }
+
+    function completeLoadingMore() {
+        allowLoadMore = true;
+        displayedPostCount = displayedPostCount + parseInt($('#fb_posts_current_data_count').val());
+        $('#fb_posts_count').html("Showing " + displayedPostCount + " items");
+    }
 </script>
