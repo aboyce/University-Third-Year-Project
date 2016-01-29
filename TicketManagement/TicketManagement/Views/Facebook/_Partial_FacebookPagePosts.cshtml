@@ -11,13 +11,13 @@ else
     <div>
         @foreach (FacebookPagePostViewModel post in Model)
         {
-            if (post.Message != null)
-            { // Generally a normal post
+            if (post.Message != null) // Generally a normal post
+            {
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <strong>@post.Message</strong>
                         <div style="float: right; font-size: 16px">
-
+                            
                         </div>
                     </div>
 
@@ -33,30 +33,31 @@ else
                     </div>
                 </div>
             }
-            else
-            { // Generally an 'update/informative' post
+            else // Generally an 'update/informative' post
+            {
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>@post.</strong>
+                        <strong>@post.LinkName:</strong> @post.Story
                         <div style="float: right; font-size: 16px">
-
+                            <strong><i class="fa fa-clock-o fa-lg" title="Time of Post"></i>:</strong> @post.Created
                         </div>
                     </div>
-
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-4">
+                                <img class="img-thumbnail" src="@post.Image" alt="Facebook Page Picture"/>
                             </div>
                             <div class="col-md-4">
+                                <p><strong>Hidden:</strong> @post.Hidden</p>
+                                <p><strong>Published:</strong> @post.Published</p>
                             </div>
                             <div class="col-md-4">
+                                <p><a href="@post.Link" target="_blank" title="View the post directly on Facebook">View on Facebook</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-
             }
-
         }
     </div>
 
