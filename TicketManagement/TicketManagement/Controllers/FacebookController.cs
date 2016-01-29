@@ -55,40 +55,17 @@ namespace TicketManagement.Controllers
 
         public async Task<ActionResult> _Partial_FacebookPagePosts()
         {
-            string accessToken = GetAccessToken();
+            string facebookCommand =
+                $"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=3&fields=id,message,story,name,link,picture,place,story,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares";
 
-            if (string.IsNullOrEmpty(accessToken))
-                return FacebookError("");
+            FacebookPagePosts pagePosts = await HandleFacebookPagePostsAsync(facebookCommand);
 
-            List<FacebookPagePostViewModel> vm = new List<FacebookPagePostViewModel>();
+            if (pagePosts == null)
+                return FacebookError("Problem contacting Facebook, could be a problem with your access token, connection, or request type.");
 
-            FacebookClient fb = new FacebookClient(accessToken);
+            ViewBag.ShowGetMorePagePosts = pagePosts.ShowGetMorePagePosts;
 
-            dynamic pagePosts = await fb.GetTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=3&fields=id,message,name,link,picture,place,story,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares");
-
-            foreach (dynamic post in pagePosts.data)
-            {
-                FacebookPagePostViewModel currentPost = FacebookHelpers.ToStatic<FacebookPagePostViewModel>(post);
-
-                if (currentPost == null) continue;
-
-                if (post.place != null)
-                {
-                    currentPost.Place = FacebookHelpers.ToStatic<FacebookPlaceViewModel>(post.place);
-                    currentPost.Place.Location = post.place.location != null ? FacebookHelpers.ToStatic<FacebookLocationViewModel>(post.place.location) : null;
-                }
-                        
-                vm.Add(currentPost);
-            }
-
-            string nextPageUri = string.Empty;
-
-            if (pagePosts.paging != null && pagePosts.paging.next != null)
-                nextPageUri = pagePosts.paging.next;
-
-            ViewBag.ShowGetMorePagePosts = nextPageUri.Replace("https://graph.facebook.com/v2.5/", "").Replace($"&access_token={accessToken}", "");
-
-            return PartialView(vm);
+            return PartialView(pagePosts.PageList);
         }
 
         [HttpPost]
@@ -96,19 +73,30 @@ namespace TicketManagement.Controllers
         {
             if (string.IsNullOrEmpty(nextPageUri)) return null;
 
+            FacebookPagePosts pagePosts = await HandleFacebookPagePostsAsync(nextPageUri);
+
+            if(pagePosts == null)
+                return FacebookError("Problem contacting Facebook, could be a problem with your access token, connection, or request type.");
+
+            ViewBag.ShowGetMorePagePosts = pagePosts.ShowGetMorePagePosts;
+
+            return PartialView("_Partial_FacebookPagePosts", pagePosts.PageList);
+        }
+
+        private async Task<FacebookPagePosts> HandleFacebookPagePostsAsync(string facebookCommand)
+        {
+            FacebookPagePosts toReturn = new FacebookPagePosts { PageList = new List<FacebookPagePostViewModel>() };
+
             string accessToken = GetAccessToken();
 
-            if(string.IsNullOrEmpty(accessToken))
-                return FacebookError("");
+            if (string.IsNullOrEmpty(accessToken))
+                return null;
 
             FacebookClient fb = new FacebookClient(accessToken);
 
-            dynamic nextPage = await fb.GetTaskAsync(nextPageUri);
+            dynamic pagePosts = await fb.GetTaskAsync(facebookCommand);
 
-            List<FacebookPagePostViewModel> vm = new List<FacebookPagePostViewModel>();
-
-
-            foreach (dynamic post in nextPage.data)
+            foreach (dynamic post in pagePosts)
             {
                 FacebookPagePostViewModel currentPost = FacebookHelpers.ToStatic<FacebookPagePostViewModel>(post);
 
@@ -120,17 +108,23 @@ namespace TicketManagement.Controllers
                     currentPost.Place.Location = post.place.location != null ? FacebookHelpers.ToStatic<FacebookLocationViewModel>(post.place.location) : null;
                 }
 
-                vm.Add(currentPost);
+                toReturn.PageList.Add(currentPost);
             }
 
-            if (nextPage.paging != null && nextPage.paging.next != null)
-                nextPageUri = nextPage.paging.next;
+            if (pagePosts.paging == null || pagePosts.paging.next == null) return toReturn;
 
-            ViewBag.ShowGetMorePagePosts = nextPageUri.Replace("https://graph.facebook.com/v2.5/", "").Replace($"&access_token={accessToken}", "");
+            toReturn.ShowGetMorePagePosts = pagePosts.paging.next;
+            toReturn.ShowGetMorePagePosts = toReturn.ShowGetMorePagePosts.Replace($"https://graph.facebook.com/v{ConfigurationHelper.GetFacebookGraphApiVersion()}/", "").Replace($"&access_token={accessToken}", "");
 
-            return PartialView("_Partial_FacebookPagePosts", vm);
+            return toReturn;
         }
 
+        private class FacebookPagePosts
+        {
+            public List<FacebookPagePostViewModel> PageList { get; set; }
+
+            public string ShowGetMorePagePosts { get; set; }
+        }
 
         #region Testing
 

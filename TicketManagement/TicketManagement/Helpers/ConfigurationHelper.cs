@@ -16,6 +16,13 @@ namespace TicketManagement.Helpers
             return tconf.Populate() ? tconf : null;
         }
 
+        public static Task<string> GetFacebookGraphApiVersionAsync() { return Task.Factory.StartNew(GetFacebookGraphApiVersion); }
+        public static string GetFacebookGraphApiVersion()
+        {
+            string value = ConfigurationManager.AppSettings["Facebook_GraphAPIVersion"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
         public static Task<string> GetFacebookAppIdAsync() { return Task.Factory.StartNew(GetFacebookAppId); }
         public static string GetFacebookAppId()
         {

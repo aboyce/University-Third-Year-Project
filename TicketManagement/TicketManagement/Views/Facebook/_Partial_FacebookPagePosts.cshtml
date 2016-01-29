@@ -11,26 +11,52 @@ else
     <div>
         @foreach (FacebookPagePostViewModel post in Model)
         {
-            <div class="panel panel-info">
+            if (post.Message != null)
+            { // Generally a normal post
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <strong>@post.Message</strong>
+                        <div style="float: right; font-size: 16px">
 
-                <div class="panel-heading">
-                    <strong>@post.Message</strong>
-                    <div style="float: right; font-size: 16px">
+                        </div>
+                    </div>
 
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            { // Generally an 'update/informative' post
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>@post.</strong>
+                        <div style="float: right; font-size: 16px">
+
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-4">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
+
         }
     </div>
 

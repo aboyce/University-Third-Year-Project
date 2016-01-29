@@ -1,16 +1,12 @@
 ﻿@model TicketManagement.ViewModels.FacebookPageViewModel
 
-
-@if (Model == null)
-{
-    <p>Please check that you are an Admin of the Facebook site</p>
-}
+@if (Model == null) { <p>Please check that you are an Admin of the Facebook site</p> }
 else
 {
     <div class="panel panel-primary">
 
         <div class="panel-heading">
-            <strong>Page Name: </strong>@Model.Name
+            <strong><i class="fa fa-facebook-official fa-lg" title="Page Id: @Model.Id"></i> Page Name: </strong>@Model.Name
             <div style="float: right; font-size: 16px">
                 <strong><i class="fa fa-thumbs-o-up fa-lg" title="Likes"></i> </strong>@Model.Likes |
                 <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications  |
@@ -32,29 +28,10 @@ else
                 </div>
             </div>
         </div>
-
-        @*<div class="panel-footer">
-            <div style="float: left;">
-                <strong><i class="fa fa-envelope fa-lg" title="Unread Messages"></i> </strong>@Model.UnreadMessages
-                <strong><i class="fa fa-globe fa-lg" title="Unread Notifications"></i> </strong>@Model.UnreadNotifications
-            </div>
-            <div style="float: right; font-size: 16px">
-                
-            </div>
-        </div>*@
     </div>
+}
 
-    <p>@Model.Id</p>
-    <p>@Model.Name</p> //
-    <p>@Model.Likes</p> //
-    <p>@Model.NewLikes</p>
-    <p>@Model.TalkingCount</p> //
-    <p>@Model.Published</p> //
+@*<p>@Model.NewLikes</p>
     <p>@Model.Category</p>
     <p>@Model.Description</p>
-    <p>@Model.Business</p>
-    <p>@Model.CanPost</p>
-    <p>@Model.UnreadMessages</p> //
-    <p>@Model.UnreadNotifications</p> //
-    <p>@Model.UnseenMessages</p>
-}
+    <p>@Model.UnseenMessages</p>*@

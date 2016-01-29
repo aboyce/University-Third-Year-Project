@@ -1,8 +1,11 @@
 ﻿(function () {
 
+    $('#fb_profile_summary_form').submit();
+    $('#fb_admin_page_form').submit();
+    $('#fb_admin_page_posts_form').submit();
+
     var allowLoadMore = true;
     var displayedPostCount = 0;
-    // error handle function...
 
     $(document).ready(function () {
 
@@ -34,7 +37,7 @@
                 url: "Facebook/GetMorePagePosts",
                 data: { nextPageUri: nextPageUri },
                 cache: false,
-                success: function(result) {
+                success: function (result) {
                     if (result != null && result != "") {
                         $('#fb_posts_loading_search').hide();
                         $('#fb_posts_next_page_link').remove();
@@ -44,7 +47,7 @@
                     }
                     allowLoadMore = true;
                 },
-                error: function(result) {
+                error: function (result) {
                     allowLoadMore = false;
                 }
             });
