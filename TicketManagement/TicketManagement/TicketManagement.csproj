@@ -576,6 +576,7 @@
     <Content Include="Views\Facebook\RequestNewAccessToken.cshtml" />
     <Content Include="Views\Shared\_Partial_FacebookNewAccessToken.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookPagePosts.cshtml" />
+    <Content Include="Views\Facebook\_Partial_FacebookPagePostForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

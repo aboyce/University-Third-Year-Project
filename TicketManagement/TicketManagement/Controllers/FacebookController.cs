@@ -18,7 +18,7 @@ namespace TicketManagement.Controllers
             if (!HttpContext.Items.Contains("access_token"))
                 return View(new FacebookIndexViewModel { IsLoggedIn = false });
 
-            string accessToken = HttpContext.Items["access_token"].ToString();
+            string accessToken = GetAccessToken();
 
             return View(string.IsNullOrEmpty(accessToken) ? new FacebookIndexViewModel { IsLoggedIn = false } : new FacebookIndexViewModel { IsLoggedIn = true });
         }
@@ -66,6 +66,30 @@ namespace TicketManagement.Controllers
             ViewBag.ShowGetMorePagePosts = pagePosts.ShowGetMorePagePosts;
 
             return PartialView(pagePosts.PageList);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PostToPage(string message, string link, string privacy)
+        {
+            if (string.IsNullOrEmpty(message))
+                return Json("Cannot post with out a message body.");
+            if (!string.IsNullOrEmpty(link))
+                link = $"&link={link}";
+            if (string.IsNullOrEmpty(privacy))
+                privacy = "SELF";
+
+            string accessToken = GetAccessToken();
+
+            if (string.IsNullOrEmpty(accessToken))
+                return Json("Problem with your access token, please try re-associating you account and check permissions.");
+
+            FacebookClient fb = new FacebookClient(accessToken);
+
+            //dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={message}{link}&privacy={{{{'value':'{privacy}'}}}}");
+            dynamic facebookPostId = await fb.PostTaskAsync("1661946230689519/feed?message=Test post from Ticket System");
+
+            return Json("Status has been successfully posted.");
+
         }
 
         [HttpPost]

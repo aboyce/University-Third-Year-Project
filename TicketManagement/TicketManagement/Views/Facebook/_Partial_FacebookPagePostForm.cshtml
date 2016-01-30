@@ -1,0 +1,72 @@
+﻿@using (Ajax.BeginForm("PostToPage", "Facebook", null,
+                new AjaxOptions
+                {
+                    OnFailure = "HandleError(xhr,'fb_post')",
+                    HttpMethod = "Post",
+                    UpdateTargetId = "fb_post_response",
+                    LoadingElementId = "fb_post_response_loading",
+                    InsertionMode = InsertionMode.Replace
+                },
+                new
+                {
+                    id = "fb_post_form",
+                    @class = "form",
+                    role = "form"
+                }))
+{
+    <div id="fb_post_response_loading"></div>
+
+    <div class="well">
+        <div class="form-group">
+            <textarea name="message" class="form-control" rows="2" style="max-width: 100%" placeholder="Add post message..."></textarea>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                <input name="link" class="form-control" type="text" placeholder="Add URL link..."/>
+            </div>
+        </div>
+    </div>
+
+    <input name="privacy" type="hidden" value="EVERYONE"/>
+
+    <div class="form-group input-group">
+        <div class="input-group">
+            <div class="btn-group">
+                <button id="btn_dropdown_menu_permission" class="btn dropdown-toggle" data-toggle="dropdown" type="button">
+                    Public
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-privacy="EVERYONE">Public</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-privacy="ALL_FRIENDS">All Friends</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-privacy="FRIENDS_OF_FRIENDS">Friends of Friends</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-privacy="SELF">Only Me</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-success">Post</button>
+        </div>
+    </div>
+
+    <div id="fb_post_response" class="form-group text-success"></div>
+}
+
+<script type="text/javascript">
+
+    $('.dropdown-menu li a').click(function () {
+        $('#btn_dropdown_menu_permission').html($(this).text() + ' <span class="caret"></span>');
+        if (this.attributes['data-privacy'] != null && this.attributes['data-privacy'].value != null)
+            $("input[name='privacy']").val(this.attributes['data-privacy'].value);
+    });
+</script>
+
+
+
