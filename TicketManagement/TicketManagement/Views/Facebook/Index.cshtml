@@ -6,7 +6,6 @@
 
 <h2>Facebook Management</h2>
 <hr />
-
 <div class="container">
     <div class="row">
         <div class="col-md-3 col-sm-3">
@@ -21,7 +20,7 @@
                 <button class="btn btn-success disabled" type="button" style="width: 100%">
                     Logged in with Facebook <span class="badge"><i class="fa fa-check"></i></span>
                 </button>
-                <hr />
+                <hr/>
 
                 using (Ajax.BeginForm("_Partial_FacebookProfileSummary", "Facebook", new AjaxOptions
                 {
@@ -36,18 +35,18 @@
                     }))
                 {
                     <div id="fb_profile_summary_loading" style="display: none;">
-                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;"/>
                     </div>
                 }
                 <div id="fb_profile_summary"></div>
             }
 
-            <hr />
+            <hr/>
 
-            @Html.ActionLink("Revoke Access Token", "Test_RevokeAccessToken", "Facebook", null, new { @class = "btn btn-danger" })
-            @Html.ActionLink("API Limit", "Test_ApiLimit", "Facebook", null, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Revoke Access Token", "Test_RevokeAccessToken", "Facebook", null, new {@class = "btn btn-danger"})
+            @Html.ActionLink("API Limit", "Test_ApiLimit", "Facebook", null, new {@class = "btn btn-danger"})
 
-            <hr />
+            <hr/>
 
         </div>
         <div class="col-md-9 col-sm-9">
@@ -65,12 +64,12 @@
                 }))
             {
                 <div id="fb_admin_page_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;" />
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;"/>
                 </div>
             }
 
             <h3>Page Summary</h3>
-            <hr />
+            <hr/>
             <div id="fb_admin_page"></div>
 
             @using (Ajax.BeginForm("_Partial_FacebookPagePosts", "Facebook", new AjaxOptions
@@ -86,13 +85,18 @@
                 }))
             {
                 <div id="fb_admin_page_posts_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;" />
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%; height: 15px;"/>
                 </div>
             }
 
             <h3>New Post</h3>
-            <hr />
-            <div id="fb_new_post">@Html.Partial("_Partial_FacebookPagePostForm")</div>
+            <hr/>
+            <div id="fb_new_post">
+                @if (Model.IsLoggedIn)
+                {
+                    @Html.Partial("_Partial_FacebookPagePostForm")
+                }
+            </div>
 
             <h3>Page Posts</h3>
             <hr/>
@@ -104,6 +108,8 @@
         </div>
     </div>
 </div>
+
+<br/><br/>
 
 @Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
 @Scripts.Render("~/Scripts/Site/Facebook/facebook.js")

@@ -69,7 +69,7 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostToPage(string message, string link, string privacy)
+        public async Task<ActionResult> PostToPage(string message, string link, bool page, string privacy)
         {
             if (string.IsNullOrEmpty(message))
                 return Json("Cannot post with out a message body.");
