@@ -28,7 +28,7 @@ namespace TicketManagement.Controllers
             string accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return FacebookError("");
+                return null;
 
             FacebookClient fb = new FacebookClient(accessToken);
 
@@ -42,7 +42,7 @@ namespace TicketManagement.Controllers
             string accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
-                return FacebookError("");
+                return FacebookError("Problem contacting Facebook, could be a problem with your access token, connection, or request type.");
 
             FacebookClient fb = new FacebookClient(accessToken);
 
@@ -61,7 +61,7 @@ namespace TicketManagement.Controllers
             FacebookPagePosts pagePosts = await HandleFacebookPagePostsAsync(facebookCommand);
 
             if (pagePosts == null)
-                return FacebookError("Problem contacting Facebook, could be a problem with your access token, connection, or request type.");
+                return null;
 
             ViewBag.ShowGetMorePagePosts = pagePosts.ShowGetMorePagePosts;
 
