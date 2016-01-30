@@ -11,23 +11,73 @@ else
     <div>
         @foreach (FacebookPagePostViewModel post in Model)
         {
-            if (post.Message != null) // Generally a normal post
+            if (post.Type == "link")
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <strong>@post.Message (Post Type:</strong> @post.Type <strong>)</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>@post.Story</p>
+                                <img class="img-thumbnail" src="@post.Image" alt="Facebook Page Linked Image"/>
+                                <p title="@post.Description">About: @(post.Description.Length > 150 ? post.Description.Substring(0, 150) : post.Description) ...</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><a href="@post.Link" target="_blank" title="View the linked item directly on Facebook">View Item on Facebook</a></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Created:</strong> @post.Created</p>
+                                <p><strong>Updated:</strong> @post.Updated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (post.Type == "status")
             {
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <strong>@post.Message</strong>
-                        <div style="float: right; font-size: 16px">
-                            
-                        </div>
                     </div>
-
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-4">
+                                <p><strong>Post Type:</strong> Status</p>
                             </div>
                             <div class="col-md-4">
+                                <p><strong>Hidden:</strong> @post.Hidden</p>
+                                <p><strong>Published:</strong> @post.Published</p>
                             </div>
                             <div class="col-md-4">
+                                <p><strong>Created:</strong> @post.Created</p>
+                                <p><strong>Updated:</strong> @post.Updated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (post.Type == "photo")
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <strong>@post.Message (Post Type:</strong> @post.Type <strong> Added To:</strong> @post.LinkName <strong>)</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Photo Added</strong> (Click to open fully in Facebook)
+                                </p>
+                                <a href="@post.Link" target="_blank"><img src="@post.Image" alt="Sample of the photo added to the page"/></a>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Hidden:</strong> @post.Hidden</p>
+                                <p><strong>Published:</strong> @post.Published</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Created:</strong> @post.Created</p>
+                                <p><strong>Updated:</strong> @post.Updated</p>
                             </div>
                         </div>
                     </div>

@@ -110,6 +110,9 @@ namespace TicketManagement.ViewModels
         [FacebookMapping("id")]
         public string Id { get; set; }
 
+        [FacebookMapping("type")]
+        public string Type { get; set; }
+
         [FacebookMapping("message")]
         public string Message { get; set; }
 

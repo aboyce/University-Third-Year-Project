@@ -56,7 +56,7 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> _Partial_FacebookPagePosts()
         {
             string facebookCommand =
-                $"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=3&fields=id,message,story,name,link,picture,place,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares";
+                $"{await ConfigurationHelper.GetFacebookPageIdAsync()}/posts?limit=3&fields=id,type,message,story,name,link,picture,place,likes,description,is_hidden,is_published,caption,created_time,updated_time,shares";
 
             FacebookPagePosts pagePosts = await HandleFacebookPagePostsAsync(facebookCommand);
 
