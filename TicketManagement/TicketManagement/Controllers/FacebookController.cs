@@ -18,14 +18,14 @@ namespace TicketManagement.Controllers
             if (!HttpContext.Items.Contains("access_token"))
                 return View(new FacebookIndexViewModel { IsLoggedIn = false });
 
-            string accessToken = GetAccessToken();
+            string accessToken = GetUserAccessToken();
 
             return View(string.IsNullOrEmpty(accessToken) ? new FacebookIndexViewModel { IsLoggedIn = false } : new FacebookIndexViewModel { IsLoggedIn = true });
         }
 
         public async Task<ActionResult> _Partial_FacebookProfileSummary()
         {
-            string accessToken = GetAccessToken();
+            string accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
                 return FacebookError("");
@@ -39,7 +39,7 @@ namespace TicketManagement.Controllers
 
         public async Task<ActionResult> _Partial_FacebookPage()
         {
-            string accessToken = GetAccessToken();
+            string accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
                 return FacebookError("");
@@ -78,15 +78,14 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(privacy))
                 privacy = "SELF";
 
-            string accessToken = GetAccessToken();
+            string pageAccessToken = GetPageAccessToken();
 
-            if (string.IsNullOrEmpty(accessToken))
-                return Json("Problem with your access token, please try re-associating you account and check permissions.");
+            if (string.IsNullOrEmpty(pageAccessToken))
+                return Json("Problem with your page access token, please try re-associating you account and check permissions.");
 
-            FacebookClient fb = new FacebookClient(accessToken);
+            FacebookClient fb = new FacebookClient(pageAccessToken);
 
-            //dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={message}{link}&privacy={{{{'value':'{privacy}'}}}}");
-            dynamic facebookPostId = await fb.PostTaskAsync("1661946230689519/feed?message=Test post from Ticket System");
+            dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={message}{link}", null);
 
             return Json("Status has been successfully posted.");
 
@@ -111,7 +110,7 @@ namespace TicketManagement.Controllers
         {
             FacebookPagePosts toReturn = new FacebookPagePosts { PageList = new List<FacebookPagePostViewModel>() };
 
-            string accessToken = GetAccessToken();
+            string accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
                 return null;
@@ -154,7 +153,7 @@ namespace TicketManagement.Controllers
 
         public async Task<ActionResult> Test_RevokeAccessToken()
         {
-            var accessToken = GetAccessToken();
+            var accessToken = GetUserAccessToken();
 
             if (string.IsNullOrEmpty(accessToken))
                 throw new HttpException(404, "Missing Access Token");

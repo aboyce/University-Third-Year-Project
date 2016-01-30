@@ -44,6 +44,7 @@ namespace TicketManagement.Controllers
             FacebookClient fb = new FacebookClient();
 
             dynamic newTokenResult = await fb.GetTaskAsync($"oauth/access_token?client_id={ConfigurationHelper.GetFacebookAppId()}&client_secret={ConfigurationHelper.GetFacebookAppSecret()}&redirect_uri={Url.Encode(RedirectUri.AbsoluteUri)}&code={code}");
+            dynamic newPageTokenResult = await fb.GetTaskAsync($"{ConfigurationHelper.GetFacebookPageIdAsync()}?fields=access_token");
 
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
@@ -54,13 +55,19 @@ namespace TicketManagement.Controllers
                 IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
 
                 Claim oldFacebookAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == "FacebookAccessToken");
+                Claim oldFacebookPageAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == "FacebookPageAccessToken");
 
                 Claim newFacebookAccessTokenClaim = new Claim("FacebookAccessToken", newTokenResult.access_token);
+                Claim newFacebookPageAccessTokenClaim = new Claim("FacebookPageAccessToken", newPageTokenResult.access_token);
 
                 if (oldFacebookAccessTokenClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldFacebookAccessTokenClaim);
 
+                if (oldFacebookPageAccessTokenClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldFacebookPageAccessTokenClaim);
+
                 await userManager.AddClaimAsync(userId, newFacebookAccessTokenClaim);
+                await userManager.AddClaimAsync(userId, newFacebookPageAccessTokenClaim);
 
                 Session.Add(RetryCount, "0");
             }
@@ -195,7 +202,7 @@ namespace TicketManagement.Controllers
             }
         }
 
-        protected string GetAccessToken()
+        protected string GetUserAccessToken()
         {
             if (!HttpContext.Items.Contains("access_token"))
             {
@@ -208,6 +215,25 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(accessToken))
             {
                 FacebookError("Cannot find your access token, please try re-associating you account with Facebook");
+                return null;
+            }
+
+            return accessToken;
+        }
+
+        protected string GetPageAccessToken()
+        {
+            if (!HttpContext.Items.Contains("page_access_token"))
+            {
+                FacebookError("Cannot find your page access token, please try re-associating you account with Facebook");
+                return null;
+            }
+
+            string accessToken = HttpContext.Items["page_access_token"].ToString();
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                FacebookError("Cannot find your pageaccess token, please try re-associating you account with Facebook");
                 return null;
             }
 

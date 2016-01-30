@@ -282,8 +282,10 @@ namespace TicketManagement.Controllers
                     await UserManager.RemoveClaimAsync(user.Id, currentClaims[0]);
 
                 Claim facebookAccessToken = claimsIdentity.FindAll("FacebookAccessToken").FirstOrDefault();
+                Claim facebookPageAccessToken = claimsIdentity.FindAll("FacebookPageAccessToken").FirstOrDefault();
 
                 await UserManager.AddClaimAsync(user.Id, facebookAccessToken);
+                await UserManager.AddClaimAsync(user.Id, facebookPageAccessToken);
             }
         }
 
@@ -320,7 +322,7 @@ namespace TicketManagement.Controllers
 
                 foreach (var claim in currentClaims)
                 {
-                    if (claim.Type == "FacebookAccessToken")
+                    if (claim.Type == "FacebookAccessToken" || claim.Type == "FacebookPageAccessToken")
                         await UserManager.RemoveClaimAsync(user.Id, claim);
                 }
             }

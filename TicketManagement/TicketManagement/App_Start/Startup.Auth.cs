@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.Web.Query.Dynamic;
+using Facebook;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -68,6 +70,14 @@ namespace TicketManagement
                     OnAuthenticated = (context) =>
                     {
                         context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookAccessToken", context.AccessToken));
+
+                        FacebookClient fb = new FacebookClient(context.AccessToken);
+
+                        dynamic pageAccessTokenRequest = fb.Get($"{ConfigurationHelper.GetFacebookPageId()}?fields=access_token");
+
+                        if(pageAccessTokenRequest.access_token != null)
+                            context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookPageAccessToken", pageAccessTokenRequest.access_token));
+
                         return Task.FromResult(0);
                     }
                 }
