@@ -51,6 +51,13 @@ namespace TicketManagement.Helpers
             return !string.IsNullOrEmpty(value) ? value : null;
         }
 
+        public static Task<string> GetFacebookPagePostsBatchSizeAsync() { return Task.Factory.StartNew(GetFacebookPagePostsBatchSize); }
+        public static string GetFacebookPagePostsBatchSize()
+        {
+            string value = ConfigurationManager.AppSettings["Facebook_Admin_Page_Posts_Batch_Size"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
         public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(GetClockworkApiKey); }
         public static string GetClockworkApiKey()
         {

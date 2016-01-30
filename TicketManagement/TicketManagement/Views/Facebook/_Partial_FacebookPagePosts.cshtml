@@ -1,6 +1,10 @@
 ﻿@using TicketManagement.ViewModels
 @model IEnumerable<FacebookPagePostViewModel>
 
+@{
+    const int textLengthCutoff = 150;
+}
+
 
 @if (Model == null)
 {
@@ -15,21 +19,24 @@ else
             {
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <strong>@post.Message (Post Type:</strong> @post.Type <strong>)</strong>
+                        <strong>@(post.Message.Length > textLengthCutoff ? post.Message.Substring(0, textLengthCutoff) + "..." : post.Message)</strong>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <p>@post.Story</p>
-                                <img class="img-thumbnail" src="@post.Image" alt="Facebook Page Linked Image"/>
-                                <p title="@post.Description">About: @(post.Description.Length > 150 ? post.Description.Substring(0, 150) : post.Description) ...</p>
-                            </div>
                             <div class="col-md-3">
+                                <a href="@post.Link" target="_blank" title="View the linked item directly on Facebook"><img class="img-thumbnail" src="@post.Image" alt="Facebook Page Linked Image" /></a>                              
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Post Type:</strong> Link</p>
+                                @if (!string.IsNullOrEmpty(post.Story)) { <p><strong>Update: </strong>@post.Story</p> }
+                                <p title="@post.Description"><strong>About:</strong> @(post.Description.Length > textLengthCutoff ? post.Description.Substring(0, textLengthCutoff) + "..." : post.Description)</p>
                                 <p><a href="@post.Link" target="_blank" title="View the linked item directly on Facebook">View Item on Facebook</a></p>
                             </div>
                             <div class="col-md-3">
                                 <p><strong>Created:</strong> @post.Created</p>
                                 <p><strong>Updated:</strong> @post.Updated</p>
+                                <p><strong>Hidden:</strong> @post.Hidden</p>
+                                <p><strong>Published:</strong> @post.Published</p>
                             </div>
                         </div>
                     </div>
@@ -39,7 +46,7 @@ else
             {
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <strong>@post.Message</strong>
+                        <strong>@(post.Message.Length > textLengthCutoff ? post.Message.Substring(0, textLengthCutoff) + "..." : post.Message)</strong>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -62,21 +69,21 @@ else
             {
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <strong>@post.Message (Post Type:</strong> @post.Type <strong> Added To:</strong> @post.LinkName <strong>)</strong>
+                        <strong>@(!string.IsNullOrEmpty(post.Message) ? (post.Message.Length > textLengthCutoff ? post.Message.Substring(0, textLengthCutoff) + "..." : post.Message) : post.Story)</strong>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Photo Added</strong> (Click to open fully in Facebook)
-                                </p>
-                                <a href="@post.Link" target="_blank"><img src="@post.Image" alt="Sample of the photo added to the page"/></a>
-                            </div>
                             <div class="col-md-3">
+                                <a href="@post.Link" target="_blank"><img  class="img-rounded" src="@post.Image" alt="Sample of the photo added to the page"/></a>                             
+                            </div>
+                            <div class="col-md-5">
+                                <p><strong>Post type:</strong> @post.Type <strong>Added to :</strong> @post.LinkName <em>(Click to open fully in Facebook)</em>
+                                </p>
+                                <p><strong>Created:</strong> @post.Created</p>
+                            </div>
+                            <div class="col-md-4">
                                 <p><strong>Hidden:</strong> @post.Hidden</p>
                                 <p><strong>Published:</strong> @post.Published</p>
-                            </div>
-                            <div class="col-md-3">
-                                <p><strong>Created:</strong> @post.Created</p>
                                 <p><strong>Updated:</strong> @post.Updated</p>
                             </div>
                         </div>
