@@ -1,4 +1,6 @@
-﻿@using (Ajax.BeginForm("PostToPage", "Facebook", null,
+﻿@Styles.Render("~/bundles/bootstrap_toggle_css")
+
+@using (Ajax.BeginForm("PostToPage", "Facebook", null,
                             new AjaxOptions
                             {
                                 OnFailure = "HandleError(xhr,'fb_post')",
@@ -21,6 +23,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>New Post</strong>
+            <div style="float: right;">
+                <input id="fb_cb_page_or_user" name="page" value="false" class="checkbox" type="checkbox" data-size="mini" data-toggle="toggle" data-offstyle="info" data-onstyle="primary" data-on="User" data-off="Page">
+                <input name="page" type="hidden" value="true" />
+            </div>
         </div>
         <div class="panel-body">
             
@@ -35,36 +41,18 @@
             <input name="privacy" type="hidden" value="EVERYONE"/>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-link"></i></span>
                             <input name="link" class="form-control" type="text" placeholder="Add URL link..." style="width: 100%"/>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-8">
                     <div class="form-group input-group">
                         <div class="input-group">
-                            <button type="submit" class="btn btn-success">Post</button>
-                            <div class="btn-group">
-                                <button id="btn_dropdown_menu_permission" class="btn dropdown-toggle" data-toggle="dropdown" type="button">
-                                    Public
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" data-privacy="EVERYONE">Public</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" data-privacy="ALL_FRIENDS">All Friends</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" data-privacy="FRIENDS_OF_FRIENDS">Friends of Friends</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" data-privacy="SELF">Only Me</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <button type="submit" class="btn btn-sm btn-success">Post</button>
                         </div>
                     </div>
                 </div>
@@ -73,19 +61,4 @@
     </div>
 }
 
-<script type="text/javascript">
-
-    // When the user toggles the message to be internal or external, change the UI as required.
-    $('#fb_cb_page_or_user').change(function () {
-
-    });
-
-    $('.dropdown-menu li a').click(function () {
-        $('#btn_dropdown_menu_permission').html($(this).text() + ' <span class="caret"></span>');
-        if (this.attributes['data-privacy'] != null && this.attributes['data-privacy'].value != null)
-            $("input[name='privacy']").val(this.attributes['data-privacy'].value);
-    });
-</script>
-
-
-
+@Scripts.Render("~/bundles/bootstrap_toggle_js")

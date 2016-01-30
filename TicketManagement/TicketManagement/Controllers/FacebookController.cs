@@ -69,22 +69,31 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostToPage(string message, string link, bool page, string privacy)
+        public async Task<ActionResult> PostToPage(string message, string link, bool page)
         {
             if (string.IsNullOrEmpty(message))
                 return Json("Cannot post with out a message body.");
             if (!string.IsNullOrEmpty(link))
                 link = $"&link={link}";
-            if (string.IsNullOrEmpty(privacy))
-                privacy = "SELF";
 
-            string pageAccessToken = GetPageAccessToken();
+            string accessToken;
 
-            if (string.IsNullOrEmpty(pageAccessToken))
-                return Json("Problem with your page access token, please try re-associating you account and check permissions.");
+            if (page) // Posting as a page or current user to the Page.
+            {
+                accessToken = GetPageAccessToken();
 
-            FacebookClient fb = new FacebookClient(pageAccessToken);
+                if (string.IsNullOrEmpty(accessToken))
+                    return Json("Problem with your page access token, please try re-associating you account and check permissions.");
+            }
+            else
+            {
+                accessToken = GetUserAccessToken();
 
+                if (string.IsNullOrEmpty(accessToken))
+                    return Json("Problem with your page access token, please try re-associating you account and check permissions.");
+            }
+
+            FacebookClient fb = new FacebookClient(accessToken);
             dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={message}{link}", null);
 
             return Json("Status has been successfully posted.");
