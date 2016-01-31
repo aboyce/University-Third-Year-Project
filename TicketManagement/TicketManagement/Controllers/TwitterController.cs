@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TicketManagement.Helpers;
 using Tweetinvi;
 using Tweetinvi.Core.Credentials;
 
@@ -15,9 +17,9 @@ namespace TicketManagement.Controllers
             return View();
         }
 
-        public ActionResult Authentication()
+        public async Task<ActionResult> Authentication()
         {
-            ConsumerCredentials credentials = new ConsumerCredentials("l9gnPI0cjCCa1STlJ8ySNP7Sb", "fQhKIM2sVFaS84d0mvAOUuZsIxB4Kg9jXGwiwPPmsuWqeCGIgW");
+            ConsumerCredentials credentials = new ConsumerCredentials(await ConfigurationHelper.GetTwitterConsumerKeyAsync(), await ConfigurationHelper.GetTwitterConsumerSecretAsync());
 
             string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/Twitter/ValidateAuthentication");
 
@@ -26,13 +28,13 @@ namespace TicketManagement.Controllers
 
         public ActionResult ValidateAuthentication()
         {
-            var verifierCode = Request.Params.Get("oauth_verifier");
-            var authorisationId = Request.Params.Get("authorization_id");
+            string verifierCode = Request.Params.Get("oauth_verifier");
+            string authorisationId = Request.Params.Get("authorization_id");
 
             var credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
 
             ViewBag.User = Tweetinvi.User.GetLoggedUser(credentials);
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

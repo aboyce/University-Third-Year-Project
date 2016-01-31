@@ -16,6 +16,8 @@ namespace TicketManagement.Helpers
             return tconf.Populate() ? tconf : null;
         }
 
+        #region Facebook
+
         public static Task<string> GetFacebookGraphApiVersionAsync() { return Task.Factory.StartNew(GetFacebookGraphApiVersion); }
         public static string GetFacebookGraphApiVersion()
         {
@@ -57,6 +59,28 @@ namespace TicketManagement.Helpers
             string value = ConfigurationManager.AppSettings["Facebook_Admin_Page_Posts_Batch_Size"];
             return !string.IsNullOrEmpty(value) ? value : null;
         }
+
+        #endregion
+
+        #region Twitter
+
+        public static Task<string> GetTwitterConsumerKeyAsync() { return Task.Factory.StartNew(GetTwitterConsumerKey); }
+        public static string GetTwitterConsumerKey()
+        {
+            string value = ConfigurationManager.AppSettings["Twitter_ConsumerKey"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
+        public static Task<string> GetTwitterConsumerSecretAsync() { return Task.Factory.StartNew(GetTwitterConsumerSecret); }
+        public static string GetTwitterConsumerSecret()
+        {
+            string value = ConfigurationManager.AppSettings["Twitter_ConsumerSecret"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
+        #endregion
+
+        #region Text Messaging
 
         public static Task<string> GetClockworkApiKeyAsync() { return Task.Factory.StartNew(GetClockworkApiKey); }
         public static string GetClockworkApiKey()
@@ -110,6 +134,8 @@ namespace TicketManagement.Helpers
 
             return null;
         }
+
+        #endregion
     }
 
     public class TicketConfiguration
