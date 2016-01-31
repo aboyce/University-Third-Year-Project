@@ -179,27 +179,4 @@ namespace TicketManagement.ViewModels
         [FacebookMapping("zip")]
         public string PostCode { get; set; }
     }
-
-
-    //public class FacebookPermissionRequestViewModel
-    //{
-    //    public FacebookPermissionRequestViewModel()
-    //    {
-    //        MissingPermissions = new List<FacebookPermissionRequest>();
-    //    }
-    //    public List<FacebookPermissionRequest> MissingPermissions { get; set; }
-    //}
-
-    //public class FacebookPermissionRequest
-    //{
-    //    public bool Requested { get; set; }
-
-    //    public string Name { get; set; }
-
-    //    public string Description { get; set; }
-
-    //    public string PermissionScope { get; set; }
-
-    //    public bool  Granted { get; set; }
-    //}
 }
