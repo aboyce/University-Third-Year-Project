@@ -57,9 +57,9 @@ namespace TicketManagement
             //    clientId: "",
             //    clientSecret: "");
 
-            app.UseTwitterAuthentication(
-               consumerKey: ConfigurationHelper.GetTwitterConsumerKey(),
-               consumerSecret: ConfigurationHelper.GetTwitterConsumerSecret());
+            //app.UseTwitterAuthentication(
+               //consumerKey: ConfigurationHelper.GetTwitterConsumerKey(),
+               //consumerSecret: ConfigurationHelper.GetTwitterConsumerSecret());
 
             FacebookAuthenticationOptions facebookOptions = new FacebookAuthenticationOptions
             {
