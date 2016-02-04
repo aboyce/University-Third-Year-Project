@@ -21,7 +21,8 @@
     public enum UserNotificationType
     {
         PendingApproval = 0,
-        PendingInternalApproval = 1
+        PendingInternalApproval = 1,
+        NewTicketLog = 2
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -87,6 +88,9 @@
 
         AppliedRoleFromNotification,
         FailedToApplyRoleFromNotification,
+
+        DismissedNotification,
+        FailedToDismissNotification,
 
         DeclinedRoleFromNotification,
         FailedToDeclineRoleFromNotification,

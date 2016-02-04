@@ -14,19 +14,19 @@
     </div>
 }
 
-@if (Request.Params["ViewMessage"] == "FailedToApplyRoleFromNotification" || Request.Params["ViewMessage"] == "FailedToDeclineRoleFromNotification")
-{
-    <div class="alert alert-danger alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <b>Error</b> An error occurred when trying to handle the Notification.
-    </div>
-}
-
-@if (Request.Params["ViewMessage"] == "DeclinedRoleFromNotification")
+@if (Request.Params["ViewMessage"] == "DeclinedRoleFromNotification" || Request.Params["ViewMessage"] == "DismissedNotification")
 {
     <div class="alert alert-success alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <b>Success</b> The Notification has been dismissed.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "FailedToApplyRoleFromNotification" || Request.Params["ViewMessage"] == "FailedToDeclineRoleFromNotification" || Request.Params["ViewMessage"] == "FailedToDismissNotification")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occurred when trying to handle the Notification.
     </div>
 }
 
@@ -45,7 +45,7 @@
             <th>Type</th>
             <th>Message</th>
             <th>Authorise</th>
-            <th>Decline</th>
+            <th>Decline/Dismiss</th>
         </tr>
 
         @foreach (var notification in Model.UserNotifications)
@@ -65,12 +65,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => notification.Message)
                 </td>
-                <td>
-                    <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
-                </td>
-                <td>
-                    <a href="@Url.Action("DeclineNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-danger"><i class="fa fa-times"></i></a>
-                </td>
+                @if (notification.Type == UserNotificationType.NewTicketLog)
+                {
+                    <td></td>
+                    <td>
+                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-warning"><i class="fa fa-times"></i></a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-danger"><i class="fa fa-times"></i></a>
+                    </td>
+                }
             </tr>
         }
     </table>
@@ -123,7 +133,7 @@ else
                     <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role})" class="btn btn-success"><i class="fa fa-check"></i></a>
                 </td>
                 <td>
-                    <a href="@Url.Action("DeclineNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role })" class="btn btn-danger"><i class="fa fa-times"></i></a>
+                    <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role })" class="btn btn-danger"><i class="fa fa-times"></i></a>
                 </td>
             </tr>
         }

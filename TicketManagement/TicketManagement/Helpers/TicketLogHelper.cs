@@ -81,6 +81,9 @@ namespace TicketManagement.Helpers
                 db.TicketLogs.Add(ticketLog);
                 await db.SaveChangesAsync();
 
+                if (type == TicketLogType.MessageFromExternalUser)
+                    await NotificationHelper.CreateNotificationsForNewTicketLog(ticket, ticketLog, db);
+
                 return true;
             }
 

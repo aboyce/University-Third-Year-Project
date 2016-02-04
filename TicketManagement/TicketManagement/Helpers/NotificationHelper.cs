@@ -11,12 +11,21 @@ namespace TicketManagement.Helpers
 {
     public static class NotificationHelper
     {
-        /* PERFORM THE ACTION ON THE NOTIFICATION */
+        private const int TicketTitleLengthLimit = 50;
+
+        #region Perform Action on the Notifications
+
         public static async Task<bool> UndertakeNotificationAsync(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {
-                // Currently no User Notifications
+                switch (un.Type)
+                {
+                    case UserNotificationType.NewTicketLog:
+                    {
+                        return true; // There is nothing to do in this case, it is just letting the user know.
+                    }
+                }
             }
             else if (rn != null)
             {
@@ -49,7 +58,7 @@ namespace TicketManagement.Helpers
             return false;
         }
 
-        public static async Task<bool> DeclineNotificationAsync(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
+        public static async Task<bool> RemoveNotificationAsync(ApplicationContext db, UserManager<User> um, UserNotification un = null, RoleNotification rn = null)
         {
             if (un != null)
             {
@@ -69,7 +78,62 @@ namespace TicketManagement.Helpers
             return false;
         }
 
-        /* ADD NOTIFICATIONS TO THE DATABASE */
+        #endregion
+
+        #region Add New Notifications for a Ticket Log
+
+        public static async Task<bool> CreateNotificationsForNewTicketLog(Ticket ticket, TicketLog ticketLog, ApplicationContext db)
+        {
+            if (ticket == null || ticketLog == null || db == null)
+                return false;
+
+            if (!string.IsNullOrEmpty(ticket.UserAssignedToId)) // The ticket has a single user we can notify of a new Ticket Log.
+            {
+                User userAssignedTo = await db.Users.FirstOrDefaultAsync(u => u.Id == ticket.UserAssignedToId);
+
+                if (userAssignedTo == null)
+                    return false;
+
+                UserNotification notification = new UserNotification
+                {
+                    Message = $"New Ticket Log message on your ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}.",
+                    NotificationAboutId = userAssignedTo.Id,
+                    NotificationAbout = userAssignedTo,
+                    Type = UserNotificationType.NewTicketLog
+                };
+
+                return await Task.Run(() => AddUserNotificationToDb(db, notification));
+            }
+            else // If there is not a User assigned to the Ticket, then send it to all users in the Team that is assigned to the Ticket.
+            {
+                Team team = await db.Teams.FirstOrDefaultAsync(t => t.Id == ticket.TeamAssignedToId);
+
+                if (team == null)
+                    return false;
+
+                List<User> usersInTeam = await db.Users.Where(u => u.TeamId == team.Id).Select(u => u).ToListAsync();
+
+                foreach (User user in usersInTeam)
+                {
+                    UserNotification notification = new UserNotification
+                    {
+                        Message = $"New Ticket Log message on your teams ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}..",
+                        NotificationAboutId = user.Id,
+                        NotificationAbout = user,
+                        Type = UserNotificationType.NewTicketLog
+                    };
+
+                    await Task.Run(() => AddUserNotificationToDb(db, notification));
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region Add Notifications to the Database
+
         public static bool AddUserNotificationToDb(ApplicationContext db, UserNotification notification)
         {
             db.UserNotifications.Add(notification);
@@ -85,10 +149,13 @@ namespace TicketManagement.Helpers
             return true;
         }
 
-        /* GET NOTIFICATIONS FOR USERS */
+        #endregion
+
+        #region Get Notifications for Users
+
         public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
         {
-            return  db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
+            return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
         }
         public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
         {
@@ -111,7 +178,10 @@ namespace TicketManagement.Helpers
             return notifications;
         }
 
-        /* GET ROLE IDS FOR A USER */
+        #endregion
+
+        #region Get Role Ids for a User
+
         private static IEnumerable<string> GetRoleIdsForUser(ApplicationContext db, IEnumerable<string> userRolesByName)
         {
             List<string> roleIdsForUserId = new List<string>();
@@ -127,5 +197,7 @@ namespace TicketManagement.Helpers
 
             return roleIdsForUserId;
         }
+
+        #endregion
     }
 }

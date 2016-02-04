@@ -66,23 +66,28 @@ namespace TicketManagement.Controllers
             return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.AppliedRoleFromNotification } : new { ViewMessage = ViewMessage.FailedToApplyRoleFromNotification });
         }
 
-        public async Task<ActionResult> DeclineNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
+        public async Task<ActionResult> DismissNotification(NotificationCategory notificationCategory, int notificationId)
         {
             bool success = false;
-
+            bool newTicketLog = false;
+            
             if (notificationId > 0)
             {
-                if (notificationCategory == NotificationCategory.User)
+                switch (notificationCategory)
                 {
-                    success = await NotificationHelper.DeclineNotificationAsync(db, UserManager,
-                                un: await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId)); 
-                }
-                else if (notificationCategory == NotificationCategory.Role)
-                {
-                    success = await NotificationHelper.DeclineNotificationAsync(db, UserManager,
-                                rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
+                    case NotificationCategory.User:
+                        UserNotification userNotification = await db.UserNotifications.Include(un => un.NotificationAbout).FirstOrDefaultAsync(un => un.Id == notificationId);
+                        newTicketLog = userNotification.Type == UserNotificationType.NewTicketLog;
+                        success = await NotificationHelper.RemoveNotificationAsync(db, UserManager, un: userNotification);
+                        break;
+                    case NotificationCategory.Role:
+                        success = await NotificationHelper.RemoveNotificationAsync(db, UserManager, rn: await db.RoleNotifications.Include(rn => rn.NotificationAbout).Include(rn => rn.Role).FirstOrDefaultAsync(rn => rn.Id == notificationId));
+                        break;
                 }
             }
+
+            if (newTicketLog)
+                return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.DismissedNotification } : new { ViewMessage = ViewMessage.FailedToDismissNotification });
 
             return RedirectToAction("Index", success ? new { ViewMessage = ViewMessage.DeclinedRoleFromNotification } : new { ViewMessage = ViewMessage.FailedToDeclineRoleFromNotification });
         }
