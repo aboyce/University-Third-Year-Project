@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using TicketManagement.Filters;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
+using TicketManagement.ViewModels;
 using Tweetinvi;
 using Tweetinvi.Core.Credentials;
 
@@ -19,7 +20,9 @@ namespace TicketManagement.Controllers
     {
         public ActionResult Index()
         {
-            if(!HttpContext.Items.Contains(""))
+            if (!HttpContext.Items.Contains(SocialMediaItem.TwitterVerifierCode))
+                return View(new TwitterIndexViewModel {IsLoggedIn = false} );
+
 
 
             return View();
