@@ -549,6 +549,8 @@
     <Content Include="Views\Shared\_Partial_FacebookNewAccessToken.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookPagePosts.cshtml" />
     <Content Include="Views\Facebook\_Partial_FacebookPagePostForm.cshtml" />
+    <Content Include="Views\Notification\_Partial_UserNotifications.cshtml" />
+    <Content Include="Views\Notification\_Partial_RoleNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

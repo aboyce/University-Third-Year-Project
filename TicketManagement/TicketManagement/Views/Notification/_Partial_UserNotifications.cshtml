@@ -1,0 +1,57 @@
+﻿@using TicketManagement.Management
+@model TicketManagement.ViewModels.UserNotificationViewModel
+
+@if (Model.UserNotifications.Any())
+{
+    <table class="table table-hover table-striped table-responsive">
+        <tr>
+            <th>Id</th>
+            <th>Notification About</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Authorise</th>
+            <th>Decline/Dismiss</th>
+        </tr>
+
+        @foreach (var notification in Model.UserNotifications)
+        {
+            @Html.HiddenFor(modelItem => notification.NotificationAbout)
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.NotificationAbout.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => notification.Message)
+                </td>
+                @if (notification.Type == UserNotificationType.NewTicketLog)
+                {
+                    <td></td>
+                    <td>
+                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-warning"><i class="fa fa-times"></i></a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-danger"><i class="fa fa-times"></i></a>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>You have no notifications!</p>
+    <br />
+}

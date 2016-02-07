@@ -13,4 +13,14 @@ namespace TicketManagement.ViewModels
 
         public List<RoleNotification> RoleNotifications { get; set; }
     }
+
+    public class UserNotificationViewModel
+    {
+        public List<UserNotification> UserNotifications { get; set; }
+    }
+
+    public class RoleNotificationViewModel
+    {
+        public List<RoleNotification> RoleNotifications { get; set; }
+    }
 }

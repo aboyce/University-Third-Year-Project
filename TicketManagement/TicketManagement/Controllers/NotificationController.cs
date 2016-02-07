@@ -45,6 +45,26 @@ namespace TicketManagement.Controllers
             return PartialView(vm);
         }
 
+        public async Task<ActionResult> _Partial_UserNotifications()
+        {
+            User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            return PartialView(new UserNotificationViewModel
+            {
+                UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id)
+            });
+        }
+
+        public async Task<ActionResult> _Partial_RoleNotifications()
+        {
+            User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            return PartialView(new RoleNotificationViewModel()
+            {
+                RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id))
+            });
+        }
+
         public async Task<ActionResult> AuthoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
         {
             bool success = false;
@@ -70,7 +90,7 @@ namespace TicketManagement.Controllers
         {
             bool success = false;
             bool newTicketLog = false;
-            
+
             if (notificationId > 0)
             {
                 switch (notificationCategory)

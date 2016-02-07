@@ -34,112 +34,55 @@
 <hr />
 
 <h4>For You</h4>
-<hr/>
-
-@if (Model.UserNotifications.Any())
-{
-    <table class="table table-hover table-striped table-responsive">
-        <tr>
-            <th>Id</th>
-            <th>Notification About</th>
-            <th>Type</th>
-            <th>Message</th>
-            <th>Authorise</th>
-            <th>Decline/Dismiss</th>
-        </tr>
-
-        @foreach (var notification in Model.UserNotifications)
-        {
-            @Html.HiddenFor(modelItem => notification.NotificationAbout)
-
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationAbout.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Message)
-                </td>
-                @if (notification.Type == UserNotificationType.NewTicketLog)
-                {
-                    <td></td>
-                    <td>
-                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-warning"><i class="fa fa-times"></i></a>
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-success"><i class="fa fa-check"></i></a>
-                    </td>
-                    <td>
-                        <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.User})" class="btn btn-danger"><i class="fa fa-times"></i></a>
-                    </td>
-                }
-            </tr>
-        }
-    </table>
-}
-else
-{
-    <p>You have no notifications!</p>
-    <br/>
-}
-
-<h4>For the Roles you are in</h4>
 <hr />
 
-@if (Model.RoleNotifications.Any())
+@using (Ajax.BeginForm("_Partial_UserNotifications", "Notification", new AjaxOptions
 {
-    <table class="table table-hover table-striped table-responsive">
-        <tr>
-            <th>Id</th>
-            <th>Associated Role</th>
-            <th>Notification About</th>
-            <th>Type</th>
-            <th>Message</th>
-            <th>Authorise</th>
-            <th>Decline</th>
-        </tr>
-
-        @foreach (var notification in Model.RoleNotifications)
-        {
-
-            @Html.HiddenFor(modelItem => notification.NotificationAbout)
-            @Html.HiddenFor(modelItem => notification.Role)
-
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Role.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.NotificationAbout.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => notification.Message)
-                </td>
-                <td>
-                    <a href="@Url.Action("AuthoriseNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role})" class="btn btn-success"><i class="fa fa-check"></i></a>
-                </td>
-                <td>
-                    <a href="@Url.Action("DismissNotification", new {notificationId = notification.Id, notificationCategory = NotificationCategory.Role })" class="btn btn-danger"><i class="fa fa-times"></i></a>
-                </td>
-            </tr>
-        }
-    </table>
-}
-else
+    OnFailure = "handleError(xhr, 'notifications_user')",
+    HttpMethod = "Get",
+    UpdateTargetId = "notifications_user",
+    LoadingElementId = "notifications_user_loading"
+},
+    new
+    {
+        id = "notifications_user_form"
+    }))
 {
-    <p>You have no notifications for any of your roles!</p>
+    <div id="notifications_user_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
+    </div>
 }
+
+<div id="notifications_user"></div>
+
+
+
+<h4>For the Roles you are in</h4>
+<hr/>
+
+@using (Ajax.BeginForm("_Partial_RoleNotifications", "Notification", new AjaxOptions
+{
+    OnFailure = "handleError(xhr, 'notifications_role')",
+    HttpMethod = "Get",
+    UpdateTargetId = "notifications_role",
+    LoadingElementId = "notifications_role_loading"
+},
+                new
+                {
+                    id = "notifications_role_form"
+                }))
+{
+    <div id="notifications_role_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
+    </div>
+}
+
+<div id="notifications_role"></div>
+
+<script type="text/javascript">
+    $('#notifications_user_form').submit();
+    $('#notifications_role_form').submit();
+
+</script>
+
+@Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
