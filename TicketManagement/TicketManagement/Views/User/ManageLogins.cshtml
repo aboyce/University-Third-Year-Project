@@ -12,12 +12,21 @@
     </div>
 }
 
+@if (Request.Params["ViewMessage"] == "ErrorWithTwitterAuthentication")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occurred trying to contact Twitter, please try again later.
+    </div>
+}
+
+<br />
 <h2>My Account</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (!loginProviders.Any())
+    if (!loginProviders.Any() && !Model.Twitter)
     {
         <div>
             <p>
@@ -31,7 +40,7 @@
         <h3>Current External Logins</h3>
         <hr />
 
-        if (Model.CurrentLogins.Count > 0)
+        if (Model.CurrentLogins.Count > 0 || Model.TwitterConfigured)
         {
             foreach (var account in Model.CurrentLogins)
             {
@@ -48,7 +57,7 @@
                                 <div>
                                     @Html.Hidden("loginProvider", account.LoginProvider)
                                     @Html.Hidden("providerKey", account.ProviderKey)
-                                    <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @account.LoginProvider login from your account"/>
+                                    <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @account.LoginProvider login from your account" />
                                 </div>
                             }
                         }
@@ -59,7 +68,19 @@
 
                     </div>
                 </div>
-                <br/>
+                <br />
+            }
+
+            if (Model.TwitterConfigured)
+            {
+                <div class="row">
+                    <div class="col-md-2">
+                        Twitter
+                    </div>
+                    <div class="col-md-4">
+                        @Html.ActionLink("Remove", "AuthenticateTwitter", "User", null, new { @class = "btn btn-danger", disabled = "disabled" })
+                    </div>
+                </div>
             }
         }
         else
@@ -70,7 +91,7 @@
         <h3>Add New Login</h3>
         <hr />
 
-        if (Model.OtherLogins.Count > 0)
+        if (Model.OtherLogins.Count > 0 || Model.TwitterConfigured == false)
         {
             using (Html.BeginForm("LinkLogin", "User"))
             {
@@ -84,6 +105,11 @@
                     </p>
                 </div>
             }
+
+            if (Model.TwitterConfigured == false)
+            {
+                <p>@Html.ActionLink("Twitter", "AuthenticateTwitter", "User", null, new {@class = "btn btn-success"})</p>
+            }
         }
         else
         {
@@ -92,6 +118,7 @@
     }
 }
 
+<br />
 <h3>Clear External Account information</h3>
-<hr/>
+<hr />
 @Html.ActionLink("Clear", "RemoveExternalLoginInformation", "User", null, new { @class = "btn btn-danger" })

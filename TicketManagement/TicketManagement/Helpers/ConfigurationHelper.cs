@@ -64,6 +64,12 @@ namespace TicketManagement.Helpers
 
         #region Twitter
 
+        public static Task<bool> IsTwitterConfiguredAsync() { return Task.Factory.StartNew(IsTwitterConfigured); }
+        public static bool IsTwitterConfigured()
+        {
+            return !string.IsNullOrEmpty(ConfigurationManager.AppSettings["Twitter_ConsumerKey"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["Twitter_ConsumerSecret"]);
+        }
+
         public static Task<string> GetTwitterConsumerKeyAsync() { return Task.Factory.StartNew(GetTwitterConsumerKey); }
         public static string GetTwitterConsumerKey()
         {

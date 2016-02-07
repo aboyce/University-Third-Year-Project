@@ -144,6 +144,7 @@
         RemoveLoginSuccess,
         RemovePhoneSuccess,
         ClearedExternalLoginInformation,
+        ErrorWithTwitterAuthentication,
         LoggedOff,
         Error
     }

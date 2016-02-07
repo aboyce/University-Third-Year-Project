@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -30,6 +31,8 @@ namespace TicketManagement.ViewModels
 
     public class ManageLoginsViewModel
     {
+        public bool Twitter { get; set; } = false;
+        public bool TwitterConfigured { get; set; } = false;
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }
     }

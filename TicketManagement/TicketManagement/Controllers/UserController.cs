@@ -144,7 +144,8 @@ namespace TicketManagement.Controllers
             return View(new ManageLoginsViewModel
             {
                 CurrentLogins = userLogins,
-                OtherLogins = otherLogins
+                OtherLogins = otherLogins,
+                Twitter = await ConfigurationHelper.IsTwitterConfiguredAsync()
             });
         }
 
@@ -181,31 +182,12 @@ namespace TicketManagement.Controllers
                 User user = await UserManager.FindAsync(loginInfo.Login);
 
                 if (user != null)
-                    await StoreFacebookAuthToken(user);
+                    await StoreFacebookCredentials(user);
 
                 return RedirectToAction("ManageLogins");
             }
 
             return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
-        }
-
-        private async Task StoreFacebookAuthToken(User user)
-        {
-            ClaimsIdentity claimsIdentity = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
-
-            if (claimsIdentity != null)
-            {
-                IList<Claim> currentClaims = await UserManager.GetClaimsAsync(user.Id);
-
-                if (currentClaims.Any())
-                    await UserManager.RemoveClaimAsync(user.Id, currentClaims[0]);
-
-                Claim facebookAccessToken = claimsIdentity.FindAll("FacebookAccessToken").FirstOrDefault();
-                Claim facebookPageAccessToken = claimsIdentity.FindAll("FacebookPageAccessToken").FirstOrDefault();
-
-                await UserManager.AddClaimAsync(user.Id, facebookAccessToken);
-                await UserManager.AddClaimAsync(user.Id, facebookPageAccessToken);
-            }
         }
 
         [HttpPost]
@@ -219,7 +201,7 @@ namespace TicketManagement.Controllers
                 User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await RemoveFacebookAuthToken(user);
+                    await RemoveFacebookCredentials(user);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -231,7 +213,101 @@ namespace TicketManagement.Controllers
             return RedirectToAction("ManageLogins", new { ViewMessage = message });
         }
 
-        private async Task RemoveFacebookAuthToken(User user)
+        public async Task<ActionResult> AuthenticateTwitter()
+        {
+            ConsumerCredentials credentials = new ConsumerCredentials(await ConfigurationHelper.GetTwitterConsumerKeyAsync(), await ConfigurationHelper.GetTwitterConsumerSecretAsync());
+
+            if (Request.Url == null)
+                return RedirectToAction("ManageLogins", new { ViewMessage = ManageMessageId.ErrorWithTwitterAuthentication });
+
+            string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/User/ValidateTwitterAuthentication"); // Check that Url matched the method below.
+
+            return new RedirectResult(url);
+        }
+
+        public async Task<ActionResult> ValidateTwitterAuthentication()
+        {
+            string verifierCode = Request.Params.Get("oauth_verifier");
+            string authorisationId = Request.Params.Get("authorization_id");
+
+            await StoreTwitterCredentials(verifierCode, authorisationId);
+
+            var credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
+
+            //ViewBag.User = Tweetinvi.User.GetLoggedUser(credentials);
+
+            return RedirectToAction("ManageLogins");
+        }
+
+        private async Task StoreTwitterCredentials(string verifierCode, string authorisationId)
+        {
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            if (userManager != null)
+            {
+                string userId = User.Identity.GetUserId();
+
+                IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
+
+                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterVerifierCode");
+                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterAuthorisationId");
+
+                Claim newTwitterVerifierCodeClaim = new Claim("TwitterVerifierCode", verifierCode);
+                Claim newTwitterAuthorisationIdClaim = new Claim("TwitterAuthorisationId", authorisationId);
+
+                if (oldTwitterVerifierCodeClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterVerifierCodeClaim);
+
+                if (oldTwitterAuthorisationIdClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAuthorisationIdClaim);
+
+                await userManager.AddClaimAsync(userId, newTwitterVerifierCodeClaim);
+                await userManager.AddClaimAsync(userId, newTwitterAuthorisationIdClaim);
+            }
+        }
+
+        private async Task RemoveTwitterCredentials()
+        {
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            if (userManager != null)
+            {
+                string userId = User.Identity.GetUserId();
+
+                IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
+
+                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterVerifierCode");
+                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterAuthorisationId");
+
+
+                if (oldTwitterVerifierCodeClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterVerifierCodeClaim);
+
+                if (oldTwitterAuthorisationIdClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAuthorisationIdClaim);
+            }
+        }
+
+        private async Task StoreFacebookCredentials(User user)
+        {
+            ClaimsIdentity claimsIdentity = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (claimsIdentity != null)
+            {
+                IList<Claim> currentClaims = await UserManager.GetClaimsAsync(user.Id);
+
+                if (currentClaims.Any())
+                    await RemoveFacebookCredentials(user);
+
+                Claim facebookAccessToken = claimsIdentity.FindAll("FacebookAccessToken").FirstOrDefault();
+                Claim facebookPageAccessToken = claimsIdentity.FindAll("FacebookPageAccessToken").FirstOrDefault();
+
+                await UserManager.AddClaimAsync(user.Id, facebookAccessToken);
+                await UserManager.AddClaimAsync(user.Id, facebookPageAccessToken);
+            }
+        }
+
+        private async Task RemoveFacebookCredentials(User user)
         {
             ClaimsIdentity claimsIdentity = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
 
@@ -245,29 +321,6 @@ namespace TicketManagement.Controllers
                         await UserManager.RemoveClaimAsync(user.Id, claim);
                 }
             }
-        }
-
-        public async Task<ActionResult> AuthenticateTwitter()
-        {
-            ConsumerCredentials credentials = new ConsumerCredentials(await ConfigurationHelper.GetTwitterConsumerKeyAsync(), await ConfigurationHelper.GetTwitterConsumerSecretAsync());
-
-            //if (Request.Url == null)
-            //return 
-
-            string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/Twitter/ValidateAuthentication");
-
-            return new RedirectResult(url);
-        }
-
-        public ActionResult ValidateTwitterAuthentication()
-        {
-            string verifierCode = Request.Params.Get("oauth_verifier");
-            string authorisationId = Request.Params.Get("authorization_id");
-
-            var credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
-
-            ViewBag.User = Tweetinvi.User.GetLoggedUser(credentials);
-            return RedirectToAction("Index");
         }
 
         #endregion
