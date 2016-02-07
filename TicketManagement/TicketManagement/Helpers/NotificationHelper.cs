@@ -153,6 +153,11 @@ namespace TicketManagement.Helpers
 
         #region Get Notifications for Users
 
+        public static bool AnyNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
+        {
+            return db.UserNotifications.Any(un => un.NotificationAboutId == userId) || (from rn in db.RoleNotifications.ToList() from roleId in GetRoleIdsForUser(db, userRolesByName) where rn.RoleId == roleId select rn).Any();
+        }
+
         public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
         {
             return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();

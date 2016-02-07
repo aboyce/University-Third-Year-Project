@@ -1,12 +1,8 @@
 ﻿@model TicketManagement.ViewModels.NotificationViewModel
-<ul class="nav navbar-nav">
-    
-    @if (Model.RoleNotifications.Count > 0 || Model.UserNotifications.Count > 0)
-    {
-        <li><a href="@Url.Action("Index", "Notification")" title="Notifications"><i class="fa fa-bell-o" style="color: #ff0000"></i></a></li>
-    }
-    else
-    {
-        <li><a href="@Url.Action("Index", "Notification")" title="Notifications"><i class="fa fa-bell-o"></i></a></li>
-    }
+
+<ul class="nav navbar-nav">   
+    @if (Model.Notifications){
+        <li><a href="@Url.Action("Index", "Notification")" title="Notifications"><i class="fa fa-bell-o" style="color: #ff0000"></i></a></li> }
+    else {
+        <li><a href="@Url.Action("Index", "Notification")" title="Notifications"><i class="fa fa-bell-o"></i></a></li> }
 </ul>

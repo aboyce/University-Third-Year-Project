@@ -30,8 +30,11 @@
                     @Html.Partial("_Partial_User")
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    
                     @Html.Action("_Partial_Notifications", "Notification")
-                    @if (User.IsInRole(MyRoles.Administrator)) {
+
+                    @if (User.IsInRole(MyRoles.Administrator))
+                    {
                         <li class="dropdown">
                             <a href="@Url.Action("Index", "Admin")" title="Administration Panel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -53,9 +56,12 @@
                                 <li><a href="@Url.Action("Index", "TicketPriorities")">Ticket Priorities</a></li>
                                 <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
                             </ul>
-                        </li> }
+                        </li>
+                    }
                     @if (User.IsInRole(MyRoles.Internal))
-                        { <li><a href="@Url.Action("Structure", "Organisations")" title="Organisational Structure"><i class="fa fa-sitemap"></i></a></li> }
+                    {
+                        <li><a href="@Url.Action("Structure", "Organisations")" title="Organisational Structure"><i class="fa fa-sitemap"></i></a></li>
+                    }
                     <li><a href="@Url.Action("About", "Home")" title="Information Page"><i class="fa fa-info" style="color: #B3B3B3"></i></a></li>
                     <li><a href="@Url.Action("Contact", "Home")" title="Contact Page"><i class="fa fa-phone" style="color: #B3B3B3"></i></a></li>
                 </ul>

@@ -1,7 +1,4 @@
-﻿@using TicketManagement.Management
-@model TicketManagement.ViewModels.NotificationViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
@@ -34,7 +31,12 @@
 <hr />
 
 <h4>For You</h4>
-<hr />
+<hr/>
+<div id="notifications_user"></div>
+
+<h4>For the Roles you are in</h4>
+<hr/>
+<div id="notifications_role"></div>
 
 @using (Ajax.BeginForm("_Partial_UserNotifications", "Notification", new AjaxOptions
 {
@@ -53,13 +55,6 @@
     </div>
 }
 
-<div id="notifications_user"></div>
-
-
-
-<h4>For the Roles you are in</h4>
-<hr/>
-
 @using (Ajax.BeginForm("_Partial_RoleNotifications", "Notification", new AjaxOptions
 {
     OnFailure = "handleError(xhr, 'notifications_role')",
@@ -76,8 +71,6 @@
         <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
     </div>
 }
-
-<div id="notifications_role"></div>
 
 <script type="text/javascript">
     $('#notifications_user_form').submit();

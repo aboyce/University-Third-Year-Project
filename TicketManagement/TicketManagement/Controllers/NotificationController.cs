@@ -24,25 +24,20 @@ namespace TicketManagement.Controllers
             private set { _userManager = value; }
         }
 
-        public ActionResult Index(NotificationViewModel vm)
+        public ActionResult Index()
         {
-            User user = UserManager.FindById(User.Identity.GetUserId());
-
-            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
-
-            return View(vm);
+            return View();
         }
 
         [ChildActionOnly]
-        public ActionResult _Partial_Notifications(NotificationViewModel vm)
+        public ActionResult _Partial_Notifications()
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
 
-            vm.RoleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id));
-            vm.UserNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
-
-            return PartialView(vm);
+            return PartialView(new NotificationViewModel
+            {
+                Notifications = NotificationHelper.AnyNotificationsForUser(db, user.Id, UserManager.GetRoles(user.Id))
+            });
         }
 
         public async Task<ActionResult> _Partial_UserNotifications()

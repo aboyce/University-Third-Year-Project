@@ -9,9 +9,7 @@ namespace TicketManagement.ViewModels
 
     public class NotificationViewModel
     {
-        public List<UserNotification> UserNotifications { get; set; }
-
-        public List<RoleNotification> RoleNotifications { get; set; }
+        public bool Notifications { get; set; }
     }
 
     public class UserNotificationViewModel
