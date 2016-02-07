@@ -8,43 +8,18 @@
 
         <ul class="nav navbar-nav">
             <li>
-                @Html.ActionLink("Hi " + User.Identity.GetUserName(), "Index", "User", routeValues: null, htmlAttributes: new {title = "Manage"})
+                @Html.ActionLink($"Hi {User.Identity.GetUserName()}", "Index", "User", routeValues: null, htmlAttributes: new {title = "Manage Your Profile"})
             </li>
             @if (User.IsInRole(MyRoles.TextMessage))
             {
-                <li><a href="@Url.Action("Index", "TextMessage")"><i class="fa fa-mobile"></i></a></li>
+                <li><a href="@Url.Action("Index", "TextMessage")" title="Text Message Management"><i class="fa fa-mobile"></i></a></li>
             }
             @if (User.IsInRole(MyRoles.Social))
             {
-                <li><a href="@Url.Action("Index", "Twitter")"><i class="fa fa-twitter" style="color: #55ACEE;"></i></a></li>
-                <li><a href="@Url.Action("Index", "Facebook")"><i class="fa fa-facebook-square" style="color: #3b5998;"></i></a></li>
+                <li><a href="@Url.Action("Index", "Twitter")" title="Facebook Management"><i class="fa fa-twitter" style="color: #55ACEE;"></i></a></li>
+                <li><a href="@Url.Action("Index", "Facebook")" title="Twitter Management"><i class="fa fa-facebook-square" style="color: #3b5998;"></i></a></li>
             }
-            @if (User.IsInRole(MyRoles.Administrator))
-            {
-                <li class="dropdown">
-                    <a href="@Url.Action("Index", "Admin")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="@Url.Action("Index", "Admin")">Admin Panel</a></li>
-                        <li role="separator" class="divider"></li>
-
-                        <li class="dropdown-header">Notifications</li>
-                        <li><a href="@Url.Action("Index", "Notification")">Notification Panel</a></li>
-                        <li role="separator" class="divider"></li>
-
-                        <li class="dropdown-header">Manage Groups</li>
-                        <li><a href="@Url.Action("Index", "Organisations")">Organisations</a></li>
-                        <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
-                        <li><a href="@Url.Action("Index", "Projects")">Projects</a></li>
-                        <li><a href="@Url.Action("Index", "Teams")">Teams</a></li>
-                        <li><a href="@Url.Action("Index", "Tickets")">Tickets</a></li>
-                        <li><a href="@Url.Action("Index", "TicketCategories")">Ticket Categories</a></li>
-                        <li><a href="#">??Ticket Logs</a></li>
-                        <li><a href="@Url.Action("Index", "TicketPriorities")">Ticket Priorities</a></li>
-                        <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
-                    </ul>
-                </li>
-            }
-            <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()" title="Log out"><i class="fa fa-sign-out"></i></a></li>
         </ul>
     }
 }

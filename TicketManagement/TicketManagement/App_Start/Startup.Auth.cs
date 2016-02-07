@@ -41,7 +41,7 @@ namespace TicketManagement
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -57,9 +57,15 @@ namespace TicketManagement
             //    clientId: "",
             //    clientSecret: "");
 
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "",
+            //    ClientSecret = ""
+            //});
+
             //app.UseTwitterAuthentication(
-               //consumerKey: ConfigurationHelper.GetTwitterConsumerKey(),
-               //consumerSecret: ConfigurationHelper.GetTwitterConsumerSecret());
+            //consumerKey: ConfigurationHelper.GetTwitterConsumerKey(),
+            //consumerSecret: ConfigurationHelper.GetTwitterConsumerSecret());
 
             FacebookAuthenticationOptions facebookOptions = new FacebookAuthenticationOptions
             {
@@ -75,7 +81,7 @@ namespace TicketManagement
 
                         dynamic pageAccessTokenRequest = fb.Get($"{ConfigurationHelper.GetFacebookPageId()}?fields=access_token");
 
-                        if(pageAccessTokenRequest.access_token != null)
+                        if (pageAccessTokenRequest.access_token != null)
                             context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookPageAccessToken", pageAccessTokenRequest.access_token));
 
                         return Task.FromResult(0);
@@ -85,12 +91,6 @@ namespace TicketManagement
 
             facebookOptions.Scope.Add(ConfigurationHelper.GetFacebookPermissionScope());
             app.UseFacebookAuthentication(facebookOptions);
-
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "504972632903-4g56g4iuut7c6pnuiu8a3m4o7ad8058l.apps.googleusercontent.com",
-            //    ClientSecret = "719Q-1xm7he2kkkKoZnk_LGn"
-            //});
         }
     }
 }

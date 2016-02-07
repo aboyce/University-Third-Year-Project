@@ -49,13 +49,13 @@
     <div class="panel-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <strong>@Html.DisplayNameFor(model => model.Ticket.Title): </strong>
                     @Html.DisplayFor(model => model.Ticket.Title)
                 </div>
-                <div class="col-md-6">
-                    <strong>@Html.DisplayNameFor(model => model.Ticket.Description): </strong>
-                    @Html.DisplayFor(model => model.Ticket.Description)
+                <div class="col-md-3">
+                    <strong>State: </strong>
+                    @Html.DisplayFor(model => model.Ticket.TicketState.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>@Html.DisplayNameFor(model => model.Ticket.Created): </strong>
@@ -63,13 +63,27 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <strong>State: </strong>
-                    @Html.DisplayFor(model => model.Ticket.TicketState.Name)
+                <div class="col-md-6">
+                    <strong>@Html.DisplayNameFor(model => model.Ticket.Description): </strong>
+                    @Html.DisplayFor(model => model.Ticket.Description)
                 </div>
                 <div class="col-md-3">
                     <strong>Priority: </strong>
                     @Html.DisplayFor(model => model.Ticket.TicketPriority.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Opened By: </strong>
+                    @Html.DisplayFor(model => model.Ticket.OpenedBy.FullName)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Project: </strong>
+                    @Html.DisplayFor(model => model.Ticket.Project.Name)
+                </div>
+                <div class="col-md-3">
+                    <strong>Assigned to: </strong>
+                    @Html.DisplayFor(model => model.Ticket.UserAssignedTo.FullName)
                 </div>
                 <div class="col-md-3">
                     <strong>Category: </strong>
@@ -77,39 +91,27 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <strong>Assigned to: </strong>
-                    @Html.DisplayFor(model => model.Ticket.UserAssignedTo.FullName)
+                <div class="col-md-6">
+                    <strong>Organisation: </strong>
+                    @Html.DisplayFor(model => model.Ticket.OrganisationAssignedTo.Name)
                 </div>
                 <div class="col-md-3">
                     <strong>Team: </strong>
                     @Html.DisplayFor(model => model.Ticket.TeamAssignedTo.Name)
                 </div>
                 <div class="col-md-3">
-                    <strong>Project: </strong>
-                    @Html.DisplayFor(model => model.Ticket.Project.Name)
-                </div>
-                <div class="col-md-3">
-                    <strong>Organisation: </strong>
-                    @Html.DisplayFor(model => model.Ticket.OrganisationAssignedTo.Name)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>Opened By: </strong>
-                    @Html.DisplayFor(model => model.Ticket.OpenedBy.FullName)
-                </div>
-                <div class="col-md-3">
                     <strong>Deadline: </strong>
                     @Html.DisplayFor(model => model.Ticket.Deadline)
                 </div>
-                <div class="col-md-3">
-                    <strong>Last Message: </strong>
-                    @Html.DisplayFor(model => model.Ticket.LastMessage)
-                </div>
-                <div class="col-md-3">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <strong>Last Response: </strong>
                     @Html.DisplayFor(model => model.Ticket.LastResponse)
+                </div>
+                <div class="col-md-6">
+                    <strong>Last Message: </strong>
+                    @Html.DisplayFor(model => model.Ticket.LastMessage)
                 </div>
             </div>
         </div>
@@ -133,7 +135,7 @@
         <div class="panel-body">
             <p>@ticketLog.Message</p>
             @if (ticketLog.File != null)
-            { <strong>Attached file: </strong> <a href="~/File?id=@ticketLog.File.Id" target="blank">@ticketLog.File.FileName</a> }
+                { <strong>Attached file: </strong> <a href="~/File?id=@ticketLog.File.Id" target="blank">@ticketLog.File.FileName</a> }
         </div>
     </div>
 }

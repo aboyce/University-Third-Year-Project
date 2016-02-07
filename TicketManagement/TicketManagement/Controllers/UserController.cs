@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -15,6 +14,9 @@ using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
+using Tweetinvi;
+using Tweetinvi.Core.Credentials;
+using User = TicketManagement.Models.Entities.User;
 
 namespace TicketManagement.Controllers
 {
@@ -146,101 +148,6 @@ namespace TicketManagement.Controllers
             });
         }
 
-        public async Task<ActionResult> ExternalLogins(ManageMessageId? message)
-        {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-            if (user == null)
-                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Problem with linking the external log in, please try again." });
-
-            var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
-            var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
-            ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-
-            return View(new ExternalLoginsViewModel() // TODO: Investigate if this is a problem.
-            {
-                CurrentLogins = userLogins,
-                OtherLogins = otherLogins
-            });
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "User", new { ReturnUrl = returnUrl }));
-        }
-
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-
-            if (loginInfo == null)
-                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Struggling to get anything back from external login, please try again." });
-
-            // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                //return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
-                default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-                    return View("ExternalLoginConfirmation", new RegisterViewModel { Email = loginInfo.Email, UserName = loginInfo.DefaultUserName });
-            }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(RegisterViewModel model, string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Tickets");
-
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-
-                if (info == null)
-                    return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Unsuccessful login with service, please try again." });
-
-                User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
-
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToAction("CheckRegister", "Home", new { isInternal = model.IsInternal });
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
@@ -328,9 +235,129 @@ namespace TicketManagement.Controllers
             }
         }
 
+        public async Task<ActionResult> AuthenticateTwitter()
+        {
+            ConsumerCredentials credentials = new ConsumerCredentials(await ConfigurationHelper.GetTwitterConsumerKeyAsync(), await ConfigurationHelper.GetTwitterConsumerSecretAsync());
+
+            //if (Request.Url == null)
+                //return 
+
+            string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/Twitter/ValidateAuthentication");
+
+            return new RedirectResult(url);
+        }
+
+        public ActionResult ValidateTwitterAuthentication()
+        {
+            string verifierCode = Request.Params.Get("oauth_verifier");
+            string authorisationId = Request.Params.Get("authorization_id");
+
+            var credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
+
+            ViewBag.User = Tweetinvi.User.GetLoggedUser(credentials);
+            return RedirectToAction("Index");
+        }
+
         #endregion
 
         #region ExternalLogin
+
+        //public async Task<ActionResult> ExternalLogins(ManageMessageId? message)
+        //{
+        //    ViewBag.StatusMessage =
+        //        message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+        //        : message == ManageMessageId.Error ? "An error has occurred."
+        //        : "";
+
+        //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+        //    if (user == null)
+        //        return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Problem with linking the external log in, please try again." });
+
+        //    var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
+        //    var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
+        //    ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
+
+        //    return View(new ExternalLoginsViewModel() // TODO: Investigate if this is a problem.
+        //    {
+        //        CurrentLogins = userLogins,
+        //        OtherLogins = otherLogins
+        //    });
+        //}
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ExternalLogin(string provider, string returnUrl)
+        //{
+        //    // Request a redirect to the external login provider
+        //    return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "User", new { ReturnUrl = returnUrl }));
+        //}
+
+        //[AllowAnonymous]
+        //public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        //{
+        //    var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+
+        //    if (loginInfo == null)
+        //        return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Struggling to get anything back from external login, please try again." });
+
+        //    // Sign in the user with this external login provider if the user already has a login
+        //    var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+        //    switch (result)
+        //    {
+        //        case SignInStatus.Success:
+        //            return RedirectToLocal(returnUrl);
+        //        case SignInStatus.LockedOut:
+        //            return View("Lockout");
+        //        case SignInStatus.RequiresVerification:
+        //        //return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+        //        case SignInStatus.Failure:
+        //        default:
+        //            // If the user does not have an account, then prompt the user to create an account
+        //            ViewBag.ReturnUrl = returnUrl;
+        //            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+        //            //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+        //            return View("ExternalLoginConfirmation", new RegisterViewModel { Email = loginInfo.Email, UserName = loginInfo.DefaultUserName });
+        //    }
+        //}
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> ExternalLoginConfirmation(RegisterViewModel model, string returnUrl)
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //        return RedirectToAction("Index", "Tickets");
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Get the information about the user from the external login provider
+        //        var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+
+        //        if (info == null)
+        //            return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Unsuccessful login with service, please try again." });
+
+        //        User user = new User(model.Email, model.FirstName, model.LastName, model.UserName, await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(model.PhoneNumber), model.IsArchived);
+
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            result = await UserManager.AddLoginAsync(user.Id, info.Login);
+        //            if (result.Succeeded)
+        //            {
+        //                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+        //                return RedirectToAction("CheckRegister", "Home", new { isInternal = model.IsInternal });
+        //            }
+        //        }
+        //        AddErrors(result);
+        //    }
+
+        //    ViewBag.ReturnUrl = returnUrl;
+        //    return View(model);
+        //}
+
+            // ------------------------------------------------------------------------------------------------------------------
 
         //[AllowAnonymous]
         //public ActionResult ExternalLoginFailure()

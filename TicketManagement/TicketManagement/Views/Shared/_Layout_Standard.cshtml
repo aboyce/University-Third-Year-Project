@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using TicketManagement.Management
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,8 +31,33 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @Html.Action("_Partial_Notifications", "Notification")
-                    <li><a href="@Url.Action("About", "Home")"><i class="fa fa-info" style="color: #B3B3B3"></i></a></li>
-                    <li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-phone" style="color: #B3B3B3"></i></a></li>
+                    @if (User.IsInRole(MyRoles.Administrator)) {
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "Admin")" title="Administration Panel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "Admin")">Admin Panel</a></li>
+                                <li role="separator" class="divider"></li>
+
+                                <li class="dropdown-header">Notifications</li>
+                                <li><a href="@Url.Action("Index", "Notification")">Notification Panel</a></li>
+                                <li role="separator" class="divider"></li>
+
+                                <li class="dropdown-header">Manage Groups</li>
+                                <li><a href="@Url.Action("Index", "Organisations")">Organisations</a></li>
+                                <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
+                                <li><a href="@Url.Action("Index", "Projects")">Projects</a></li>
+                                <li><a href="@Url.Action("Index", "Teams")">Teams</a></li>
+                                <li><a href="@Url.Action("Index", "Tickets")">Tickets</a></li>
+                                <li><a href="@Url.Action("Index", "TicketCategories")">Ticket Categories</a></li>
+                                <li><a href="#">??Ticket Logs</a></li>
+                                <li><a href="@Url.Action("Index", "TicketPriorities")">Ticket Priorities</a></li>
+                                <li><a href="@Url.Action("Index", "TicketStates")">Ticket States</a></li>
+                            </ul>
+                        </li> }
+                    @if (User.IsInRole(MyRoles.Internal))
+                        { <li><a href="@Url.Action("Structure", "Organisations")" title="Organisational Structure"><i class="fa fa-sitemap"></i></a></li> }
+                    <li><a href="@Url.Action("About", "Home")" title="Information Page"><i class="fa fa-info" style="color: #B3B3B3"></i></a></li>
+                    <li><a href="@Url.Action("Contact", "Home")" title="Contact Page"><i class="fa fa-phone" style="color: #B3B3B3"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -42,7 +68,7 @@
 
     <footer style="position: fixed; bottom: 0; width: 100%; height: 35px; background-color: #fff">
         <hr style="margin: 5px 0 5px 0;" />
-        <p style="text-align: center" >Version @ViewContext.Controller.GetType().Assembly.GetName().Version &copy; @DateTime.Now.Year - Ticket Management</p>
+        <p style="text-align: center">Version @ViewContext.Controller.GetType().Assembly.GetName().Version &copy; @DateTime.Now.Year - Ticket Management</p>
     </footer>
 
     @RenderSection("scripts", required: false)
