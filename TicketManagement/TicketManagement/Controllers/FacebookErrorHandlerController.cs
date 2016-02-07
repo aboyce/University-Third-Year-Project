@@ -17,7 +17,7 @@ using TicketManagement.ViewModels;
 namespace TicketManagement.Controllers
 {
     [Authorize(Roles = MyRoles.Social)]
-    [FacebookAccessToken]
+    [FacebookAccessTokens]
     public class FacebookErrorHandlerController : Controller
     {
         const string RetryCount = "AccessTokenRetryCount";
@@ -54,11 +54,11 @@ namespace TicketManagement.Controllers
 
                 IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
 
-                Claim oldFacebookAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == "FacebookAccessToken");
-                Claim oldFacebookPageAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == "FacebookPageAccessToken");
+                Claim oldFacebookAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.FacebookAccessToken);
+                Claim oldFacebookPageAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.FacebookPageAccessToken);
 
-                Claim newFacebookAccessTokenClaim = new Claim("FacebookAccessToken", newTokenResult.access_token);
-                Claim newFacebookPageAccessTokenClaim = new Claim("FacebookPageAccessToken", newPageTokenResult.access_token);
+                Claim newFacebookAccessTokenClaim = new Claim(SocialMediaItem.FacebookAccessToken, newTokenResult.access_token);
+                Claim newFacebookPageAccessTokenClaim = new Claim(SocialMediaItem.FacebookPageAccessToken, newPageTokenResult.access_token);
 
                 if (oldFacebookAccessTokenClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldFacebookAccessTokenClaim);
@@ -204,13 +204,13 @@ namespace TicketManagement.Controllers
 
         protected string GetUserAccessToken()
         {
-            if (!HttpContext.Items.Contains("access_token"))
+            if (!HttpContext.Items.Contains(SocialMediaItem.FacebookAccessToken))
             {
                 FacebookError("Cannot find your access token, please try re-associating you account with Facebook");
                 return null;
             }
 
-            string accessToken = HttpContext.Items["access_token"].ToString();
+            string accessToken = HttpContext.Items[SocialMediaItem.FacebookAccessToken].ToString();
 
             if (string.IsNullOrEmpty(accessToken))
             {
@@ -223,17 +223,17 @@ namespace TicketManagement.Controllers
 
         protected string GetPageAccessToken()
         {
-            if (!HttpContext.Items.Contains("page_access_token"))
+            if (!HttpContext.Items.Contains(SocialMediaItem.FacebookPageAccessToken))
             {
                 FacebookError("Cannot find your page access token, please try re-associating you account with Facebook");
                 return null;
             }
 
-            string accessToken = HttpContext.Items["page_access_token"].ToString();
+            string accessToken = HttpContext.Items[SocialMediaItem.FacebookPageAccessToken].ToString();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                FacebookError("Cannot find your pageaccess token, please try re-associating you account with Facebook");
+                FacebookError("Cannot find your page access token, please try re-associating you account with Facebook");
                 return null;
             }
 

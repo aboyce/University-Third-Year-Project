@@ -15,7 +15,7 @@ namespace TicketManagement.Controllers
     {
         public ActionResult Index()
         {
-            if (!HttpContext.Items.Contains("access_token"))
+            if (!HttpContext.Items.Contains(SocialMediaItem.FacebookAccessToken))
                 return View(new FacebookIndexViewModel { IsLoggedIn = false });
 
             string accessToken = GetUserAccessToken();

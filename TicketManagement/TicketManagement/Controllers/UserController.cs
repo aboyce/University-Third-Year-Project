@@ -249,11 +249,11 @@ namespace TicketManagement.Controllers
 
                 IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
 
-                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterVerifierCode");
-                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterAuthorisationId");
+                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterVerifierCode);
+                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAuthorisationId);
 
-                Claim newTwitterVerifierCodeClaim = new Claim("TwitterVerifierCode", verifierCode);
-                Claim newTwitterAuthorisationIdClaim = new Claim("TwitterAuthorisationId", authorisationId);
+                Claim newTwitterVerifierCodeClaim = new Claim(SocialMediaItem.TwitterVerifierCode, verifierCode);
+                Claim newTwitterAuthorisationIdClaim = new Claim(SocialMediaItem.TwitterAuthorisationId, authorisationId);
 
                 if (oldTwitterVerifierCodeClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldTwitterVerifierCodeClaim);
@@ -276,8 +276,8 @@ namespace TicketManagement.Controllers
 
                 IList<Claim> currentClaims = await userManager.GetClaimsAsync(userId);
 
-                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterVerifierCode");
-                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == "TwitterAuthorisationId");
+                Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterVerifierCode);
+                Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAuthorisationId);
 
 
                 if (oldTwitterVerifierCodeClaim != null)
@@ -299,8 +299,8 @@ namespace TicketManagement.Controllers
                 if (currentClaims.Any())
                     await RemoveFacebookCredentials(user);
 
-                Claim facebookAccessToken = claimsIdentity.FindAll("FacebookAccessToken").FirstOrDefault();
-                Claim facebookPageAccessToken = claimsIdentity.FindAll("FacebookPageAccessToken").FirstOrDefault();
+                Claim facebookAccessToken = claimsIdentity.FindAll(SocialMediaItem.FacebookAccessToken).FirstOrDefault();
+                Claim facebookPageAccessToken = claimsIdentity.FindAll(SocialMediaItem.FacebookPageAccessToken).FirstOrDefault();
 
                 await UserManager.AddClaimAsync(user.Id, facebookAccessToken);
                 await UserManager.AddClaimAsync(user.Id, facebookPageAccessToken);
@@ -317,7 +317,7 @@ namespace TicketManagement.Controllers
 
                 foreach (var claim in currentClaims)
                 {
-                    if (claim.Type == "FacebookAccessToken" || claim.Type == "FacebookPageAccessToken")
+                    if (claim.Type == SocialMediaItem.FacebookAccessToken || claim.Type == SocialMediaItem.FacebookPageAccessToken)
                         await UserManager.RemoveClaimAsync(user.Id, claim);
                 }
             }

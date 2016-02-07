@@ -11,6 +11,7 @@ using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using TicketManagement.Helpers;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
@@ -75,14 +76,14 @@ namespace TicketManagement
                 {
                     OnAuthenticated = (context) =>
                     {
-                        context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookAccessToken", context.AccessToken));
+                        context.Identity.AddClaim(new System.Security.Claims.Claim(SocialMediaItem.FacebookAccessToken, context.AccessToken));
 
                         FacebookClient fb = new FacebookClient(context.AccessToken);
 
                         dynamic pageAccessTokenRequest = fb.Get($"{ConfigurationHelper.GetFacebookPageId()}?fields=access_token");
 
                         if (pageAccessTokenRequest.access_token != null)
-                            context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookPageAccessToken", pageAccessTokenRequest.access_token));
+                            context.Identity.AddClaim(new System.Security.Claims.Claim(SocialMediaItem.FacebookAccessToken, pageAccessTokenRequest.access_token));
 
                         return Task.FromResult(0);
                     }

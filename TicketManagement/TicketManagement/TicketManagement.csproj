@@ -235,7 +235,8 @@
     <Compile Include="Controllers\TicketStatesController.cs" />
     <Compile Include="Controllers\TwitterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Filters\FacebookAccessTokenAttribute.cs" />
+    <Compile Include="Filters\TwitterAccessTokensAttribute.cs" />
+    <Compile Include="Filters\FacebookAccessTokensAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -246,6 +247,7 @@
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
     <Compile Include="Helpers\TicketLogHelper.cs" />
+    <Compile Include="Management\SocialMediaItem.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.Designer.cs">
       <DependentUpon>201512270115218_Re-Re-Initial.cs</DependentUpon>
@@ -308,6 +310,7 @@
     <Compile Include="ViewModels\TextMessageViewModel.cs" />
     <Compile Include="ViewModels\TicketStateViewModels.cs" />
     <Compile Include="ViewModels\TicketViewModels.cs" />
+    <Compile Include="ViewModels\TwitterViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
