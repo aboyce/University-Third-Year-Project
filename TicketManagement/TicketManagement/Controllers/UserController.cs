@@ -56,7 +56,7 @@ namespace TicketManagement.Controllers
             User user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
-                return View("Error", new ErrorViewModel {Type = ErrorType.Error, Message = "Could not find user, please try (re)logging in and try again." });
+                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Could not find user, please try (re)logging in and try again." });
 
             ViewBag.Teams = new SelectList(db.Teams, "Id", "Name", user.TeamId);
 
@@ -146,6 +146,18 @@ namespace TicketManagement.Controllers
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins
             });
+        }
+
+        public async Task<ActionResult> RemoveExternalLoginInformation()
+        {
+            string userId = User.Identity.GetUserId();
+
+            IList<Claim> currentClaims = await UserManager.GetClaimsAsync(userId);
+
+            foreach (var claim in currentClaims)
+                await UserManager.RemoveClaimAsync(userId, claim);
+
+            return RedirectToAction("ManageLogins", new { ViewMessage = ManageMessageId.ClearedExternalLoginInformation });
         }
 
         [HttpPost]
@@ -240,7 +252,7 @@ namespace TicketManagement.Controllers
             ConsumerCredentials credentials = new ConsumerCredentials(await ConfigurationHelper.GetTwitterConsumerKeyAsync(), await ConfigurationHelper.GetTwitterConsumerSecretAsync());
 
             //if (Request.Url == null)
-                //return 
+            //return 
 
             string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/Twitter/ValidateAuthentication");
 
@@ -357,7 +369,7 @@ namespace TicketManagement.Controllers
         //    return View(model);
         //}
 
-            // ------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------
 
         //[AllowAnonymous]
         //public ActionResult ExternalLoginFailure()

@@ -4,6 +4,14 @@
     ViewBag.Title = "External Logins";
 }
 
+@if (Request.Params["ViewMessage"] == "ClearedExternalLoginInformation")
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> Your user information for external logins should have cleared.
+    </div>
+}
+
 <h2>My Account</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -83,3 +91,7 @@
         }
     }
 }
+
+<h3>Clear External Account information</h3>
+<hr/>
+@Html.ActionLink("Clear", "RemoveExternalLoginInformation", "User", null, new { @class = "btn btn-danger" })

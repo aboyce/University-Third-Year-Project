@@ -31,5 +31,8 @@
         <li class="list-group-item">
             <a href="@Model.ExternalLink" target="_blank" class="btn btn-info btn-sm">View Profile</a>
         </li>
+        <li class="list-group-item">
+            @Html.ActionLink("Manage External Logins", "ManageLogins", "User", null, new { @class = "btn btn-default btn-xs" })
+        </li>
     </ul>
 </div>

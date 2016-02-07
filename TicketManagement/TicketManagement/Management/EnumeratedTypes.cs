@@ -143,6 +143,7 @@
         SetTwoFactorSuccess,
         RemoveLoginSuccess,
         RemovePhoneSuccess,
+        ClearedExternalLoginInformation,
         LoggedOff,
         Error
     }
