@@ -339,6 +339,7 @@
     <Content Include="Content\Custom\Shared\table_popover.css" />
     <Content Include="Content\Images\Wallpapers\bg_sand.jpg" />
     <Content Include="Content\Images\Wallpapers\bg_still_water.jpg" />
+    <Content Include="Content\Images\Wallpapers\bg_still_water_compressed.jpg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
