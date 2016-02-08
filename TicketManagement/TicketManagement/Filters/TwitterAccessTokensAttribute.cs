@@ -25,8 +25,9 @@ namespace TicketManagement.Filters
                 Task<IList<Claim>> claimsForUser = userManager.GetClaimsAsync(filterContext.HttpContext.User.Identity.GetUserId());
 
                 Claim verifierCodeClaim = claimsForUser.Result.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterVerifierCode);
-
                 Claim authorisationIdClaim = claimsForUser.Result.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAuthorisationId);
+                Claim accessTokenClaim = claimsForUser.Result.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessToken);
+                Claim accessTokenSecretClaim = claimsForUser.Result.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessTokenSecret);
 
                 if (verifierCodeClaim != null)
                 {
@@ -46,6 +47,26 @@ namespace TicketManagement.Filters
                         filterContext.HttpContext.Items[SocialMediaItem.TwitterAuthorisationId] = authorisationId;
                     else
                         filterContext.HttpContext.Items.Add(SocialMediaItem.TwitterAuthorisationId, authorisationId);
+                }
+
+                if (accessTokenClaim != null)
+                {
+                    string accessToken = accessTokenClaim.Value;
+
+                    if (filterContext.HttpContext.Items.Contains(SocialMediaItem.TwitterAccessToken))
+                        filterContext.HttpContext.Items[SocialMediaItem.TwitterAccessToken] = accessToken;
+                    else
+                        filterContext.HttpContext.Items.Add(SocialMediaItem.TwitterAccessToken, accessToken);
+                }
+
+                if (accessTokenSecretClaim != null)
+                {
+                    string accessTokenSecret = accessTokenSecretClaim.Value;
+
+                    if (filterContext.HttpContext.Items.Contains(SocialMediaItem.TwitterAccessTokenSecret))
+                        filterContext.HttpContext.Items[SocialMediaItem.TwitterAccessTokenSecret] = accessTokenSecret;
+                    else
+                        filterContext.HttpContext.Items.Add(SocialMediaItem.TwitterAccessTokenSecret, accessTokenSecret);
                 }
             }
 

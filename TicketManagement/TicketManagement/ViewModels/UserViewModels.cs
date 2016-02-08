@@ -31,9 +31,10 @@ namespace TicketManagement.ViewModels
 
     public class ManageLoginsViewModel
     {
-        public bool Twitter { get; set; } = false;
+        public bool TwitterEnabled { get; set; } = false;
         public bool TwitterConfigured { get; set; } = false;
-        public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationDescription> OtherLogins { get; set; }
+
+        public UserLoginInfo FacebookConfigured { get; set; } = null;
+        public AuthenticationDescription FacebookToConfigure { get; set; } = null;
     }
 }

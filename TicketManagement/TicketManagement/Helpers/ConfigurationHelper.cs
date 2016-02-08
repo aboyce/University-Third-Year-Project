@@ -18,6 +18,12 @@ namespace TicketManagement.Helpers
 
         #region Facebook
 
+        public static Task<bool> IsFacebookConfiguredAsync() { return Task.Factory.StartNew(IsFacebookConfigured); }
+        public static bool IsFacebookConfigured()
+        {
+            return !string.IsNullOrEmpty(ConfigurationManager.AppSettings["Facebook_AppId"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["Facebook_AppSecret"]);
+        }
+
         public static Task<string> GetFacebookGraphApiVersionAsync() { return Task.Factory.StartNew(GetFacebookGraphApiVersion); }
         public static string GetFacebookGraphApiVersion()
         {

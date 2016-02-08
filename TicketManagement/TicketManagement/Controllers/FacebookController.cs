@@ -18,9 +18,7 @@ namespace TicketManagement.Controllers
             if (!HttpContext.Items.Contains(SocialMediaItem.FacebookAccessToken))
                 return View(new FacebookIndexViewModel { IsLoggedIn = false });
 
-            string accessToken = GetUserAccessToken();
-
-            return View(string.IsNullOrEmpty(accessToken) ? new FacebookIndexViewModel { IsLoggedIn = false } : new FacebookIndexViewModel { IsLoggedIn = true });
+            return View(string.IsNullOrEmpty(GetUserAccessToken()) ? new FacebookIndexViewModel { IsLoggedIn = false } : new FacebookIndexViewModel { IsLoggedIn = true });
         }
 
         public async Task<ActionResult> _Partial_FacebookProfileSummary()

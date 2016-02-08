@@ -14,18 +14,33 @@ using Tweetinvi.Core.Credentials;
 namespace TicketManagement.Controllers
 {
     [Authorize(Roles = MyRoles.Social)]
-    [TwitterAccessTokens
-        ]
+    [TwitterAccessTokens]
     public class TwitterController : Controller
     {
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            if (!HttpContext.Items.Contains(SocialMediaItem.TwitterVerifierCode))
-                return View(new TwitterIndexViewModel {IsLoggedIn = false} );
+            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
 
+            return View(twitterCredentials == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
 
+            //var twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
+            //{
+            //    return Tweetinvi.User.GetLoggedUser();
+            //});
+        }
 
-            return View();
+        public ITwitterCredentials GetTwitterCredentials()
+        {
+            string twitterAccessToken = HttpContext.Items[SocialMediaItem.TwitterAccessToken].ToString();
+            string twitterAccessTokenSecret = HttpContext.Items[SocialMediaItem.TwitterAccessTokenSecret].ToString();
+
+            if (string.IsNullOrEmpty(twitterAccessToken) || string.IsNullOrEmpty(twitterAccessTokenSecret))
+            {
+                // TODO: Handle this error.
+                return null;
+            }
+
+            return new TwitterCredentials(ConfigurationHelper.GetTwitterConsumerKey(), ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
         }
     }
 }

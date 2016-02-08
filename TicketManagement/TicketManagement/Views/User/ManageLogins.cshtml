@@ -1,5 +1,4 @@
 ﻿@model TicketManagement.ViewModels.ManageLoginsViewModel
-@using Microsoft.Owin.Security
 @{
     ViewBag.Title = "External Logins";
 }
@@ -23,15 +22,12 @@
 <br />
 <h2>My Account</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
 @{
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (!loginProviders.Any() && !Model.Twitter)
+    if (Model.FacebookToConfigure == null && Model.FacebookConfigured == null && !Model.TwitterEnabled)
     {
         <div>
             <p>
-                There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
-                for details on setting up this ASP.NET application to support logging in via external services.
+                There are no external accounts services configured. Please check the configuration to correctly set up external accounts.
             </p>
         </div>
     }
@@ -40,85 +36,70 @@
         <h3>Current External Logins</h3>
         <hr />
 
-        if (Model.CurrentLogins.Count > 0 || Model.TwitterConfigured)
+        if (Model.FacebookConfigured != null)
         {
-            foreach (var account in Model.CurrentLogins)
-            {
-                <div class="row">
-                    <div class="col-md-2">
-                        @account.LoginProvider
-                    </div>
-                    <div class="col-md-4">
-                        @if (ViewBag.ShowRemoveButton)
-                        {
-                            using (Html.BeginForm("RemoveLogin", "User"))
-                            {
-                                @Html.AntiForgeryToken()
-                                <div>
-                                    @Html.Hidden("loginProvider", account.LoginProvider)
-                                    @Html.Hidden("providerKey", account.ProviderKey)
-                                    <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @account.LoginProvider login from your account" />
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            @: &nbsp;
-                        }
-
-                    </div>
+            <div class="row">
+                <div class="col-md-2">
+                    @Model.FacebookConfigured.LoginProvider
                 </div>
-                <br />
-            }
+                <div class="col-md-4">
 
-            if (Model.TwitterConfigured)
-            {
-                <div class="row">
-                    <div class="col-md-2">
-                        Twitter
-                    </div>
-                    <div class="col-md-4">
-                        @Html.ActionLink("Remove", "AuthenticateTwitter", "User", null, new { @class = "btn btn-danger", disabled = "disabled" })
-                    </div>
+                    @using (Html.BeginForm("RemoveLogin", "User"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            @Html.Hidden("loginProvider", Model.FacebookConfigured.LoginProvider)
+                            @Html.Hidden("providerKey", Model.FacebookConfigured.ProviderKey)
+                            <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @Model.FacebookConfigured.LoginProvider login from your account" />
+                        </div>
+                    }
                 </div>
-            }
+            </div>
+            <br />
         }
-        else
+        if (Model.TwitterConfigured)
         {
-            <p>There are currently no registered logins for your account</p>
+            <div class="row">
+                <div class="col-md-2">
+                    Twitter
+                </div>
+                <div class="col-md-4">
+                    @Html.ActionLink("Remove", "RemoveTwitterAuthentication", "User", null, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        }
+        else if (Model.FacebookConfigured == null)
+        {
+            <p>There are currently no external accounts associated with your account</p>
         }
 
         <h3>Add New Login</h3>
         <hr />
 
-        if (Model.OtherLogins.Count > 0 || Model.TwitterConfigured == false)
+        if (Model.FacebookToConfigure != null)
         {
             using (Html.BeginForm("LinkLogin", "User"))
             {
                 @Html.AntiForgeryToken()
                 <div id="socialLoginList">
                     <p>
-                        @foreach (AuthenticationDescription p in Model.OtherLogins)
-                        {
-                            <button type="submit" class="btn btn-success" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-                        }
+                        <button type="submit" class="btn btn-success" id="@Model.FacebookToConfigure.AuthenticationType" name="provider" value="@Model.FacebookToConfigure.AuthenticationType" title="Log in using your @Model.FacebookToConfigure.Caption account">@Model.FacebookToConfigure.AuthenticationType</button>
                     </p>
                 </div>
             }
-
-            if (Model.TwitterConfigured == false)
-            {
-                <p>@Html.ActionLink("Twitter", "AuthenticateTwitter", "User", null, new {@class = "btn btn-success"})</p>
-            }
         }
-        else
+        if (Model.TwitterConfigured == false)
         {
-            <p>There are currently no other logins to link to your account</p>
+            <p>@Html.ActionLink("Twitter", "AuthenticateTwitter", "User", null, new { @class = "btn btn-success" })</p>
+        }
+        else if (Model.FacebookToConfigure == null)
+        {
+            <p>There are currently no other external accounts to link to your account</p>
         }
     }
 }
 
 <br />
-<h3>Clear External Account information</h3>
+<h3>Clear External Account Information</h3>
 <hr />
 @Html.ActionLink("Clear", "RemoveExternalLoginInformation", "User", null, new { @class = "btn btn-danger" })

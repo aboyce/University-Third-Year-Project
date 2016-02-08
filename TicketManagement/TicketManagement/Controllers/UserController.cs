@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -126,26 +127,21 @@ namespace TicketManagement.Controllers
 
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+            IList<UserLoginInfo> userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
 
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var facebookConfigured = userLogins.FirstOrDefault(ul => ul.LoginProvider == "Facebook");
+            var facebookToConfigure = HttpContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes()
+                .Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList().FirstOrDefault(login => login.AuthenticationType == "Facebook");
 
-            if (user == null)
-                return View("Error", new ErrorViewModel { Type = ErrorType.Error, Message = "Could not find user, please try (re)logging in and try again." });
-
-            var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
-            var otherLogins = HttpContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
-
-            ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
+            IList<Claim> claimsForUser = await UserManager.GetClaimsAsync(User.Identity.GetUserId());
+            Claim twitterAccessTokenClaim = claimsForUser.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessToken);
 
             return View(new ManageLoginsViewModel
             {
-                CurrentLogins = userLogins,
-                OtherLogins = otherLogins,
-                Twitter = await ConfigurationHelper.IsTwitterConfiguredAsync()
+                TwitterEnabled = await ConfigurationHelper.IsTwitterConfiguredAsync(),
+                TwitterConfigured = twitterAccessTokenClaim != null,
+                FacebookToConfigure = facebookToConfigure,
+                FacebookConfigured = facebookConfigured
             });
         }
 
@@ -230,16 +226,14 @@ namespace TicketManagement.Controllers
             string verifierCode = Request.Params.Get("oauth_verifier");
             string authorisationId = Request.Params.Get("authorization_id");
 
-            await StoreTwitterCredentials(verifierCode, authorisationId);
+            ITwitterCredentials credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
 
-            var credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
-
-            //ViewBag.User = Tweetinvi.User.GetLoggedUser(credentials);
+            await StoreTwitterCredentials(verifierCode, authorisationId, credentials.AccessToken, credentials.AccessTokenSecret);
 
             return RedirectToAction("ManageLogins");
         }
 
-        private async Task StoreTwitterCredentials(string verifierCode, string authorisationId)
+        private async Task StoreTwitterCredentials(string verifierCode, string authorisationId, string accessToken, string accessTokenSecret)
         {
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
@@ -251,22 +245,31 @@ namespace TicketManagement.Controllers
 
                 Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterVerifierCode);
                 Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAuthorisationId);
+                Claim oldTwitterAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessToken);
+                Claim oldTwitterAccessTokenSecretClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessTokenSecret);
 
                 Claim newTwitterVerifierCodeClaim = new Claim(SocialMediaItem.TwitterVerifierCode, verifierCode);
                 Claim newTwitterAuthorisationIdClaim = new Claim(SocialMediaItem.TwitterAuthorisationId, authorisationId);
+                Claim newTwitterAccessTokenClaim = new Claim(SocialMediaItem.TwitterAccessToken, accessToken);
+                Claim newTwitterAccessTokenSecretClaim = new Claim(SocialMediaItem.TwitterAccessTokenSecret, accessTokenSecret);
 
                 if (oldTwitterVerifierCodeClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldTwitterVerifierCodeClaim);
-
                 if (oldTwitterAuthorisationIdClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldTwitterAuthorisationIdClaim);
+                if (oldTwitterAccessTokenClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAccessTokenClaim);
+                if (oldTwitterAccessTokenSecretClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAccessTokenSecretClaim);
 
                 await userManager.AddClaimAsync(userId, newTwitterVerifierCodeClaim);
                 await userManager.AddClaimAsync(userId, newTwitterAuthorisationIdClaim);
+                await userManager.AddClaimAsync(userId, newTwitterAccessTokenClaim);
+                await userManager.AddClaimAsync(userId, newTwitterAccessTokenSecretClaim);
             }
         }
 
-        private async Task RemoveTwitterCredentials()
+        public async Task<ActionResult> RemoveTwitterAuthentication()
         {
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
@@ -278,14 +281,20 @@ namespace TicketManagement.Controllers
 
                 Claim oldTwitterVerifierCodeClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterVerifierCode);
                 Claim oldTwitterAuthorisationIdClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAuthorisationId);
-
+                Claim oldTwitterAccessTokenClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessToken);
+                Claim oldTwitterAccessTokenSecretClaim = currentClaims.FirstOrDefault(c => c.Type == SocialMediaItem.TwitterAccessTokenSecret);
 
                 if (oldTwitterVerifierCodeClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldTwitterVerifierCodeClaim);
-
                 if (oldTwitterAuthorisationIdClaim != null)
                     await userManager.RemoveClaimAsync(userId, oldTwitterAuthorisationIdClaim);
+                if (oldTwitterAccessTokenClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAccessTokenClaim);
+                if (oldTwitterAccessTokenSecretClaim != null)
+                    await userManager.RemoveClaimAsync(userId, oldTwitterAccessTokenSecretClaim);
             }
+
+            return RedirectToAction("ManageLogins");
         }
 
         private async Task StoreFacebookCredentials(User user)
