@@ -556,6 +556,8 @@
     <Content Include="Views\Notification\_Partial_UserNotifications.cshtml" />
     <Content Include="Views\Notification\_Partial_RoleNotifications.cshtml" />
     <Content Include="Views\Twitter\_Partial_TwitterProfileSummary.cshtml" />
+    <Content Include="Views\Twitter\_Partial_TwitterHomeTimeline.cshtml" />
+    <Content Include="Views\Twitter\_Partial_TwitterUserTimeline.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.ViewModels
 {
@@ -23,5 +19,15 @@ namespace TicketManagement.ViewModels
         public int FollowersCount { get; set; }
         public int FriendsCount { get; set; }
         public string ProfileImageUrl { get; set; }
+    }
+
+    public class TwitterTweetViewModel
+    {
+        public string Text { get; set; }
+        public Tweetinvi.Core.Interfaces.IUser CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int FavouriteCount { get; set; }
+        public int HashtagCount { get; set; }
+        public int TweetLength { get; set; }
     }
 }

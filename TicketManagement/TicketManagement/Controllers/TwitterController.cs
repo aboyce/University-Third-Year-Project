@@ -40,11 +40,53 @@ namespace TicketManagement.Controllers
                 ProfileImageUrl = twitterUser.ProfileImageUrl400x400,
                 FavouritesCount = twitterUser.FavouritesCount,
                 FollowersCount = twitterUser.FollowersCount,
-                FriendsCount = twitterUser.FriendsCount            
+                FriendsCount = twitterUser.FriendsCount
             });
         }
 
+        public ActionResult _Partial_TwitterHomeTimeline()
+        {
+            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
 
+            if (twitterCredentials == null)
+                return null;
+
+            return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
+            {
+                ILoggedUser twitterUser = Tweetinvi.User.GetLoggedUser();
+                return twitterUser?.GetHomeTimeline();
+            })));
+        }
+
+        public ActionResult _Partial_TwitterUserTimeline()
+        {
+            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
+
+            if (twitterCredentials == null)
+                return null;
+
+            return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
+            {
+                ILoggedUser twitterUser = Tweetinvi.User.GetLoggedUser();
+                return twitterUser?.GetUserTimeline();
+            })));
+        }
+
+        private static List<TwitterTweetViewModel> GetTweetList(IEnumerable<ITweet> tweetsFromTwitter)
+        {
+            if (tweetsFromTwitter == null)
+                return new List<TwitterTweetViewModel>();
+
+            return tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
+            {
+                Text = tweet.Text,
+                CreatedAt = tweet.CreatedAt,
+                CreatedBy = tweet.CreatedBy,
+                FavouriteCount = tweet.FavouriteCount,
+                HashtagCount = tweet.Hashtags.Count,
+                TweetLength = tweet.PublishedTweetLength,
+            }).ToList();
+        }
 
         public ITwitterCredentials GetTwitterCredentials()
         {

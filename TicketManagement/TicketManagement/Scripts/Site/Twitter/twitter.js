@@ -1,6 +1,5 @@
 ﻿(function () {
-
     $('#twitter_profile_summary_form').submit();
-    //$('#fb_admin_page_form').submit();
-    //$('#fb_admin_page_posts_form').submit();
+    $('#twitter_home_timeline_form').submit();
+    $('#twitter_user_timeline_form').submit();
 })();

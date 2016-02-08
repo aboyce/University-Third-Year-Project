@@ -42,7 +42,54 @@
 
                 <div id="twitter_profile_summary"></div>
             }
+        </div>
+        <div class="col-md-9 col-sm-9">
 
+            @using (Ajax.BeginForm("_Partial_TwitterUserTimeline", "Twitter", new AjaxOptions
+            {
+                OnFailure = "handleError(xhr, 'twitter_user_timeline')",
+                HttpMethod = "Get",
+                UpdateTargetId = "twitter_user_timeline",
+                LoadingElementId = "twitter_user_timeline_loading"
+            },
+                new
+                {
+                    id = "twitter_user_timeline_form"
+                }))
+            {
+                <div id="twitter_user_timeline_loading" style="display: none;">
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                </div>
+            }
+
+            <h3>TimeLine</h3>
+            <hr/>
+            <div style="overflow-y: scroll; max-height: 500px">
+                <div id="twitter_user_timeline"></div>
+            </div>
+
+            @using (Ajax.BeginForm("_Partial_TwitterHomeTimeline", "Twitter", new AjaxOptions
+            {
+                OnFailure = "handleError(xhr, 'twitter_home_timeline')",
+                HttpMethod = "Get",
+                UpdateTargetId = "twitter_home_timeline",
+                LoadingElementId = "twitter_home_timeline_loading"
+            },
+                new
+                {
+                    id = "twitter_home_timeline_form"
+                }))
+            {
+                <div id="twitter_home_timeline_loading" style="display: none;">
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                </div>
+            }
+
+            <h3>Home TimeLine</h3>
+            <hr />
+            <div style="overflow-y: scroll; max-height: 500px">
+                <div id="twitter_home_timeline"></div>
+            </div>
         </div>
     </div>
 </div>

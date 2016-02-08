@@ -1,0 +1,32 @@
+﻿@using TicketManagement.ViewModels
+@model IEnumerable<TwitterTweetViewModel>
+
+@if (Model == null)
+{
+    <p>Please check that you have associated your account with Twitter</p>
+}
+else
+{
+    <div>
+        @foreach (TwitterTweetViewModel tweet in Model)
+        {
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <strong>@tweet.Text</strong>
+                </div>
+                @*<div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            test
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Post Type:</strong> Link</p>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        }
+    </div>
+}
