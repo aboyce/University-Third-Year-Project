@@ -39,10 +39,10 @@
         if (Model.FacebookConfigured != null)
         {
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-2">
                     @Model.FacebookConfigured.LoginProvider
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-4">
 
                     @using (Html.BeginForm("RemoveLogin", "User"))
                     {
@@ -60,10 +60,10 @@
         if (Model.TwitterConfigured)
         {
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-2">
                     Twitter
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-4">
                     @Html.ActionLink("Remove", "RemoveTwitterAuthentication", "User", null, new { @class = "btn btn-danger" })
                 </div>
             </div>

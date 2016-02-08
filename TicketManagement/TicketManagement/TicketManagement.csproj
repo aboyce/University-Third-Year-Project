@@ -446,6 +446,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
     <Content Include="Scripts\Site\Admin\admin.js" />
+    <Content Include="Scripts\Site\Twitter\twitter.js" />
     <Content Include="Scripts\Site\Facebook\facebook.js" />
     <Content Include="Scripts\Site\Home\home.js" />
     <Content Include="Scripts\jquery-2.2.0.min.map" />
@@ -554,6 +555,7 @@
     <Content Include="Views\Facebook\_Partial_FacebookPagePostForm.cshtml" />
     <Content Include="Views\Notification\_Partial_UserNotifications.cshtml" />
     <Content Include="Views\Notification\_Partial_RoleNotifications.cshtml" />
+    <Content Include="Views\Twitter\_Partial_TwitterProfileSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

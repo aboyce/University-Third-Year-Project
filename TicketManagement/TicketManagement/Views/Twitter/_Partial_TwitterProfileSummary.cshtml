@@ -1,0 +1,26 @@
+﻿@model TicketManagement.ViewModels.TwitterProfileSummaryViewModel
+
+<div class="panel panel-info" style="text-align: center;">
+    <div class="panel-heading"><strong>Twitter Information</strong></div>
+
+    <ul class="list-group list-group-item-info">
+        <li class="list-group-item">
+            <img class="img-rounded center-block" src="@Model.ProfileImageUrl" alt="Twitter Profile Picture" style="max-width: 50%; max-height: 50%; text-align: center;"/>
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-building-o fa-fw" title="Twitter Screen Name"></i> - </strong> @Model.ScreenName
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-users fa-fw" title="Twitter Friends Count"></i></strong> - @Model.FriendsCount
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-users fa-fw" title="Twitter Followers Count"></i></strong> - @Model.FollowersCount
+        </li>
+        <li class="list-group-item">
+            <strong><i class="fa fa-thumbs-up fa-fw" title="Twitter Favourites Count"></i></strong> - @Model.FavouritesCount
+        </li>
+        <li class="list-group-item">
+            @Html.ActionLink("Manage External Logins", "ManageLogins", "User", null, new { @class = "btn btn-default btn-xs" })
+        </li>
+    </ul>
+</div>

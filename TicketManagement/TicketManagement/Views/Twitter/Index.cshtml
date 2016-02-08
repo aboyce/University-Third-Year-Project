@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 col-sm-3">
-            
+
             @if (!Model.IsLoggedIn)
             {
                 <button class="btn btn-danger disabled" type="button" style="width: 100%">
@@ -22,10 +22,30 @@
                     Logged in <span class="badge"><i class="fa fa-check"></i></span>
                 </button>
                 <hr />
+
+                using (Ajax.BeginForm("_Partial_TwitterProfileSummary", "Twitter", new AjaxOptions
+                {
+                    OnFailure = "handleError(xhr, 'twitter_profile_summary')",
+                    HttpMethod = "Get",
+                    UpdateTargetId = "twitter_profile_summary",
+                    LoadingElementId = "twitter_profile_summary_loading"
+                },
+                    new
+                    {
+                        id = "twitter_profile_summary_form"
+                    }))
+                {
+                    <div id="twitter_profile_summary_loading" style="display: none;">
+                        <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                    </div>
+                }
+
+                <div id="twitter_profile_summary"></div>
             }
 
         </div>
     </div>
 </div>
 
-
+@Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
+@Scripts.Render("~/Scripts/Site/Twitter/twitter.js")
