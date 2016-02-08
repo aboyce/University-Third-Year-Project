@@ -3,6 +3,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TicketManagement.Helpers;
 using TicketManagement.Management;
 using TicketManagement.Models.Entities;
 
@@ -11,10 +12,7 @@ namespace TicketManagement.Models.Context
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
-        : base("TicketManagement", throwIfV1Schema: false)
-        //: base("TicketManagementLocal", throwIfV1Schema: false)
-        //: base("TicketManagementAzure", throwIfV1Schema: false)
-        //: base("TicketManagementGoDaddy", throwIfV1Schema: false)
+        : base(ConfigurationHelper.DatabaseConnectionString(), throwIfV1Schema: false)
         {
         }
 

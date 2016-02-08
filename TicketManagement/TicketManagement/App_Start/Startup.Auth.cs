@@ -83,7 +83,7 @@ namespace TicketManagement
                         dynamic pageAccessTokenRequest = fb.Get($"{ConfigurationHelper.GetFacebookPageId()}?fields=access_token");
 
                         if (pageAccessTokenRequest.access_token != null)
-                            context.Identity.AddClaim(new System.Security.Claims.Claim(SocialMediaItem.FacebookAccessToken, pageAccessTokenRequest.access_token));
+                            context.Identity.AddClaim(new System.Security.Claims.Claim(SocialMediaItem.FacebookPageAccessToken, pageAccessTokenRequest.access_token));
 
                         return Task.FromResult(0);
                     }

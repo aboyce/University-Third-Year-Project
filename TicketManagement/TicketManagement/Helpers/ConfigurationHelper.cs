@@ -16,6 +16,13 @@ namespace TicketManagement.Helpers
             return tconf.Populate() ? tconf : null;
         }
 
+        public static Task<string> DatabaseConnectionStringAsync() { return Task.Factory.StartNew(DatabaseConnectionString); }
+        public static string DatabaseConnectionString()
+        {
+            string value = ConfigurationManager.AppSettings["DatabaseConnectionString"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
         #region Facebook
 
         public static Task<bool> IsFacebookConfiguredAsync() { return Task.Factory.StartNew(IsFacebookConfigured); }
