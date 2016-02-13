@@ -53,7 +53,7 @@ namespace TicketManagement.Models.Entities
             set { _openedById = value; Updated(); }
         }
 
-        virtual public User OpenedBy
+        public virtual User OpenedBy
         {
             get { return _openedBy; }
             set { _openedBy = value; Updated(); }
@@ -89,7 +89,7 @@ namespace TicketManagement.Models.Entities
             set { _userAssignedToId = value; Updated(); }
         }
 
-        virtual public User UserAssignedTo
+        public virtual User UserAssignedTo
         {
             get { return _userAssignedTo; }
             set { _userAssignedTo = value; Updated(); }
@@ -103,7 +103,7 @@ namespace TicketManagement.Models.Entities
             set { _teamAssignedToId = value; Updated(); }
         }
 
-        virtual public Team TeamAssignedTo
+        public virtual Team TeamAssignedTo
         {
             get { return _teamAssignedTo; }
             set { _teamAssignedTo = value; Updated(); }
@@ -117,7 +117,7 @@ namespace TicketManagement.Models.Entities
             set { _organisationAssignedToId = value; Updated(); }
         }
 
-        virtual public Organisation OrganisationAssignedTo
+        public virtual Organisation OrganisationAssignedTo
         {
             get { return _organisationAssignedTo; }
             set { _organisationAssignedTo = value; Updated(); }
@@ -132,7 +132,7 @@ namespace TicketManagement.Models.Entities
             set { _ticketStateId = value; Updated(); }
         }
 
-        virtual public TicketState TicketState
+        public virtual TicketState TicketState
         {
             get { return _ticketState; }
             set { _ticketState = value; Updated(); }
@@ -146,7 +146,7 @@ namespace TicketManagement.Models.Entities
             set { _projectId = value; Updated(); }
         }
 
-        virtual public Project Project
+        public virtual Project Project
         {
             get { return _project; }
             set { _project = value; Updated(); }
@@ -161,7 +161,7 @@ namespace TicketManagement.Models.Entities
             set { _ticketCategoryId = value; Updated(); }
         }
 
-        virtual public TicketCategory TicketCategory
+        public virtual TicketCategory TicketCategory
         {
             get { return _ticketCategory; }
             set { _ticketCategory = value; Updated(); }

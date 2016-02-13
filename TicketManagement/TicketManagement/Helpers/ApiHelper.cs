@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
 
@@ -22,8 +18,19 @@ namespace TicketManagement.Helpers
 
             return new ApiTicketViewModel
             {
-                Title = ticket.Description,
-                Description = ticket.Description
+                Title = ticket.Title,
+                Description = ticket.Description,
+                OpenedByName = ticket.OpenedBy?.FullName,
+                TicketPriorityName = ticket.TicketPriority?.Name,
+                UserAssignedToName = ticket.UserAssignedTo?.FullName,
+                TeamAssignedToName = ticket.TeamAssignedTo?.Name,
+                ProjectName = ticket.Project?.Name,
+                OrganisationAssignedToName = ticket.OrganisationAssignedTo?.Name,
+                TicketStateName = ticket.TicketState?.Name,
+                TicketCategoryName = ticket.TicketCategory?.Name,
+                Deadline = ticket.Deadline,
+                LastMessage = ticket.LastMessage,
+                LastResponse = ticket.LastResponse
             };
         }
     }

@@ -17,7 +17,8 @@ namespace TicketManagement.Controllers.API
 
         public JsonResult<List<ApiTicketViewModel>> GetAllTickets()
         {
-            return Json(db.Tickets.ToList().Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());
+            var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+            return Json(tickets.Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());
         }
 
         public JsonResult<List<ApiTicketViewModel>> GetTicketsAssignedTo(string userId)
