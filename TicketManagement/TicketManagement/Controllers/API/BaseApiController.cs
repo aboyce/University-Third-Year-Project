@@ -8,16 +8,16 @@ using System.Web.Http;
 
 namespace TicketManagement.Controllers.API
 {
-    public class DefaultController : ApiController
+    public class BaseApiController : ApiController
     {
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 
-        public string Get()
+        public virtual string Get()
         {
             return _response;
         }
 
-        public string Get(int id)
+        public virtual string Get(int id)
         {
             return $"{_response}, the id parameter was {id}";
         }

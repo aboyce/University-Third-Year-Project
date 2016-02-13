@@ -10,11 +10,9 @@ using AcceptVerbsAttribute = System.Web.Http.AcceptVerbsAttribute;
 namespace TicketManagement.Controllers.API
 {
     [System.Web.Mvc.AllowAnonymous]
-    public class TicketsController : ApiController
+    public class TicketsController : BaseApiController
     {
         private ApplicationContext db = new ApplicationContext();
-
-
 
         [AcceptVerbs("GET")]
         public JsonResult Test()

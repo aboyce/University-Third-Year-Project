@@ -13,7 +13,7 @@ namespace TicketManagement
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { controller = "Default", action = "Get", id = RouteParameter.Optional }
+                defaults: new { controller = "BaseApi", action = "Get", id = RouteParameter.Optional }
             );
 
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
