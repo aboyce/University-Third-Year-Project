@@ -255,6 +255,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\DataPopulationHelper.cs" />
     <Compile Include="Helpers\FacebookHelpers.cs" />
@@ -317,6 +318,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
+    <Compile Include="ViewModels\ApiViewModels.cs" />
     <Compile Include="ViewModels\ErrorViewModels.cs" />
     <Compile Include="ViewModels\FacebookViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />

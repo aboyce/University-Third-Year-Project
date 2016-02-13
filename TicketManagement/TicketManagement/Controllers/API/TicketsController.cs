@@ -1,39 +1,30 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Web.Http;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Http.Results;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using TicketManagement.Models.Context;
-
-using ApiController = System.Web.Http.ApiController;
-using AcceptVerbsAttribute = System.Web.Http.AcceptVerbsAttribute;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers.API
 {
-    [System.Web.Mvc.AllowAnonymous]
+    [AllowAnonymous]
     public class TicketsController : BaseApiController
     {
         private ApplicationContext db = new ApplicationContext();
 
-        [AcceptVerbs("GET")]
-        public JsonResult Test()
+        public JsonResult<List<ApiTicketViewModel>> GetAllTickets()
         {
-            var result = new JsonResult
-            {
-                Data = new
-                {
-                    Name = "Jonny Boy"
-                }
-            };
-            return result;
+            return Json(db.Tickets.ToList().Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());
         }
 
-        //[AcceptVerbs("GET")]
-        //public JsonResult GetAllUsers()
-        //{
-        //    var users = new List<int> { 3, 4, 2, 4, 65, 545, 22 };
+        public JsonResult<List<ApiTicketViewModel>> GetTicketsAssignedTo(string userId)
+        {
+            return Json(db.Tickets.Where(t => t.UserAssignedToId == userId).ToList().Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());
+        }
 
-        //    return Json(users);
-        //}
 
 
     }
