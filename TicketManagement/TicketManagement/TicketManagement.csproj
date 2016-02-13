@@ -231,6 +231,9 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\DefaultController.cs" />
+    <Compile Include="Controllers\API\TicketsController.cs" />
     <Compile Include="Controllers\FacebookErrorHandlerController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\FileController.cs" />
