@@ -141,6 +141,28 @@ namespace TicketManagement.Controllers
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenGenerated });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> TextUserToken(string userId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenSentViaTextFailed });
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            TextMessageHelper textMessageHelper = new TextMessageHelper();
+            SentTextMessage textMessage = new SentTextMessage(user.Id, user, user.PhoneNumber, $"Your User Token for {await ConfigurationHelper.GetTextMessageYourNameAsync()} is '{user.UserToken}'");
+            string textMessageResult = await textMessageHelper.SendTextMessageAsync(textMessage);
+
+            if (textMessageResult == null)
+                RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenSentViaText });
+
+            ViewBag.ErrorMessage = textMessageResult;
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenSentViaTextFailed });
+        }
+
+
+
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             IList<UserLoginInfo> userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());

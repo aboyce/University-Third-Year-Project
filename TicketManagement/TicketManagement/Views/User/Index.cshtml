@@ -33,6 +33,20 @@
         <b>Error</b> An error occured when generating a new User Token.
     </div>
 }
+@if (Request.Params["ViewMessage"] == "UserTokenSentViaText")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> Your User Token has been sent to you via text.
+    </div>
+}
+@if (Request.Params["ViewMessage"] == "UserTokenSentViaTextFailed")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occured when texting your User Token [ Error: @ViewBag.ErrorMessage ].
+    </div>
+}
 
 @using (Html.BeginForm())
 {
@@ -74,10 +88,10 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-4"})
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -115,7 +129,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-4"})
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
                     <input class="form-control" type="text" placeholder="@Model.Email" disabled="disabled">
                 </div>
@@ -130,10 +144,10 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new {@class = "control-label col-md-4"})
+                @Html.LabelFor(model => model.IsTeamLeader, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
                     <input class="checkbox" @teamLeader disabled="disabled" type="checkbox">
-                    @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new {@class = "text-danger"})
+                    @Html.ValidationMessageFor(model => model.IsTeamLeader, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -159,10 +173,10 @@
         }
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new {@class = "control-label col-md-4"})
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -196,32 +210,38 @@
 <div class="row">
     <div class="col-md-12">
         <h3>User Token</h3>
-        <hr/>
-
-        @using (Html.BeginForm("GenerateNewUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.Id)
-
-            <div class="row">
-                <div class="col-md-3">
-                    <p>
-                        <strong>User Token Confirmed: </strong>
-                        @if (Model.MobileApplicationConfirmed)
-                        { <i class="fa fa-check"></i> }
-                        else { <i class="fa fa-times"></i> }
-                    </p>
-                </div>
-                <div class="col-md-5">
-                    <p><strong>User Token: </strong> @Model.UserToken</p>
-                </div>
-                <div class="col-md-4">
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <p>
+                    <strong>User Token Confirmed: </strong>
+                    @if (Model.MobileApplicationConfirmed)
+                    { <i class="fa fa-check"></i> }
+                    else { <i class="fa fa-times"></i> }
+                </p>
+            </div>
+            <div class="col-md-5">
+                <p><strong>User Token: </strong> @Model.UserToken</p>
+            </div>
+            @using (Html.BeginForm("GenerateNewUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-md-2">
                     <input type="submit" value="Generate User Token" class="btn btn-danger"
                            title="Remove the old and generate a new user token"
-                           onclick="return confirm('Are you sure you want to generate a new Token? Any devices using the old one will have to be re-authorised.')"/>
+                           onclick="return confirm('Are you sure you want to generate a new Token? Any devices using the old one will have to be re-authorised.')"/>            
                 </div>
-            </div>
-        }
+            }
+            @using (Html.BeginForm("TextUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-md-2">
+                    <input type="submit" value="Text User Token" class="btn btn-warning"
+                           title="Send the User Token to your Mobile device."
+                           onclick="return confirm('Are you sure you want to send the message?')" />
+                </div>
+            }
+        </div>
     </div>
 </div>
 
@@ -229,8 +249,8 @@
 <div class="row">
     <div class="col-md-12">
         <h3>Change Password</h3>
-        <hr/>
-        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new {@class = "btn btn-info col-md-offset-3"})
+        <hr />
+        @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-info col-md-offset-3" })
     </div>
 </div>
 
@@ -238,10 +258,10 @@
 <div class="row">
     <div class="col-md-12">
         <h3>External Sites</h3>
-        <hr/>
-        @Html.ActionLink("Configure External Sites", "ManageLogins", "User", null, new {@class = "btn btn-info col-md-offset-3"})
+        <hr />
+        @Html.ActionLink("Configure External Sites", "ManageLogins", "User", null, new { @class = "btn btn-info col-md-offset-3" })
     </div>
 </div>
 
-<br/>
-<br/>
+<br />
+<br />

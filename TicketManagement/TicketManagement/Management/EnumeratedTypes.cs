@@ -88,7 +88,9 @@
 
         UserTokenGenerated,
         UserTokenGenerationFailed,
-        
+        UserTokenSentViaText,
+        UserTokenSentViaTextFailed,
+
         AppliedRoleFromNotification,
         FailedToApplyRoleFromNotification,
 
