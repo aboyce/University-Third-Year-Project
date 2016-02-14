@@ -19,6 +19,20 @@
         <b>Success</b> Your password has been changed.
     </div>
 }
+@if (Request.Params["ViewMessage"] == "UserTokenGenerated")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> A new User Token has been generated.
+    </div>
+}
+@if (Request.Params["ViewMessage"] == "UserTokenGenerationFailed")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occured when generating a new User Token.
+    </div>
+}
 
 @using (Html.BeginForm())
 {
@@ -178,6 +192,39 @@
     </div>
 }
 
+@*Mobile Application User Token*@
+<div class="row">
+    <div class="col-md-12">
+        <h3>User Token</h3>
+        <hr/>
+
+        @using (Html.BeginForm("GenerateNewUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+                <div class="col-md-3">
+                    <p>
+                        <strong>User Token Confirmed: </strong>
+                        @if (Model.MobileApplicationConfirmed)
+                        { <i class="fa fa-check"></i> }
+                        else { <i class="fa fa-times"></i> }
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p><strong>User Token: </strong> @Model.UserToken</p>
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Generate User Token" class="btn btn-danger"
+                           title="Remove the old and generate a new user token"
+                           onclick="return confirm('Are you sure you want to generate a new Token? Any devices using the old one will have to be re-authorised.')"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
 @*Change Password*@
 <div class="row">
     <div class="col-md-12">
@@ -191,11 +238,10 @@
 <div class="row">
     <div class="col-md-12">
         <h3>External Sites</h3>
-        <hr />
-        @Html.ActionLink("Configure External Sites", "ManageLogins", "User", null, new { @class = "btn btn-info col-md-offset-3" })
+        <hr/>
+        @Html.ActionLink("Configure External Sites", "ManageLogins", "User", null, new {@class = "btn btn-info col-md-offset-3"})
     </div>
 </div>
-
 
 <br/>
 <br/>

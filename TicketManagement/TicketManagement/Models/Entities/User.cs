@@ -32,6 +32,7 @@ namespace TicketManagement.Models.Entities
             Email = email;
             PhoneNumber = phoneNumber;
             IsArchived = isArchived;
+            UserToken = Guid.NewGuid().ToString();
         }
 
         private string _firstName;

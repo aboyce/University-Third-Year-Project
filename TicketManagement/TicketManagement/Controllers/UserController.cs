@@ -125,6 +125,22 @@ namespace TicketManagement.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> GenerateNewUserToken(string userId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenGenerationFailed });
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            user.UserToken = Guid.NewGuid().ToString();
+            db.Entry(user).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenGenerated });
+        }
+
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             IList<UserLoginInfo> userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());

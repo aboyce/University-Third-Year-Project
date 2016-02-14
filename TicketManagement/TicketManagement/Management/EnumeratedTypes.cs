@@ -86,6 +86,9 @@
         DataPopulated,
         DataNotPopulated,
 
+        UserTokenGenerated,
+        UserTokenGenerationFailed,
+        
         AppliedRoleFromNotification,
         FailedToApplyRoleFromNotification,
 
