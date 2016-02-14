@@ -15,6 +15,11 @@ namespace TicketManagement
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { controller = "BaseApi", action = "Get", id = RouteParameter.Optional }
             );
+            config.Routes.MapHttpRoute(
+                name: "DualParameterApi",
+                routeTemplate: "api/{controller}/{action}/{parameter1}/{parameter2}",
+                defaults: new { controller = "BaseApi", action = "Get", parameter1 = RouteParameter.Optional, parameter2 = RouteParameter.Optional }
+            );
 
             JsonMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             formatter.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
