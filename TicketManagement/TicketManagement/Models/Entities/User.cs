@@ -40,6 +40,8 @@ namespace TicketManagement.Models.Entities
         private int? _teamId = null;
         private Team _team = null;
         private bool _isTeamLeader = false;
+        private bool _mobileApplicationConfirmed = false;
+        private string _userToken;
 
         [DisplayName("Name")]
         public string FullName => $"{_firstName} {_lastName}";
@@ -63,6 +65,22 @@ namespace TicketManagement.Models.Entities
         }
 
         [Required]
+        [DisplayName("Mobile Application Confirmed")]
+        public bool MobileApplicationConfirmed
+        {
+            get { return _mobileApplicationConfirmed; }
+            set { _mobileApplicationConfirmed = value; }
+        }
+
+        [StringLength(100, MinimumLength = 5)]
+        [DisplayName("User Token")]
+        public string UserToken
+        {
+            get { return _userToken; }
+            set { _userToken = value; }
+        }
+
+        [Required]
         [DisplayName("Archived")]
         public bool IsArchived
         {
@@ -78,7 +96,7 @@ namespace TicketManagement.Models.Entities
             set { _teamId = value; }
         }
 
-        virtual public Team Team
+        public virtual Team Team
         {
             get { return _team; }
             set { _team = value; }

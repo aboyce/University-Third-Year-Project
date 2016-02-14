@@ -66,7 +66,7 @@ namespace TicketManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Id,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
+        public async Task<ActionResult> Index([Bind(Include = "Id,MobileApplicationConfirmed,UserToken,FirstName,LastName,UserName,IsArchived,TeamId,IsTeamLeader,Created,LastUpdated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {

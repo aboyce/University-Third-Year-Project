@@ -233,6 +233,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\API\BaseApiController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\TicketsController.cs" />
     <Compile Include="Controllers\FacebookErrorHandlerController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
@@ -287,6 +288,10 @@
     <Compile Include="Migrations\Application\201512302307448_Text Message Changes.cs" />
     <Compile Include="Migrations\Application\201512302307448_Text Message Changes.Designer.cs">
       <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Application\201602142041184_Added new properties to User.cs" />
+    <Compile Include="Migrations\Application\201602142041184_Added new properties to User.Designer.cs">
+      <DependentUpon>201602142041184_Added new properties to User.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
@@ -391,6 +396,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Azure - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Azure Test - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
@@ -604,6 +610,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201512302307448_Text Message Changes.resx">
       <DependentUpon>201512302307448_Text Message Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201602142041184_Added new properties to User.resx">
+      <DependentUpon>201602142041184_Added new properties to User.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

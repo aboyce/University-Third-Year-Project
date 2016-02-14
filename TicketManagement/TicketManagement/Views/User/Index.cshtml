@@ -153,6 +153,8 @@
         </div>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.MobileApplicationConfirmed)
+        @Html.HiddenFor(model => model.UserToken)
         @Html.HiddenFor(model => model.UserName)
         @Html.HiddenFor(model => model.Email)
         @Html.HiddenFor(model => model.PasswordHash)
