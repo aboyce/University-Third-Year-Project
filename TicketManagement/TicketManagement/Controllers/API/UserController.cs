@@ -19,13 +19,11 @@ namespace TicketManagement.Controllers.API
 
         public async Task<string> GetNewUserToken(string username)
         {
-            if (string.IsNullOrEmpty(username))
-                return null;
+            if (string.IsNullOrEmpty(username)) return null;
 
             User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
-            if (user.MobileApplicationConfirmed)
-                return null;  // We don't want to give out confirmed User Tokens, so we assume that this is erroneous or malicious.
+            if (user.MobileApplicationConfirmed) return null;  // We don't want to give out confirmed User Tokens, so we assume that this is erroneous or malicious.
 
             user.UserToken = Guid.NewGuid().ToString();
             db.Entry(user).State = EntityState.Modified;
@@ -36,16 +34,14 @@ namespace TicketManagement.Controllers.API
             return string.IsNullOrEmpty(user.UserToken) ? null : user.UserToken;
         }
 
-        [System.Web.Http.AcceptVerbs("GET")]
-        public async Task<bool> ClearUserToken(string username, string userToken)
+        public async Task<bool> ClearUserToken(string username, string usertoken)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(userToken))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken))
                 return false;
 
-            User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username && u.UserToken == userToken);
-
-            if (user == null)
-                return false;
+            User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username && u.UserToken == usertoken);
+    
+            if (user == null) return false;
 
             user.UserToken = null;
             user.MobileApplicationConfirmed = false;
