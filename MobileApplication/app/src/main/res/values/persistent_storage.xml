@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="user_username">user_username</string>
-    <string name="user_userToken">user_token</string>
+    <string name="user_token">user_token</string>
 </resources>

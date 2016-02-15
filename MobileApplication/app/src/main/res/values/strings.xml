@@ -2,8 +2,14 @@
     <string name="app_name">Ticket Management</string>
 
     <!-- LOGIN PAGE -->
-        <string name="login_welcome">Welcome to Ticket System</string>
-        <string name="login_message">You have not configured an account with this application.</string>
+
+        <string name="login_lbl_welcome">Welcome to Ticket System</string>
+        <string name="login_lbl_message">You have not configured an account with this application.</string>
+
+        <!-- Buttons -->
+            <string name="login_btn_authorise">Authorise</string>
+
+
 
     <!-- TICKETS PAGE -->
 
