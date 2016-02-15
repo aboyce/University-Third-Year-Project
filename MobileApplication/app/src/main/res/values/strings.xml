@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Ticket Management</string>
+
+    <!-- LOGIN PAGE -->
+        <string name="login_welcome">Welcome to Ticket System</string>
+        <string name="login_message">You have not configured an account with this application.</string>
+
+    <!-- TICKETS PAGE -->
+
 </resources>
