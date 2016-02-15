@@ -1,4 +1,5 @@
 ﻿@using TicketManagement.Management
+@using TicketManagement.Models.Entities
 @model TicketManagement.Models.Entities.User
 
 @{
@@ -53,10 +54,8 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-
         <h3>Edit</h3>
         <hr />
-
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @*Form Elements*@
