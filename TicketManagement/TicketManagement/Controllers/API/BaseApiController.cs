@@ -12,14 +12,19 @@ namespace TicketManagement.Controllers.API
     {
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 
+        private readonly string _availableMethods = $" : Available API Calls :" +
+                   $"{Environment.NewLine}Tickets/GetAllTicketsForUser(string username, string usertoken) => Json list of tickets." +
+                   $"{Environment.NewLine}User/GetNewUserToken(string username) => The user token." +
+                   $"{Environment.NewLine}User/ClearUserToken(string username, string usertoken) => A true/false.";
+
         public virtual string Get()
         {
-            return _response;
+            return _response + _availableMethods;
         }
 
         public virtual string Get(int id)
         {
-            return $"{_response}, the id parameter was {id}";
+            return $"{_response}, the id parameter was {id}{_availableMethods}";
         }
     }
 }
