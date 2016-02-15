@@ -33,7 +33,7 @@ public class TicketsActivity extends AppCompatActivity {
 
         if(pRequestCode == LOGIN_FROM_TICKETS){
             if (pResultCode == RESULT_OK){
-                if(pData.hasExtra("login_username")){
+                if(pData.hasExtra(getString(R.string.user_username))){
                     username = pData.getStringExtra("login_username");
                 }
                 // TODO: if the user is logged in...
@@ -48,13 +48,13 @@ public class TicketsActivity extends AppCompatActivity {
     private boolean userConfiguredWithApplication()    {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        if(sharedPreferences.contains("user_username"))
+        if(sharedPreferences.contains(getString(R.string.user_username)))
             username = getString(R.string.user_username);
         else
             return false;
 
 
-        if(sharedPreferences.contains("user_Token"))
+        if(sharedPreferences.contains(getString(R.string.user_token)))
             userToken = getString(R.string.user_token);
         else
             return false;

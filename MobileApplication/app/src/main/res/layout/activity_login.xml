@@ -36,16 +36,26 @@
         android:inputType="text"
         android:layout_marginTop="65dp"
         android:layout_below="@+id/lblMessage"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:hint="Enter your username" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_btn_authorise"
         android:id="@+id/btnAuthorise"
-        android:layout_below="@+id/txtUsername"
+        android:onClick="authenticateOnClick"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:onClick="authenticateOnClick" />
+        android:layout_marginBottom="117dp" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/prbAuthoriseProgress"
+        android:layout_above="@+id/btnAuthorise"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="33dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
