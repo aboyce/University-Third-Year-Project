@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         progressbar = (ProgressBar)findViewById(R.id.prbAuthoriseProgress);
     }
 
@@ -74,44 +73,44 @@ public class LoginActivity extends AppCompatActivity {
 
         protected void onPreExecute(){
             progressbar.setVisibility(View.VISIBLE);
-            Log.d("DEBUG","API call GetUserToken");
+            //Log.i("INFO","API call GetUserToken");
         }
 
-        protected String doInBackground(Void... params) {
-
+        protected String doInBackground(Void... urls) {
+            Log.d("DEBUG", "GetUserToken:doInBackground - Started");
             try{
                 URL url = new URL(getString(R.string.api_url));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                Log.d("DEBUG", "GetUserToken:doInBackground - Opened HTTP URL Connection to; " + getString(R.string.api_url));
                 try{
-                    BufferedReader bufferedReader =
-                            new BufferedReader(
-                                    new InputStreamReader(urlConnection.getInputStream()));
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     StringBuilder stringBuilder = new StringBuilder();
                     String line;
                     while((line = bufferedReader.readLine()) != null)
                         stringBuilder.append(line).append("\n");
                     bufferedReader.close();
                     return stringBuilder.toString();
-                }catch(Exception e){
-                    Log.e("ERROR", e.getMessage(), e);
+//                }catch(Exception e){
+//                    Log.e("ERROR", e.getMessage(), e);
                 }finally {
                     urlConnection.disconnect();
                 }
             }catch (Exception e){
                 Log.e("ERROR", e.getMessage(), e);
+                return null;
             }
-            return null; // Something must of gone wrong.
         }
 
         protected void onPostExecute(String response){
 
-            if(response == null || userToken.isEmpty()){
+            if(response == null || username == null || username == ""){
                 showMessageBox("Error Getting Token", "An error has occurred trying to get your" +
                         " user token, please check the configuration and try again");
                 Log.e("ERROR", response);
                 return;
             }
 
+            userToken = response;
             progressbar.setVisibility(View.GONE);
 
             if(storeCredentials(username, userToken)){
@@ -123,4 +122,3 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 }
-
