@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString(getString(R.string.persistent_storage_user_token), userToken);
             return editor.commit();
         } catch (Exception e){
-            Log.e("ERROR", e.getMessage(), e);
+            Log.e("TICKET_MANAGEMENT","LoginActivity:storeCredentials: Error: " + e.getMessage(), e);
         }
         return false;
     }
@@ -95,11 +95,15 @@ public class LoginActivity extends AppCompatActivity {
                     bufferedReader.close();
                     Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Response from API=" + stringBuilder.toString());
                     return stringBuilder.toString();
-                }finally {
+                }catch (Exception e){
+                    Log.e("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Error: " + e.getMessage(), e);
+                    return null;
+                }
+                finally {
                     urlConnection.disconnect();
                 }
             }catch (Exception e){
-                Log.e("ERROR", e.getMessage(), e);
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Error: " + e.getMessage(), e);
                 return null;
             }
         }
@@ -109,21 +113,12 @@ public class LoginActivity extends AppCompatActivity {
             if(response == null || username == null || Objects.equals(username, "")){
                 showMessageBox("Error Getting Token", "An error has occurred trying to get your" +
                         " user token, please check the configuration and try again");
-                Log.e("ERROR", response);
+                Log.e("TICKET_MANAGEMENT","LoginActivity-GetUserToken:onPostExecute: Error: " + response);
                 return;
             }
 
             userToken = response.replace("\"","");
             progressbar.setVisibility(View.GONE);
-
-//            try{
-//                JSONObject json = (JSONObject) new JSONTokener(response).nextValue();
-////                String requestID = object.getString("requestId");
-////                int likelihood = object.getInt("likelihood");
-////                JSONArray photos = object.getJSONArray("photos");
-//            }catch (JSONException e){
-//                Log.e("ERROR", e.getMessage(), e);
-//            }
 
             if(storeCredentials(username, userToken)){
                 Intent intentWithData = new Intent();
