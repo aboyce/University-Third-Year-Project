@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean storeCredentials(String username, String userToken) {
-        Log.d("TICKET_MANAGEMENT", "LoginActivity:storeCredentials");
+        Log.d("TICKET_MANAGEMENT", "LoginActivity:storeCredentials: Username= " + username + " UserToken= " + userToken);
         try{
             SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            userToken = response;
+            userToken = response.replace("\"","");
             progressbar.setVisibility(View.GONE);
 
 //            try{
@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             if(storeCredentials(username, userToken)){
                 Intent intentWithData = new Intent();
                 intentWithData.putExtra(getString(R.string.user_username), username);
+                intentWithData.putExtra(getString(R.string.user_token), userToken);
                 setResult(RESULT_OK, intentWithData);
             } else
                 setResult(RESULT_CANCELED);

@@ -39,9 +39,11 @@ public class TicketsActivity extends AppCompatActivity {
         Log.d("TICKET_MANAGEMENT","TicketsActivity:onActivityResult");
         if(pRequestCode == LOGIN_FROM_TICKETS){
             if (pResultCode == RESULT_OK){
-                if(pData.hasExtra(getString(R.string.user_username))){
+                if(pData.hasExtra(getString(R.string.user_username)))
                     username = pData.getStringExtra(getString(R.string.user_username));
-                }
+                if(pData.hasExtra(getString(R.string.user_token)))
+                    userToken = pData.getStringExtra(getString(R.string.user_token));
+
                 // TODO: if the user is logged in...
                 showMessageBox("User is logged in! [RESULT_OK]", "Whooo, the saved information is, Username: " + username + " User Token: " + userToken);
             }
@@ -64,7 +66,7 @@ public class TicketsActivity extends AppCompatActivity {
 
         Log.d("TICKET_MANAGEMENT","TicketsActivity:userConfiguredWithApplication: Contained username.");
 
-        if(!sharedPreferences.contains(getString(R.string.persistent_storage_user_token)))
+        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_token)))
             userToken = sharedPreferences.getString(getString(R.string.persistent_storage_user_token), null);
         else
             return false;
