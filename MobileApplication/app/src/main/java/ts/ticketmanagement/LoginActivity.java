@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -21,8 +25,8 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     ProgressBar progressbar;
-    String username;
-    String userToken;
+    String username = "";
+    String userToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                         stringBuilder.append(line).append("\n");
                     bufferedReader.close();
                     return stringBuilder.toString();
-//                }catch(Exception e){
-//                    Log.e("ERROR", e.getMessage(), e);
                 }finally {
                     urlConnection.disconnect();
                 }
@@ -112,6 +114,15 @@ public class LoginActivity extends AppCompatActivity {
 
             userToken = response;
             progressbar.setVisibility(View.GONE);
+
+            try{
+                JSONObject json = (JSONObject) new JSONTokener(response).nextValue();
+//                String requestID = object.getString("requestId");
+//                int likelihood = object.getInt("likelihood");
+//                JSONArray photos = object.getJSONArray("photos");
+            }catch (JSONException e){
+                Log.e("ERROR", e.getMessage(), e);
+            }
 
             if(storeCredentials(username, userToken)){
                 Intent intentWithData = new Intent();
