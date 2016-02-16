@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="user_username">user_username</string>
-    <string name="user_token">user_token</string>
+    <string name="persistent_storage_name">ticket_management_storage</string>
+    <string name="persistent_storage_user_username">ticket_management_user_username</string>
+    <string name="persistent_storage_user_token">ticket_management_user_token</string>
 </resources>

@@ -1,53 +1,30 @@
-import android.util.Log;
+import android.content.Context;
 import android.view.View;
-
-import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import ts.ticketmanagement.LoginActivity;
 
 /**
  * Created by apboy on 16/02/2016.
  */
 public class KeyStoreHelper {
 
-    KeyStore store = null;
-    Enumeration<String> aliases = null;
-    ArrayList<> keyAliases;
 
-    public void KeyStoreException(){
-        try{
-            store = KeyStore.getInstance("AndroidKeyStore");
-            store.load(null);
-        }catch (KeyStoreException e){
-            Log.e("ERROR", e.getMessage(), e);
-        }catch (NoSuchAlgorithmException e){
-            Log.e("ERROR", e.getMessage(), e);
-        } catch (CertificateException e) {
-            Log.e("ERROR", e.getMessage(), e);
-        } catch (IOException e) {
-            Log.e("ERROR", e.getMessage(), e);
-        }
+
+    public KeyStoreHelper(Context context){
+
     }
 
     public void refreshKeys(){
-        keyAliases = new ArrayList<>();
-        try{
-            aliases = store.aliases();
-            while (aliases.hasMoreElements())
-                keyAliases.add(aliases.nextElement());
-        }catch (KeyStoreException e){
-            Log.e("ERROR", e.getMessage(), e);
-        }
 
-        // TODO: Do something with the aliases
+
     }
 
-    public void createNewKeys(View view) {
+    public boolean createNewKeys(View view, final String aliasToStore, LoginActivity sender) {
 
+        return true;
+    }
+
+    public boolean deleteKey(final String aliasToDelete){
+        return false;
     }
 }
 
