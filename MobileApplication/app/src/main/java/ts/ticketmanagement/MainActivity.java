@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private String username;
     private String userToken;
 
-    private boolean credentialsConfirmed = false;
+    private Intent ticketsIntent;
+    private Intent loginIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,13 @@ public class MainActivity extends AppCompatActivity {
         // not 'logged in', so send them to the Login Page.
         if(!userConfiguredWithApplication()){
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User not configured with app.");
-            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent = new Intent(this, LoginActivity.class);
             startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
+        } else {
+            Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User is configured with app.");
+            ticketsIntent = new Intent(this, TicketsActivity.class);
+            new API_ConfirmUserCredentials().execute();
         }
-
-        // We now assume that the phone has valid credentials, so we can check they are valid.
-        Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User is configured with app.");
-
-        new API_ConfirmUserCredentials().execute();
     }
 
     @Override
@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
                 // TODO: remove this eventually
                 showMessageBox("User is logged in! [RESULT_OK]", "Whooo, the saved information is, Username: " + username + " User Token: " + userToken);
+
+                Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult: User is now configured with app.");
+                ticketsIntent = new Intent(this, TicketsActivity.class);
+                new API_ConfirmUserCredentials().execute();
 
                 // TODO: Pop up asking if it is ok to confirm the authentication via SMS
 //                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
@@ -102,16 +106,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
 
         Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication: Contained userToken.");
-
-        return true;
-    }
-
-    private boolean userCredentialsValid()    {
-        Log.d("TICKET_MANAGEMENT","MainActivity:userCredentialsValid");
-
-
-
-
 
         return true;
     }
@@ -174,8 +168,14 @@ public class MainActivity extends AppCompatActivity {
 
             response = response.replace("\"","");
 
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
+
             if(response == "true")
-                credentialsConfirmed = true;
+                startActivity(ticketsIntent);
+            else {
+                showMessageBox("Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
+                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Cannot confirm User credentials");
+            }
 
             //progressbar.setVisibility(View.GONE);
         }

@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void authenticateOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "LoginActivity:authenticateOnClick");
-        TextView txtUsername = (TextView)findViewById(R.id.txtUsername);
+        TextView txtUsername = (TextView)findViewById(R.id.lblUsername);
         username = txtUsername.getText().toString();
 
         if(username.isEmpty()){
