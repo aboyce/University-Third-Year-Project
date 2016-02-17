@@ -6,4 +6,6 @@
 
     <string name="api_user_confirmUserToken1">/User/CheckUserToken?username=</string>
     <string name="api_user_confirmUserToken2">&amp;usertoken=</string>
+
+    <string name="api_confirmConnection">/ConfirmConnection</string>
 </resources>

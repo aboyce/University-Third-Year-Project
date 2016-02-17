@@ -10,15 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    ProgressBar progressbar;
 
     static final int LOGIN_FROM_MAIN = 0;
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate");
 
         setContentView(R.layout.activity_main);
+
+        progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
 
         // If the phone cannot find a valid username/userToken, then assume they are
         // not 'logged in', so send them to the Login Page.
@@ -134,6 +138,67 @@ public class MainActivity extends AppCompatActivity {
         });
         messageBox.setCancelable(true);
         messageBox.create().show();
+    }
+
+    class API_CheckConnection extends AsyncTask<Void, Void, String> {
+
+        protected void onPreExecute(){
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection");
+            progressbar.setVisibility(View.VISIBLE);
+        }
+
+        protected String doInBackground(Void... urls) {
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:doInBackground");
+            try{
+                URL url = new URL(getString(R.string.api_url) + getString(R.string.api_confirmConnection));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection: Opened HTTP URL Connection to; " + url.toString());
+                try{
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while((line = bufferedReader.readLine()) != null)
+                        stringBuilder.append(line).append("\n");
+                    bufferedReader.close();
+                    Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:doInBackground: Response from API=" + stringBuilder.toString());
+                    return stringBuilder.toString();
+                }catch (Exception e){
+                    Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:doInBackground: Error: " + e.getMessage(), e);
+                    return null;
+                }
+                finally {
+                    urlConnection.disconnect();
+                }
+            }catch (Exception e){
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:doInBackground: Error: " + e.getMessage(), e);
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String response){
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute");
+            if(response == null){
+                showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm the connection.");
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnections:onPostExecute: Error: " + response);
+                return;
+            }
+
+            response = response.replace("\"","");
+
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Response=" + response);
+
+            CheckBox checkBox = (CheckBox)findViewById(R.id.chkConnection);
+
+            if(response == "true")
+                checkBox.setEnabled(true);
+            else {
+                checkBox.setEnabled(false);
+                showMessageBox("Cannot Confirm Connection", "Unfortunately we cannot confirm your connection, please check your config and try again.");
+                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Cannot confirm connection.");
+            }
+
+            progressbar.setVisibility(View.GONE);
+        }
     }
 
     class API_ConfirmUserCredentials extends AsyncTask<Void, Void, String> {

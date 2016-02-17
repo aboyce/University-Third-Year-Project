@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connection"
-        android:id="@+id/chkConnetion"
+        android:id="@+id/chkConnection"
         android:enabled="true"
         android:focusable="true"
         android:layout_marginTop="27dp"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Check Connection"
         android:id="@+id/btnCheckConnection"
-        android:layout_alignTop="@+id/chkConnetion"
+        android:layout_alignTop="@+id/chkConnection"
         android:layout_alignEnd="@+id/lblUsernameValue"
         android:onClick="checkConnectionOnClick" />
 
@@ -87,7 +87,7 @@
         android:enabled="true"
         android:focusable="false"
         android:layout_alignTop="@+id/btnAuthorise"
-        android:layout_alignStart="@+id/chkConnetion" />
+        android:layout_alignStart="@+id/chkConnection" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
