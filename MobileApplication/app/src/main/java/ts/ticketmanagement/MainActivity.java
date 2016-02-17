@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -108,6 +109,18 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication: Contained userToken.");
 
         return true;
+    }
+
+    public void checkConnectionOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "MainActivity:checkConnectionOnClick");
+    }
+
+    public void reEnterCredentialsOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "MainActivity:reEnterCredentialsOnClick");
+    }
+
+    public void authoriseOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "MainActivity:authoriseOnClick");
     }
 
     private void showMessageBox(String title, String message){
