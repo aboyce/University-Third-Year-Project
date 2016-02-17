@@ -24,5 +24,11 @@ namespace TicketManagement.Controllers.API
         {
             return $"{_response}, the id parameter was {id}{_availableMethods}";
         }
+
+        [System.Web.Http.AcceptVerbs("GET")]
+        public virtual bool CheckConnection()
+        {
+            return true;
+        }
     }
 }
