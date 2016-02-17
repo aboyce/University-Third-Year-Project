@@ -10,7 +10,7 @@
     <!-- LOGIN PAGE -->
 
     <string name="login_lbl_welcome">Welcome to Ticket System</string>
-    <string name="login_lbl_message">You have not configured an account with this application.</string>
+    <string name="login_lbl_message">You have not configured an account with this application or your credentials are now invalid. Please re-authorise.</string>
 
     <!-- Buttons -->
     <string name="login_btn_authorise">Authorise</string>

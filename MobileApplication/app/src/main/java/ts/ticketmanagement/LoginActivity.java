@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        new GetUserToken().execute();
+        new API_GetUserToken().execute();
     }
 
     private boolean storeCredentials(String username, String userToken) {
@@ -73,19 +73,19 @@ public class LoginActivity extends AppCompatActivity {
         messageBox.create().show();
     }
 
-    class GetUserToken extends AsyncTask<Void, Void, String> {
+    class API_GetUserToken extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:onPreExecute");
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPreExecute");
             progressbar.setVisibility(View.VISIBLE);
         }
 
         protected String doInBackground(Void... urls) {
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground");
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:doInBackground");
             try{
                 URL url = new URL(getString(R.string.api_url) + getString(R.string.api_user_getNewUserToken) + username);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Opened HTTP URL Connection to; " + url.toString());
+                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:doInBackground: Opened HTTP URL Connection to; " + url.toString());
                 try{
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     StringBuilder stringBuilder = new StringBuilder();
@@ -93,27 +93,27 @@ public class LoginActivity extends AppCompatActivity {
                     while((line = bufferedReader.readLine()) != null)
                         stringBuilder.append(line).append("\n");
                     bufferedReader.close();
-                    Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Response from API=" + stringBuilder.toString());
+                    Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:doInBackground: Response from API=" + stringBuilder.toString());
                     return stringBuilder.toString();
                 }catch (Exception e){
-                    Log.e("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Error: " + e.getMessage(), e);
+                    Log.e("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:doInBackground: Error: " + e.getMessage(), e);
                     return null;
                 }
                 finally {
                     urlConnection.disconnect();
                 }
             }catch (Exception e){
-                Log.e("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:doInBackground: Error: " + e.getMessage(), e);
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:doInBackground: Error: " + e.getMessage(), e);
                 return null;
             }
         }
 
         protected void onPostExecute(String response){
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-GetUserToken:onPostExecute");
+            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute");
             if(response == null || username == null || Objects.equals(username, "")){
                 showMessageBox("Error Getting Token", "An error has occurred trying to get your" +
                         " user token, please check the configuration and try again");
-                Log.e("TICKET_MANAGEMENT","LoginActivity-GetUserToken:onPostExecute: Error: " + response);
+                Log.e("TICKET_MANAGEMENT","LoginActivity-API_GetUserToken:onPostExecute: Error: " + response);
                 return;
             }
 
