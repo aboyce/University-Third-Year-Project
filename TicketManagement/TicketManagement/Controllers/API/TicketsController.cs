@@ -15,6 +15,7 @@ namespace TicketManagement.Controllers.API
     {
         private ApplicationContext db = new ApplicationContext();
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult<List<ApiTicketViewModel>>> GetAllTicketsForUser(string username, string usertoken)
         {
             if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
@@ -35,6 +36,7 @@ namespace TicketManagement.Controllers.API
             return Json(tickets.Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList()); // TODO: Test that this performs as expected...
         }
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public JsonResult<List<ApiTicketViewModel>> GetTicketsAssignedTo(string userId)
         {
             return Json(db.Tickets.Where(t => t.UserAssignedToId == userId).ToList().Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());

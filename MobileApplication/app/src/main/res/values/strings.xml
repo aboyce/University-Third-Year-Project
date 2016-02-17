@@ -1,17 +1,19 @@
 <resources>
     <string name="app_name">Ticket Management</string>
+    <string name="app_name_Main">Ticket Management - Main</string>
+    <string name="app_name_Login">Ticket Management - Login</string>
+    <string name="app_name_Tickets">Ticket Management - Tickets</string>
 
     <string name="user_username">user_username</string>
     <string name="user_token">user_token</string>
 
     <!-- LOGIN PAGE -->
 
-        <string name="login_lbl_welcome">Welcome to Ticket System</string>
-        <string name="login_lbl_message">You have not configured an account with this application.</string>
+    <string name="login_lbl_welcome">Welcome to Ticket System</string>
+    <string name="login_lbl_message">You have not configured an account with this application.</string>
 
-        <!-- Buttons -->
-            <string name="login_btn_authorise">Authorise</string>
-
+    <!-- Buttons -->
+    <string name="login_btn_authorise">Authorise</string>
 
 
     <!-- TICKETS PAGE -->

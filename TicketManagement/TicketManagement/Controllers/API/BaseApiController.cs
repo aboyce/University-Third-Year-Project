@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Web.Http;
 
 namespace TicketManagement.Controllers.API
@@ -18,11 +13,13 @@ namespace TicketManagement.Controllers.API
                    "[User/CheckUserToken(string username, string usertoken) => true/false if the combination is valid.]" +
                    "[User/ClearUserToken(string username, string usertoken) => A true/false.]";
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public virtual string Get()
         {
             return _response + _availableMethods;
         }
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public virtual string Get(int id)
         {
             return $"{_response}, the id parameter was {id}{_availableMethods}";

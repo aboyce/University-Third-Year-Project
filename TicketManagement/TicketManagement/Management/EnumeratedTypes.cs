@@ -88,6 +88,8 @@
 
         UserTokenGenerated,
         UserTokenGenerationFailed,
+        UserTokenConfirmed,
+        UserTokenConfirmationFailed,
         UserTokenSentViaText,
         UserTokenSentViaTextFailed,
 

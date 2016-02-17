@@ -17,11 +17,14 @@ namespace TicketManagement.Controllers.API
     {
         private ApplicationContext db = new ApplicationContext();
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public async Task<string> GetNewUserToken(string username)
         {
             if (string.IsNullOrEmpty(username)) return null;
-
+            
             User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null) return null;
 
             if (user.MobileApplicationConfirmed) return null;  // We don't want to give out confirmed User Tokens, so we assume that this is erroneous or malicious.
 
@@ -34,6 +37,7 @@ namespace TicketManagement.Controllers.API
             return string.IsNullOrEmpty(user.UserToken) ? null : user.UserToken;
         }
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public async Task<bool> CheckUserToken(string username, string usertoken)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
@@ -45,6 +49,7 @@ namespace TicketManagement.Controllers.API
             return user.MobileApplicationConfirmed && string.Equals(user.UserToken, usertoken, StringComparison.CurrentCultureIgnoreCase);
         }
 
+        [System.Web.Http.AcceptVerbs("GET")]
         public async Task<bool> ClearUserToken(string username, string usertoken)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;

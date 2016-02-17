@@ -34,6 +34,20 @@
         <b>Error</b> An error occured when generating a new User Token.
     </div>
 }
+@if (Request.Params["ViewMessage"] == "UserTokenConfirmed")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The User Token has been authorised.
+    </div>
+}
+@if (Request.Params["ViewMessage"] == "UserTokenConfirmationFailed")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occured when authorising the User Token.
+    </div>
+}
 @if (Request.Params["ViewMessage"] == "UserTokenSentViaText")
 {
     <div class="alert alert-success alert-dismissable" role="alert">
@@ -231,10 +245,19 @@
                            onclick="return confirm('Are you sure you want to generate a new Token? Any devices using the old one will have to be re-authorised.')"/>            
                 </div>
             }
+            @using (Html.BeginForm("ConfirmUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-md-1">
+                    <input type="submit" value="Confirm User Token" class="btn btn-warning"
+                           title="Authorise the current User Token"
+                           onclick="return confirm('Are you sure you want confirm the User Token?')" />
+                </div>
+            }
             @using (Html.BeginForm("TextUserToken", "User", new { userId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <input type="submit" value="Text User Token" class="btn btn-warning"
                            title="Send the User Token to your Mobile device."
                            onclick="return confirm('Are you sure you want to send the message?')" />

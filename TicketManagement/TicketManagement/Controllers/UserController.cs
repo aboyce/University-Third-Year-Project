@@ -143,6 +143,22 @@ namespace TicketManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmUserToken(string userId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenConfirmationFailed });
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            user.MobileApplicationConfirmed = true;
+            db.Entry(user).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenConfirmed });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> TextUserToken(string userId)
         {
             if (!ModelState.IsValid)
