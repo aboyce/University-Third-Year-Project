@@ -34,10 +34,20 @@ namespace TicketManagement.Controllers.API
             return string.IsNullOrEmpty(user.UserToken) ? null : user.UserToken;
         }
 
+        public async Task<bool> CheckUserToken(string username, string usertoken)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null) return false;
+
+            return user.MobileApplicationConfirmed && string.Equals(user.UserToken, usertoken, StringComparison.CurrentCultureIgnoreCase);
+        }
+
         public async Task<bool> ClearUserToken(string username, string usertoken)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken))
-                return false;
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
 
             User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username && u.UserToken == usertoken);
     
