@@ -117,9 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkConnectionOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "MainActivity:checkConnectionOnClick");
+        new API_CheckConnection().execute();
     }
 
-    public void reEnterCredentialsOnClick(View pView){
+    public void reEnterCredentialsOnClick(View pView) {
         Log.d("TICKET_MANAGEMENT", "MainActivity:reEnterCredentialsOnClick");
     }
 
@@ -189,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
             CheckBox checkBox = (CheckBox)findViewById(R.id.chkConnection);
 
-            if(response == "true")
-                checkBox.setEnabled(true);
+            if(response == "true" || response == "true\n" || response.contains("true"))
+                checkBox.setChecked(true);
             else {
-                checkBox.setEnabled(false);
+                checkBox.setChecked(false);
                 showMessageBox("Cannot Confirm Connection", "Unfortunately we cannot confirm your connection, please check your config and try again.");
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Cannot confirm connection.");
             }
