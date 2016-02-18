@@ -16,6 +16,10 @@
     <string name="login_btn_authorise">Authorise</string>
 
 
+    <!-- MAIN PAGE -->
+    <string name="main_lbl_usernameValue">Username not configured</string>
+    
+    
     <!-- TICKETS PAGE -->
 
 </resources>

@@ -21,9 +21,9 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    ProgressBar progressbar;
+    private final Integer LOGIN_FROM_MAIN = 0;
 
-    static final int LOGIN_FROM_MAIN = 0;
+    ProgressBar progressbar;
 
     private String username;
     private String userToken;
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
+
+        // Will let the user know that the application is connected or not.
+        new API_CheckConnection().execute();
 
         // If the phone cannot find a valid username/userToken, then assume they are
         // not 'logged in', so send them to the Login Page.
@@ -64,34 +67,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int pRequestCode, int pResultCode, Intent pData){
         Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult");
         if(pRequestCode == LOGIN_FROM_MAIN){
+            Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult:LoginFromMain");
             if (pResultCode == RESULT_OK){
-                if(pData.hasExtra(getString(R.string.user_username)))
-                    username = pData.getStringExtra(getString(R.string.user_username));
-                if(pData.hasExtra(getString(R.string.user_token)))
-                    userToken = pData.getStringExtra(getString(R.string.user_token));
-
-                // TODO: remove this eventually
-                showMessageBox("User is logged in! [RESULT_OK]", "Whooo, the saved information is, Username: " + username + " User Token: " + userToken);
-
-                Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult: User is now configured with app.");
-                ticketsIntent = new Intent(this, TicketsActivity.class);
-                new API_ConfirmUserCredentials().execute();
-
-                // TODO: Pop up asking if it is ok to confirm the authentication via SMS
-//                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
-//                intent.putExtra("sms_body", "The message body");
-//                startActivity(intent);
-
-                // TODO: Get back from sms....
-
-                // TODO: Load the tickets via an api call...
-
-                // TODO: This may be better as a MainActivity, and then load the tickets activity??
-
-
+                Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult:LoginFromMain Result: OK ");
+                handleLoginFromMain(pData);
             }
             else if(pResultCode == RESULT_CANCELED){
-
+                Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult:LoginFromMain Result: Canceled ");
                 // TODO: remove this eventually
                 showMessageBox("User not logged in [RESULT_CANCELED]", "ah well...");
 
@@ -100,23 +82,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void handleLoginFromMain(Intent pData)
+    {
+        if(pData.hasExtra(getString(R.string.user_username)))
+            username = pData.getStringExtra(getString(R.string.user_username));
+        if(pData.hasExtra(getString(R.string.user_token)))
+            userToken = pData.getStringExtra(getString(R.string.user_token));
+
+        Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: User information is now stored within the app.");
+
+        AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
+        messageBox.setTitle("Credentials have been Saved!");
+        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use, you can do that now via text or via the web application.");
+        messageBox.setItems(new CharSequence[]{"Send Text Now", "Wait for Web Application"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int option){
+                        if(option == 0){
+                            //Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
+                            //intent.putExtra("sms_body", "The message body");
+                            //startActivity(intent);
+                            // TODO: Get back from sms....
+                        }
+                        else if (option == 1){
+                        }
+                    }});
+        messageBox.create().show();
+    }
+
     private boolean userConfiguredWithApplication()    {
         Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication");
         SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
 
-        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_username)))
+        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_username))) {
             username = sharedPreferences.getString(getString(R.string.persistent_storage_user_username), null);
-        else
-            return false;
+            Log.d("TICKET_MANAGEMENT", "MainActivity:userConfiguredWithApplication: Contained username.");
+        } else return false;
 
-        Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication: Contained username.");
-
-        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_token)))
+        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_token))){
             userToken = sharedPreferences.getString(getString(R.string.persistent_storage_user_token), null);
-        else
-            return false;
-
-        Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication: Contained userToken.");
+            Log.d("TICKET_MANAGEMENT", "MainActivity:userConfiguredWithApplication: Contained userToken.");
+        } else return false;
 
         return true;
     }
@@ -128,10 +133,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void reEnterCredentialsOnClick(View pView) {
         Log.d("TICKET_MANAGEMENT", "MainActivity:reEnterCredentialsOnClick");
+        loginIntent = new Intent(this, LoginActivity.class);
+        startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
     }
 
     public void authoriseOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "MainActivity:authoriseOnClick");
+        ticketsIntent = new Intent(this, TicketsActivity.class);
+        new API_ConfirmUserCredentials().execute();
+    }
+
+    public void removeUserOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick");
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(getString(R.string.persistent_storage_user_username));
+        editor.remove(getString(R.string.persistent_storage_user_token));
+
+        if(!editor.commit()){
+            Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick: Failed to remove User from Shared Preferences.");
+            return;
+        }
+
+        Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick: Removed User from Shared Preferences");
+        username = "";
+        userToken = "";
+
+        TextView txtUsername = (TextView)findViewById(R.id.lblUsernameValue);
+        txtUsername.setText(getString(R.string.main_lbl_usernameValue));
+
+        showMessageBox("Removed User", "Your User information has been removed from this device. For safety, deactivate your User Token.");
+
+        loginIntent = new Intent(this, LoginActivity.class);
+        startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
     }
 
     private void showMessageBox(String title, String message){

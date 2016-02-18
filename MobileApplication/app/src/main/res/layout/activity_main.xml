@@ -36,6 +36,16 @@
         android:layout_below="@+id/lblMain"
         android:layout_toEndOf="@+id/lblMain" />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account Authorised"
+        android:id="@+id/chkAccountAuthorised"
+        android:enabled="true"
+        android:focusable="false"
+        android:layout_alignTop="@+id/chkConnection"
+        android:layout_alignEnd="@+id/btnReEnterCredentials" />
+
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -43,8 +53,19 @@
         android:text="Check Connection"
         android:id="@+id/btnCheckConnection"
         android:onClick="checkConnectionOnClick"
-        android:layout_alignTop="@+id/chkConnection"
-        android:layout_alignEnd="@+id/lblUsernameValue" />
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/chkConnection"
+        android:layout_toStartOf="@+id/chkAccountAuthorised" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Authorise"
+        android:id="@+id/btnAuthorise"
+        android:onClick="authoriseOnClick"
+        android:layout_alignTop="@+id/btnCheckConnection"
+        android:layout_alignEnd="@+id/chkAccountAuthorised" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,39 +84,29 @@
         android:text="Re/Enter Credentials"
         android:id="@+id/btnReEnterCredentials"
         android:onClick="reEnterCredentialsOnClick"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/lblUsernameValue"
+        android:layout_alignStart="@+id/lblUsernameValue"
+        android:layout_marginTop="43dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="No username configured"
+        android:text="@string/main_lbl_usernameValue"
         android:id="@+id/lblUsernameValue"
         android:enabled="true"
         android:layout_alignBottom="@+id/lblUsername"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/chkConnection" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Account Authorised"
-        android:id="@+id/chkAccountAuthorised"
-        android:enabled="true"
-        android:focusable="false"
-        android:layout_alignTop="@+id/btnAuthorise"
-        android:layout_alignStart="@+id/chkConnection" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Authorise"
-        android:id="@+id/btnAuthorise"
-        android:layout_marginTop="58dp"
-        android:onClick="authoriseOnClick"
-        android:layout_below="@+id/btnReEnterCredentials"
-        android:layout_alignStart="@+id/btnCheckConnection" />
+        android:text="Remove User"
+        android:id="@+id/btnRemoveUser"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/lblUsernameValue"
+        android:onClick="removeUserOnClick" />
 
 </RelativeLayout>
