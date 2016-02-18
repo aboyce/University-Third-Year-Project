@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -49,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
         } else {
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User is configured with app.");
+
+            TextView txtUsername = (TextView)findViewById(R.id.lblUsernameValue);
+            if (!username.isEmpty())
+                txtUsername.setText(username.toString());
+
             ticketsIntent = new Intent(this, TicketsActivity.class);
             new API_ConfirmUserCredentials().execute();
         }
@@ -206,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials");
-            //progressbar.setVisibility(View.VISIBLE);
+            progressbar.setVisibility(View.VISIBLE);
         }
 
         protected String doInBackground(Void... urls) {
@@ -246,17 +252,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             response = response.replace("\"","");
-
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
 
-            if(response == "true")
+            if(response == "true" || response.contains("true"))
                 startActivity(ticketsIntent);
             else {
                 showMessageBox("Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Cannot confirm User credentials");
             }
 
-            //progressbar.setVisibility(View.GONE);
+            progressbar.setVisibility(View.GONE);
         }
     }
 }

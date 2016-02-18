@@ -32,9 +32,9 @@
         android:id="@+id/chkConnection"
         android:enabled="true"
         android:focusable="true"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="51dp"
         android:layout_below="@+id/lblMain"
-        android:layout_toStartOf="@+id/btnReEnterCredentials" />
+        android:layout_toEndOf="@+id/lblMain" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -42,9 +42,9 @@
         android:layout_height="wrap_content"
         android:text="Check Connection"
         android:id="@+id/btnCheckConnection"
+        android:onClick="checkConnectionOnClick"
         android:layout_alignTop="@+id/chkConnection"
-        android:layout_alignEnd="@+id/lblUsernameValue"
-        android:onClick="checkConnectionOnClick" />
+        android:layout_alignEnd="@+id/lblUsernameValue" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,10 +62,9 @@
         android:layout_height="wrap_content"
         android:text="Re/Enter Credentials"
         android:id="@+id/btnReEnterCredentials"
-        android:layout_below="@+id/lblUsernameValue"
-        android:layout_alignEnd="@+id/btnCheckConnection"
-        android:layout_marginTop="38dp"
-        android:onClick="reEnterCredentialsOnClick" />
+        android:onClick="reEnterCredentialsOnClick"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,8 +74,8 @@
         android:id="@+id/lblUsernameValue"
         android:enabled="true"
         android:layout_alignBottom="@+id/lblUsername"
-        android:layout_toEndOf="@+id/lblUsername"
-        android:layout_marginStart="27dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/chkConnection" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -94,9 +93,9 @@
         android:layout_height="wrap_content"
         android:text="Authorise"
         android:id="@+id/btnAuthorise"
+        android:layout_marginTop="58dp"
+        android:onClick="authoriseOnClick"
         android:layout_below="@+id/btnReEnterCredentials"
-        android:layout_alignEnd="@+id/btnReEnterCredentials"
-        android:layout_marginTop="64dp"
-        android:onClick="authoriseOnClick" />
+        android:layout_alignStart="@+id/btnCheckConnection" />
 
 </RelativeLayout>
