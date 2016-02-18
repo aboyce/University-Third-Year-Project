@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute");
-            if(response == null || response.contains(null)){
+            if(response == null){
                 showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm the connection.");
                 Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnections:onPostExecute: Error: " + response);
                 return;
