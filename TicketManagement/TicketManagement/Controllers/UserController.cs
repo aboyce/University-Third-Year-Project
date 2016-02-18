@@ -159,6 +159,22 @@ namespace TicketManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeactivateUserToken(string userId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenDeactivationFailed });
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            user.MobileApplicationConfirmed = false;
+            db.Entry(user).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenDeactivated });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> TextUserToken(string userId)
         {
             if (!ModelState.IsValid)

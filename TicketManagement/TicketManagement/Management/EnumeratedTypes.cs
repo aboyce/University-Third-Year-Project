@@ -90,6 +90,8 @@
         UserTokenGenerationFailed,
         UserTokenConfirmed,
         UserTokenConfirmationFailed,
+        UserTokenDeactivated,
+        UserTokenDeactivationFailed,
         UserTokenSentViaText,
         UserTokenSentViaTextFailed,
 
