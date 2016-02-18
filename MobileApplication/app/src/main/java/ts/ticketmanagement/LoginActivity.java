@@ -110,10 +110,11 @@ public class LoginActivity extends AppCompatActivity {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute");
-            if(response == null || username == null || Objects.equals(username, "")){
+            if(response == null || response.contains("null") || username == null || Objects.equals(username, "")){
                 showMessageBox("Error Getting Token", "An error has occurred trying to get your" +
                         " user token, please check the configuration and try again");
-                Log.e("TICKET_MANAGEMENT","LoginActivity-API_GetUserToken:onPostExecute: Error: " + response);
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute: Error: " + response);
+                progressbar.setVisibility(View.GONE);
                 return;
             }
 

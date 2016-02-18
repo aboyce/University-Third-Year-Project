@@ -13,17 +13,20 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private final Integer LOGIN_FROM_MAIN = 0;
 
     ProgressBar progressbar;
+    TextView textViewUsernameValue;
 
     private String username;
     private String userToken;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
+        textViewUsernameValue = (TextView)findViewById(R.id.lblUsernameValue);
 
         // Will let the user know that the application is connected or not.
         new API_CheckConnection().execute();
@@ -54,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User is configured with app.");
 
-            TextView txtUsername = (TextView)findViewById(R.id.lblUsernameValue);
             if (!username.isEmpty())
-                txtUsername.setText(username.toString());
+                textViewUsernameValue.setText(username.toString());
 
             ticketsIntent = new Intent(this, TicketsActivity.class);
             new API_ConfirmUserCredentials().execute();
@@ -91,22 +94,42 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: User information is now stored within the app.");
 
+        textViewUsernameValue.setText(username);
+
         AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
         messageBox.setTitle("Credentials have been Saved!");
-        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use, you can do that now via text or via the web application.");
         messageBox.setItems(new CharSequence[]{"Send Text Now", "Wait for Web Application"},
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int option){
-                        if(option == 0){
-                            //Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
-                            //intent.putExtra("sms_body", "The message body");
-                            //startActivity(intent);
-                            // TODO: Get back from sms....
+                    public void onClick(DialogInterface dialog, int selected) {
+                        switch (selected) {
+                            case 0:
+                                Toast.makeText(getApplicationContext(), "Text", Toast.LENGTH_LONG).show();
+                                break;
+                            case 1:
+                                Toast.makeText(getApplicationContext(), "Wait", Toast.LENGTH_LONG).show();
+                                break;
                         }
-                        else if (option == 1){
-                        }
-                    }});
+                    }
+                });
+        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use.");
         messageBox.create().show();
+
+//        AlertDialog.Builder messageBox = new AlertDialog.Builder(getApplicationContext());
+//        messageBox.setTitle("Credentials have been Saved!");
+//        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use, you can do that now via text or via the web application.");
+//        messageBox.setItems(new CharSequence[]{"Send Text Now", "Wait for Web Application"},
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialogInterface, int option){
+//                        if(option == 0){
+//                            //Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
+//                            //intent.putExtra("sms_body", "The message body");
+//                            //startActivity(intent);
+//                            // TODO: Get back from sms....
+//                        }
+//                        else if (option == 1){
+//                        }
+//                    }});
+//        messageBox.create().show();
     }
 
     private boolean userConfiguredWithApplication()    {
@@ -158,11 +181,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick: Removed User from Shared Preferences");
         username = "";
         userToken = "";
-
-        TextView txtUsername = (TextView)findViewById(R.id.lblUsernameValue);
-        txtUsername.setText(getString(R.string.main_lbl_usernameValue));
-
-        showMessageBox("Removed User", "Your User information has been removed from this device. For safety, deactivate your User Token.");
+        textViewUsernameValue.setText(getString(R.string.main_lbl_usernameValue));
 
         loginIntent = new Intent(this, LoginActivity.class);
         startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
@@ -218,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute");
-            if(response == null){
+            if(response == null || response.contains(null)){
                 showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm the connection.");
                 Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnections:onPostExecute: Error: " + response);
                 return;
@@ -230,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
             CheckBox checkBox = (CheckBox)findViewById(R.id.chkConnection);
 
-            if(response == "true" || response == "true\n" || response.contains("true"))
+            if(Objects.equals(response, "true") || Objects.equals(response, "true\n") || response.contains("true"))
                 checkBox.setChecked(true);
             else {
                 checkBox.setChecked(false);
@@ -272,14 +291,14 @@ public class MainActivity extends AppCompatActivity {
                     urlConnection.disconnect();
                 }
             }catch (Exception e){
-                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentialsn:doInBackground: Error: " + e.getMessage(), e);
+                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:doInBackground: Error: " + e.getMessage(), e);
                 return null;
             }
         }
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute");
-            if(response == null){
+            if(response == null || response.contains("null")){
                 showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm your user token, please check the configuration and try again");
                 Log.e("TICKET_MANAGEMENT","LoginActivity-API_ConfirmUserCredentials:onPostExecute: Error: " + response);
                 return;
@@ -288,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             response = response.replace("\"","");
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
 
-            if(response == "true" || response.contains("true"))
+            if(Objects.equals(response, "true") || response.contains("true"))
                 startActivity(ticketsIntent);
             else {
                 showMessageBox("Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
