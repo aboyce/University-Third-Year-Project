@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MenuExampleActivity"
+    android:logo="@drawable/ic_ts_menu"
+    android:icon="@drawable/ic_ts_menu">
+
+    <item
+        android:title="Settings"
+        android:orderInCategory="1"
+        android:id="@+id/ts_menu_settings"
+        app:showAsAction="never"/>
+
+</menu>
