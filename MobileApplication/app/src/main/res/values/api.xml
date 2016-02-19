@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="api_phone_numberToConfirm">84433</string>
+    <!--<string name="api_phone_numberToConfirm">84433</string>-->
+    <string name="api_phone_numberToConfirm">07922133829</string>
     <string name="api_phone_body">TICKETSYSTEM CONFIRM_USER_TOKEN:</string>
 
     <string name="api_url">http://adamboyce.azurewebsites.net/api</string>
