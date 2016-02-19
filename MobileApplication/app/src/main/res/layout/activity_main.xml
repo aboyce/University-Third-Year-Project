@@ -109,4 +109,14 @@
         android:layout_alignEnd="@+id/lblUsernameValue"
         android:onClick="removeUserOnClick" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send SMS"
+        android:id="@+id/btnSendSMS"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/btnAuthorise"
+        android:onClick="sendSMSOnClick" />
+
 </RelativeLayout>

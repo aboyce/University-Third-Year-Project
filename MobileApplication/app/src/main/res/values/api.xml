@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <string name="api_phone_numberToConfirm">84433</string>
+    <string name="api_phone_body">TICKETSYSTEM CONFIRM_USER_TOKEN:</string>
+
     <string name="api_url">http://adamboyce.azurewebsites.net/api</string>
 
     <string name="api_user_getNewUserToken">/User/GetNewUserToken?username=</string>

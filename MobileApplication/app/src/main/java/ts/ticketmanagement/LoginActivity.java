@@ -22,9 +22,9 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ProgressBar progressbar;
-    String username = "";
-    String userToken = "";
+    private ProgressBar progressbar;
+    private String username = "";
+    private String userToken = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

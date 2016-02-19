@@ -1,13 +1,18 @@
 package ts.ticketmanagement;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,9 +31,11 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private final Integer LOGIN_FROM_MAIN = 0;
+    private final Integer PERMISSION_REQUEST_SMS = 1;
 
-    ProgressBar progressbar;
-    TextView textViewUsernameValue;
+    private Activity currentActivity;
+    private ProgressBar progressbar;
+    private TextView textViewUsernameValue;
 
     private String username;
     private String userToken;
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        currentActivity = this;
         progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
         textViewUsernameValue = (TextView)findViewById(R.id.lblUsernameValue);
 
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User is configured with app.");
 
             if (!username.isEmpty())
-                textViewUsernameValue.setText(username.toString());
+                textViewUsernameValue.setText(username);
 
             ticketsIntent = new Intent(this, TicketsActivity.class);
             new API_ConfirmUserCredentials().execute();
@@ -112,40 +120,47 @@ public class MainActivity extends AppCompatActivity {
 
         textViewUsernameValue.setText(username);
 
-        AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
-        messageBox.setTitle("Credentials have been Saved!");
-        messageBox.setItems(new CharSequence[]{"Send Text Now", "Wait for Web Application"},
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int selected) {
-                        switch (selected) {
-                            case 0:
-                                Toast.makeText(getApplicationContext(), "Text", Toast.LENGTH_LONG).show();
-                                break;
-                            case 1:
-                                Toast.makeText(getApplicationContext(), "Wait", Toast.LENGTH_LONG).show();
-                                break;
-                        }
+        new AlertDialog.Builder(this)
+                .setTitle("Credentials have been Saved!")
+                .setMessage("Your User Token will have to be confirmed before use.")
+                .setPositiveButton("Send Text Now", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: SendTextNow Clicked.");
+                        trySendSMSMessage();
                     }
-                });
-        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use.");
-        messageBox.create().show();
+                })
+                .setNegativeButton("Wait for Web Application", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: WaitForWebApplication Clicked.");
+                    }
+                })
+                .show();
+    }
 
-//        AlertDialog.Builder messageBox = new AlertDialog.Builder(getApplicationContext());
-//        messageBox.setTitle("Credentials have been Saved!");
-//        messageBox.setMessage("Your credentials have been saved locally. The User Token will have to be confirmed before use, you can do that now via text or via the web application.");
-//        messageBox.setItems(new CharSequence[]{"Send Text Now", "Wait for Web Application"},
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialogInterface, int option){
-//                        if(option == 0){
-//                            //Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555555"));
-//                            //intent.putExtra("sms_body", "The message body");
-//                            //startActivity(intent);
-//                            // TODO: Get back from sms....
-//                        }
-//                        else if (option == 1){
-//                        }
-//                    }});
-//        messageBox.create().show();
+    private Boolean trySendSMSMessage()
+    {
+        if (ContextCompat.checkSelfPermission(currentActivity, android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("TICKET_MANAGEMENT", "MainActivity:trySendSMSMessage: No permission to send SMS");
+            ActivityCompat.requestPermissions(currentActivity, new String[]{android.Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_SMS);
+            return false;
+        } else {
+            Log.d("TICKET_MANAGEMENT", "MainActivity:trySendSMSMessage: Permission to send SMS");
+            String number = getString(R.string.api_phone_numberToConfirm);
+            String message = getString(R.string.api_phone_body) + userToken;
+            SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
+            Log.d("TICKET_MANAGEMENT", "MainActivity:trySendSMSMessage: Text message sent.");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults ){
+        if(requestCode != PERMISSION_REQUEST_SMS) return;
+
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            trySendSMSMessage();
+        else
+            showMessageBox("Permission Denied", "As you won't allow an SMS Message to be sent automatically, you will have to confirm the User Token manually.");
     }
 
     private boolean userConfiguredWithApplication()    {
@@ -163,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
         } else return false;
 
         return true;
+    }
+
+    public void sendSMSOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "MainActivity:sendSMSOnClick");
+        trySendSMSMessage();
     }
 
     public void checkConnectionOnClick(View pView){
