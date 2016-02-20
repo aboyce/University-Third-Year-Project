@@ -106,7 +106,7 @@ namespace TicketManagement.Controllers
             if (txt == null)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
-            txt = await txtHelper.ProcessTextMessage(txt);
+            txt = await txtHelper.ProcessTextMessage(txt, db);
 
             db.TextMessagesReceived.Add(txt);
             await db.SaveChangesAsync();
