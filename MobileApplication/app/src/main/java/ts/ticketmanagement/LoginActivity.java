@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,25 +24,16 @@ public class LoginActivity extends ActivityBase {
 
     private ProgressBar progressbar;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.ts_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == R.id.ts_menu_settings){
-            startActivity(new Intent(this, SettingsActivity.class));;
-        }
-        return true;
-    }
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("TICKET_MANAGEMENT", "LoginActivity:onCreate");
         setContentView(R.layout.activity_login);
         progressbar = (ProgressBar)findViewById(R.id.prbAuthoriseProgress);
+
+        if(tryPopulateUserCredentials("Login")){
+            new Intent(this, MainActivity.class);
+            Toast.makeText(getApplicationContext(), "User credentials stored on Phone already!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void authenticateOnClick(View pView){

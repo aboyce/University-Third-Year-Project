@@ -2,10 +2,8 @@ package ts.ticketmanagement;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +12,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,11 +26,10 @@ import java.util.Objects;
 
 public class MainActivity extends ActivityBase {
 
-    private final Integer LOGIN_FROM_MAIN = 0;
     private final Integer PERMISSION_REQUEST_SMS = 1;
 
     private Activity currentActivity;
-    private ProgressBar progressbar;
+    private ProgressBar progressBar;
     private TextView textViewUsernameValue;
 
     private Intent ticketsIntent;
@@ -44,12 +42,12 @@ public class MainActivity extends ActivityBase {
         Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate");
 
         currentActivity = this;
-        progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
+        progressBar = (ProgressBar)findViewById(R.id.prbMainActivity);
         textViewUsernameValue = (TextView)findViewById(R.id.lblUsernameValue);
 
         new API_CheckConnection().execute();
 
-        if(!userConfiguredWithApplication()){
+        if(!tryPopulateUserCredentials("Main")){
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User not configured with app.");
             startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_FROM_MAIN);
         } else {
@@ -133,23 +131,6 @@ public class MainActivity extends ActivityBase {
             showMessageBox("Main", "Permission Denied", "As you won't allow an SMS Message to be sent automatically, you will have to confirm the User Token manually.");
     }
 
-    private boolean userConfiguredWithApplication()    {
-        Log.d("TICKET_MANAGEMENT","MainActivity:userConfiguredWithApplication");
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
-
-        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_username))) {
-            username = sharedPreferences.getString(getString(R.string.persistent_storage_user_username), null);
-            Log.d("TICKET_MANAGEMENT", "MainActivity:userConfiguredWithApplication: Contained username.");
-        } else return false;
-
-        if(sharedPreferences.contains(getString(R.string.persistent_storage_user_token))){
-            userToken = sharedPreferences.getString(getString(R.string.persistent_storage_user_token), null);
-            Log.d("TICKET_MANAGEMENT", "MainActivity:userConfiguredWithApplication: Contained userToken.");
-        } else return false;
-
-        return true;
-    }
-
     public void sendSMSOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "MainActivity:sendSMSOnClick");
         trySendSMSMessage();
@@ -166,36 +147,11 @@ public class MainActivity extends ActivityBase {
         new API_ConfirmUserCredentials().execute();
     }
 
-    public void removeUserOnClick(View pView){
-        Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick");
-        new API_DeactivateUserCredentials();
-    }
-
-    private void removeUserFromPhone(){
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(getString(R.string.persistent_storage_user_username));
-        editor.remove(getString(R.string.persistent_storage_user_token));
-
-        if(!editor.commit()){
-            Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick: Failed to remove User from Shared Preferences.");
-            return;
-        }
-
-        Log.d("TICKET_MANAGEMENT", "MainActivity:removeUserOnClick: Removed User from Shared Preferences");
-        username = "";
-        userToken = "";
-        textViewUsernameValue.setText(getString(R.string.main_lbl_usernameValue));
-
-        startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_FROM_MAIN);
-        Toast.makeText(getApplicationContext(), "User Token Deactivated from Server and removed from Phone!", Toast.LENGTH_LONG).show();
-    }
-
     class API_CheckConnection extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection");
-            progressbar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         protected String doInBackground(Void... urls) {
@@ -248,7 +204,7 @@ public class MainActivity extends ActivityBase {
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Cannot confirm connection.");
             }
 
-            progressbar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -256,7 +212,7 @@ public class MainActivity extends ActivityBase {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials");
-            progressbar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         protected String doInBackground(Void... urls) {
@@ -298,71 +254,22 @@ public class MainActivity extends ActivityBase {
             response = response.replace("\"","");
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
 
-            if(Objects.equals(response, "true") || response.contains("true"))
+            CheckBox authorisedCheckBox = (CheckBox)findViewById(R.id.chkAccountAuthorised);
+            Button sendSMSButton = (Button)findViewById(R.id.btnSendSMS);
+
+            if(Objects.equals(response, "true") || response.contains("true")){
+                authorisedCheckBox.setChecked(true);
+                sendSMSButton.setVisibility(View.GONE);
                 startActivity(ticketsIntent);
+            }
             else {
+                authorisedCheckBox.setChecked(false);
+                sendSMSButton.setVisibility(View.VISIBLE);
                 showMessageBox("Main", "Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Cannot confirm User credentials");
             }
 
-            progressbar.setVisibility(View.GONE);
-        }
-    }
-
-    class API_DeactivateUserCredentials extends AsyncTask<Void, Void, String> {
-
-        protected void onPreExecute(){
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials");
-            progressbar.setVisibility(View.VISIBLE);
-        }
-
-        protected String doInBackground(Void... urls) {
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:doInBackground");
-            try{
-                URL url = new URL(getString(R.string.api_url) + getString(R.string.api_user_deactivateUserToken1) + username + getString(R.string.api_user_deactivateUserToken2) + userToken);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials: Opened HTTP URL Connection to; " + url.toString());
-                try{
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-                    while((line = bufferedReader.readLine()) != null)
-                        stringBuilder.append(line).append("\n");
-                    bufferedReader.close();
-                    Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:doInBackground: Response from API=" + stringBuilder.toString());
-                    return stringBuilder.toString();
-                }catch (Exception e){
-                    Log.e("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:doInBackground: Error: " + e.getMessage(), e);
-                    return null;
-                }
-                finally {
-                    urlConnection.disconnect();
-                }
-            }catch (Exception e){
-                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:doInBackground: Error: " + e.getMessage(), e);
-                return null;
-            }
-        }
-
-        protected void onPostExecute(String response){
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:onPostExecute");
-            if(response == null || response.contains("null")){
-                showMessageBox("Main", "Error Deactivating Credentials", "An error has occurred trying to deactivate your user token, please check the state on the Web Application.");
-                Log.e("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:onPostExecute: Error: " + response);
-                return;
-            }
-
-            response = response.replace("\"","");
-            Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:onPostExecute: Response=" + response);
-
-            if(Objects.equals(response, "true") || response.contains("true"))
-                removeUserFromPhone();
-            else {
-                showMessageBox("Main", "Cannot Deactivate Credentials", "Unfortunately we cannot deactivate your User Token, please check your config and try again.");
-                Log.d("TICKET_MANAGEMENT", "LoginActivity-API_DeactivateUserCredentials:onPostExecute: Cannot deactivate User Token");
-            }
-
-            progressbar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

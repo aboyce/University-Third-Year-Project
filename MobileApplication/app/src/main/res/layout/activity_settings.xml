@@ -17,4 +17,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove User From Phone"
+        android:id="@+id/btnRemoveUser"
+        android:onClick="removeUserOnClick"
+        android:layout_marginTop="167dp"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/prbSettingsActivity"
+        android:layout_below="@+id/lblMain"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:visibility="gone" />
+
 </RelativeLayout>
