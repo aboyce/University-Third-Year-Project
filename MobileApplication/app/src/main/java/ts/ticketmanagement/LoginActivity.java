@@ -1,8 +1,6 @@
 package ts.ticketmanagement;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -52,7 +50,7 @@ public class LoginActivity extends ActivityBase {
         username = txtUsername.getText().toString();
 
         if(username.isEmpty()){
-            showMessageBox("Username Required", "Please enter your username.");
+            showMessageBox("Login", "Username Required", "Please enter your username.");
             return;
         }
 
@@ -71,19 +69,6 @@ public class LoginActivity extends ActivityBase {
             Log.e("TICKET_MANAGEMENT","LoginActivity:storeCredentials: Error: " + e.getMessage(), e);
         }
         return false;
-    }
-
-    private void showMessageBox(String title, String message){
-        Log.d("TICKET_MANAGEMENT","TicketsActivity:showMessageBox: Title='" + title + "' Message= " + message);
-        AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
-        messageBox.setTitle(title);
-        messageBox.setMessage(message);
-        messageBox.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int which) {
-            }
-        });
-        messageBox.setCancelable(true);
-        messageBox.create().show();
     }
 
     class API_GetUserToken extends AsyncTask<Void, Void, String> {
@@ -124,7 +109,7 @@ public class LoginActivity extends ActivityBase {
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute");
             if(response == null || response.contains("null") || username == null || Objects.equals(username, "")){
-                showMessageBox("Error Getting Token", "An error has occurred trying to get your" +
+                showMessageBox("Login", "Error Getting Token", "An error has occurred trying to get your" +
                         " user token, please check the Username and try again");
                 Log.e("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute: Error: null from doInBackground, assumed error occurred.");
                 progressbar.setVisibility(View.GONE);

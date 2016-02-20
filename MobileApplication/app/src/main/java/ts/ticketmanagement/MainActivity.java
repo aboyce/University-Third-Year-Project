@@ -39,11 +39,9 @@ public class MainActivity extends ActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         Log.d("TICKET_MANAGEMENT", "'ACTIVITY_NAME':'METHOD_NAME':'INFORMATION'");
         Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate");
-
-        setContentView(R.layout.activity_main);
 
         currentActivity = this;
         progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
@@ -52,8 +50,6 @@ public class MainActivity extends ActivityBase {
         // Will let the user know that the application is connected or not.
         new API_CheckConnection().execute();
 
-        // If the phone cannot find a valid username/userToken, then assume they are
-        // not 'logged in', so send them to the Login Page.
         if(!userConfiguredWithApplication()){
             Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate: User not configured with app.");
             loginIntent = new Intent(this, LoginActivity.class);
@@ -79,11 +75,7 @@ public class MainActivity extends ActivityBase {
                 handleLoginFromMain(pData);
             }
             else if(pResultCode == RESULT_CANCELED){
-                Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult:LoginFromMain Result: Canceled ");
-                // TODO: remove this eventually
-                showMessageBox("User not logged in [RESULT_CANCELED]", "ah well...");
-
-                // TODO: maybe a sensible popup box
+                showMessageBox("Main", "User not logged in [RESULT_CANCELED]", "ah well...");
             }
         }
     }
@@ -139,7 +131,7 @@ public class MainActivity extends ActivityBase {
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             trySendSMSMessage();
         else
-            showMessageBox("Permission Denied", "As you won't allow an SMS Message to be sent automatically, you will have to confirm the User Token manually.");
+            showMessageBox("Main", "Permission Denied", "As you won't allow an SMS Message to be sent automatically, you will have to confirm the User Token manually.");
     }
 
     private boolean userConfiguredWithApplication()    {
@@ -196,19 +188,6 @@ public class MainActivity extends ActivityBase {
         startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
     }
 
-    private void showMessageBox(String title, String message){
-        Log.d("TICKET_MANAGEMENT","MainActivity:showMessageBox: Title='" + title + "' Message= " + message);
-        AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
-        messageBox.setTitle(title);
-        messageBox.setMessage(message);
-        messageBox.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int which) {
-            }
-        });
-        messageBox.setCancelable(true);
-        messageBox.create().show();
-    }
-
     class API_CheckConnection extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
@@ -247,7 +226,7 @@ public class MainActivity extends ActivityBase {
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute");
             if(response == null){
-                showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm the connection.");
+                showMessageBox("Main", "Error Confirming Credentials", "An error has occurred trying to confirm the connection.");
                 Log.e("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnections:onPostExecute: Error: " + response);
                 return;
             }
@@ -262,7 +241,7 @@ public class MainActivity extends ActivityBase {
                 checkBox.setChecked(true);
             else {
                 checkBox.setChecked(false);
-                showMessageBox("Cannot Confirm Connection", "Unfortunately we cannot confirm your connection, please check your config and try again.");
+                showMessageBox("Main", "Cannot Confirm Connection", "Unfortunately we cannot confirm your connection, please check your config and try again.");
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Cannot confirm connection.");
             }
 
@@ -308,7 +287,7 @@ public class MainActivity extends ActivityBase {
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute");
             if(response == null || response.contains("null")){
-                showMessageBox("Error Confirming Credentials", "An error has occurred trying to confirm your user token, please check the configuration and try again");
+                showMessageBox("Main", "Error Confirming Credentials", "An error has occurred trying to confirm your user token, please check the configuration and try again");
                 Log.e("TICKET_MANAGEMENT","LoginActivity-API_ConfirmUserCredentials:onPostExecute: Error: " + response);
                 return;
             }
@@ -319,7 +298,7 @@ public class MainActivity extends ActivityBase {
             if(Objects.equals(response, "true") || response.contains("true"))
                 startActivity(ticketsIntent);
             else {
-                showMessageBox("Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
+                showMessageBox("Main", "Cannot Confirm Credentials", "Unfortunately we cannot confirm your credentials, please check your config and try again.");
                 Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Cannot confirm User credentials");
             }
 
