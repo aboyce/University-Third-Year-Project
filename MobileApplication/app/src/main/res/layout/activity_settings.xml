@@ -17,16 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remove User From Phone"
-        android:id="@+id/btnRemoveUser"
-        android:onClick="removeUserOnClick"
-        android:layout_marginTop="167dp"
-        android:layout_centerHorizontal="true" />
-
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -36,5 +26,67 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="72dp"
         android:visibility="gone" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove User From Phone"
+        android:id="@+id/btnRemoveUser"
+        android:onClick="removeUserOnClick"
+        android:layout_marginTop="178dp"
+        android:layout_below="@+id/lblMain"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deactivate User From Phone"
+        android:id="@+id/btnDeactivateUser"
+        android:layout_below="@+id/btnRemoveUser"
+        android:layout_centerHorizontal="true"
+        android:onClick="deactivateUserOnClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Username: "
+        android:id="@+id/lblSettingsUsername"
+        android:layout_below="@+id/btnDeactivateUser"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="91dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/settings_lbl_usernameValue"
+        android:id="@+id/lblSettingsUsernameValue"
+        android:enabled="true"
+        android:layout_alignBottom="@+id/lblSettingsUsername"
+        android:layout_toEndOf="@+id/lblSettingsUserToken" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="User Token: "
+        android:id="@+id/lblSettingsUserToken"
+        android:layout_below="@+id/lblSettingsUsername"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="53dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/settings_lbl_userTokenValue"
+        android:id="@+id/lblSettingsUserTokenValue"
+        android:enabled="true"
+        android:layout_below="@+id/lblSettingsUserToken"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -19,6 +19,10 @@
     <!-- MAIN PAGE -->
     <string name="main_lbl_usernameValue">Username not configured</string>
 
+    <!-- SETTINGS PAGE -->
+    <string name="settings_lbl_usernameValue">Username not configured</string>
+    <string name="settings_lbl_userTokenValue">User Token not configured</string>
+
 
     <!-- TICKETS PAGE -->
 

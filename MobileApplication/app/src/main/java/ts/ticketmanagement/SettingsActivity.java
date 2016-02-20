@@ -31,10 +31,21 @@ public class SettingsActivity extends ActivityBase {
         if(!tryPopulateUserCredentials("Settings")){
             Toast.makeText(getApplicationContext(), "No User credentials stored on Phone", Toast.LENGTH_LONG).show();
         }
+
+        TextView txtUsername = (TextView)findViewById(R.id.lblSettingsUsernameValue);
+        txtUsername.setText(username);
+        TextView txtUserToken = (TextView)findViewById(R.id.lblSettingsUserTokenValue);
+        txtUserToken.setText(userToken);
     }
 
     public void removeUserOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "SettingsActivity:removeUserOnClick");
+        removeUserFromPhone();
+        Toast.makeText(getApplicationContext(), "User removed from Phone!", Toast.LENGTH_LONG).show();
+    }
+
+    public void deactivateUserOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "SettingsActivity:deactivateUserOnClick");
         new API_DeactivateUserCredentials().execute();
     }
 
@@ -54,7 +65,6 @@ public class SettingsActivity extends ActivityBase {
         userToken = "";
 
         startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_FROM_MAIN);
-        Toast.makeText(getApplicationContext(), "User Token Deactivated from Server and removed from Phone!", Toast.LENGTH_LONG).show();
     }
 
     class API_DeactivateUserCredentials extends AsyncTask<Void, Void, String> {
