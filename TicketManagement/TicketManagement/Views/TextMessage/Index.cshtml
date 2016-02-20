@@ -1,6 +1,4 @@
 ﻿@using TicketManagement.Helpers
-@model TicketManagement.ViewModels.AllTextMessagesViewModel
-
 
 @{
     ViewBag.Title = "Text Messages";
@@ -26,70 +24,53 @@
                 @Html.ActionLink("New Message", "Send", null, new {@class = "btn btn-success"})
             </p>
         </div>
-        <div class="col-md-10">
-            <h4>Sent Messages</h4>
-            <br/>
-            <table class="table table-hover table-striped table-responsive">
-                <tr>
-                    <th>Recipient</th>
-                    <th>
-                        Message
-                    </th>
-                    <th>
-                        Sent
-                    </th>
-                </tr>
 
-                @foreach (var text in Model.SentMessages)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.UserTo.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.Content)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.Sent)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
+        <div id="text_messages_sent"></div>
+
+        @using (Ajax.BeginForm("_Partial_SentMessages", "TextMessages", new AjaxOptions
+        {
+            OnFailure = "handleError(xhr, 'text_messages_sent')",
+            HttpMethod = "Get",
+            UpdateTargetId = "text_messages_sent",
+            LoadingElementId = "text_messages_sent_loading"
+        },
+            new
+            {
+                id = "text_messages_sent_form"
+            }))
+        {
+            <div id="text_messages_sent_loading" style="display: none;">
+                <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
+            </div>
+        }
+
     </div>
     <div class="row">
-        <div class="col-md-10 col-md-offset-2">
-            <hr />
-            <h4>Recieved Messages</h4>
-            <br/>
-            <table class="table table-hover table-striped table-responsive">
-                <tr>
-                    <th>Recipient</th>
-                    <th>
-                        Message
-                    </th>
-                    <th>
-                        Received
-                    </th>
-                </tr>
+        <div id="text_messages_recieved"></div>
 
-                @foreach (var text in Model.ReceivedMessages)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.To)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.Content)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => text.Received)
-                        </td>
-                    </tr>
-                }
-            </table>
-
-        </div>
+        @using (Ajax.BeginForm("_Partial_RecievedMessages", "TextMessages", new AjaxOptions
+        {
+            OnFailure = "handleError(xhr, 'text_messages_recieved')",
+            HttpMethod = "Get",
+            UpdateTargetId = "text_messages_recieved",
+            LoadingElementId = "text_messages_recieved_loading"
+        },
+            new
+            {
+                id = "text_messages_recieved_form"
+            }))
+        {
+            <div id="text_messages_recieved_loading" style="display: none;">
+                <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
+            </div>
+        }
     </div>
 </div>
 
+<script type="text/javascript">
+    $('#text_messages_sent_form').submit();
+    $('#text_messages_recieved_form').submit();
+
+</script>
+
+@Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")

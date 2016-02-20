@@ -19,13 +19,19 @@ namespace TicketManagement.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(new AllTextMessagesViewModel
-            {
-                SentMessages = await db.TextMessagesSent.Select(tms => tms).ToListAsync(),
-                ReceivedMessages = await db.TextMessagesReceived.Select(tmr => tmr).ToListAsync()
-            });
+            return View();
+        }
+
+        public async Task<ActionResult> _Partial_SentMessages()
+        {
+            return PartialView(await db.TextMessagesSent.Select(tms => tms).Include(tms => tms.UserTo).ToListAsync());
+        }
+
+        public async Task<ActionResult> _Partial_RecievedMessages()
+        {
+            return PartialView(await db.TextMessagesReceived.Select(tmr => tmr).Include(tmr => tmr.UserFrom).ToListAsync());
         }
 
         public ActionResult Send()

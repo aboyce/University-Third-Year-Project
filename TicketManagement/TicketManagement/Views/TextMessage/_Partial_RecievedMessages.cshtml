@@ -1,0 +1,37 @@
+﻿@model List<TicketManagement.Models.Entities.ReceivedTextMessage>
+
+<div class="col-md-10 col-md-offset-2">
+    <hr />
+    <h4>Recieved Messages</h4>
+    <br />
+    <table class="table table-hover table-striped table-responsive">
+        <tr>
+            <th>Sender</th>
+            <th>Message</th>
+            <th>Received</th>
+        </tr>
+
+        @foreach (var text in Model)
+        {
+            <tr>
+                <td>
+                    @if (text.UserFrom != null)
+                    {
+                        @Html.DisplayFor(modelItem => text.UserFrom.FullName)
+                    }
+                    else
+                    {
+                        @:Unknown
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => text.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => text.Received)
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

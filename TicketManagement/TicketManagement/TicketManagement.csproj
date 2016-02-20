@@ -294,6 +294,10 @@
     <Compile Include="Migrations\Application\201602142041184_Added new properties to User.Designer.cs">
       <DependentUpon>201602142041184_Added new properties to User.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201602202131209_Added User info on Recieved Text Messages.cs" />
+    <Compile Include="Migrations\Application\201602202131209_Added User info on Recieved Text Messages.Designer.cs">
+      <DependentUpon>201602202131209_Added User info on Recieved Text Messages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
@@ -580,6 +584,8 @@
     <Content Include="Views\Twitter\_Partial_TwitterProfileSummary.cshtml" />
     <Content Include="Views\Twitter\_Partial_TwitterHomeTimeline.cshtml" />
     <Content Include="Views\Twitter\_Partial_TwitterUserTimeline.cshtml" />
+    <Content Include="Views\TextMessage\_Partial_SentMessages.cshtml" />
+    <Content Include="Views\TextMessage\_Partial_RecievedMessages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -612,6 +618,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201602142041184_Added new properties to User.resx">
       <DependentUpon>201602142041184_Added new properties to User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201602202131209_Added User info on Recieved Text Messages.resx">
+      <DependentUpon>201602202131209_Added User info on Recieved Text Messages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

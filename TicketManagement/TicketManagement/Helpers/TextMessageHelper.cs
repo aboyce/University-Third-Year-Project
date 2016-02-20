@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -125,6 +127,17 @@ namespace TicketManagement.Helpers
 
                 if (string.IsNullOrEmpty(txt.Content)) // If the txt.To matches the number above, we must have a Keyword added from Clockwork, we want to remove this.
                     txt.Content = txt.Content.Remove(0, await ConfigurationHelper.GetTextMessageReceiveKeywordLengthAsync());
+            }
+
+            if (txt.From != null)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(u => u.PhoneNumber == txt.From);
+
+                if (user != null)
+                {
+                    txt.UserFrom = user;
+                    txt.UserFromId = user.Id;
+                }
             }
 
             if (txt.Content != null)

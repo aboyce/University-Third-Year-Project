@@ -27,6 +27,10 @@ namespace TicketManagement.Models.Entities
         [Required]
         public string ClockworkKeyword { get; set; }
 
+        public string UserFromId { get; set; }
+
+        public User UserFrom { get; set; }
+
         [Required]
         public bool Read { get; set; } = false;
 
