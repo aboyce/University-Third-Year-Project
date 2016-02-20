@@ -50,7 +50,7 @@ namespace TicketManagement.Controllers.API
         }
 
         [System.Web.Http.AcceptVerbs("GET")]
-        public async Task<bool> ClearUserToken(string username, string usertoken)
+        public async Task<bool> DeactivateUserToken(string username, string usertoken)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
 

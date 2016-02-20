@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectingToTFS", "ConnectingToTFS\ConnectingToTFS.csproj", "{5608DA85-E2AE-450D-8D18-0F79C6A3EFE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedAmberGreenTesting", "RedAmberGreenTesting\RedAmberGreenTesting.csproj", "{9E31990A-402D-4A67-B2E3-551EB7D3036C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMessageProtocol", "TextMessageProtocol\TextMessageProtocol.csproj", "{70E0A943-0D73-4DB5-8296-A4B466DE2195}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9E31990A-402D-4A67-B2E3-551EB7D3036C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E31990A-402D-4A67-B2E3-551EB7D3036C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E31990A-402D-4A67-B2E3-551EB7D3036C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

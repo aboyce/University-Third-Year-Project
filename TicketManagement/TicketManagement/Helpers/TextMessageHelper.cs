@@ -126,8 +126,19 @@ namespace TicketManagement.Helpers
 
                 if (string.IsNullOrEmpty(txt.Content)) // If the txt.To matches the number above, we must have a Keywork added from Clockwork, we want to remove this.
                     txt.Content = txt.Content.Remove(0, await ConfigurationHelper.GetTextMessageReceiveKeywordLengthAsync());
+
             }
-            
+
+            if (txt.Content != null)
+            {
+                // Removes the initial string that is required by Clockwork to direct the message to the system on the shared number.
+                txt.Content = txt.Content.Replace($"{await ConfigurationHelper.GetTextMessageReceiveKeywordAsync()} ", "");
+
+
+
+
+            }
+
             return txt;
         }
     }

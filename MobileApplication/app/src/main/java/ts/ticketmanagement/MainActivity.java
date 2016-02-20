@@ -47,7 +47,6 @@ public class MainActivity extends ActivityBase {
         progressbar = (ProgressBar)findViewById(R.id.prbMainActivity);
         textViewUsernameValue = (TextView)findViewById(R.id.lblUsernameValue);
 
-        // Will let the user know that the application is connected or not.
         new API_CheckConnection().execute();
 
         if(!userConfiguredWithApplication()){
@@ -367,4 +366,3 @@ public class MainActivity extends ActivityBase {
         }
     }
 }
-

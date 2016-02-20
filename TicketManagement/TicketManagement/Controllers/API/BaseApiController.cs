@@ -11,7 +11,7 @@ namespace TicketManagement.Controllers.API
                    "[Tickets/GetAllTicketsForUser(string username, string usertoken) => Json list of tickets.]" +
                    "[User/GetNewUserToken(string username) => The user token.]" +
                    "[User/CheckUserToken(string username, string usertoken) => true/false if the combination is valid.]" +
-                   "[User/ClearUserToken(string username, string usertoken) => A true/false.]";
+                   "[User/DeactivateUserToken(string username, string usertoken) => A true/false.]";
 
         [System.Web.Http.AcceptVerbs("GET")]
         public virtual string Get()

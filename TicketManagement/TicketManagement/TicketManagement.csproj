@@ -263,6 +263,7 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberHelper.cs" />
     <Compile Include="Helpers\TextMessageHelper.cs" />
+    <Compile Include="Helpers\TextMessageProtocolHelper.cs" />
     <Compile Include="Helpers\TicketLogHelper.cs" />
     <Compile Include="Management\SocialMediaItem.cs" />
     <Compile Include="Migrations\Application\201512270115218_Re-Re-Initial.cs" />
