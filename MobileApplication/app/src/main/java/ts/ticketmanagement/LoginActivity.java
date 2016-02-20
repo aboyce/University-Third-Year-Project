@@ -6,9 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,11 +21,23 @@ import java.net.URL;
 import java.util.Objects;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends ActivityBase {
 
     private ProgressBar progressbar;
-    private String username = "";
-    private String userToken = "";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.ts_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.ts_menu_settings){
+            startActivity(new Intent(this, SettingsActivity.class));;
+        }
+        return true;
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,16 +1,14 @@
 package ts.ticketmanagement;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
-public class TicketsActivity extends AppCompatActivity {
+public class TicketsActivity extends ActivityBase {
 
     private ProgressBar progressbar;
-    private String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,13 +28,14 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connection"
+        android:text="Connection to Server"
         android:id="@+id/chkConnection"
         android:enabled="true"
+        android:clickable="false"
         android:focusable="true"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="37dp"
         android:layout_below="@+id/lblMain"
-        android:layout_toEndOf="@+id/lblMain" />
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -42,9 +43,11 @@
         android:text="Account Authorised"
         android:id="@+id/chkAccountAuthorised"
         android:enabled="true"
+        android:clickable="false"
         android:focusable="false"
-        android:layout_alignTop="@+id/chkConnection"
-        android:layout_alignEnd="@+id/btnReEnterCredentials" />
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/btnCheckConnection"
+        android:layout_alignParentStart="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -53,9 +56,8 @@
         android:text="Check Connection"
         android:id="@+id/btnCheckConnection"
         android:onClick="checkConnectionOnClick"
-        android:layout_marginTop="39dp"
-        android:layout_below="@+id/chkConnection"
-        android:layout_toStartOf="@+id/chkAccountAuthorised" />
+        android:layout_alignTop="@+id/chkConnection"
+        android:layout_alignParentEnd="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -64,8 +66,8 @@
         android:text="Authorise"
         android:id="@+id/btnAuthorise"
         android:onClick="authoriseOnClick"
-        android:layout_alignTop="@+id/btnCheckConnection"
-        android:layout_alignEnd="@+id/chkAccountAuthorised" />
+        android:layout_alignTop="@+id/chkAccountAuthorised"
+        android:layout_alignEnd="@+id/btnCheckConnection" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,20 +75,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username: "
         android:id="@+id/lblUsername"
-        android:layout_below="@+id/btnCheckConnection"
-        android:layout_alignStart="@+id/lblMain"
-        android:layout_marginTop="64dp" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Re/Enter Credentials"
-        android:id="@+id/btnReEnterCredentials"
-        android:onClick="reEnterCredentialsOnClick"
-        android:layout_below="@+id/lblUsernameValue"
-        android:layout_alignStart="@+id/lblUsernameValue"
-        android:layout_marginTop="43dp" />
+        android:layout_below="@+id/btnAuthorise"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="74dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,18 +87,17 @@
         android:id="@+id/lblUsernameValue"
         android:enabled="true"
         android:layout_alignBottom="@+id/lblUsername"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/chkConnection" />
+        android:layout_toEndOf="@+id/lblUsername" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove User"
+        android:text="Remove User From Phone"
         android:id="@+id/btnRemoveUser"
+        android:onClick="removeUserOnClick"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/lblUsernameValue"
-        android:onClick="removeUserOnClick" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -115,8 +105,8 @@
         android:layout_height="wrap_content"
         android:text="Send SMS"
         android:id="@+id/btnSendSMS"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/btnAuthorise"
-        android:onClick="sendSMSOnClick" />
+        android:onClick="sendSMSOnClick"
+        android:layout_alignTop="@+id/btnRemoveUser"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

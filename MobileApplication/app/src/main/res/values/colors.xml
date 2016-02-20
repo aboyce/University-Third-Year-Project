@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#4CAF50</color> <!-- Should be a 500 colour. -->
+    <color name="colorPrimaryDark">#388E3C</color> <!-- Should be a 700/300 colour. -->
+    <color name="colorAccent">#00C853</color> <!-- Should be an 'A' colour. -->
+
+    <!-- https://www.google.com/design/spec/style/color.html -->
+
+    <!--<color name="colorPrimary">#9E9E9E</color> &lt;!&ndash; Should be a 500 colour. &ndash;&gt;-->
+    <!--<color name="colorPrimaryDark">#616161</color> &lt;!&ndash; Should be a 700/300 colour. &ndash;&gt;-->
+    <!--<color name="colorAccent">#FF3D00</color> &lt;!&ndash; Should be an 'A' colour. &ndash;&gt;-->
 </resources>

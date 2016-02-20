@@ -9,26 +9,21 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActivityBase {
 
     private final Integer LOGIN_FROM_MAIN = 0;
     private final Integer PERMISSION_REQUEST_SMS = 1;
@@ -37,25 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressbar;
     private TextView textViewUsernameValue;
 
-    private String username;
-    private String userToken;
-
     private Intent ticketsIntent;
     private Intent loginIntent;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.ts_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == R.id.ts_menu_settings){
-            Toast.makeText(getApplicationContext(), "Selected dem settings", Toast.LENGTH_LONG).show();
-        }
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,12 +167,6 @@ public class MainActivity extends AppCompatActivity {
     public void checkConnectionOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "MainActivity:checkConnectionOnClick");
         new API_CheckConnection().execute();
-    }
-
-    public void reEnterCredentialsOnClick(View pView) {
-        Log.d("TICKET_MANAGEMENT", "MainActivity:reEnterCredentialsOnClick");
-        loginIntent = new Intent(this, LoginActivity.class);
-        startActivityForResult(loginIntent, LOGIN_FROM_MAIN);
     }
 
     public void authoriseOnClick(View pView){
