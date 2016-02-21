@@ -1,12 +1,12 @@
 package ts.ticketmanagement;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,7 +25,6 @@ import java.util.List;
 
 import Entities.Ticket;
 
-
 public class TicketsActivity extends ActivityBase {
 
     private ProgressBar progressbar;
@@ -38,11 +37,13 @@ public class TicketsActivity extends ActivityBase {
         setContentView(R.layout.activity_tickets);
 
         if(!tryPopulateUserCredentials("Tickets")){
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity:onCreate: No User Credentials");
             new Intent(this, MainActivity.class);
             Toast.makeText(getApplicationContext(), "No User credentials stored on Phone", Toast.LENGTH_LONG).show();
             return;
         }
 
+        Log.d("TICKET_MANAGEMENT", "TicketsActivity:onCreate: User Credentials present");
         progressbar = (ProgressBar)findViewById(R.id.prbTicketsActivity);
         tickets = new ArrayList<>();
 
@@ -50,6 +51,7 @@ public class TicketsActivity extends ActivityBase {
     }
 
     private Ticket getTicketFromJSONObject (JSONObject json){
+        Log.d("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject");
         try{
             return new Ticket(json.getString("title"),
                     json.getString("description"), json.getString("openedByName"),
@@ -59,36 +61,49 @@ public class TicketsActivity extends ActivityBase {
                     json.getString("organisationAssignedToName"), json.getString("deadline"),
                     json.getString("lastMessage"), json.getString("lastResponse"));
 
-         }catch(Exception e){
-             return null;
-         }
+        }catch(Exception e){
+            Log.e("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject: Exception: " + e.getMessage());
+            return null;
+        }
     }
 
-    private void populateListView() {
-        ListView tickets = (ListView) findViewById(R.id.lstTickets);
-        tickets.setAdapter(new TicketListAdapter());
+    private void registerClickCallback(){
+        Log.d("TICKET_MANAGEMENT", "TicketsActivity:registerClickCallback");
+        ListView list = (ListView)findViewById(R.id.lstTickets);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Ticket clickedTicket = tickets.get(position);
+                Log.d("TICKET_MANAGEMENT", "TicketsActivity:registerClickCallback: Ticket '" + clickedTicket.getTitle() + "' clicked");
+                Toast.makeText(getApplicationContext(), "Clicked: " + clickedTicket.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private class TicketListAdapter extends ArrayAdapter<Ticket> {
 
         public TicketListAdapter() {
             super(TicketsActivity.this, R.layout.ticket_list_item, tickets);
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity:TicketListAdapter: Constructor Called");
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity:getView");
             View itemView = convertView;
             if(itemView == null)
                 itemView = getLayoutInflater().inflate(R.layout.ticket_list_item, parent, false);
 
             Ticket currentTicket = tickets.get(position);
 
-            TextView title = (TextView) itemView.findViewById(R.id.lblTicketTitle);
+            TextView title = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketTitle);
             title.setText(currentTicket.getTitle());
 
-            TextView description = (TextView) itemView.findViewById(R.id.lblTicketDescription);
+            TextView description = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketDescription);
             description.setText(currentTicket.getDescription());
 
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity:getView: Set ticket_list_item values");
 
             return itemView;
         }
@@ -151,7 +166,12 @@ public class TicketsActivity extends ActivityBase {
                 Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetTickets:onPostExecute: JSON Exception - Message: " + e.getMessage());
             }
 
-            populateListView();
+            ListView tickets = (ListView) findViewById(R.id.lstTickets);
+            tickets.setAdapter(new TicketListAdapter());
+            Log.e("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
+
+            registerClickCallback();
+
             progressbar.setVisibility(View.GONE);
         }
     }

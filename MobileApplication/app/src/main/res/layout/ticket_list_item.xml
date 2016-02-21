@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Ticket Title"
-        android:id="@+id/lblTicketTitle"
+        android:id="@+id/lbl_ticketList_ticketTitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
@@ -18,8 +18,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Ticket Description"
-        android:id="@+id/lblTicketDescription"
-        android:layout_below="@+id/lblTicketTitle"
+        android:id="@+id/lbl_ticketList_ticketDescription"
+        android:layout_below="@+id/lbl_ticketList_ticketTitle"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>
