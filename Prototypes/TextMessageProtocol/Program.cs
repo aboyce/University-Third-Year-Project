@@ -46,7 +46,11 @@ namespace TextMessageProtocol
                     string userToken = currentSplit[1].Replace(":", ""); // Remove the ':' that is splitting up the keywork and parameter.
                     currentSplit = userToken.Split(new [] { " " }, StringSplitOptions.None); // There still may be more content after the parameter.
                     if (currentSplit.Length >= 0)
-                        userToken = currentSplit[0]; // We only need the parameter for the keyword, so in this case we can forget anything after the parameter.
+                        userToken = currentSplit[0];
+                            // We only need the parameter for the keyword, so in this case we can forget anything after the parameter.
+                    else
+                        return false;
+
 
 
                 }

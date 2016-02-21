@@ -107,16 +107,23 @@ namespace TicketManagement.Helpers
         {
             if (string.IsNullOrEmpty(xmlString)) return null;
 
-            XElement xml = XElement.Parse(xmlString);
+            try
+            {
+                XElement xml = XElement.Parse(xmlString);
 
-            string id = (string)xml.Element("Id");
-            string to = (string)xml.Element("To");
-            string from = (string)xml.Element("From");
-            string networkCode = (string)xml.Element("Network");
-            string keyword = (string)xml.Element("Keyword");
-            string content = (string)xml.Element("Content");
+                string id = (string)xml.Element("Id");
+                string to = (string)xml.Element("To");
+                string from = (string)xml.Element("From");
+                string networkCode = (string)xml.Element("Network");
+                string keyword = (string)xml.Element("Keyword");
+                string content = (string)xml.Element("Content");
 
-            return new ReceivedTextMessage(to, from, content, id, networkCode, keyword);
+                return new ReceivedTextMessage(to, from, content, id, networkCode, keyword);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<ReceivedTextMessage> ProcessTextMessage(ReceivedTextMessage txt, ApplicationContext db)
