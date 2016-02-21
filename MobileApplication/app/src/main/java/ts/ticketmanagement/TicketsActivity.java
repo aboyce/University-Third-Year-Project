@@ -1,11 +1,16 @@
 package ts.ticketmanagement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -16,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import Entities.Ticket;
 
@@ -23,7 +29,7 @@ import Entities.Ticket;
 public class TicketsActivity extends ActivityBase {
 
     private ProgressBar progressbar;
-    private ArrayList<Ticket> tickets;
+    private List<Ticket> tickets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,30 +50,51 @@ public class TicketsActivity extends ActivityBase {
     }
 
     private Ticket getTicketFromJSONObject (JSONObject json){
+        try{
+            return new Ticket(json.getString("title"),
+                    json.getString("description"), json.getString("openedByName"),
+                    json.getString("ticketPriorityName"), json.getString("ticketStateName"),
+                    json.getString("ticketCategoryName"), json.getString("projectName"),
+                    json.getString("userAssignedToName"), json.getString("teamAssignedToName"),
+                    json.getString("organisationAssignedToName"), json.getString("deadline"),
+                    json.getString("lastMessage"), json.getString("lastResponse"));
 
-        Ticket ticket = new Ticket();
-         try{
-             ticket.Title = json.getString("title");
-             ticket.Description = json.getString("description");
-             ticket.OpenedByName = json.getString("openedByName");
-             ticket.Priority = json.getString("ticketPriorityName");
-             ticket.UserAssignedTo = json.getString("userAssignedToName");
-             ticket.TeamAssignedTo = json.getString("teamAssignedToName");
-             ticket.OrganisationAssignedTo = json.getString("organisationAssignedToName");
-             ticket.State = json.getString("ticketStateName");
-             ticket.ProjectName = json.getString("projectName");
-             ticket.Category = json.getString("ticketCategoryName");
-             ticket.Deadline = json.getString("deadline");
-             ticket.LastMessage = json.getString("lastMessage");
-             ticket.LastResponse = json.getString("lastResponse");
          }catch(Exception e){
              return null;
          }
-
-        return ticket;
     }
 
-    class API_GetTickets extends AsyncTask<Void, Void, String> {
+    private void populateListView() {
+        ListView tickets = (ListView) findViewById(R.id.lstTickets);
+        tickets.setAdapter(new TicketListAdapter());
+    }
+
+    private class TicketListAdapter extends ArrayAdapter<Ticket> {
+
+        public TicketListAdapter() {
+            super(TicketsActivity.this, R.layout.ticket_list_item, tickets);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if(itemView == null)
+                itemView = getLayoutInflater().inflate(R.layout.ticket_list_item, parent, false);
+
+            Ticket currentTicket = tickets.get(position);
+
+            TextView title = (TextView) itemView.findViewById(R.id.lblTicketTitle);
+            title.setText(currentTicket.getTitle());
+
+            TextView description = (TextView) itemView.findViewById(R.id.lblTicketDescription);
+            description.setText(currentTicket.getDescription());
+
+
+            return itemView;
+        }
+    }
+
+    private class API_GetTickets extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets");
@@ -124,6 +151,7 @@ public class TicketsActivity extends ActivityBase {
                 Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetTickets:onPostExecute: JSON Exception - Message: " + e.getMessage());
             }
 
+            populateListView();
             progressbar.setVisibility(View.GONE);
         }
     }

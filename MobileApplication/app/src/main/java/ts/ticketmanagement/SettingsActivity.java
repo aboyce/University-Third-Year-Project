@@ -74,7 +74,7 @@ public class SettingsActivity extends ActivityBase {
         startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_FROM_MAIN);
     }
 
-    class API_DeactivateUserCredentials extends AsyncTask<Void, Void, String> {
+    private class API_DeactivateUserCredentials extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "SettingsActivity-API_DeactivateUserCredentials");

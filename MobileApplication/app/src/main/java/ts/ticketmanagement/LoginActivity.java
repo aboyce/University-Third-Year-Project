@@ -70,7 +70,7 @@ public class LoginActivity extends ActivityBase {
         return false;
     }
 
-    class API_GetUserToken extends AsyncTask<Void, Void, String> {
+    private class API_GetUserToken extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPreExecute");

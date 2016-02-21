@@ -154,7 +154,7 @@ public class MainActivity extends ActivityBase {
         new API_ConfirmUserCredentials().execute();
     }
 
-    class API_CheckConnection extends AsyncTask<Void, Void, String> {
+    private class API_CheckConnection extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection");
@@ -215,7 +215,7 @@ public class MainActivity extends ActivityBase {
         }
     }
 
-    class API_ConfirmUserCredentials extends AsyncTask<Void, Void, String> {
+    private class API_ConfirmUserCredentials extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials");

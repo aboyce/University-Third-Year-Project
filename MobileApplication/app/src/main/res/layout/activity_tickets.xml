@@ -25,4 +25,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:visibility="gone" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lstTickets"
+        android:layout_below="@+id/lblTickets"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp" />
 </RelativeLayout>

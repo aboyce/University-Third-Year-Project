@@ -1,24 +1,145 @@
 package Entities;
 
-import java.util.Date;
-
 public class Ticket {
 
-    public String Title;
-    public String Description;
+    private String title;
+    private String description;
+    private String openedByName;
+    private String priority;
+    private String state;
+    private String category;
+    private String projectName;
+    private String userAssignedTo;
+    private String teamAssignedTo;
+    private String organisationAssignedTo;
+    private String deadline;
+    private String lastMessage;
+    private String lastResponse;
 
-    public String OpenedByName;
+    public Ticket(){}
 
-    public String Priority;
-    public String State;
-    public String Category;
+    public Ticket(String title, String description, String openedByName, String priority,
+                  String state, String category, String projectName, String userAssignedTo,
+                  String teamAssignedTo, String organisationAssignedTo, String deadline,
+                  String lastMessage, String lastResponse) {
+        this.title = title;
+        this.description = description;
+        this.openedByName = openedByName;
+        this.priority = priority;
+        this.state = state;
+        this.category = category;
+        this.projectName = projectName;
+        this.userAssignedTo = userAssignedTo;
+        this.teamAssignedTo = teamAssignedTo;
+        this.organisationAssignedTo = organisationAssignedTo;
+        this.deadline = deadline;
+        this.lastMessage = lastMessage;
+        this.lastResponse = lastResponse;
+    }
 
-    public String ProjectName;
-    public String UserAssignedTo;
-    public String TeamAssignedTo;
-    public String OrganisationAssignedTo;
 
-    public String Deadline;
-    public String LastMessage;
-    public String LastResponse;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getOpenedByName() {
+        return openedByName;
+    }
+
+    public void setOpenedByName(String openedByName) {
+        this.openedByName = openedByName;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getUserAssignedTo() {
+        return userAssignedTo;
+    }
+
+    public void setUserAssignedTo(String userAssignedTo) {
+        this.userAssignedTo = userAssignedTo;
+    }
+
+    public String getTeamAssignedTo() {
+        return teamAssignedTo;
+    }
+
+    public void setTeamAssignedTo(String teamAssignedTo) {
+        this.teamAssignedTo = teamAssignedTo;
+    }
+
+    public String getOrganisationAssignedTo() {
+        return organisationAssignedTo;
+    }
+
+    public void setOrganisationAssignedTo(String organisationAssignedTo) {
+        this.organisationAssignedTo = organisationAssignedTo;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public String getLastResponse() {
+        return lastResponse;
+    }
+
+    public void setLastResponse(String lastResponse) {
+        this.lastResponse = lastResponse;
+    }
+
 }
