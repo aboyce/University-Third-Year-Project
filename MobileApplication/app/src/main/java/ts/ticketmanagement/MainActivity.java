@@ -62,6 +62,13 @@ public class MainActivity extends ActivityBase {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("TICKET_MANAGEMENT", "MainActivity:onResume");
+        tryPopulateUserCredentials("Main");
+    }
+
+    @Override
     protected void onActivityResult(int pRequestCode, int pResultCode, Intent pData){
         Log.d("TICKET_MANAGEMENT", "MainActivity:onActivityResult");
         if(pRequestCode == LOGIN_FROM_MAIN){

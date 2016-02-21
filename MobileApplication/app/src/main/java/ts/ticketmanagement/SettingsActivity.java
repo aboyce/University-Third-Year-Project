@@ -38,6 +38,13 @@ public class SettingsActivity extends ActivityBase {
         txtUserToken.setText(userToken);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("TICKET_MANAGEMENT", "SettingsActivity:onResume");
+        tryPopulateUserCredentials("Settings");
+    }
+
     public void removeUserOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "SettingsActivity:removeUserOnClick");
         removeUserFromPhone();

@@ -36,6 +36,13 @@ public class LoginActivity extends ActivityBase {
         }
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("TICKET_MANAGEMENT", "LoginActivity:onResume");
+        tryPopulateUserCredentials("Login");
+    }
+
     public void authenticateOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "LoginActivity:authenticateOnClick");
         TextView txtUsername = (TextView)findViewById(R.id.lblUsername);

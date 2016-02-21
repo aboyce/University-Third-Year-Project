@@ -2,10 +2,10 @@
 <resources>
     
     <string name="api_phone_numberToConfirm">84433</string>
-    <!--<string name="api_phone_numberToConfirm">07922133829</string>-->
     <string name="api_phone_body">TICKETSYSTEM CONFIRM_USER_TOKEN:</string>
 
     <string name="api_url">http://adamboyce.azurewebsites.net/api</string>
+    <string name="api_confirmConnection">/BaseApi/CheckConnection</string>
 
     <string name="api_user_getNewUserToken">/User/GetNewUserToken?username=</string>
 
@@ -15,5 +15,8 @@
     <string name="api_user_deactivateUserToken1">/User/DeactivateUserToken?username=</string>
     <string name="api_user_deactivateUserToken2">&amp;usertoken=</string>
 
-    <string name="api_confirmConnection">/BaseApi/CheckConnection</string>
+    <string name="api_tickets_getTickets1">/Tickets/GetAllTicketsForUser?username=</string>
+    <string name="api_tickets_getTickets2">&amp;usertoken=</string>
+
+
 </resources>
