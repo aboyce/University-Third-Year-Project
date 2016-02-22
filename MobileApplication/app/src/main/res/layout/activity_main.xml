@@ -65,9 +65,9 @@
         android:layout_height="wrap_content"
         android:text="Authorise"
         android:onClick="authoriseOnClick"
+        android:id="@+id/main_btnAuthorise"
         android:layout_alignTop="@+id/main_chkAccountAuthorised"
-        android:layout_alignEnd="@+id/main_btnCheckConnection"
-        android:id="@+id/main_btnAuthorise" />
+        android:layout_alignEnd="@+id/main_btnCheckConnection" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,9 +75,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username: "
         android:id="@+id/main_lblUsername"
-        android:layout_below="@+id/login_btnAuthorise"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="74dp" />
+        android:layout_alignBottom="@+id/main_lblUsernameValue"
+        android:layout_toEndOf="@+id/main_lblMain" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,8 +85,9 @@
         android:text="@string/main_lbl_usernameValue"
         android:id="@+id/main_lblUsernameValue"
         android:enabled="true"
-        android:layout_alignBottom="@+id/main_lblUsername"
-        android:layout_toEndOf="@+id/main_lblUsername" />
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/main_btnAuthorise"
+        android:layout_toEndOf="@+id/main_chkAccountAuthorised" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
