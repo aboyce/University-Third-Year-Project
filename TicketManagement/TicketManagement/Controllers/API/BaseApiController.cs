@@ -9,6 +9,7 @@ namespace TicketManagement.Controllers.API
 
         private readonly string _availableMethods = " : Available API Calls :" +
                    "[Tickets/GetAllTicketsForUser(string username, string usertoken) => Json list of tickets.]" +
+                   "[Tickets/GetTicketForUser(string ticketid, string username, string usertoken) => Json list of tickets.]" +
                    "[User/GetNewUserToken(string username) => The user token.]" +
                    "[User/CheckUserToken(string username, string usertoken) => true/false if the combination is valid.]" +
                    "[User/DeactivateUserToken(string username, string usertoken) => A true/false.]";
