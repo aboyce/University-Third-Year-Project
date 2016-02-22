@@ -37,4 +37,19 @@
         android:layout_below="@+id/ticket_lblTicketTitle"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ticket_lstTicketLogs"
+        android:layout_alignParentStart="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:scrollbars="none"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/ticket_lblTicketDescription"
+        android:visibility="gone" />
+
 </RelativeLayout>
