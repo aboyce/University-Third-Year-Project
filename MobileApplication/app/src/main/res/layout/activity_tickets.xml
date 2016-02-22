@@ -13,24 +13,34 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TICKETS"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tickets"
         android:id="@+id/lblTickets"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/prbTicketsActivity"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lstTickets"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:scrollbars="none"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="30dp"
         android:layout_below="@+id/lblTickets"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="27dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/prbTicketsActivity"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
+
 </RelativeLayout>

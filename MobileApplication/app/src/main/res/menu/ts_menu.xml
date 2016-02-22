@@ -4,6 +4,14 @@
     tools:context=".MenuExampleActivity"
     android:logo="@drawable/ic_ts_menu"
     android:icon="@drawable/ic_ts_menu">
+
+    <item
+        android:title="Refresh"
+        android:orderInCategory="0"
+        android:id="@+id/ts_menu_refresh_tickets"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
+
     <item
         android:title="Settings"
         android:orderInCategory="1"

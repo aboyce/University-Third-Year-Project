@@ -1,18 +1,17 @@
 package ts.ticketmanagement;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +31,25 @@ public class TicketsActivity extends ActivityBase {
 
     private ProgressBar progressbar;
     private List<Ticket> tickets;
+    private ListView ticketsListView;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.ts_menu, menu);
+        menu.getItem(0).setVisible(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.ts_menu_settings){
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        if(item.getItemId() == R.id.ts_menu_refresh_tickets){
+            new API_GetTickets().execute();
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +67,7 @@ public class TicketsActivity extends ActivityBase {
         Log.d("TICKET_MANAGEMENT", "TicketsActivity:onCreate: User Credentials present");
         progressbar = (ProgressBar)findViewById(R.id.prbTicketsActivity);
         tickets = new ArrayList<>();
+        ticketsListView = (ListView)findViewById(R.id.lstTickets);
 
         new API_GetTickets().execute();
     }
@@ -100,23 +119,25 @@ public class TicketsActivity extends ActivityBase {
 
             Ticket currentTicket = tickets.get(position);
 
-            itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border));
+            itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_danger));
 
             TextView title = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketTitle);
             title.setText(currentTicket.getTitle());
 
             switch (currentTicket.getState()){
                 case "Pending Approval":
-                    title.setTextColor(getColor(R.color.colorBootstrap_success));
+                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
                     break;
                 case "Awaiting Response":
-                    title.setTextColor(getColor(R.color.colorBootstrap_warning));
+                    title.setTextColor(getColor(R.color.colorBootstrap_danger));
                     break;
                 case "Closed":
                     title.setTextColor(getColor(R.color.colorBootstrap_default));
+                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
                     break;
                 default:
                 case "Open":
+                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
                     break;
             }
 
@@ -133,6 +154,7 @@ public class TicketsActivity extends ActivityBase {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets");
+            ticketsListView.setVisibility(View.GONE);
             progressbar.setVisibility(View.VISIBLE);
         }
 
@@ -179,7 +201,7 @@ public class TicketsActivity extends ActivityBase {
                     for(int i = 0; i < jsonTickets.length(); i++){
                         Ticket currentTicket = getTicketFromJSONObject(jsonTickets.getJSONObject(i));
                         if(currentTicket != null)
-                            tickets.add(currentTicket);
+                            tickets.add(currentTicket);tickets.add(currentTicket);tickets.add(currentTicket);
                     }
                 }
             }catch (Exception e){
@@ -193,6 +215,7 @@ public class TicketsActivity extends ActivityBase {
             registerClickCallback();
 
             progressbar.setVisibility(View.GONE);
+            ticketsListView.setVisibility(View.VISIBLE);
         }
     }
 }
