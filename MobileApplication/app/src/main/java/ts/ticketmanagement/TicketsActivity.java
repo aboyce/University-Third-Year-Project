@@ -1,8 +1,10 @@
 package ts.ticketmanagement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +56,7 @@ public class TicketsActivity extends ActivityBase {
     private Ticket getTicketFromJSONObject (JSONObject json){
         Log.d("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject");
         try{
-            return new Ticket(json.getString("title"),
+            return new Ticket(Integer.parseInt(json.getString("id")), json.getString("title"),
                     json.getString("description"), json.getString("openedByName"),
                     json.getString("ticketPriorityName"), json.getString("ticketStateName"),
                     json.getString("ticketCategoryName"), json.getString("projectName"),
@@ -96,6 +99,8 @@ public class TicketsActivity extends ActivityBase {
                 itemView = getLayoutInflater().inflate(R.layout.ticket_list_item, parent, false);
 
             Ticket currentTicket = tickets.get(position);
+
+            itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border));
 
             TextView title = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketTitle);
             title.setText(currentTicket.getTitle());

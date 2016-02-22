@@ -2,6 +2,7 @@ package Entities;
 
 public class Ticket {
 
+    private int id;
     private String title;
     private String description;
     private String openedByName;
@@ -18,10 +19,11 @@ public class Ticket {
 
     public Ticket(){}
 
-    public Ticket(String title, String description, String openedByName, String priority,
+    public Ticket(Integer id, String title, String description, String openedByName, String priority,
                   String state, String category, String projectName, String userAssignedTo,
                   String teamAssignedTo, String organisationAssignedTo, String deadline,
                   String lastMessage, String lastResponse) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.openedByName = openedByName;
@@ -37,6 +39,13 @@ public class Ticket {
         this.lastResponse = lastResponse;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

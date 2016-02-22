@@ -18,6 +18,7 @@ namespace TicketManagement.Helpers
 
             return new ApiTicketViewModel
             {
+                Id = ticket.Id,
                 Title = ticket.Title,
                 Description = ticket.Description,
                 OpenedByName = ticket.OpenedBy?.FullName,

@@ -12,6 +12,7 @@ namespace TicketManagement.ViewModels
 
     public class ApiTicketViewModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string OpenedByName { get; set; }

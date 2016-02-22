@@ -4,7 +4,6 @@
     tools:context=".MenuExampleActivity"
     android:logo="@drawable/ic_ts_menu"
     android:icon="@drawable/ic_ts_menu">
-
     <item
         android:title="Settings"
         android:orderInCategory="1"
