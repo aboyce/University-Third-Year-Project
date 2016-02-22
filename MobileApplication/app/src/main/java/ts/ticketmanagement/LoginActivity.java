@@ -26,7 +26,7 @@ public class LoginActivity extends ActivityBase {
         super.onCreate(savedInstanceState);
         Log.d("TICKET_MANAGEMENT", "LoginActivity:onCreate");
         setContentView(R.layout.activity_login);
-        progressbar = (ProgressBar)findViewById(R.id.prbAuthoriseProgress);
+        progressbar = (ProgressBar)findViewById(R.id.login_prbAuthoriseProgress);
 
         if(tryPopulateUserCredentials("Login")){
             new Intent(this, MainActivity.class);

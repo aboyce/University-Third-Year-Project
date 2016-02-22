@@ -42,8 +42,8 @@ public class MainActivity extends ActivityBase {
         Log.d("TICKET_MANAGEMENT", "MainActivity:onCreate");
 
         currentActivity = this;
-        progressBar = (ProgressBar)findViewById(R.id.prbMainActivity);
-        textViewUsernameValue = (TextView)findViewById(R.id.lblUsernameValue);
+        progressBar = (ProgressBar)findViewById(R.id.main_prbActivity);
+        textViewUsernameValue = (TextView)findViewById(R.id.main_lblUsernameValue);
 
         new API_CheckConnection().execute();
 
@@ -262,7 +262,7 @@ public class MainActivity extends ActivityBase {
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
 
             CheckBox authorisedCheckBox = (CheckBox)findViewById(R.id.main_chkAccountAuthorised);
-            Button sendSMSButton = (Button)findViewById(R.id.btnSendSMS);
+            Button sendSMSButton = (Button)findViewById(R.id.main_btnSendSMS);
 
             if(Objects.equals(response, "true") || response.contains("true")){
                 authorisedCheckBox.setChecked(true);

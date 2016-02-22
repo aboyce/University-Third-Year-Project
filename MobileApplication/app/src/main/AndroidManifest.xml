@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TicketsActivity" />
+        <activity android:name=".TicketActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".TicketActivity"></activity>
     </application>
 
 </manifest>

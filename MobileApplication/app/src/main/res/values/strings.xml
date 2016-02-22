@@ -7,6 +7,8 @@
     <string name="user_username">user_username</string>
     <string name="user_token">user_token</string>
 
+    <string name="ticket_id">ticket_id</string>
+
     <!-- LOGIN PAGE -->
 
     <string name="login_lbl_welcome">Welcome to Ticket System</string>

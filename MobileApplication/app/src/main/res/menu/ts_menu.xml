@@ -8,7 +8,7 @@
     <item
         android:title="Refresh"
         android:orderInCategory="0"
-        android:id="@+id/ts_menu_refresh_tickets"
+        android:id="@+id/ts_menu_refresh"
         app:showAsAction="ifRoom"
         android:visible="false"/>
 

@@ -9,15 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ts.ticketmanagement.TicketActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Tickets"
-        android:id="@+id/ticket_lblTickets"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -26,4 +17,24 @@
         android:visibility="visible"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ticket Title"
+        android:id="@+id/ticket_lblTicketTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/ticket_lblTicketDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Ticket Description"
+        android:id="@+id/ticket_lblTicketDescription"
+        android:layout_below="@+id/ticket_lblTicketTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

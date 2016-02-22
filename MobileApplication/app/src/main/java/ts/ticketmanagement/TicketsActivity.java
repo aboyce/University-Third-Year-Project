@@ -26,12 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entities.Ticket;
+import Helpers.JSONHelper;
 
 public class TicketsActivity extends ActivityBase {
 
     private ProgressBar progressbar;
     private List<Ticket> tickets;
     private ListView ticketsListView;
+    private Intent ticketIntent;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -45,7 +47,7 @@ public class TicketsActivity extends ActivityBase {
         if(item.getItemId() == R.id.ts_menu_settings){
             startActivity(new Intent(this, SettingsActivity.class));
         }
-        if(item.getItemId() == R.id.ts_menu_refresh_tickets){
+        if(item.getItemId() == R.id.ts_menu_refresh){
             new API_GetTickets().execute();
         }
         return true;
@@ -65,40 +67,25 @@ public class TicketsActivity extends ActivityBase {
         }
 
         Log.d("TICKET_MANAGEMENT", "TicketsActivity:onCreate: User Credentials present");
-        progressbar = (ProgressBar)findViewById(R.id.prbTicketsActivity);
+        progressbar = (ProgressBar)findViewById(R.id.tickets_prbActivity);
         tickets = new ArrayList<>();
-        ticketsListView = (ListView)findViewById(R.id.lstTickets);
+        ticketsListView = (ListView)findViewById(R.id.tickets_lstTickets);
+        ticketIntent = new Intent(this, TicketActivity.class);
 
         new API_GetTickets().execute();
     }
 
-    private Ticket getTicketFromJSONObject (JSONObject json){
-        Log.d("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject");
-        try{
-            return new Ticket(Integer.parseInt(json.getString("id")), json.getString("title"),
-                    json.getString("description"), json.getString("openedByName"),
-                    json.getString("ticketPriorityName"), json.getString("ticketStateName"),
-                    json.getString("ticketCategoryName"), json.getString("projectName"),
-                    json.getString("userAssignedToName"), json.getString("teamAssignedToName"),
-                    json.getString("organisationAssignedToName"), json.getString("deadline"),
-                    json.getString("lastMessage"), json.getString("lastResponse"));
-
-        }catch(Exception e){
-            Log.e("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject: Exception: " + e.getMessage());
-            return null;
-        }
-    }
-
     private void registerClickCallback(){
         Log.d("TICKET_MANAGEMENT", "TicketsActivity:registerClickCallback");
-        ListView list = (ListView)findViewById(R.id.lstTickets);
+        ListView list = (ListView)findViewById(R.id.tickets_lstTickets);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Ticket clickedTicket = tickets.get(position);
                 Log.d("TICKET_MANAGEMENT", "TicketsActivity:registerClickCallback: Ticket '" + clickedTicket.getTitle() + "' clicked");
-                Toast.makeText(getApplicationContext(), "Clicked: " + clickedTicket.getTitle(), Toast.LENGTH_LONG).show();
+                ticketIntent.putExtra(getString(R.string.ticket_id), clickedTicket.getId());
+                startActivity(ticketIntent);
             }
         });
     }
@@ -119,32 +106,32 @@ public class TicketsActivity extends ActivityBase {
 
             Ticket currentTicket = tickets.get(position);
 
-            itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_danger));
+            try{
+                TextView title = (TextView) itemView.findViewById(R.id.ticketList_lblTicketTitle);
+                title.setText(currentTicket.getTitle());
+                TextView description = (TextView) itemView.findViewById(R.id.ticketList_lblTicketDescription);
+                description.setText(currentTicket.getDescription());
 
-            TextView title = (TextView) itemView.findViewById(R.id.ticketList_lblTicketTitle);
-            title.setText(currentTicket.getTitle());
-
-            switch (currentTicket.getState()){
-                case "Pending Approval":
-                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
-                    break;
-                case "Awaiting Response":
-                    title.setTextColor(getColor(R.color.colorBootstrap_danger));
-                    break;
-                case "Closed":
-                    title.setTextColor(getColor(R.color.colorBootstrap_default));
-                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
-                    break;
-                default:
-                case "Open":
-                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
-                    break;
+                switch (currentTicket.getState()){
+                    case "Pending Approval":
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
+                        break;
+                    case "Awaiting Response":
+                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
+                        break;
+                    case "Closed":
+                        title.setTextColor(getColor(R.color.colorBootstrap_default));
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
+                        break;
+                    default:
+                    case "Open":
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
+                        break;
+                }
+            } catch (Exception e){
+                Log.e("TICKET_MANAGEMENT", "TicketsActivity:getView: Error when setting ticket_list_item values, message: " + e.getMessage());
+                return itemView;
             }
-
-            TextView description = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketDescription);
-            description.setText(currentTicket.getDescription());
-
-            Log.d("TICKET_MANAGEMENT", "TicketsActivity:getView: Set ticket_list_item values");
 
             return itemView;
         }
@@ -161,7 +148,9 @@ public class TicketsActivity extends ActivityBase {
         protected String doInBackground(Void... urls) {
             Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:doInBackground");
             try{
-                URL url = new URL(getString(R.string.api_url) + getString(R.string.api_tickets_getTickets1) + username + getString(R.string.api_tickets_getTickets2) + userToken);
+                URL url = new URL(getString(R.string.api_url)
+                        + getString(R.string.api_tickets_getTickets1) + username
+                        + getString(R.string.api_tickets_getTickets2) + userToken);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets: Opened HTTP URL Connection to; " + url.toString());
                 try{
@@ -199,7 +188,7 @@ public class TicketsActivity extends ActivityBase {
                 if(json.getString("contentType").contains("Tickets")){
                     JSONArray jsonTickets = json.getJSONArray("data");
                     for(int i = 0; i < jsonTickets.length(); i++){
-                        Ticket currentTicket = getTicketFromJSONObject(jsonTickets.getJSONObject(i));
+                        Ticket currentTicket = JSONHelper.getTicketFromJSONObject(jsonTickets.getJSONObject(i));
                         if(currentTicket != null)
                             tickets.add(currentTicket);tickets.add(currentTicket);tickets.add(currentTicket);
                     }
@@ -208,7 +197,7 @@ public class TicketsActivity extends ActivityBase {
                 Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetTickets:onPostExecute: JSON Exception - Message: " + e.getMessage());
             }
 
-            ListView tickets = (ListView) findViewById(R.id.lstTickets);
+            ListView tickets = (ListView) findViewById(R.id.tickets_lstTickets);
             tickets.setAdapter(new TicketListAdapter());
             Log.e("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
 

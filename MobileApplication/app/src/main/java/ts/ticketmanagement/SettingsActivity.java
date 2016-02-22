@@ -26,15 +26,15 @@ public class SettingsActivity extends ActivityBase {
         Log.d("TICKET_MANAGEMENT", "SettingsActivity:onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        progressBar = (ProgressBar) findViewById(R.id.prbSettingsActivity);
+        progressBar = (ProgressBar) findViewById(R.id.settings_prbActivity);
 
         if(!tryPopulateUserCredentials("Settings")){
             Toast.makeText(getApplicationContext(), "No User credentials stored on Phone", Toast.LENGTH_LONG).show();
         }
 
-        TextView txtUsername = (TextView)findViewById(R.id.lblSettingsUsernameValue);
+        TextView txtUsername = (TextView)findViewById(R.id.settings_lblUsernameValue);
         txtUsername.setText(username);
-        TextView txtUserToken = (TextView)findViewById(R.id.lblSettingsUserTokenValue);
+        TextView txtUserToken = (TextView)findViewById(R.id.settings_lblUserTokenValue);
         txtUserToken.setText(userToken);
     }
 

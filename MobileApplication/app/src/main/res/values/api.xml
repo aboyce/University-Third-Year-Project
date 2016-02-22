@@ -18,5 +18,9 @@
     <string name="api_tickets_getTickets1">/Tickets/GetAllTicketsForUser?username=</string>
     <string name="api_tickets_getTickets2">&amp;usertoken=</string>
 
+    <string name="api_tickets_getTicket1">/Tickets/GetTicketForUser?ticketid=</string>
+    <string name="api_tickets_getTicket2">&amp;username=</string>
+    <string name="api_tickets_getTicket3">&amp;usertoken=</string>
+
 
 </resources>

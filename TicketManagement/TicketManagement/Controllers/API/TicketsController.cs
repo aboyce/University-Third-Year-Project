@@ -92,11 +92,11 @@ namespace TicketManagement.Controllers.API
             }
         }
 
-        [System.Web.Http.AcceptVerbs("GET")]
-        public async Task<JsonResult> GetTicketLogsForUser(string ticketid, string username, string usertoken)
-        {
+        //[System.Web.Http.AcceptVerbs("GET")]
+        //public async Task<JsonResult> GetTicketLogsForUser(string ticketid, string username, string usertoken)
+        //{
 
-        }
+        //}
 
 
 
