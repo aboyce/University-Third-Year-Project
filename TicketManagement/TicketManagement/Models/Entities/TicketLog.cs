@@ -17,12 +17,12 @@ namespace TicketManagement.Models.Entities
         [DisplayName("Ticket")]
         public int TicketId { get; set; }
 
-        virtual public Ticket Ticket { get; set; }
+        public virtual Ticket Ticket { get; set; }
 
         [ForeignKey("SubmittedByUser")]
         public string SubmittedByUserId { get; set; }
 
-        virtual public User SubmittedByUser { get; set; }
+        public virtual User SubmittedByUser { get; set; }
 
         [Required]
         [DisplayName("Ticket Log Type")]

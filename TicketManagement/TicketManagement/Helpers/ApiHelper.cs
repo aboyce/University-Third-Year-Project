@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
 
@@ -32,6 +34,35 @@ namespace TicketManagement.Helpers
                 Deadline = ticket.Deadline,
                 LastMessage = ticket.LastMessage,
                 LastResponse = ticket.LastResponse
+            };
+        }
+
+        public static Task<ApiTicketLogViewModel> GetApiTicketLogViewModelAsync(TicketLog ticketLog)
+        {
+            return Task.Factory.StartNew(() => GetApiTicketLogViewModel(ticketLog));
+        }
+        public static ApiTicketLogViewModel GetApiTicketLogViewModel(TicketLog ticketLog)
+        {
+            if (ticketLog == null)
+                return null;
+
+            string ticketLogType = string.Empty;
+
+            if (ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
+                ticketLogType = "External User Post";
+            else if (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser)
+                ticketLogType = "Internal User Post";
+
+            return new ApiTicketLogViewModel
+            {
+                Id = ticketLog.Id,
+                TicketId = ticketLog.TicketId,
+                SubmittedByName = ticketLog.SubmittedByUser.FullName,
+                TicketLogTypeName = ticketLogType,
+                HasFile = ticketLog.FileId != null,
+                IsInternal = ticketLog.IsInternal,
+                Message = ticketLog.Message,
+                TimeOfLog = ticketLog.TimeOfLog
             };
         }
     }

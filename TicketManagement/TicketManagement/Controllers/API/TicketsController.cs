@@ -67,7 +67,7 @@ namespace TicketManagement.Controllers.API
             // Try to get the ticket
             Ticket ticket = await ticketQuery.FirstOrDefaultAsync(t => t.Id == id);
             if (ticket == null) return null;
-            
+
             // If the user is internal, then we can give them the ticket information.
             if (await IsUserInternal(userId))
             {
@@ -92,15 +92,46 @@ namespace TicketManagement.Controllers.API
             }
         }
 
-        //[System.Web.Http.AcceptVerbs("GET")]
-        //public async Task<JsonResult> GetTicketLogsForUser(string ticketid, string username, string usertoken)
-        //{
+        [System.Web.Http.AcceptVerbs("GET")]
+        public async Task<JsonResult> GetTicketLogsForUser(string ticketid, string username, string usertoken)
+        {
+            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
 
-        //}
+            // See if the Ticket Id is a valid value, and cast to an int.
+            int id;
+            if (!int.TryParse(ticketid, out id)) return null;
 
+            // Build a query for the ticket and linked information. (Not an actual DB request)
+            var ticketQuery = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
 
+            // Try to get the ticket
+            Ticket ticket = await ticketQuery.FirstOrDefaultAsync(t => t.Id == id);
+            if (ticket == null) return null;
 
+            // Try to get the specific user with the Username and UserToken
+            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken).Select(u => u.Id).FirstOrDefaultAsync();
+            if (string.IsNullOrEmpty(userId)) return null;
 
+            // Get a list of the Ticket Logs that are related to the ticket
+            var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
+
+            // If the user is not internal...
+            if (! await IsUserInternal(userId))
+            { 
+                // ... they must have opened it to be able to access the information, else they don' have permission to view the information.
+                if (ticket.OpenedById != userId)
+                    return null;
+
+                // ... exclude any internal messages regarding the ticket, as they also don't have permission to view the information
+                ticketLogs = ticketLogs.Where(tl => tl.IsInternal == false);
+            }
+
+            return new JsonResult
+            {
+                ContentType = "TicketLogs",
+                Data = ticketLogs.Select(Helpers.ApiHelper.GetApiTicketLogViewModel).ToList()
+            };
+        }
 
         [System.Web.Http.AcceptVerbs("GET")]
         public JsonResult<List<ApiTicketViewModel>> GetTicketsAssignedTo(string userId)

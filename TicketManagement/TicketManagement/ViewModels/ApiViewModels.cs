@@ -27,4 +27,16 @@ namespace TicketManagement.ViewModels
         public DateTime? LastMessage { get; set; }
         public DateTime? LastResponse { get; set; }
     }
+
+    public class ApiTicketLogViewModel
+    {
+        public int Id { get; set; }
+        public int TicketId { get; set; }
+        public string SubmittedByName { get; set; }
+        public string TicketLogTypeName { get; set; }
+        public bool HasFile { get; set; }
+        public bool IsInternal { get; set; }
+        public string Message { get; set; }
+        public DateTime? TimeOfLog { get; set; }
+    }
 }
