@@ -2,17 +2,15 @@ package ts.ticketmanagement;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,6 +36,13 @@ public class TicketActivity extends ActivityBase {
         Bundle extras = getIntent().getExtras();
         if(extras != null)
             ticketId = extras.getInt(getString(R.string.ticket_id));
+
+        if(!tryPopulateUserCredentials("Ticket")){
+            Log.d("TICKET_MANAGEMENT", "TicketActivity:onCreate: No User Credentials");
+            new Intent(this, MainActivity.class);
+            Toast.makeText(getApplicationContext(), "No User credentials stored on Phone", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         progressbar = (ProgressBar)findViewById(R.id.ticket_prbActivity);
 
@@ -103,7 +108,7 @@ public class TicketActivity extends ActivityBase {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicket:onPostExecute");
-            if(response == null || response.contains("null")){
+            if(response == null || response == "null"){
                 showMessageBox("Main", "Cannot Get Ticket", "Unfortunately we cannot get your ticket from the server, please check your config and try again.");
                 Log.e("TICKET_MANAGEMENT", "TicketActivity-API_GetTicket:onPostExecute: Null from doInBackground");
                 progressbar.setVisibility(View.GONE);
