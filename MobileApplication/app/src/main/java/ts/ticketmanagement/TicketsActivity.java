@@ -100,6 +100,21 @@ public class TicketsActivity extends ActivityBase {
             TextView title = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketTitle);
             title.setText(currentTicket.getTitle());
 
+            switch (currentTicket.getState()){
+                case "Pending Approval":
+                    title.setTextColor(getColor(R.color.colorBootstrap_success));
+                    break;
+                case "Awaiting Response":
+                    title.setTextColor(getColor(R.color.colorBootstrap_warning));
+                    break;
+                case "Closed":
+                    title.setTextColor(getColor(R.color.colorBootstrap_default));
+                    break;
+                default:
+                case "Open":
+                    break;
+            }
+
             TextView description = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketDescription);
             description.setText(currentTicket.getDescription());
 
