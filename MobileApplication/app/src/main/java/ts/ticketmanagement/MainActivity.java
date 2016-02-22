@@ -201,7 +201,7 @@ public class MainActivity extends ActivityBase {
 
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_CheckConnection:onPostExecute: Response=" + response);
 
-            CheckBox checkBox = (CheckBox)findViewById(R.id.chkConnection);
+            CheckBox checkBox = (CheckBox)findViewById(R.id.main_chkConnection);
 
             if(Objects.equals(response, "true") || Objects.equals(response, "true\n") || response.contains("true"))
                 checkBox.setChecked(true);
@@ -261,7 +261,7 @@ public class MainActivity extends ActivityBase {
             response = response.replace("\"","");
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_ConfirmUserCredentials:onPostExecute: Response=" + response);
 
-            CheckBox authorisedCheckBox = (CheckBox)findViewById(R.id.chkAccountAuthorised);
+            CheckBox authorisedCheckBox = (CheckBox)findViewById(R.id.main_chkAccountAuthorised);
             Button sendSMSButton = (Button)findViewById(R.id.btnSendSMS);
 
             if(Objects.equals(response, "true") || response.contains("true")){

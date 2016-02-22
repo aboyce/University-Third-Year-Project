@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ticket_list_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ticket_list_item_border_warning">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Ticket Title"
-        android:id="@+id/lbl_ticketList_ticketTitle"
+        android:id="@+id/ticketList_lblTicketTitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="5dp"
@@ -23,9 +24,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Ticket Description"
-        android:id="@+id/lbl_ticketList_ticketDescription"
-        android:layout_below="@+id/lbl_ticketList_ticketTitle"
-        android:layout_alignStart="@+id/lbl_ticketList_ticketTitle"
+        android:id="@+id/ticketList_lblTicketDescription"
+        android:layout_below="@+id/ticketList_lblTicketTitle"
+        android:layout_alignStart="@+id/ticketList_lblTicketTitle"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"

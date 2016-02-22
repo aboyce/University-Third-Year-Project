@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +43,7 @@ public class LoginActivity extends ActivityBase {
 
     public void authenticateOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "LoginActivity:authenticateOnClick");
-        TextView txtUsername = (TextView)findViewById(R.id.lblUsername);
+        TextView txtUsername = (TextView)findViewById(R.id.main_lblUsername);
         username = txtUsername.getText().toString();
 
         if(username.isEmpty()){

@@ -15,20 +15,20 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Tickets"
-        android:id="@+id/lblTickets"
+        android:id="@+id/tickets_lblTickets"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lstTickets"
+        android:id="@+id/tickets_lstTickets"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
         android:scrollbars="none"
         android:requiresFadingEdge="vertical"
         android:fadingEdgeLength="30dp"
-        android:layout_below="@+id/lblTickets"
+        android:layout_below="@+id/tickets_lblTickets"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
@@ -38,7 +38,7 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/prbTicketsActivity"
+        android:id="@+id/tickets_prbActivity"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="visible" />

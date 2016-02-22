@@ -12,9 +12,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="LOGIN"
+        android:id="@+id/login_lblLogin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/login_lbl_welcome"
-        android:id="@+id/lblWelcome"
+        android:id="@+id/login_lblWelcome"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="72dp" />
@@ -24,18 +32,18 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/login_lbl_message"
-        android:id="@+id/lblMessage"
+        android:id="@+id/login_lblMessage"
         android:layout_marginTop="51dp"
-        android:layout_below="@+id/lblWelcome"
+        android:layout_below="@+id/login_lblWelcome"
         android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lblUsername"
+        android:id="@+id/login_lblUsername"
         android:inputType="text"
         android:layout_marginTop="65dp"
-        android:layout_below="@+id/lblMessage"
+        android:layout_below="@+id/login_lblMessage"
         android:layout_centerHorizontal="true"
         android:hint="Enter your username" />
 
@@ -43,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_btn_authorise"
-        android:id="@+id/btnAuthorise"
+        android:id="@+id/login_btnAuthorise"
         android:onClick="authenticateOnClick"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -52,18 +60,10 @@
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/prbAuthoriseProgress"
-        android:layout_above="@+id/btnAuthorise"
+        android:id="@+id/login_prbAuthoriseProgress"
+        android:layout_above="@+id/login_btnAuthorise"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="33dp"
         android:visibility="gone" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGIN"
-        android:id="@+id/lblLogin"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

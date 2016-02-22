@@ -121,7 +121,7 @@ public class TicketsActivity extends ActivityBase {
 
             itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_danger));
 
-            TextView title = (TextView) itemView.findViewById(R.id.lbl_ticketList_ticketTitle);
+            TextView title = (TextView) itemView.findViewById(R.id.ticketList_lblTicketTitle);
             title.setText(currentTicket.getTitle());
 
             switch (currentTicket.getState()){

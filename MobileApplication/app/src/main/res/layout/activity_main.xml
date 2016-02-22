@@ -13,15 +13,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MAIN"
-        android:id="@+id/lblMain"
+        android:id="@+id/main_lblMain"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/prbMainActivity"
-        android:layout_alignTop="@+id/lblMain"
+        android:id="@+id/main_prbActivity"
+        android:layout_alignTop="@+id/main_lblSettings"
         android:layout_alignParentEnd="true"
         android:visibility="gone" />
 
@@ -29,24 +29,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connection to Server"
-        android:id="@+id/chkConnection"
+        android:id="@+id/main_chkConnection"
         android:enabled="true"
         android:clickable="false"
         android:focusable="true"
         android:layout_marginTop="37dp"
-        android:layout_below="@+id/lblMain"
+        android:layout_below="@+id/main_lblSettings"
         android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Account Authorised"
-        android:id="@+id/chkAccountAuthorised"
+        android:id="@+id/main_chkAccountAuthorised"
         android:enabled="true"
         android:clickable="false"
         android:focusable="false"
         android:layout_marginTop="38dp"
-        android:layout_below="@+id/btnCheckConnection"
+        android:layout_below="@+id/main_btnCheckConnection"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -54,9 +54,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check Connection"
-        android:id="@+id/btnCheckConnection"
+        android:id="@+id/main_btnCheckConnection"
         android:onClick="checkConnectionOnClick"
-        android:layout_alignTop="@+id/chkConnection"
+        android:layout_alignTop="@+id/main_chkConnection"
         android:layout_alignParentEnd="true" />
 
     <Button
@@ -64,18 +64,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Authorise"
-        android:id="@+id/btnAuthorise"
         android:onClick="authoriseOnClick"
-        android:layout_alignTop="@+id/chkAccountAuthorised"
-        android:layout_alignEnd="@+id/btnCheckConnection" />
+        android:layout_alignTop="@+id/main_chkAccountAuthorised"
+        android:layout_alignEnd="@+id/main_btnCheckConnection"
+        android:id="@+id/main_btnAuthorise" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username: "
-        android:id="@+id/lblUsername"
-        android:layout_below="@+id/btnAuthorise"
+        android:id="@+id/main_lblUsername"
+        android:layout_below="@+id/login_btnAuthorise"
         android:layout_alignParentStart="true"
         android:layout_marginTop="74dp" />
 
@@ -84,17 +84,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/main_lbl_usernameValue"
-        android:id="@+id/lblUsernameValue"
+        android:id="@+id/main_lblUsernameValue"
         android:enabled="true"
-        android:layout_alignBottom="@+id/lblUsername"
-        android:layout_toEndOf="@+id/lblUsername" />
+        android:layout_alignBottom="@+id/main_lblUsername"
+        android:layout_toEndOf="@+id/main_lblUsername" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send SMS"
-        android:id="@+id/btnSendSMS"
+        android:id="@+id/main_btnSendSMS"
         android:onClick="sendSMSOnClick"
         android:layout_alignParentBottom="true" />
 
