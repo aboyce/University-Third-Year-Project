@@ -16,7 +16,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="0dp"
         android:layout_alignParentEnd="true"
         android:gravity="right" />
 
@@ -29,9 +29,10 @@
         android:layout_below="@+id/ticketLogList_lblLogCreator"
         android:layout_alignStart="@+id/ticketLogList_lblLogCreator"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="8dp"
         android:gravity="right"
+        android:textStyle="italic"
         android:layout_alignEnd="@+id/ticketLogList_lblLogCreator" />
 
 </RelativeLayout>

@@ -95,7 +95,7 @@ public class TicketActivity extends ActivityBase {
 
             try{
                 if(itemView == null){
-                    if(currentTicketLog.getIsInternal() || currentTicketLog.getFromInternal())
+                    if(currentTicketLog.getFromInternal())
                         itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item_right, parent, false);
                     else
                         itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item_left, parent, false);
