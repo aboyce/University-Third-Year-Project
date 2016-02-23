@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import Entities.Ticket;
+import Entities.TicketLog;
 
 /**
  * Created by Adam on 22/02/2016.
@@ -24,6 +25,22 @@ public class JSONHelper {
 
         }catch(Exception e){
             Log.e("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject: Exception: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static TicketLog getTicketLogFromJSONObject (JSONObject json){
+        Log.d("TICKET_MANAGEMENT", "TicketsActivity:getTicketLogFromJSONObject");
+        try{
+            return new TicketLog(Integer.parseInt(json.getString("id")),
+                    Integer.parseInt(json.getString("ticketId")),
+                    json.getString("submittedByName"), json.getString("ticketLogTypeName"),
+                    Boolean.parseBoolean(json.getString("hasFile")),
+                    Boolean.parseBoolean(json.getString("isInternal")),
+                    json.getString("message"), json.getString("timeOfLog"));
+
+        }catch(Exception e){
+            Log.e("TICKET_MANAGEMENT", "TicketsActivity:getTicketLogFromJSONObject: Exception: " + e.getMessage());
             return null;
         }
     }

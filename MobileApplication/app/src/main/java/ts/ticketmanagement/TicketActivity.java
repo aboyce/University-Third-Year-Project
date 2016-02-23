@@ -22,15 +22,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import Entities.Ticket;
+import Entities.TicketLog;
 import Helpers.JSONHelper;
 
 public class TicketActivity extends ActivityBase {
 
     private int ticketId;
     private Ticket ticket;
-    private ArrayList<TicketLog> ticketLogs;
+    private List<TicketLog> ticketLogs;
     private ListView ticketLogsListView;
     private ProgressBar progressbar;
 
@@ -50,9 +52,12 @@ public class TicketActivity extends ActivityBase {
             return;
         }
 
+        ticketLogs = new ArrayList<>();
+        ticketLogsListView = (ListView)findViewById(R.id.ticket_lstTicketLogs);
         progressbar = (ProgressBar)findViewById(R.id.ticket_prbActivity);
 
         new API_GetTicket().execute();
+        new API_GetTicketLogs().execute();
     }
 
     @Override
@@ -69,6 +74,7 @@ public class TicketActivity extends ActivityBase {
         }
         if(item.getItemId() == R.id.ts_menu_refresh){
             new API_GetTicket().execute();
+            new API_GetTicketLogs().execute();
         }
         return true;
     }
@@ -76,7 +82,7 @@ public class TicketActivity extends ActivityBase {
     private class TicketLogsListAdapter extends ArrayAdapter<TicketLog> {
 
         public TicketLogsListAdapter() {
-            super(TicketActivity.this, R.layout.ticketLog_list_item, ticketLogs);
+            super(TicketActivity.this, R.layout.ticket_log_list_item, ticketLogs);
             Log.d("TICKET_MANAGEMENT", "TicketsActivity:TicketListAdapter: Constructor Called");
         }
 
@@ -85,32 +91,32 @@ public class TicketActivity extends ActivityBase {
             Log.d("TICKET_MANAGEMENT", "TicketActivity:getView");
             View itemView = convertView;
             if(itemView == null)
-                itemView = getLayoutInflater().inflate(R.layout.ticketLog_list_item, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item, parent, false);
 
             TicketLog currentTicketLog = ticketLogs.get(position);
 
             try{
-                TextView creator = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogCreator);
-                creator.setText(currentTicketLog.getName());
+                TextView submittedBy = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogCreator);
+                submittedBy.setText(currentTicketLog.getSubmittedBy());
                 TextView message = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogMessage);
                 message.setText(currentTicketLog.getMessage());
 
-                switch (currentTicketLog.getType()){
-                    case "Pending Approval":
-                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
-                        break;
-                    case "Awaiting Response":
-                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
-                        break;
-                    case "Closed":
-                        title.setTextColor(getColor(R.color.colorBootstrap_default));
-                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
-                        break;
-                    default:
-                    case "Open":
-                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
-                        break;
-                }
+//                switch (currentTicketLog.getType()){
+//                    case "Pending Approval":
+//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
+//                        break;
+//                    case "Awaiting Response":
+//                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
+//                        break;
+//                    case "Closed":
+//                        title.setTextColor(getColor(R.color.colorBootstrap_default));
+//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
+//                        break;
+//                    default:
+//                    case "Open":
+//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
+//                        break;
+//                }
             } catch (Exception e){
                 Log.e("TICKET_MANAGEMENT", "TicketsActivity:getView: Error when setting ticketLog_list_item values, message: " + e.getMessage());
                 return itemView;

@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ticket_list_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ticket_list_item_border_default">
+    android:layout_height="match_parent">
+    <!--android:background="@drawable/ticket_list_item_border_default">-->
 
     <TextView
         android:layout_width="wrap_content"
