@@ -43,7 +43,7 @@ public class LoginActivity extends ActivityBase {
 
     public void authenticateOnClick(View pView){
         Log.d("TICKET_MANAGEMENT", "LoginActivity:authenticateOnClick");
-        TextView txtUsername = (TextView)findViewById(R.id.main_lblUsername);
+        TextView txtUsername = (TextView)findViewById(R.id.login_lblUsername);
         username = txtUsername.getText().toString();
 
         if(username.isEmpty()){

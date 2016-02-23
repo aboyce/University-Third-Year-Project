@@ -153,7 +153,6 @@ public class MainActivity extends ActivityBase {
         ticketsIntent = new Intent(this, TicketsActivity.class);
         new API_ConfirmUserCredentials().execute();
     }
-
     private class API_CheckConnection extends AsyncTask<Void, Void, String> {
 
         protected void onPreExecute(){
