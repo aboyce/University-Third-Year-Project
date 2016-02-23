@@ -2,8 +2,10 @@ package ts.ticketmanagement;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,34 +92,32 @@ public class TicketActivity extends ActivityBase {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.d("TICKET_MANAGEMENT", "TicketActivity:getView");
-            View itemView = convertView;
-            if(itemView == null)
-                itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item, parent, false);
 
             TicketLog currentTicketLog = ticketLogs.get(position);
+            View itemView = convertView;
 
             try{
+                if(itemView == null){
+                    if(currentTicketLog.getIsInternal())
+                        itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item_right, parent, false);
+                    else
+                        itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item, parent, false);
+                }
+
                 TextView submittedBy = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogCreator);
                 submittedBy.setText(currentTicketLog.getSubmittedBy());
                 TextView message = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogMessage);
                 message.setText(currentTicketLog.getMessage());
 
-//                switch (currentTicketLog.getType()){
-//                    case "Pending Approval":
-//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
-//                        break;
-//                    case "Awaiting Response":
-//                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
-//                        break;
-//                    case "Closed":
-//                        title.setTextColor(getColor(R.color.colorBootstrap_default));
-//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
-//                        break;
-//                    default:
-//                    case "Open":
-//                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
-//                        break;
-//                }
+                if(currentTicketLog.getIsInternal()){
+                    itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
+                }
+                else{
+                    if(currentTicketLog.getFromInternal())
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
+                    else
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_primary));
+                }
             } catch (Exception e){
                 Log.e("TICKET_MANAGEMENT", "TicketsActivity:getView: Error when setting ticketLog_list_item values, message: " + e.getMessage());
                 return itemView;

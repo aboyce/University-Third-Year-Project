@@ -46,21 +46,14 @@ namespace TicketManagement.Helpers
             if (ticketLog == null)
                 return null;
 
-            string ticketLogType = string.Empty;
-
-            if (ticketLog.TicketLogType == TicketLogType.MessageFromExternalUser)
-                ticketLogType = "External User Post";
-            else if (ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser)
-                ticketLogType = "Internal User Post";
-
             return new ApiTicketLogViewModel
             {
                 Id = ticketLog.Id,
                 TicketId = ticketLog.TicketId,
                 SubmittedByName = ticketLog.SubmittedByUser.FullName,
-                TicketLogTypeName = ticketLogType,
                 HasFile = ticketLog.FileId != null,
                 IsInternal = ticketLog.IsInternal,
+                FromInternal = ticketLog.TicketLogType == TicketLogType.MessageFromInternalUser,
                 Message = ticketLog.Message,
                 TimeOfLog = ticketLog.TimeOfLog
             };

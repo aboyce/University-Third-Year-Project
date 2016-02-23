@@ -34,9 +34,10 @@ public class JSONHelper {
         try{
             return new TicketLog(Integer.parseInt(json.getString("id")),
                     Integer.parseInt(json.getString("ticketId")),
-                    json.getString("submittedByName"), json.getString("ticketLogTypeName"),
+                    json.getString("submittedByName"),
                     Boolean.parseBoolean(json.getString("hasFile")),
                     Boolean.parseBoolean(json.getString("isInternal")),
+                    Boolean.parseBoolean(json.getString("fromInternal")),
                     json.getString("message"), json.getString("timeOfLog"));
 
         }catch(Exception e){

@@ -190,7 +190,7 @@ public class TicketsActivity extends ActivityBase {
                     for(int i = 0; i < jsonTickets.length(); i++){
                         Ticket currentTicket = JSONHelper.getTicketFromJSONObject(jsonTickets.getJSONObject(i));
                         if(currentTicket != null)
-                            tickets.add(currentTicket);tickets.add(currentTicket);tickets.add(currentTicket);
+                            tickets.add(currentTicket);
                     }
                 }
             }catch (Exception e){

@@ -5,19 +5,19 @@ public class TicketLog {
     private int id;
     private int ticketId;
     private String submittedBy;
-    private String ticketLogType;
     private Boolean hasFile;
     private Boolean isInternal;
+    private Boolean fromInternal;
     private String message;
     private String timeOfLog;
 
-    public TicketLog(int id, int ticketId, String submittedBy, String ticketLogType, Boolean hasFile, Boolean isInternal, String message, String timeOfLog) {
+    public TicketLog(int id, int ticketId, String submittedBy, Boolean hasFile, Boolean isInternal, Boolean fromInternal, String message, String timeOfLog) {
         this.id = id;
         this.ticketId = ticketId;
         this.submittedBy = submittedBy;
-        this.ticketLogType = ticketLogType;
         this.hasFile = hasFile;
         this.isInternal = isInternal;
+        this.fromInternal = fromInternal;
         this.message = message;
         this.timeOfLog = timeOfLog;
     }
@@ -46,14 +46,6 @@ public class TicketLog {
         this.submittedBy = submittedBy;
     }
 
-    public String getTicketLogType() {
-        return ticketLogType;
-    }
-
-    public void setTicketLogType(String ticketLogType) {
-        this.ticketLogType = ticketLogType;
-    }
-
     public Boolean getHasFile() {
         return hasFile;
     }
@@ -68,6 +60,14 @@ public class TicketLog {
 
     public void setIsInternal(Boolean isInternal) {
         this.isInternal = isInternal;
+    }
+
+    public Boolean getFromInternal() {
+        return fromInternal;
+    }
+
+    public void setFromInternal(Boolean fromInternal) {
+        this.fromInternal = fromInternal;
     }
 
     public String getMessage() {
