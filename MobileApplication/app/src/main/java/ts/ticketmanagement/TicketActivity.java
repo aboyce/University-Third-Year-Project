@@ -2,10 +2,8 @@ package ts.ticketmanagement;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,7 +82,7 @@ public class TicketActivity extends ActivityBase {
     private class TicketLogsListAdapter extends ArrayAdapter<TicketLog> {
 
         public TicketLogsListAdapter() {
-            super(TicketActivity.this, R.layout.ticket_log_list_item, ticketLogs);
+            super(TicketActivity.this, R.layout.ticket_log_list_item_left, ticketLogs);
             Log.d("TICKET_MANAGEMENT", "TicketsActivity:TicketListAdapter: Constructor Called");
         }
 
@@ -98,10 +95,10 @@ public class TicketActivity extends ActivityBase {
 
             try{
                 if(itemView == null){
-                    if(currentTicketLog.getIsInternal())
+                    if(currentTicketLog.getIsInternal() || currentTicketLog.getFromInternal())
                         itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item_right, parent, false);
                     else
-                        itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item, parent, false);
+                        itemView = getLayoutInflater().inflate(R.layout.ticket_log_list_item_left, parent, false);
                 }
 
                 TextView submittedBy = (TextView) itemView.findViewById(R.id.ticketLogList_lblLogCreator);
