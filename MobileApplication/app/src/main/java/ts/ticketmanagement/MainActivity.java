@@ -87,8 +87,6 @@ public class MainActivity extends ActivityBase {
     {
         if(pData.hasExtra(getString(R.string.user_username)))
             username = pData.getStringExtra(getString(R.string.user_username));
-        if(pData.hasExtra(getString(R.string.user_token)))
-            userToken = pData.getStringExtra(getString(R.string.user_token));
 
         Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: User information is now stored within the app.");
 
@@ -100,13 +98,11 @@ public class MainActivity extends ActivityBase {
                 .setPositiveButton("Send Text Now", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: SendTextNow Clicked.");
-                        trySendSMSMessage();
-                    }
+                        trySendSMSMessage(); }
                 })
                 .setNegativeButton("Wait for Web Application", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: WaitForWebApplication Clicked.");
-                    }
+                        Log.d("TICKET_MANAGEMENT", "MainActivity:handleLoginFromMain: WaitForWebApplication Clicked."); }
                 })
                 .show();
     }

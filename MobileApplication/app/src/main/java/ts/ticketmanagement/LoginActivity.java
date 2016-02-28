@@ -113,7 +113,6 @@ public class LoginActivity extends ActivityBase {
             if(storeCredentials(username, userToken, isInternal)){
                 Intent intentWithData = new Intent();
                 intentWithData.putExtra(getString(R.string.user_username), username);
-                intentWithData.putExtra(getString(R.string.user_token), userToken);
                 setResult(RESULT_OK, intentWithData);
             } else
                 setResult(RESULT_CANCELED);
