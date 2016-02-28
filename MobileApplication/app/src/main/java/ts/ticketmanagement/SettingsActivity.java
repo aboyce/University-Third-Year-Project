@@ -61,6 +61,7 @@ public class SettingsActivity extends ActivityBase {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(getString(R.string.persistent_storage_user_username));
         editor.remove(getString(R.string.persistent_storage_user_token));
+        editor.remove(getString(R.string.persistent_storage_is_internal));
 
         if(!editor.commit()){
             Log.d("TICKET_MANAGEMENT", "SettingsActivity:removeUserOnClick: Failed to remove User from Shared Preferences.");

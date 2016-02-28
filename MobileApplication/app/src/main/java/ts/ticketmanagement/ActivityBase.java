@@ -16,6 +16,7 @@ public class ActivityBase extends AppCompatActivity {
 
     protected String username;
     protected String userToken;
+    protected Boolean isInternal;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -49,7 +50,27 @@ public class ActivityBase extends AppCompatActivity {
             Log.d("TICKET_MANAGEMENT", activityName + "Activity:tryPopulateUserCredentials: Contained userToken.");
         } else return false;
 
+        if(sharedPreferences.contains(getString(R.string.persistent_storage_is_internal))) {
+            isInternal = sharedPreferences.getBoolean(getString(R.string.persistent_storage_is_internal), false);
+            Log.d("TICKET_MANAGEMENT", activityName + "Activity:tryPopulateUserCredentials: Contained username.");
+        } else return false;
+
         return true;
+    }
+
+    protected boolean storeCredentials(String username, String userToken, Boolean isInternal) {
+        Log.d("TICKET_MANAGEMENT", "LoginActivity:storeCredentials: Username= " + username + " UserToken= " + userToken + " IsInternal= " + isInternal);
+        try{
+            SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getString(R.string.persistent_storage_user_username), username);
+            editor.putString(getString(R.string.persistent_storage_user_token), userToken);
+            editor.putBoolean(getString(R.string.persistent_storage_is_internal), isInternal);
+            return editor.commit();
+        } catch (Exception e){
+            Log.e("TICKET_MANAGEMENT","LoginActivity:storeCredentials: Error: " + e.getMessage(), e);
+        }
+        return false;
     }
 
     protected void showMessageBox(String activityName, String title, String message){

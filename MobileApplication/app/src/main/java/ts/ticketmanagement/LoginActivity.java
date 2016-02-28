@@ -1,8 +1,6 @@
 package ts.ticketmanagement;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +9,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Objects;
-
 
 public class LoginActivity extends ActivityBase {
 
@@ -52,20 +50,6 @@ public class LoginActivity extends ActivityBase {
         }
 
         new API_GetUserToken().execute();
-    }
-
-    private boolean storeCredentials(String username, String userToken) {
-        Log.d("TICKET_MANAGEMENT", "LoginActivity:storeCredentials: Username= " + username + " UserToken= " + userToken);
-        try{
-            SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.persistent_storage_name), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(getString(R.string.persistent_storage_user_username), username);
-            editor.putString(getString(R.string.persistent_storage_user_token), userToken);
-            return editor.commit();
-        } catch (Exception e){
-            Log.e("TICKET_MANAGEMENT","LoginActivity:storeCredentials: Error: " + e.getMessage(), e);
-        }
-        return false;
     }
 
     private class API_GetUserToken extends AsyncTask<Void, Void, String> {
@@ -105,24 +89,36 @@ public class LoginActivity extends ActivityBase {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute");
-            if(response == null || response.contains("null") || username == null || Objects.equals(username, "")){
-                showMessageBox("Login", "Error Getting Token", "An error has occurred trying to get your" +
-                        " user token, please check the Username and try again");
+
+
+            if(response == null){
+                showMessageBox("Login", "Error Getting Token", "An error has occurred trying to get your" + " user token, please check the Username and try again");
                 Log.e("TICKET_MANAGEMENT", "LoginActivity-API_GetUserToken:onPostExecute: Error: null from doInBackground, assumed error occurred.");
                 progressbar.setVisibility(View.GONE);
-                return;
             }
 
-            userToken = response.replace("\"","");
-            progressbar.setVisibility(View.GONE);
+            try {
+                JSONObject json = new JSONObject(response);
+                if(json.getString("contentType").contains("UserTokenAndIsInternal")){
+                    json = json.getJSONObject("data");
 
-            if(storeCredentials(username, userToken)){
+                    userToken = json.getString("userToken");
+                    isInternal = Boolean.parseBoolean(json.getString("isInternal"));
+
+                }
+            }catch (Exception e){
+                Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetUserToken:onPostExecute: JSON Exception - Message: " + e.getMessage());
+            }
+
+            if(storeCredentials(username, userToken, isInternal)){
                 Intent intentWithData = new Intent();
                 intentWithData.putExtra(getString(R.string.user_username), username);
                 intentWithData.putExtra(getString(R.string.user_token), userToken);
                 setResult(RESULT_OK, intentWithData);
             } else
                 setResult(RESULT_CANCELED);
+
+            progressbar.setVisibility(View.GONE);
 
             finish();
         }

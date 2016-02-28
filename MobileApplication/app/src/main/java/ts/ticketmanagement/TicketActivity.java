@@ -104,13 +104,15 @@ public class TicketActivity extends ActivityBase {
             }
         });
 
-        alert.setNegativeButton("Internal Reply", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Internal Button Clicked");
-                new API_AddTicketReply().execute(true, editText.getText().toString());
-            }
-        });
+        if(isInternal) {
+            alert.setNegativeButton("Internal Reply", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Internal Button Clicked");
+                    new API_AddTicketReply().execute(true, editText.getText().toString());
+                }
+            });
+        }
 
         alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

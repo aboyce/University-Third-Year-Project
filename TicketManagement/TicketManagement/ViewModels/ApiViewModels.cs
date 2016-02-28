@@ -10,6 +10,12 @@ namespace TicketManagement.ViewModels
     {
     }
 
+    public class ApiUserTokenViewModel
+    {
+        public string UserToken { get; set; }
+        public bool IsInternal { get; set; }
+    }
+
     public class ApiTicketViewModel
     {
         public int Id { get; set; }

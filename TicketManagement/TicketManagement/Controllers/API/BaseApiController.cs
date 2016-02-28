@@ -1,10 +1,19 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Http;
+using TicketManagement.Management;
+using TicketManagement.Models.Context;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Controllers.API
 {
     public class BaseApiController : ApiController
     {
+        private ApplicationContext db = new ApplicationContext();
+
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         private readonly string _availableMethods = " : Available API Calls :" +
@@ -13,7 +22,7 @@ namespace TicketManagement.Controllers.API
                    "[Tickets/GetTicketLogsForUser(string ticketid, string username, string usertoken) => Json list of tickets logs.]" +
                    "[Tickets/AddInternalReplyToTicket(string ticketid, string username, string usertoken, string message) => True or False.]" +
                    "[Tickets/AddExternalReplyToTicket(string ticketid, string username, string usertoken, string message) => True or False.]" +
-                   "[User/GetNewUserToken(string username) => The user token.]" +
+                   "[User/GetNewUserToken(string username) => The user token and if the user is internal.]" +
                    "[User/CheckUserToken(string username, string usertoken) => true/false if the combination is valid.]" +
                    "[User/DeactivateUserToken(string username, string usertoken) => A true/false.]";
 
@@ -33,6 +42,16 @@ namespace TicketManagement.Controllers.API
         public virtual bool CheckConnection()
         {
             return true;
+        }
+
+        protected async Task<bool> IsUserInternal(string userId)
+        {
+            // Get the Id for the Role, Internal.
+            string internalRoleId = await db.Roles.Where(r => r.Name == MyRoles.Internal).Select(r => r.Id).FirstOrDefaultAsync();
+            // Get the Users that are internal.
+            List<User> internalUsers = await db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(internalRoleId)).ToListAsync();
+            // If the user is not in the list of internal users, then return false.
+            return internalUsers.Find(u => u.Id == userId) != null;
         }
     }
 }

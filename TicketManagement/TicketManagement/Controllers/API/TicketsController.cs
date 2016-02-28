@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http.Results;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using TicketManagement.Helpers;
-using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
-using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers.API
 {
@@ -17,18 +12,6 @@ namespace TicketManagement.Controllers.API
     public class TicketsController : BaseApiController
     {
         private ApplicationContext db = new ApplicationContext();
-
-        private async Task<bool> IsUserInternal(string userId)
-        {
-            // Get the Id for the Role, Internal.
-            string internalRoleId =
-                await db.Roles.Where(r => r.Name == MyRoles.Internal).Select(r => r.Id).FirstOrDefaultAsync();
-            // Get the Users that are internal.
-            List<User> internalUsers =
-                await db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(internalRoleId)).ToListAsync();
-            // If the user is not in the list of internal users, then return false.
-            return internalUsers.Find(u => u.Id == userId) != null;
-        }
 
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetAllTicketsForUser(string username, string usertoken)

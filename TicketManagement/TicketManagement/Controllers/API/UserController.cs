@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http.Results;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
@@ -18,7 +14,7 @@ namespace TicketManagement.Controllers.API
         private ApplicationContext db = new ApplicationContext();
 
         [System.Web.Http.AcceptVerbs("GET")]
-        public async Task<string> GetNewUserToken(string username)
+        public async Task<JsonResult> GetNewUserToken(string username)
         {
             if (string.IsNullOrEmpty(username)) return null;
             
@@ -34,7 +30,18 @@ namespace TicketManagement.Controllers.API
 
             user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
-            return string.IsNullOrEmpty(user.UserToken) ? null : user.UserToken;
+            if (string.IsNullOrEmpty(user.UserToken))
+                return null;
+
+            return new JsonResult()
+            {
+                ContentType = "UserTokenAndIsInternal",
+                Data = new ApiUserTokenViewModel
+                {
+                    UserToken = user.UserToken,
+                    IsInternal = await IsUserInternal(user.Id)
+                }
+            };
         }
 
         [System.Web.Http.AcceptVerbs("GET")]
@@ -48,6 +55,17 @@ namespace TicketManagement.Controllers.API
 
             return user.MobileApplicationConfirmed && string.Equals(user.UserToken, usertoken, StringComparison.CurrentCultureIgnoreCase);
         }
+
+        //[System.Web.Http.AcceptVerbs("GET")]
+        //public async Task<bool> UserInternal(string username, string usertoken)
+        //{
+        //    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
+
+        //    User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        //    if (user == null) return false;
+
+        //    return await IsUserInternal(user.Id);
+        //}
 
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<bool> DeactivateUserToken(string username, string usertoken)

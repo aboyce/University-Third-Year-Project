@@ -12,6 +12,9 @@
     <string name="api_user_confirmUserToken1">/User/CheckUserToken?username=</string>
     <string name="api_user_confirmUserToken2">&amp;usertoken=</string>
 
+    <string name="api_user_isInternal1">/User/UserInternal/?username=</string>
+    <string name="api_user_isInternal2">&amp;usertoken=</string>
+
     <string name="api_user_deactivateUserToken1">/User/DeactivateUserToken?username=</string>
     <string name="api_user_deactivateUserToken2">&amp;usertoken=</string>
 

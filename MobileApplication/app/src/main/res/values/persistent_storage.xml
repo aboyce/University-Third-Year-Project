@@ -3,4 +3,5 @@
     <string name="persistent_storage_name">ticket_management_storage</string>
     <string name="persistent_storage_user_username">ticket_management_user_username</string>
     <string name="persistent_storage_user_token">ticket_management_user_token</string>
+    <string name="persistent_storage_is_internal">ticket_management_is_internal</string>
 </resources>
