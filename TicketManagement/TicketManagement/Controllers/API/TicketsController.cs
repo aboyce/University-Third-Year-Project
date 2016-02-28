@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using TicketManagement.Helpers;
 using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
@@ -19,9 +21,11 @@ namespace TicketManagement.Controllers.API
         private async Task<bool> IsUserInternal(string userId)
         {
             // Get the Id for the Role, Internal.
-            string internalRoleId = await db.Roles.Where(r => r.Name == MyRoles.Internal).Select(r => r.Id).FirstOrDefaultAsync();
+            string internalRoleId =
+                await db.Roles.Where(r => r.Name == MyRoles.Internal).Select(r => r.Id).FirstOrDefaultAsync();
             // Get the Users that are internal.
-            List<User> internalUsers = await db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(internalRoleId)).ToListAsync();
+            List<User> internalUsers =
+                await db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(internalRoleId)).ToListAsync();
             // If the user is not in the list of internal users, then return false.
             return internalUsers.Find(u => u.Id == userId) != null;
         }
@@ -29,16 +33,27 @@ namespace TicketManagement.Controllers.API
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetAllTicketsForUser(string username, string usertoken)
         {
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
 
             // Try to get the specific user with the Username and UserToken
-            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken).Select(u => u.Id).FirstOrDefaultAsync();
+            string userId =
+                await
+                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                        .Select(u => u.Id)
+                        .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return null;
 
             // Build a query for all the tickets and linked information. (Not an actual DB request)
-            var tickets = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+            var tickets =
+                db.Tickets.Include(t => t.OpenedBy)
+                    .Include(t => t.OrganisationAssignedTo)
+                    .Include(t => t.Project)
+                    .Include(t => t.TeamAssignedTo)
+                    .Include(t => t.TicketCategory)
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketState);
 
-            if(!await IsUserInternal(userId))
+            if (!await IsUserInternal(userId))
                 tickets = tickets.Where(t => t.OpenedById == userId);
 
             return new JsonResult
@@ -51,18 +66,30 @@ namespace TicketManagement.Controllers.API
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetTicketForUser(string ticketid, string username, string usertoken)
         {
-            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
+            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken))
+                return null;
 
             // See if the Ticket Id is a valid value, and cast to an int.
             int id;
             if (!int.TryParse(ticketid, out id)) return null;
 
             // Try to get the specific user with the Username and UserToken
-            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken).Select(u => u.Id).FirstOrDefaultAsync();
+            string userId =
+                await
+                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                        .Select(u => u.Id)
+                        .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return null;
 
             // Build a query for the ticket and linked information. (Not an actual DB request)
-            var ticketQuery = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+            var ticketQuery =
+                db.Tickets.Include(t => t.OpenedBy)
+                    .Include(t => t.OrganisationAssignedTo)
+                    .Include(t => t.Project)
+                    .Include(t => t.TeamAssignedTo)
+                    .Include(t => t.TicketCategory)
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketState);
 
             // Try to get the ticket
             Ticket ticket = await ticketQuery.FirstOrDefaultAsync(t => t.Id == id);
@@ -95,29 +122,42 @@ namespace TicketManagement.Controllers.API
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetTicketLogsForUser(string ticketid, string username, string usertoken)
         {
-            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return null;
+            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken))
+                return null;
 
             // See if the Ticket Id is a valid value, and cast to an int.
             int id;
             if (!int.TryParse(ticketid, out id)) return null;
 
             // Build a query for the ticket and linked information. (Not an actual DB request)
-            var ticketQuery = db.Tickets.Include(t => t.OpenedBy).Include(t => t.OrganisationAssignedTo).Include(t => t.Project).Include(t => t.TeamAssignedTo).Include(t => t.TicketCategory).Include(t => t.TicketPriority).Include(t => t.TicketState);
+            var ticketQuery =
+                db.Tickets.Include(t => t.OpenedBy)
+                    .Include(t => t.OrganisationAssignedTo)
+                    .Include(t => t.Project)
+                    .Include(t => t.TeamAssignedTo)
+                    .Include(t => t.TicketCategory)
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketState);
 
             // Try to get the ticket
             Ticket ticket = await ticketQuery.FirstOrDefaultAsync(t => t.Id == id);
             if (ticket == null) return null;
 
             // Try to get the specific user with the Username and UserToken
-            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken).Select(u => u.Id).FirstOrDefaultAsync();
+            string userId =
+                await
+                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                        .Select(u => u.Id)
+                        .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return null;
 
             // Get a list of the Ticket Logs that are related to the ticket
-            var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
+            var ticketLogs =
+                db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
 
             // If the user is not internal...
-            if (! await IsUserInternal(userId))
-            { 
+            if (!await IsUserInternal(userId))
+            {
                 // ... they must have opened it to be able to access the information, else they don' have permission to view the information.
                 if (ticket.OpenedById != userId)
                     return null;
@@ -134,12 +174,47 @@ namespace TicketManagement.Controllers.API
         }
 
         [System.Web.Http.AcceptVerbs("GET")]
-        public JsonResult<List<ApiTicketViewModel>> GetTicketsAssignedTo(string userId)
+        public async Task<bool> AddExternalReplyToTicket(string ticketid, string username, string usertoken, string message)
         {
-           return Json(db.Tickets.Where(t => t.UserAssignedToId == userId).ToList().Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList());
+            return await AddReplyToTicket(ticketid, username, usertoken, message, false);
         }
 
+        [System.Web.Http.AcceptVerbs("GET")]
+        public async Task<bool> AddInternalReplyToTicket(string ticketid, string username, string usertoken, string message)
+        {
+            return await AddReplyToTicket(ticketid, username, usertoken, message, true);
+        }
 
+        private async Task<bool> AddReplyToTicket(string ticketid, string username, string usertoken, string message, bool isInternal = false)
+        {
+            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken) ||
+                string.IsNullOrEmpty(message)) return false;
 
+            // See if the Ticket Id is a valid value, and cast to an int.
+            int id;
+            if (!int.TryParse(ticketid, out id)) return false;
+
+            // Try to get the ticket
+            Ticket ticket = await db.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+            if (ticket == null) return false;
+
+            // Try to get the specific user with the Username and UserToken
+            string userId =
+                await
+                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                        .Select(u => u.Id)
+                        .FirstOrDefaultAsync();
+            if (string.IsNullOrEmpty(userId)) return false;
+
+            TicketLogType type = await IsUserInternal(userId)
+                ? TicketLogType.MessageFromInternalUser
+                : TicketLogType.MessageFromExternalUser;
+
+            // If the user is not internal they must have opened it to be able to access it, else they don't have permission to add to the ticket.
+            if (!await IsUserInternal(userId) && ticket.OpenedById != userId)
+                return false;
+
+            return await TicketLogHelper.NewTicketLogAsync(userId, id, type, isInternal, false, db, message, null);
+        }
     }
 }

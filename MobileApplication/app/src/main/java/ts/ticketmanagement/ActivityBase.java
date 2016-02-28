@@ -37,11 +37,15 @@ public class ActivityBase extends AppCompatActivity {
 
         if(sharedPreferences.contains(getString(R.string.persistent_storage_user_username))) {
             username = sharedPreferences.getString(getString(R.string.persistent_storage_user_username), null);
+            if (username != null)
+                username = username.replace("\n", "");
             Log.d("TICKET_MANAGEMENT", activityName + "Activity:tryPopulateUserCredentials: Contained username.");
         } else return false;
 
         if(sharedPreferences.contains(getString(R.string.persistent_storage_user_token))){
             userToken = sharedPreferences.getString(getString(R.string.persistent_storage_user_token), null);
+            if(userToken != null)
+                userToken = userToken.replace("\n", "");
             Log.d("TICKET_MANAGEMENT", activityName + "Activity:tryPopulateUserCredentials: Contained userToken.");
         } else return false;
 

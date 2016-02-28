@@ -11,6 +11,8 @@ namespace TicketManagement.Controllers.API
                    "[Tickets/GetAllTicketsForUser(string username, string usertoken) => Json list of tickets.]" +
                    "[Tickets/GetTicketForUser(string ticketid, string username, string usertoken) => Json object (ticket).]" +
                    "[Tickets/GetTicketLogsForUser(string ticketid, string username, string usertoken) => Json list of tickets logs.]" +
+                   "[Tickets/AddInternalReplyToTicket(string ticketid, string username, string usertoken, string message) => True or False.]" +
+                   "[Tickets/AddExternalReplyToTicket(string ticketid, string username, string usertoken, string message) => True or False.]" +
                    "[User/GetNewUserToken(string username) => The user token.]" +
                    "[User/CheckUserToken(string username, string usertoken) => true/false if the combination is valid.]" +
                    "[User/DeactivateUserToken(string username, string usertoken) => A true/false.]";

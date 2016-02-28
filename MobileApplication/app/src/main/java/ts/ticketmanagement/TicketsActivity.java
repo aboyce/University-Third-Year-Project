@@ -199,7 +199,7 @@ public class TicketsActivity extends ActivityBase {
 
             ListView tickets = (ListView) findViewById(R.id.tickets_lstTickets);
             tickets.setAdapter(new TicketListAdapter());
-            Log.e("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
 
             registerClickCallback();
 

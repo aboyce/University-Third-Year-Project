@@ -26,4 +26,10 @@
     <string name="api_tickets_getTicketLogs2">&amp;username=</string>
     <string name="api_tickets_getTicketLogs3">&amp;usertoken=</string>
 
+    <string name="api_tickets_reply1E">/Tickets/AddExternalReplyToTicket?ticketid=</string>
+    <string name="api_tickets_reply1I">/Tickets/AddInternalReplyToTicket?ticketid=</string>
+    <string name="api_tickets_reply2">&amp;username=</string>
+    <string name="api_tickets_reply3">&amp;usertoken=</string>
+    <string name="api_tickets_reply4">&amp;message=</string>
+
 </resources>

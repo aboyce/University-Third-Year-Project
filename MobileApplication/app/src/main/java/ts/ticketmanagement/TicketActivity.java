@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -24,8 +25,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import Entities.Ticket;
 import Entities.TicketLog;
@@ -36,8 +39,10 @@ public class TicketActivity extends ActivityBase {
     private int ticketId;
     private Ticket ticket;
     private List<TicketLog> ticketLogs;
+
     private ListView ticketLogsListView;
     private ProgressBar progressbar;
+    private Button replyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class TicketActivity extends ActivityBase {
         ticketLogs = new ArrayList<>();
         ticketLogsListView = (ListView)findViewById(R.id.ticket_lstTicketLogs);
         progressbar = (ProgressBar)findViewById(R.id.ticket_prbActivity);
+        replyButton = (Button)findViewById(R.id.ticket_btnReply);
 
         new API_GetTicket().execute();
         new API_GetTicketLogs().execute();
@@ -94,6 +100,7 @@ public class TicketActivity extends ActivityBase {
 
             public void onClick(DialogInterface dialog, int which) {
                 Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Button Clicked");
+                new API_AddTicketReply().execute(false, editText.getText().toString());
             }
         });
 
@@ -101,17 +108,29 @@ public class TicketActivity extends ActivityBase {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Internal Button Clicked");
+                new API_AddTicketReply().execute(true, editText.getText().toString());
             }
         });
 
         alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Cancel Button Clicked");
-            }});
+        }});
 
         alert.show();
     }
 
+    private void Loading(Boolean loading){
+        if(loading){
+            progressbar.setVisibility(View.VISIBLE);
+            ticketLogsListView.setVisibility(View.GONE);
+            replyButton.setVisibility(View.GONE);
+        } else {
+            progressbar.setVisibility(View.GONE);
+            ticketLogsListView.setVisibility(View.VISIBLE);
+            replyButton.setVisibility(View.VISIBLE);
+        }
+    }
 
     private class TicketLogsListAdapter extends ArrayAdapter<TicketLog> {
 
@@ -162,7 +181,7 @@ public class TicketActivity extends ActivityBase {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicket");
-            progressbar.setVisibility(View.VISIBLE);
+            Loading(true);
         }
 
         protected String doInBackground(Void... urls) {
@@ -212,6 +231,8 @@ public class TicketActivity extends ActivityBase {
                 }
             }catch (Exception e){
                 Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetTickets:onPostExecute: JSON Exception - Message: " + e.getMessage());
+                progressbar.setVisibility(View.GONE);
+                return;
             }
 
             if (ticket == null){
@@ -220,16 +241,15 @@ public class TicketActivity extends ActivityBase {
                 return;
             }
 
-
             TextView lblTicketTitle = (TextView)findViewById(R.id.ticket_lblTicketTitle);
             lblTicketTitle.setText(ticket.getTitle());
 
             TextView lblTicketDescription = (TextView)findViewById(R.id.ticket_lblTicketDescription);
             lblTicketDescription.setText(ticket.getDescription());
 
-            Log.e("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
+            Log.d("TICKET_MANAGEMENT", "TicketsActivity-API_GetTickets:onPostExecute: Set Adapter to Tickets List");
 
-            progressbar.setVisibility(View.GONE);
+            Loading(false);
         }
     }
 
@@ -237,8 +257,9 @@ public class TicketActivity extends ActivityBase {
 
         protected void onPreExecute(){
             Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs");
-            ticketLogsListView.setVisibility(View.GONE);
-            progressbar.setVisibility(View.VISIBLE);
+            Loading(true);
+            ticketLogsListView.setAdapter(null);
+            ticketLogs = new ArrayList<>();
         }
 
         protected String doInBackground(Void... urls) {
@@ -274,7 +295,7 @@ public class TicketActivity extends ActivityBase {
 
         protected void onPostExecute(String response){
             Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs:onPostExecute");
-            if(response == null || response == "null"){
+            if(response == null || Objects.equals(response, "null")){
                 showMessageBox("Main", "Cannot Get Ticket", "Unfortunately we cannot get your ticket from the server, please check your config and try again.");
                 Log.e("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs:onPostExecute: Null from doInBackground");
                 progressbar.setVisibility(View.GONE);
@@ -293,14 +314,84 @@ public class TicketActivity extends ActivityBase {
                 }
             }catch (Exception e){
                 Log.e("TICKET_MANAGEMENT","TicketsActivity-API_GetTicketLogs:onPostExecute: JSON Exception - Message: " + e.getMessage());
+                progressbar.setVisibility(View.GONE);
+                return;
             }
 
             ListView ticketLogs = (ListView) findViewById(R.id.ticket_lstTicketLogs);
             ticketLogs.setAdapter(new TicketLogsListAdapter());
-            Log.e("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs:onPostExecute: Set Adapter to Tickets List");
+            Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs:onPostExecute: Set Adapter to Tickets List");
 
-            progressbar.setVisibility(View.GONE);
-            ticketLogsListView.setVisibility(View.VISIBLE);
+            Loading(false);
+        }
+    }
+
+    private class API_AddTicketReply extends AsyncTask<Object, Void, String> {
+
+        protected void onPreExecute(){
+            Log.d("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply");
+            Loading(true);
+        }
+
+        protected String doInBackground(Object... params) {
+            Log.d("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:doInBackground");
+
+            String api;
+            String message;
+
+            try {
+                api = (Boolean) params[0] ? getString(R.string.api_tickets_reply1I) : getString(R.string.api_tickets_reply1E);
+                message = (String) params[1];
+            } catch (Exception e) {
+                Log.e("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:doInBackground: Invalid Parameter Error: " + e.getMessage(), e);
+                return null;
+            }
+
+            try{
+                URL url = new URL(getString(R.string.api_url)
+                        + api + ticketId
+                        + getString(R.string.api_tickets_reply4) + URLEncoder.encode(message, "UTF-8")
+                        + getString(R.string.api_tickets_reply2) + username
+                        + getString(R.string.api_tickets_reply3) + userToken);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                Log.d("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply: Opened HTTP URL Connection to; " + url.toString());
+                try{
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while((line = bufferedReader.readLine()) != null)
+                        stringBuilder.append(line).append("\n");
+                    bufferedReader.close();
+                    Log.d("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:doInBackground: Response from API=" + stringBuilder.toString());
+                    return stringBuilder.toString();
+                }catch (Exception e){
+                    Log.e("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:doInBackground: Error: " + e.getMessage(), e);
+                    return null;
+                }
+                finally {
+                    urlConnection.disconnect();
+                }
+            }catch (Exception e){
+                Log.e("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:doInBackground: Error: " + e.getMessage(), e);
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String response){
+            Log.d("TICKET_MANAGEMENT", "TicketActivity-API_GetTicketLogs:onPostExecute");
+            if(response == null || Objects.equals(response, "false")){
+                showMessageBox("Main", "Could Not Post Reply", "Unfortunately we could not post your reply, please check your config and try again.");
+                Log.e("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:onPostExecute: Null or 'false' from doInBackground");
+                progressbar.setVisibility(View.GONE);
+                new API_GetTicketLogs().execute();
+                return;
+            }
+
+            if (response.contains("true")) {
+                Log.d("TICKET_MANAGEMENT", "TicketActivity-API_AddTicketReply:onPostExecute: True from API call.");
+
+                new API_GetTicketLogs().execute();
+            }
         }
     }
 }
