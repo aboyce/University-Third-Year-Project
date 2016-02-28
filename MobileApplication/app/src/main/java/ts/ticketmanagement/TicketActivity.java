@@ -1,5 +1,7 @@
 package ts.ticketmanagement;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -79,6 +82,37 @@ public class TicketActivity extends ActivityBase {
         return true;
     }
 
+    public void replyOnClick(View pView){
+        Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick");
+
+        final EditText editText = new EditText(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Reply to Ticket");
+        alert.setView(editText);
+
+        alert.setPositiveButton("Reply", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Button Clicked");
+            }
+        });
+
+        alert.setNegativeButton("Internal Reply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Reply Internal Button Clicked");
+            }
+        });
+
+        alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("TICKET_MANAGEMENT", "TicketActivity:replyOnClick: Cancel Button Clicked");
+            }});
+
+        alert.show();
+    }
+
+
     private class TicketLogsListAdapter extends ArrayAdapter<TicketLog> {
 
         public TicketLogsListAdapter() {
@@ -123,7 +157,6 @@ public class TicketActivity extends ActivityBase {
             return itemView;
         }
     }
-
 
     private class API_GetTicket extends AsyncTask<Void, Void, String> {
 

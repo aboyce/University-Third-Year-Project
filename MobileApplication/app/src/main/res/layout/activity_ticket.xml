@@ -52,6 +52,17 @@
         android:fadingEdgeLength="30dp"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/ticket_lblTicketDescription"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:layout_above="@+id/ticket_btnReply" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reply"
+        android:id="@+id/ticket_btnReply"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/ticket_lstTicketLogs"
+        android:onClick="replyOnClick" />
 
 </RelativeLayout>
