@@ -153,8 +153,7 @@ namespace TicketManagement.Helpers
                 txt.Content = txt.Content.Replace($"{await ConfigurationHelper.GetTextMessageReceiveKeywordAsync()} ", "");
 
                 TextMessageProtocolHelper textMessageProtocol = new TextMessageProtocolHelper(db);
-                textMessageProtocol.ProcessTextMessageRegardingProtcols(txt);
-
+                await textMessageProtocol.ProcessTextMessageRegardingProtcols(txt);
             }
 
             return txt;

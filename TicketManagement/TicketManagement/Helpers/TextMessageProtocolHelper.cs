@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
@@ -29,14 +30,14 @@ namespace TicketManagement.Helpers
         }
 
 
-        public bool ProcessTextMessageRegardingProtcols(ReceivedTextMessage txt)
+        public async Task<bool> ProcessTextMessageRegardingProtcols(ReceivedTextMessage txt)
         {
             if (txt == null) return false;
 
             if (txt.Content.Contains(TextMessageProtocol.ConfirmUserToken))
                 return ProcessConfirmUserToken(txt.From, txt.Content);
             if (txt.Content.Contains(TextMessageProtocol.GetNotifications))
-                return ProcessGetNotifications(txt.From, txt.Content);
+                return await ProcessGetNotifications(txt.From);
 
             return true;
         }
@@ -75,15 +76,28 @@ namespace TicketManagement.Helpers
             return true;
         }
 
-        private bool ProcessGetNotifications(string phoneNumber, string textMessageBody)
+        private async Task<bool> ProcessGetNotifications(string phoneNumber)
         {
             User user = db.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
             if (user == null) return false;
 
-            var userNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
-            var roleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id)
+            List<string> roles = await db.Roles.Select(r => r.Name).ToListAsync();
+            string txtContent = "";
 
-            return false;
+            if (!NotificationHelper.AnyNotificationsForUser(db, user.Id, roles))
+                txtContent = "You have no new notifications";
+            else
+            {
+                List<UserNotification> userNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
+                List<RoleNotification> roleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, roles);
+
+                txtContent = $"You have {userNotifications.Count + roleNotifications.Count} new notifications!";
+                txtContent = userNotifications.Aggregate(txtContent, (current, notification) => current + $", {notification.Type}");
+                txtContent = roleNotifications.Aggregate(txtContent, (current, notification) => current + $", {notification.Type}");
+            }
+
+            TextMessageHelper txtHelper = new TextMessageHelper();
+            return await txtHelper.SendTextMessageAsync(new SentTextMessage(user.Id, user, user.PhoneNumber, txtContent)) == null;
         }
     }
 }
