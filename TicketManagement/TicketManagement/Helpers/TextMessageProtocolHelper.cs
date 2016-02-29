@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TicketManagement.Management;
@@ -47,6 +48,19 @@ namespace TicketManagement.Helpers
             return true;
         }
 
+        private string GetTextMessageProtocolTypes()
+        {
+            return "CONFIRM_USER_TOKEN:{user_token} | GET_NOTIFICATIONS";
+            // TODO: Get this fixed??
+            //string protocolTypes = "";
+            //Type type = typeof (TextMessageProtocol);
+
+            //foreach (FieldInfo property in type.GetFields(BindingFlags.Public))
+            //    protocolTypes += property.GetValue(null).ToString();
+
+            //return protocolTypes;
+        }
+
         public async Task<bool> ProcessHelpText(string phoneNumber)
         {
             User user = db.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
@@ -54,7 +68,7 @@ namespace TicketManagement.Helpers
 
             TextMessageHelper txtHelper = new TextMessageHelper();
 
-            SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, "");
+            SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, GetTextMessageProtocolTypes());
 
             return txt != null && txt.Success;
         }

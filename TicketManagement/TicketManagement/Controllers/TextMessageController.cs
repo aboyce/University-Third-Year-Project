@@ -95,6 +95,54 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> SendNotifications(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                ModelState.AddModelError("Id", Resources.TextMessageController_Send_RecipientSelectionRequired);
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (string.IsNullOrEmpty(user?.PhoneNumber))
+            {
+                ViewBag.TextResult = TextResult.SendFailure;
+                return RedirectToAction("Send");
+            }
+
+            TextMessageProtocolHelper txtHelper = new TextMessageProtocolHelper(db);
+
+            if (await txtHelper.ProcessGetNotifications(user.PhoneNumber))
+                ViewBag.TextResult = TextResult.SendSuccess;
+            else
+                ViewBag.TextResult = TextResult.SendFailure;
+
+            return RedirectToAction("Send");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SendHelp(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                ModelState.AddModelError("Id", Resources.TextMessageController_Send_RecipientSelectionRequired);
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (string.IsNullOrEmpty(user?.PhoneNumber))
+            {
+                ViewBag.TextResult = TextResult.SendFailure;
+                return RedirectToAction("Send");
+            }
+
+            TextMessageProtocolHelper txtHelper = new TextMessageProtocolHelper(db);
+
+            if (await txtHelper.ProcessHelpText(user.PhoneNumber))
+                ViewBag.TextResult = TextResult.SendSuccess;
+            else
+                ViewBag.TextResult = TextResult.SendFailure;
+
+            return RedirectToAction("Send");
+        }
+
+        [HttpPost]
         [ValidateInput(false)]
         [AllowAnonymous]
         public async Task<ActionResult> Receive()
@@ -142,30 +190,6 @@ namespace TicketManagement.Controllers
             { } // All they want back is a 200 OK, so if we have problems but they sent valid information, that is all we can really do.
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> SendNotifications(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                ModelState.AddModelError("Id", Resources.TextMessageController_Send_RecipientSelectionRequired);
-
-            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (string.IsNullOrEmpty(user?.PhoneNumber))
-            {
-                ViewBag.TextResult = TextResult.SendFailure;
-                return RedirectToAction("Send");
-            }
-
-            TextMessageProtocolHelper txtHelper = new TextMessageProtocolHelper(db);
-
-            if (await txtHelper.ProcessGetNotifications(user.PhoneNumber))
-                ViewBag.TextResult = TextResult.SendSuccess;
-            else
-                ViewBag.TextResult = TextResult.SendFailure;
-
-            return RedirectToAction("Send");
         }
 
         protected override void Dispose(bool disposing)
