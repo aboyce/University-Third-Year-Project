@@ -34,6 +34,14 @@
                 {
                     <td><i class="fa fa-check"></i></td>
                 }
+                else if (text.DeliveryStatus == "QUEUED" || text.DeliveryStatus == "ENROUTE")
+                {
+                    <td><i class="fa fa-arrow-circle-o-right"></i></td>
+                }
+                else if (text.DeliveryStatus == "EXPIRED" || text.DeliveryStatus == "DELETED" || text.DeliveryStatus == "UNDELIV" || text.DeliveryStatus == "REJECTD")
+                {
+                    <td><i class="fa fa-times"></i></td>
+                }
                 else
                 {
                     <td></td>
