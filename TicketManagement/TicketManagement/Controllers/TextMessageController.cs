@@ -1,10 +1,12 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
 using TicketManagement.Models.Context;
@@ -126,15 +128,44 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(msg_id) || string.IsNullOrEmpty(status) || string.IsNullOrEmpty(detail))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            SentTextMessage txt = await db.TextMessagesSent.Include(t => t.UserTo).FirstOrDefaultAsync(t => t.ClockworkId == msg_id);
+            try
+            {
+                SentTextMessage txt = await db.TextMessagesSent.Include(t => t.UserTo).FirstOrDefaultAsync(t => t.ClockworkId == msg_id);
 
-            txt.DeliveryStatus = status;
-            txt.DeliveryDetail = detail;
+                txt.DeliveryStatus = status;
+                txt.DeliveryDetail = detail;
 
-            db.Entry(txt).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+                db.Entry(txt).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            finally 
+            { } // All they want back is a 200 OK, so if we have problems but they sent valid information, that is all we can really do.
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SendNotifications(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                ModelState.AddModelError("Id", Resources.TextMessageController_Send_RecipientSelectionRequired);
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (string.IsNullOrEmpty(user?.PhoneNumber))
+            {
+                ViewBag.TextResult = TextResult.SendFailure;
+                return RedirectToAction("Send");
+            }
+
+            TextMessageProtocolHelper txtHelper = new TextMessageProtocolHelper(db);
+
+            if (await txtHelper.ProcessGetNotifications(user.PhoneNumber))
+                ViewBag.TextResult = TextResult.SendSuccess;
+            else
+                ViewBag.TextResult = TextResult.SendFailure;
+
+            return RedirectToAction("Send");
         }
 
         protected override void Dispose(bool disposing)

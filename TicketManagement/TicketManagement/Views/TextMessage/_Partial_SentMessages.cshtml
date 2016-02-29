@@ -30,21 +30,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => text.Sent)
                 </td>
-                @if (text.DeliveryStatus == "DELIVRD")
+                @switch (text.DeliveryStatus)
                 {
-                    <td><i class="fa fa-check"></i></td>
-                }
-                else if (text.DeliveryStatus == "QUEUED" || text.DeliveryStatus == "ENROUTE")
-                {
-                    <td><i class="fa fa-arrow-circle-o-right"></i></td>
-                }
-                else if (text.DeliveryStatus == "EXPIRED" || text.DeliveryStatus == "DELETED" || text.DeliveryStatus == "UNDELIV" || text.DeliveryStatus == "REJECTD")
-                {
-                    <td><i class="fa fa-times"></i></td>
-                }
-                else
-                {
-                    <td></td>
+                    case "DELIVRD":
+                        <td><i class="fa fa-check"></i></td>
+                        break;
+                    case "QUEUED":
+                    case "ENROUTE":
+                        <td><i class="fa fa-arrow-circle-o-right"></i></td>
+                        break;
+                    case "EXPIRED":
+                    case "DELETED":
+                    case "UNDELIV":
+                    case "REJECTD":
+                        <td><i class="fa fa-times"></i></td>
+                        break;
+                    default:
+                        <td></td>
+                        break;
                 }
             </tr>
         }

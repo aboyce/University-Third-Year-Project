@@ -12,6 +12,9 @@ namespace TicketManagement.Helpers
 {
     public static class TextMessageProtocol
     {
+        // HELP_TEXT
+        public const string HelpText = "HELP_TEXT";
+
         // CONFIRM_USER_TOKEN:{user_token}
         public const string ConfirmUserToken = "CONFIRM_USER_TOKEN";
 
@@ -34,12 +37,26 @@ namespace TicketManagement.Helpers
         {
             if (txt == null) return false;
 
+            if (txt.Content.Contains(TextMessageProtocol.HelpText))
+                return await ProcessHelpText(txt.From);
             if (txt.Content.Contains(TextMessageProtocol.ConfirmUserToken))
                 return ProcessConfirmUserToken(txt.From, txt.Content);
             if (txt.Content.Contains(TextMessageProtocol.GetNotifications))
                 return await ProcessGetNotifications(txt.From);
 
             return true;
+        }
+
+        public async Task<bool> ProcessHelpText(string phoneNumber)
+        {
+            User user = db.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
+            if (user == null) return false;
+
+            TextMessageHelper txtHelper = new TextMessageHelper();
+
+            SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, "");
+
+            return txt != null && txt.Success;
         }
 
         private bool ProcessConfirmUserToken(string phoneNumber, string textMessageBody)
@@ -76,7 +93,7 @@ namespace TicketManagement.Helpers
             return true;
         }
 
-        private async Task<bool> ProcessGetNotifications(string phoneNumber)
+        public async Task<bool> ProcessGetNotifications(string phoneNumber)
         {
             User user = db.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
             if (user == null) return false;
@@ -100,7 +117,20 @@ namespace TicketManagement.Helpers
 
             SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, txtContent);
 
+            await SaveMessage(txt);
+
             return txt != null && txt.Success;
+        }
+
+        private async Task<bool> SaveMessage(SentTextMessage txt)
+        {
+            if (txt == null)
+                return false;
+
+            db.TextMessagesSent.Add(txt);
+            await db.SaveChangesAsync();
+
+            return true;
         }
     }
 }
