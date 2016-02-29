@@ -31,7 +31,7 @@
                     @Html.DisplayFor(modelItem => notification.NotificationAbout.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => notification.Type)
+                    @RoleNotificationTypeString.GetStringForType(notification.Type)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => notification.Message)

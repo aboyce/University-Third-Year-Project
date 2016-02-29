@@ -1,4 +1,6 @@
-﻿namespace TicketManagement.Management
+﻿using System.Collections.Generic;
+
+namespace TicketManagement.Management
 {
     public enum NotificationCategory
     {
@@ -15,6 +17,22 @@
         PendingInternalApproval = 1
     }
 
+    public static class RoleNotificationTypeString
+    {
+        private static readonly Dictionary<RoleNotificationType, string> RoleNotificationTypeValues = new Dictionary<RoleNotificationType, string>()
+        {
+            {RoleNotificationType.PendingApproval, "Pending Approval"},
+            {RoleNotificationType.PendingInternalApproval, "Pending Internal Approval"},
+        };
+
+        public static string GetStringForType(RoleNotificationType type)
+        {
+            return RoleNotificationTypeValues[type];
+        }
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     /// <summary>
     /// When adding types here also add how to handle them in the NotificationHelper and NotificationController.
     /// </summary>
@@ -23,6 +41,21 @@
         PendingApproval = 0,
         PendingInternalApproval = 1,
         NewTicketLog = 2
+    }
+
+    public static class UserNotificationTypeString
+    {
+        private static readonly Dictionary<UserNotificationType, string> UserNotificationTypeValues = new Dictionary<UserNotificationType, string>()
+        {
+            {UserNotificationType.PendingApproval, "Pending Approval"},
+            {UserNotificationType.PendingInternalApproval, "Pending Internal Approval"},
+            {UserNotificationType.NewTicketLog, "New Ticket Log"}
+        };
+
+        public static string GetStringForType(UserNotificationType type)
+        {
+            return UserNotificationTypeValues[type];
+        }
     }
 
     // ----------------------------------------------------------------------------------------------------------------

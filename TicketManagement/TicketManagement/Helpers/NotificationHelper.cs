@@ -96,7 +96,7 @@ namespace TicketManagement.Helpers
 
                 UserNotification notification = new UserNotification
                 {
-                    Message = $"New Ticket Log message on your ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}.",
+                    Message = $"New message on your ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}.",
                     NotificationAboutId = userAssignedTo.Id,
                     NotificationAbout = userAssignedTo,
                     Type = UserNotificationType.NewTicketLog
@@ -117,7 +117,7 @@ namespace TicketManagement.Helpers
                 {
                     UserNotification notification = new UserNotification
                     {
-                        Message = $"New Ticket Log message on your teams ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}..",
+                        Message = $"New message on your teams ticket '{(ticket.Title.Length > TicketTitleLengthLimit ? ticket.Title.Substring(0, TicketTitleLengthLimit) : ticket.Title)}' by {ticketLog.SubmittedByUser.FullName} at {ticketLog.TimeOfLog}.",
                         NotificationAboutId = user.Id,
                         NotificationAbout = user,
                         Type = UserNotificationType.NewTicketLog
@@ -160,13 +160,13 @@ namespace TicketManagement.Helpers
 
         public static List<UserNotification> GetUserNotificationsForUser(ApplicationContext db, string userId)
         {
-            return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).ToList();
+            return db.UserNotifications.Where(un => un.NotificationAbout.Id == userId).Include(un => un.NotificationAbout).ToList();
         }
         public static List<RoleNotification> GetRoleNotificationsForUser(ApplicationContext db, string userId, IList<string> userRolesByName)
         {
             List<RoleNotification> notifications = new List<RoleNotification>();
 
-            foreach (var rn in db.RoleNotifications.ToList())
+            foreach (var rn in db.RoleNotifications.Include(rn => rn.NotificationAbout).ToList())
             {
                 foreach (var roleId in GetRoleIdsForUser(db, userRolesByName))
                 {

@@ -109,8 +109,8 @@ namespace TicketManagement.Helpers
                 List<RoleNotification> roleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, roles);
 
                 txtContent = $"You have {userNotifications.Count + roleNotifications.Count} new notifications!";
-                txtContent = userNotifications.Aggregate(txtContent, (current, notification) => current + $", {notification.Type}");
-                txtContent = roleNotifications.Aggregate(txtContent, (current, notification) => current + $", {notification.Type}");
+                txtContent = userNotifications.Aggregate(txtContent, (current, notification) => current + $" | {UserNotificationTypeString.GetStringForType(notification.Type)}");
+                txtContent = roleNotifications.Aggregate(txtContent, (current, notification) => current + $" | {RoleNotificationTypeString.GetStringForType(notification.Type)}");
             }
 
             TextMessageHelper txtHelper = new TextMessageHelper();
