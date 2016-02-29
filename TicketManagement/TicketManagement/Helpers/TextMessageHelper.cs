@@ -60,12 +60,17 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public Task<string> SendTextMessageAsync(SentTextMessage txt) { return Task.Factory.StartNew(() => SendTextMessage(txt)); }
+        public Task<SentTextMessage> SendTextMessageAsync(string id, User user, string phoneNumber, string message) { return Task.Factory.StartNew(() => SendTextMessage(id, user, phoneNumber, message)); }
 
-        private string SendTextMessage(SentTextMessage txt)
+        private SentTextMessage SendTextMessage(string id, User user, string phoneNumber, string message)
         {
+            SentTextMessage txt = new SentTextMessage(id, user, phoneNumber, message);
+
             if (!LoadInConfiguration())
-                return "Error: Cannot load details from the web.config";
+            {
+                txt.ErrorMessage = "Error: Cannot load details from the web.config";
+                return txt;
+            }
 
             try
             {
@@ -77,30 +82,46 @@ namespace TicketManagement.Helpers
                     From = txt.From
                 });
 
-                return result.Success ? null : $"Error: Failed to send message {result.ID} because {result.ErrorMessage} (Code: {result.ErrorCode})";
+                txt.ClockworkId = result.ID;
+                txt.Success = result.Success;
+                
+
+                if (!txt.Success)
+                {
+                    txt.ErrorCode = result.ErrorCode;
+                    txt.ErrorMessage = result.ErrorMessage;
+                }
+
+                return txt;
             }
             catch (APIException ex)
             {
                 // You’ll get an API exception for errors
                 // such as wrong username or password
-                return "API Exception: " + ex.Message;
+                txt.Success = false;
+                txt.ErrorMessage = "API Exception: " + ex.Message;
             }
             catch (WebException ex)
             {
                 // Web exceptions mean you couldn’t reach the Clockwork server
-                return "Web Exception: " + ex.Message;
+                txt.Success = false;
+                txt.ErrorMessage = "Web Exception: " + ex.Message;
             }
             catch (ArgumentException ex)
             {
                 // Argument exceptions are thrown for missing parameters,
                 // such as forgetting to set the username
-                return "Argument Exception: " + ex.Message;
+                txt.Success = false;
+                txt.ErrorMessage = "Argument Exception: " + ex.Message;
             }
             catch (Exception ex)
             {
                 // Something else went wrong, the error message should help
-                return "Unknown Exception: " + ex.Message;
+                txt.Success = false;
+                txt.ErrorMessage = "Unknown Exception: " + ex.Message;
             }
+
+            return txt;
         }
 
         public ReceivedTextMessage ReceiveTextMessage(string xmlString)

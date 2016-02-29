@@ -298,6 +298,10 @@
     <Compile Include="Migrations\Application\201602202131209_Added User info on Recieved Text Messages.Designer.cs">
       <DependentUpon>201602202131209_Added User info on Recieved Text Messages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Application\201602291806181_Added properties to the Text Message Entities.cs" />
+    <Compile Include="Migrations\Application\201602291806181_Added properties to the Text Message Entities.Designer.cs">
+      <DependentUpon>201602291806181_Added properties to the Text Message Entities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
@@ -621,6 +625,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Application\201602202131209_Added User info on Recieved Text Messages.resx">
       <DependentUpon>201602202131209_Added User info on Recieved Text Messages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\Application\201602291806181_Added properties to the Text Message Entities.resx">
+      <DependentUpon>201602291806181_Added properties to the Text Message Entities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

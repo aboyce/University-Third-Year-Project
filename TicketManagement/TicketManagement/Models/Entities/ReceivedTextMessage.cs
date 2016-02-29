@@ -18,8 +18,6 @@ namespace TicketManagement.Models.Entities
             ClockworkKeyword = clockworkKeyword ?? "n/a";
         }
 
-        [Required]
-        public string ClockworkId { get; set; }
 
         [Required]
         public string ClockworkNetworkCode { get; set; }

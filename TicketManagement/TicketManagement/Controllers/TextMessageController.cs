@@ -65,13 +65,12 @@ namespace TicketManagement.Controllers
             {
                 TextMessageHelper txtManager = new TextMessageHelper();
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
-                SentTextMessage txt = new SentTextMessage(id, user, user?.PhoneNumber, message);
 
-                string result = await txtManager.SendTextMessageAsync(txt);
+                SentTextMessage txt = await txtManager.SendTextMessageAsync(id, user, user?.PhoneNumber, message);
 
-                if (result != null)
+                if (txt.Success == false)
                 {
-                    ViewBag.ErrorMessage = result;
+                    ViewBag.ErrorMessage = txt.ErrorMessage;
                     ViewBag.Id = new SelectList(db.Users, "Id", "FullName");
                     ViewBag.TextResult = TextResult.SendFailure;
                     return View();
@@ -97,6 +96,33 @@ namespace TicketManagement.Controllers
         [ValidateInput(false)]
         [AllowAnonymous]
         public async Task<ActionResult> Receive()
+        {
+            string xmlString = "";
+
+            if (Request.InputStream != null)
+            {
+                StreamReader stream = new StreamReader(Request.InputStream);
+                xmlString = HttpUtility.UrlDecode(stream.ReadToEnd()); ;
+            }
+
+            TextMessageHelper txtHelper = new TextMessageHelper();
+            ReceivedTextMessage txt = txtHelper.ReceiveTextMessage(xmlString);
+
+            if (txt == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+            txt = await txtHelper.ProcessTextMessage(txt, db);
+
+            db.TextMessagesReceived.Add(txt);
+            await db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        [AllowAnonymous]
+        public async Task<ActionResult> ReceiveDeliveryReceipts(string msg_id, string status, string detail, string to)
         {
             string xmlString = "";
 

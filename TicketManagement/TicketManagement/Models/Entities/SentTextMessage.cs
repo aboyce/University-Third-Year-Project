@@ -8,12 +8,13 @@ namespace TicketManagement.Models.Entities
     {
         public SentTextMessage() {}
 
-        public SentTextMessage(string userToId, User userTo, string to, string content)
+        public SentTextMessage(string userToId, User userTo, string to, string content, bool success = false)
         {
             UserToId = userToId;
             UserTo = userTo;
             To = to;
             Content = content;
+            Success = success;
         }
 
         [Required]
@@ -24,6 +25,13 @@ namespace TicketManagement.Models.Entities
 
         [Required]
         public new string From { get; } = ConfigurationHelper.GetTextMessageFromCode();
+
+        [Required]
+        public bool Success { get; set; } = false;
+
+        public int? ErrorCode { get; set; }
+
+        public string ErrorMessage { get; set; }
 
         [Required]
         public DateTime Sent { get; set; } = DateTime.Now;

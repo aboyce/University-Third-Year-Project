@@ -183,13 +183,13 @@ namespace TicketManagement.Controllers
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             TextMessageHelper textMessageHelper = new TextMessageHelper();
-            SentTextMessage textMessage = new SentTextMessage(user.Id, user, user.PhoneNumber, $"Your User Token for {await ConfigurationHelper.GetTextMessageYourNameAsync()} is '{user.UserToken}'");
-            string textMessageResult = await textMessageHelper.SendTextMessageAsync(textMessage);
+            SentTextMessage textMessage = await textMessageHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, $"Your User Token for {await ConfigurationHelper.GetTextMessageYourNameAsync()} is '{user.UserToken}'");
 
-            if (textMessageResult == null)
+            if (textMessage != null && textMessage.Success)
                 RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenSentViaText });
 
-            ViewBag.ErrorMessage = textMessageResult;
+            if (textMessage != null)
+                ViewBag.ErrorMessage = textMessage.ErrorMessage;
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenSentViaTextFailed });
         }
 

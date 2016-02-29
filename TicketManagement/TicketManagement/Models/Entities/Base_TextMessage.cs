@@ -9,6 +9,9 @@ namespace TicketManagement.Models.Entities
         public int Id { get; set; }
 
         [Required]
+        public string ClockworkId { get; set; }
+
+        [Required]
         public string To { get; set; }
 
         [Required]

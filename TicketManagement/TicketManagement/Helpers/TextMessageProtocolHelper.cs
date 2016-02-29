@@ -97,7 +97,10 @@ namespace TicketManagement.Helpers
             }
 
             TextMessageHelper txtHelper = new TextMessageHelper();
-            return await txtHelper.SendTextMessageAsync(new SentTextMessage(user.Id, user, user.PhoneNumber, txtContent)) == null;
+
+            SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, txtContent);
+
+            return txt != null && txt.Success;
         }
     }
 }
