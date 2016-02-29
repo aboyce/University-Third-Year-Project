@@ -8,6 +8,7 @@
             <th>Recipient</th>
             <th>Message</th>
             <th>Sent</th>
+            <th>DR</th>
         </tr>
 
         @foreach (var text in Model)
@@ -29,6 +30,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => text.Sent)
                 </td>
+                @if (text.DeliveryStatus == "DELIVRD")
+                {
+                    <td><i class="fa fa-check"></i></td>
+                }
+                else
+                {
+                    <td></td>
+                }
             </tr>
         }
     </table>

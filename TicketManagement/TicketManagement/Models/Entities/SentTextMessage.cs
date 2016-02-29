@@ -29,6 +29,10 @@ namespace TicketManagement.Models.Entities
         [Required]
         public bool Success { get; set; } = false;
 
+        public string DeliveryStatus { get; set; }
+
+        public string DeliveryDetail { get; set; }
+
         public int? ErrorCode { get; set; }
 
         public string ErrorMessage { get; set; }

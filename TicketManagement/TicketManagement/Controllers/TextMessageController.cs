@@ -119,28 +119,19 @@ namespace TicketManagement.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        [HttpPost]
         [ValidateInput(false)]
         [AllowAnonymous]
         public async Task<ActionResult> ReceiveDeliveryReceipts(string msg_id, string status, string detail, string to)
         {
-            string xmlString = "";
+            if (string.IsNullOrEmpty(msg_id) || string.IsNullOrEmpty(status) || string.IsNullOrEmpty(detail))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if (Request.InputStream != null)
-            {
-                StreamReader stream = new StreamReader(Request.InputStream);
-                xmlString = HttpUtility.UrlDecode(stream.ReadToEnd()); ;
-            }
+            SentTextMessage txt = await db.TextMessagesSent.Include(t => t.UserTo).FirstOrDefaultAsync(t => t.ClockworkId == msg_id);
 
-            TextMessageHelper txtHelper = new TextMessageHelper();
-            ReceivedTextMessage txt = txtHelper.ReceiveTextMessage(xmlString);
+            txt.DeliveryStatus = status;
+            txt.DeliveryDetail = detail;
 
-            if (txt == null)
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-
-            txt = await txtHelper.ProcessTextMessage(txt, db);
-
-            db.TextMessagesReceived.Add(txt);
+            db.Entry(txt).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
