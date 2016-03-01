@@ -14,13 +14,16 @@ namespace TicketManagement.Helpers
     public static class TextMessageProtocol
     {
         // HELP_TEXT
-        public const string HelpText = "HELP_TEXT";
+        public static readonly string HelpText = "HELP_TEXT";
 
         // CONFIRM_USER_TOKEN:{user_token}
-        public const string ConfirmUserToken = "CONFIRM_USER_TOKEN";
+        public static readonly string ConfirmUserToken = "CONFIRM_USER_TOKEN";
 
         // GET_NOTIFICATIONS
-        public const string GetNotifications = "GET_NOTIFICATIONS";
+        public static readonly string GetNotifications = "GET_NOTIFICATIONS";
+
+        // EXTERNAL_TICKET:{ticket_id}:{message}
+        public static readonly string ExternalTicket = "EXTERNAL_TICKET";
 
     }
 
@@ -50,15 +53,9 @@ namespace TicketManagement.Helpers
 
         private string GetTextMessageProtocolTypes()
         {
-            return "CONFIRM_USER_TOKEN:{user_token} | GET_NOTIFICATIONS";
-            // TODO: Get this fixed??
-            //string protocolTypes = "";
-            //Type type = typeof (TextMessageProtocol);
+            Type type = typeof(TextMessageProtocol);
 
-            //foreach (FieldInfo property in type.GetFields(BindingFlags.Public))
-            //    protocolTypes += property.GetValue(null).ToString();
-
-            //return protocolTypes;
+            return type.GetFields(BindingFlags.Static | BindingFlags.Public).Aggregate("", (current, property) => current + $"{property.GetValue(null)} ");
         }
 
         public async Task<bool> ProcessHelpText(string phoneNumber)
@@ -69,6 +66,8 @@ namespace TicketManagement.Helpers
             TextMessageHelper txtHelper = new TextMessageHelper();
 
             SentTextMessage txt = await txtHelper.SendTextMessageAsync(user.Id, user, user.PhoneNumber, GetTextMessageProtocolTypes());
+
+            await SaveMessage(txt);
 
             return txt != null && txt.Success;
         }
@@ -122,9 +121,9 @@ namespace TicketManagement.Helpers
                 List<UserNotification> userNotifications = NotificationHelper.GetUserNotificationsForUser(db, user.Id);
                 List<RoleNotification> roleNotifications = NotificationHelper.GetRoleNotificationsForUser(db, user.Id, roles);
 
-                txtContent = $"You have {userNotifications.Count + roleNotifications.Count} new notifications!";
-                txtContent = userNotifications.Aggregate(txtContent, (current, notification) => current + $" | {UserNotificationTypeString.GetStringForType(notification.Type)}");
-                txtContent = roleNotifications.Aggregate(txtContent, (current, notification) => current + $" | {RoleNotificationTypeString.GetStringForType(notification.Type)}");
+                txtContent = $"You have {userNotifications.Count + roleNotifications.Count} new notifications! ";
+                txtContent = userNotifications.Aggregate(txtContent, (current, notification) => current + $"{UserNotificationTypeString.GetStringForType(notification.Type)} | ");
+                txtContent = roleNotifications.Aggregate(txtContent, (current, notification) => current + $"{RoleNotificationTypeString.GetStringForType(notification.Type)} | ");
             }
 
             TextMessageHelper txtHelper = new TextMessageHelper();

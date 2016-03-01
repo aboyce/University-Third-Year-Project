@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedAmberGreenTesting", "Red
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMessageProtocol", "TextMessageProtocol\TextMessageProtocol.csproj", "{70E0A943-0D73-4DB5-8296-A4B466DE2195}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListOfValuesFromClass", "ListOfValuesFromClass\ListOfValuesFromClass.csproj", "{0E34A967-5CA6-40BF-976D-A4F45B5202B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70E0A943-0D73-4DB5-8296-A4B466DE2195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E34A967-5CA6-40BF-976D-A4F45B5202B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E34A967-5CA6-40BF-976D-A4F45B5202B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E34A967-5CA6-40BF-976D-A4F45B5202B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E34A967-5CA6-40BF-976D-A4F45B5202B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
