@@ -11,6 +11,8 @@ namespace TicketManagement.Tests
         private ApplicationContext db;
         private string currentFile;
 
+        protected virtual void Seed() { }
+
         [TestInitialize]
         public void Initialise()
         {
@@ -29,7 +31,18 @@ namespace TicketManagement.Tests
             connection.ConnectionString = connectionString;
             connection.Open();
 
+            db = new ApplicationContext(connection);
+            db.Database.CreateIfNotExists();
 
+            Seed();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            db.Dispose();
+            db = null;
+            File.Delete(currentFile);
         }
     }
 }

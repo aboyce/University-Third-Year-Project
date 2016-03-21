@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +14,10 @@ namespace TicketManagement.Models.Context
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
-        : base(ConfigurationHelper.DatabaseConnectionString(), throwIfV1Schema: false)
-        {
-        }
+            : base(ConfigurationHelper.DatabaseConnectionString(), throwIfV1Schema: false){ }
+
+        public ApplicationContext(DbConnection connection)
+            : base(connection, true) { }
 
         public static ApplicationContext Create()
         {
