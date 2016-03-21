@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,8 +52,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\API\BaseApiUnitTests.cs" />
-    <Compile Include="Data Generation\DataProvider.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TicketManagement\TicketManagement.csproj">
+      <Project>{949378fb-1097-4253-b0c1-6e5f7e14162f}</Project>
+      <Name>TicketManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
