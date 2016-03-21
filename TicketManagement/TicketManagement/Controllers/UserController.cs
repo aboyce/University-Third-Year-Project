@@ -85,8 +85,7 @@ namespace TicketManagement.Controllers
                 user.PhoneNumber = await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
                 user.LastUpdated = DateTime.Now;
 
-                //db.Entry(user).State = EntityState.Modified;
-                db.MarkAsModified(user);
+                db.Entry(user).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Tickets", new { ViewMessage = ViewMessage.ProfileUpdated });
@@ -136,8 +135,7 @@ namespace TicketManagement.Controllers
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             user.UserToken = Guid.NewGuid().ToString();
-            //db.Entry(user).State = EntityState.Modified;
-            db.MarkAsModified(user);
+            db.Entry(user).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenGenerated });
@@ -153,8 +151,7 @@ namespace TicketManagement.Controllers
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             user.MobileApplicationConfirmed = true;
-            //db.Entry(user).State = EntityState.Modified;
-            db.MarkAsModified(user);
+            db.Entry(user).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenConfirmed });
@@ -170,8 +167,7 @@ namespace TicketManagement.Controllers
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             user.MobileApplicationConfirmed = false;
-            //db.Entry(user).State = EntityState.Modified;
-            db.MarkAsModified(user);
+            db.Entry(user).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", new { ViewMessage = ViewMessage.UserTokenDeactivated });

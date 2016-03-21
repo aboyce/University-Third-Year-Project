@@ -114,8 +114,7 @@ namespace TicketManagement.Controllers
                 user.PhoneNumber = await PhoneNumberHelper.FormatPhoneNumberForClockworkAsync(user.PhoneNumber);
                 user.LastUpdated = DateTime.Now;
 
-                // db.Entry(user).State = EntityState.Modified;
-                db.MarkAsModified(user);
+                db.Entry(user).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Users", "Admin", new { ViewMessage = ViewMessage.ProfileUpdated });

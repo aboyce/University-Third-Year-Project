@@ -77,8 +77,7 @@ namespace TicketManagement.Helpers
                     ticket.LastMessage = DateTime.Now;
                 }
 
-                //db.Entry(ticket).State = EntityState.Modified;
-                db.MarkAsModified(ticket);
+                db.Entry(ticket).State = EntityState.Modified;
                 db.TicketLogs.Add(ticketLog);
                 await db.SaveChangesAsync();
 

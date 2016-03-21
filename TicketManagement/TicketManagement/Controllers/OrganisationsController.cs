@@ -138,8 +138,7 @@ namespace TicketManagement.Controllers
                 organisation.DefaultContact = await db.Users.FirstOrDefaultAsync(u => u.Id == defaulContactId);
                 organisation.LastUpdated = DateTime.Now;
 
-                //db.Entry(organisation).State = EntityState.Modified;
-                db.MarkAsModified(organisation);
+                db.Entry(organisation).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.OrganisationUpdated });

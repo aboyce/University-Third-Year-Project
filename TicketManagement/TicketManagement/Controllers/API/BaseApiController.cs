@@ -12,7 +12,7 @@ namespace TicketManagement.Controllers.API
 {
     public class BaseApiController : ApiController
     {
-        protected IApplicationContext db = new ApplicationContext();
+        protected ApplicationContext db = new ApplicationContext();
 
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 

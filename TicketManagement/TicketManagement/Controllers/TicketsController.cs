@@ -240,8 +240,7 @@ namespace TicketManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                //db.Entry(ticket).State = EntityState.Modified;
-                db.MarkAsModified(ticket);
+                db.Entry(ticket).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

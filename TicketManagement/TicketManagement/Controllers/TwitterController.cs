@@ -16,14 +16,14 @@ namespace TicketManagement.Controllers
     [TwitterAccessTokens]
     public class TwitterController : Controller
     {
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             ITwitterCredentials twitterCredentials = GetTwitterCredentials();
 
             return View(twitterCredentials == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
 
-        public async Task<ActionResult> _Partial_TwitterProfileSummary()
+        public ActionResult _Partial_TwitterProfileSummary()
         {
             ITwitterCredentials twitterCredentials = GetTwitterCredentials();
 

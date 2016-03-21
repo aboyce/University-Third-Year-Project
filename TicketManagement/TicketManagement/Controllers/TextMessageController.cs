@@ -183,8 +183,7 @@ namespace TicketManagement.Controllers
                 txt.DeliveryStatus = status;
                 txt.DeliveryDetail = detail;
 
-                //db.Entry(txt).State = EntityState.Modified;
-                db.MarkAsModified(txt);
+                db.Entry(txt).State = EntityState.Modified;
                 await db.SaveChangesAsync();
             }
             finally 

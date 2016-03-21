@@ -281,18 +281,12 @@ namespace TicketManagement.Helpers
             org3User2.TeamId = org3Team1.Id;
             org3User2.Team = org3Team1;
 
-            db.MarkAsModified(org1User1);
-            db.MarkAsModified(org1User2);
-            db.MarkAsModified(org1User3);
-            db.MarkAsModified(org2User1);
-            db.MarkAsModified(org3User1);
-            db.MarkAsModified(org3User2);
-            //db.Entry().State = EntityState.Modified;
-            //db.Entry().State = EntityState.Modified;
-            //db.Entry().State = EntityState.Modified;
-            //db.Entry().State = EntityState.Modified;
-            //db.Entry().State = EntityState.Modified;
-            //db.Entry().State = EntityState.Modified;
+            db.Entry(org1User1).State = EntityState.Modified;
+            db.Entry(org1User2).State = EntityState.Modified;
+            db.Entry(org1User3).State = EntityState.Modified;
+            db.Entry(org2User1).State = EntityState.Modified;
+            db.Entry(org3User1).State = EntityState.Modified;
+            db.Entry(org3User2).State = EntityState.Modified;
 
             await db.SaveChangesAsync();
 

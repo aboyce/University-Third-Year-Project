@@ -308,7 +308,6 @@
     </Compile>
     <Compile Include="Migrations\Application\Configuration.cs" />
     <Compile Include="Models\Context\ApplicationContext.cs" />
-    <Compile Include="Models\Context\IApplicationContext.cs" />
     <Compile Include="Models\Entities\File.cs" />
     <Compile Include="Models\Entities\ReceivedTextMessage.cs" />
     <Compile Include="Models\Entities\SentTextMessage.cs" />

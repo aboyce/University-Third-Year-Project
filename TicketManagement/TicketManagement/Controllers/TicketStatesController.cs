@@ -87,8 +87,7 @@ namespace TicketManagement.Controllers
                 if (vm.TicketState == null)
                     return HttpNotFound();
 
-                //db.Entry(vm.TicketState).State = EntityState.Modified;
-                db.MarkAsModified(vm.TicketState);
+                db.Entry(vm.TicketState).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketStateUpdated });
