@@ -8,10 +8,12 @@ namespace TicketManagement.Tests
     [TestClass]
     public class TestBase
     {
-        private ApplicationContext db;
+        private ApplicationContext _db;
         private string currentFile;
 
         protected virtual void Seed() { }
+
+        public ApplicationContext Database => _db;
 
         [TestInitialize]
         public void Initialise()
@@ -31,8 +33,8 @@ namespace TicketManagement.Tests
             connection.ConnectionString = connectionString;
             connection.Open();
 
-            db = new ApplicationContext(connection);
-            db.Database.CreateIfNotExists();
+            _db = new ApplicationContext(connection);
+            _db.Database.CreateIfNotExists();
 
             Seed();
         }
@@ -40,8 +42,8 @@ namespace TicketManagement.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            db.Dispose();
-            db = null;
+            _db.Dispose();
+            _db = null;
             File.Delete(currentFile);
         }
     }

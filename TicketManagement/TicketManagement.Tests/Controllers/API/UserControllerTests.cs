@@ -8,6 +8,11 @@ namespace TicketManagement.Tests.Controllers.API
 {
     public class UserControllerTests : TestBase
     {
+
+
+
+
+
         protected override void Seed()
         {
             base.Seed();

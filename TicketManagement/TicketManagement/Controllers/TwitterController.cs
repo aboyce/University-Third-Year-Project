@@ -30,7 +30,7 @@ namespace TicketManagement.Controllers
             if (twitterCredentials == null)
                 return null;
 
-            ILoggedUser twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, Tweetinvi.User.GetLoggedUser);
+            Tweetinvi.Core.Interfaces.ILoggedUser twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, Tweetinvi.User.GetLoggedUser);
 
             return PartialView(new TwitterProfileSummaryViewModel
             {
@@ -81,7 +81,7 @@ namespace TicketManagement.Controllers
                 Text = tweet.Text,
                 CreatedAt = tweet.CreatedAt,
                 CreatedBy = tweet.CreatedBy,
-                FavouriteCount = tweet.FavouriteCount,
+                FavouriteCount = tweet.FavoriteCount,
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
             }).ToList();
