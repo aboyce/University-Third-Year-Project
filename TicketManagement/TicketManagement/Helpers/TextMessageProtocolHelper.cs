@@ -101,7 +101,8 @@ namespace TicketManagement.Helpers
             if (user.UserToken != userToken) return false;
 
             user.MobileApplicationConfirmed = true;
-            db.Entry(user).State = EntityState.Modified;
+            //db.Entry(user).State = EntityState.Modified;
+            db.MarkAsModified(user);
             db.SaveChanges();
             return true;
         }

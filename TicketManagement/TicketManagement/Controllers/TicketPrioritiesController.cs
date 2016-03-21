@@ -75,7 +75,8 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticketPriority).State = EntityState.Modified;
+                //db.Entry(ticketPriority).State = EntityState.Modified;
+                db.MarkAsModified(ticketPriority);
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketPriorityUpdated });

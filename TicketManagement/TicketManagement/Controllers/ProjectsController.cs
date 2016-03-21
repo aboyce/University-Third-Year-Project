@@ -85,7 +85,8 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                //db.Entry(project).State = EntityState.Modified;
+                db.MarkAsModified(project);
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.ProjectUpdated });

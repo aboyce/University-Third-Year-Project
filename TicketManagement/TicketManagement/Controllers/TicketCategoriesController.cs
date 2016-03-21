@@ -82,7 +82,8 @@ namespace TicketManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticketCategory).State = EntityState.Modified;
+                //db.Entry(ticketCategory).State = EntityState.Modified;
+                db.MarkAsModified(ticketCategory);
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TicketCategoryUpdated });

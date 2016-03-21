@@ -9,7 +9,7 @@ using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Models.Context
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<User>, IApplicationContext
     {
         public ApplicationContext()
         : base(ConfigurationHelper.DatabaseConnectionString(), throwIfV1Schema: false)
@@ -21,6 +21,7 @@ namespace TicketManagement.Models.Context
             return new ApplicationContext();
         }
 
+        // To provide improved error messages, if something goes wrong.
         public override int SaveChanges()
         {
             try
@@ -43,6 +44,7 @@ namespace TicketManagement.Models.Context
             }
         }
 
+        // To provide improved error messages, if something goes wrong.
         public override Task<int> SaveChangesAsync()
         {
             try
@@ -80,6 +82,77 @@ namespace TicketManagement.Models.Context
         public DbSet<RoleNotification> RoleNotifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
 
+        public void MarkAsModified(User item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(Organisation item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(Team item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(Project item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(Ticket item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(TicketCategory item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(TicketLog item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(File item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(TicketPriority item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(TicketState item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(SentTextMessage item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(ReceivedTextMessage item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(RoleNotification item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        public void MarkAsModified(UserNotification item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        // To give the Database tables, more suitable names in relation to the rest of the Table names.
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -91,6 +164,7 @@ namespace TicketManagement.Models.Context
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
         }
 
+        // This can often be automatically generated, so if this line below appears here again, remove it as it usually creates errors.
         //public System.Data.Entity.DbSet<TicketManagement.Models.Entities.User> ApplicationUsers { get; set; }
     }
 }

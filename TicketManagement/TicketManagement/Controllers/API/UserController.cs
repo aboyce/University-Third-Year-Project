@@ -25,7 +25,8 @@ namespace TicketManagement.Controllers.API
             if (user.MobileApplicationConfirmed) return null;  // We don't want to give out confirmed User Tokens, so we assume that this is erroneous or malicious.
 
             user.UserToken = Guid.NewGuid().ToString();
-            db.Entry(user).State = EntityState.Modified;
+            //db.Entry(user).State = EntityState.Modified;
+            db.MarkAsModified(user);
             await db.SaveChangesAsync();
 
             user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
@@ -78,7 +79,8 @@ namespace TicketManagement.Controllers.API
 
             user.UserToken = null;
             user.MobileApplicationConfirmed = false;
-            db.Entry(user).State = EntityState.Modified;
+            //db.Entry(user).State = EntityState.Modified;
+            db.MarkAsModified(user);
             await db.SaveChangesAsync();
 
             return true;
