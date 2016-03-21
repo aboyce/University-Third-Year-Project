@@ -2,6 +2,7 @@
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
@@ -66,6 +67,8 @@ namespace TicketManagement.Models.Context
                 throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
             }
         }
+
+        public UserManager<User> UserManager { get; set; }
 
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Team> Teams { get; set; }

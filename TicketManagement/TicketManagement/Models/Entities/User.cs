@@ -9,7 +9,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TicketManagement.Models.Entities
 {
-    // You can add profile data for the user by adding more properties to your User class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class User : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
@@ -121,6 +120,5 @@ namespace TicketManagement.Models.Entities
         [Required]
         [DisplayName("Last Updated")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
-
     }
 }

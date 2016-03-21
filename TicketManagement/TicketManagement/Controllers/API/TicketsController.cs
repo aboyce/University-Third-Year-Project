@@ -11,7 +11,9 @@ namespace TicketManagement.Controllers.API
     [AllowAnonymous]
     public class TicketsController : BaseApiController
     {
-        private ApplicationContext db = new ApplicationContext();
+        public TicketsController() {}
+        public TicketsController(IApplicationContext context)
+        { db = context; }
 
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetAllTicketsForUser(string username, string usertoken)

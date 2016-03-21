@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Management;
 using TicketManagement.Models.Entities;
 
@@ -25,6 +27,8 @@ namespace TicketManagement.Models.Context
         void MarkAsModified(ReceivedTextMessage item);
         void MarkAsModified(RoleNotification item);
         void MarkAsModified(UserNotification item);
+
+        UserManager<User> UserManager { get; }
 
         DbSet<Organisation> Organisations { get; }
         DbSet<Team> Teams { get; }
