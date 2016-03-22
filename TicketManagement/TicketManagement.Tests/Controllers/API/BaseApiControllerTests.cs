@@ -42,18 +42,21 @@ namespace TicketManagement.Tests.Controllers.API
         [TestMethod]
         public void Test_BaseApiController_IsUserInternal()
         {
+            SeedDatabase();
             BaseApiController controller = new BaseApiController(Database);
             List<User> users = Database.Users.ToList(); // Get all the Users from the seeded database.
             if(users.Count != 2)
                 Assert.Fail("Seeded database not as expected for this test.");
 
+            string temp = "";
+
 
 
         }
 
-        protected override void Seed()
+        protected override void SeedDatabase()
         {
-            base.Seed();
+            base.SeedDatabase();
 
             UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
 
@@ -67,19 +70,20 @@ namespace TicketManagement.Tests.Controllers.API
                 IsArchived = false
             };
 
+            userManager.Create(internalUser, "randomlyGeneratedPassword");
+            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
+
             User nonInternalUser = new User
             {
-                FirstName = "Internal",
-                LastName = "Internal",
-                UserName = "Internal",
-                Email = "internal@email.com",
+                FirstName = "NonInternal",
+                LastName = "NonInternal",
+                UserName = "NonInternal",
+                Email = "non_internal@email.com",
                 PhoneNumber = "00000000000",
                 IsArchived = false
             };
 
-            userManager.Create(internalUser, "admin!23");
-            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
-            userManager.Create(nonInternalUser, "admin!23");
+            userManager.Create(nonInternalUser, "randomlyGeneratedPassword");
         }
     }
 }

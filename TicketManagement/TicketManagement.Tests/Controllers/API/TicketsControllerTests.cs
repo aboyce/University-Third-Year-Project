@@ -8,9 +8,9 @@ namespace TicketManagement.Tests.Controllers.API
 {
     public class TicketsControllerTests : TestBase
     {
-        protected override void Seed()
+        protected override void SeedDatabase()
         {
-            base.Seed();
+            base.SeedDatabase();
         }
     }
 }

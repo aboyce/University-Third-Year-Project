@@ -47,7 +47,7 @@ namespace TicketManagement.Tests
             File.Delete(currentFile);
         }
 
-        protected virtual void Seed()
+        protected virtual void SeedDatabase()
         {
             if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db)).RoleExists(MyRoles.Administrator))
                 _db.Roles.AddOrUpdate(

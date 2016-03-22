@@ -13,9 +13,9 @@ namespace TicketManagement.Tests.Controllers.API
 
 
 
-        protected override void Seed()
+        protected override void SeedDatabase()
         {
-            base.Seed();
+            base.SeedDatabase();
         }
     }
 }
