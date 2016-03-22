@@ -30,7 +30,8 @@ namespace TicketManagement.Controllers
             if (twitterCredentials == null)
                 return null;
 
-            Tweetinvi.Core.Interfaces.ILoggedUser twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, Tweetinvi.User.GetLoggedUser);
+            //Tweetinvi.Core.Interfaces.ILoggedUser twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, Tweetinvi.User.GetLoggedUser);
+            var twitterUser = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
 
             return PartialView(new TwitterProfileSummaryViewModel
             {
@@ -52,8 +53,7 @@ namespace TicketManagement.Controllers
 
             return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
             {
-                ILoggedUser twitterUser = Tweetinvi.User.GetLoggedUser();
-                return twitterUser?.GetHomeTimeline();
+                return Tweetinvi.User.GetAuthenticatedUser()?.GetHomeTimeline();
             })));
         }
 
@@ -66,7 +66,7 @@ namespace TicketManagement.Controllers
 
             return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
             {
-                ILoggedUser twitterUser = Tweetinvi.User.GetLoggedUser();
+                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser();
                 return twitterUser?.GetUserTimeline();
             })));
         }

@@ -416,7 +416,7 @@
     <None Include="Properties\PublishProfiles\Adam-Server.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Properties\PublishProfiles\Web Deploy - Desktop - adamboyce.pubxml" />
+    <None Include="Properties\PublishProfiles\adamboyce.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
