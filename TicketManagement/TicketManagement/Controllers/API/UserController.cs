@@ -11,6 +11,10 @@ namespace TicketManagement.Controllers.API
     [AllowAnonymous]
     public class UserController : BaseApiController
     {
+        public UserController() { db = new ApplicationContext(); }
+        public UserController(ApplicationContext context) { db = context; }
+
+   
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<JsonResult> GetNewUserToken(string username)
         {
