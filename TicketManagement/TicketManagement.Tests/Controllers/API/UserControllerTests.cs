@@ -102,6 +102,61 @@ namespace TicketManagement.Tests.Controllers.API
                 Assert.Fail("Controller should have confirmed that the passed in User Token is valid.");
         }
 
+        [TestMethod]
+        public async Task Test_UserController_DeactivateUserToken()
+        {
+            // Setup.
+            SeedDatabase();
+            UserController controllerUnderTest = new UserController(Database);
+
+            // Check that the controller handles incorrect paramters.
+            // These should be returning 'false'.
+            if (await controllerUnderTest.DeactivateUserToken(null, null))
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.DeactivateUserToken("", ""))
+                Assert.Fail("Controller not handling incorrect parameters.");
+            // Test it can handle incorrect Users as parameters
+            if (await controllerUnderTest.DeactivateUserToken("this_is_not_a_username_that_should_be_in_the_db", "this_is_not_a_usertoken_that_should_be_in_the_db"))
+                Assert.Fail("Controller not handling incorrect parameters.");
+
+            // Check that we are set up as expected for the test.
+            List<User> users = Database.Users.ToList();
+            if (users.Count != 2)
+                Assert.Fail("Seeded database not as expected for this test.");
+
+            // Setup (Create the state that a User would be in if they had a User Token that was activated.).
+            User user = users.First();
+
+            string userId = user.Id; // Used to get the User back out later on.
+            string userUserToken = Guid.NewGuid().ToString();
+
+            user.UserToken = userUserToken;
+            user.MobileApplicationConfirmed = true;
+            Database.Entry(user).State = EntityState.Modified;
+            await Database.SaveChangesAsync();
+
+            // Test that are changes are definately correct.
+            user = await Database.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if(user == null)
+                Assert.Fail("Logic error with the test, not worth continuing. Changes not implemented to the database");
+            if(!user.MobileApplicationConfirmed || user.UserToken != userUserToken)
+                Assert.Fail("Logic error with the test, not worth continuing. Changes not implemented to the database.");
+
+            // Check that the controller reports correctly when in the correct scenario.
+            if(!await controllerUnderTest.DeactivateUserToken(user.UserName, user.UserToken))
+                Assert.Fail("Controller failed to return the correct result with the correct input.");
+
+            // Get the User back out the database.
+            user = await Database.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+                Assert.Fail("Logic error with the test, not worth continuing. Changes not implemented to the database");
+
+            if(user.MobileApplicationConfirmed)
+                Assert.Fail("The controller did not update the User correctly.");
+
+            if(user.UserToken != null)
+                Assert.Fail("Controller has not cleared the User's User Token");
+        }
 
 
 
