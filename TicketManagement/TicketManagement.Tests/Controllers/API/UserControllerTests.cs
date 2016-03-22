@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Controllers.API;
+using TicketManagement.Management;
 using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Tests.Controllers.API
@@ -162,7 +166,40 @@ namespace TicketManagement.Tests.Controllers.API
 
         protected override void SeedDatabase()
         {
-            base.SeedDatabase();
+            if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(Database)).RoleExists(MyRoles.Administrator))
+                Database.Roles.AddOrUpdate(
+                new IdentityRole(MyRoles.Approved),
+                new IdentityRole(MyRoles.Internal),
+                new IdentityRole(MyRoles.Social),
+                new IdentityRole(MyRoles.TextMessage),
+                new IdentityRole(MyRoles.Administrator));
+
+            UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
+
+            User internalUser = new User
+            {
+                FirstName = "Internal",
+                LastName = "Internal",
+                UserName = "Internal",
+                Email = "internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            userManager.Create(internalUser, "randomlyGeneratedPassword");
+            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
+
+            User nonInternalUser = new User
+            {
+                FirstName = "NonInternal",
+                LastName = "NonInternal",
+                UserName = "NonInternal",
+                Email = "non_internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            userManager.Create(nonInternalUser, "randomlyGeneratedPassword");
         }
     }
 }

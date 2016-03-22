@@ -45,5 +45,10 @@ namespace TicketManagement.Tests.Controllers.API
             if (!controllerUnderTest.CheckConnection())
                 Assert.Fail("Controller failed to respond correctly.");
         }
+
+        protected override void SeedDatabase()
+        {
+            // This is not required in this method. Probably poor practice...
+        }
     }
 }
