@@ -4,8 +4,12 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Controllers.API;
+using TicketManagement.Helpers;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 
@@ -14,7 +18,7 @@ namespace TicketManagement.Tests.Controllers.API
     [TestClass]
     public class TicketsControllerTests : TestBase
     {
-        //[TestMethod]
+        [TestMethod]
         public async Task Test_TicketsController_GetAllTicketsForUser()
         {
             // Setup.
@@ -27,8 +31,33 @@ namespace TicketManagement.Tests.Controllers.API
         }
 
 
-        protected override void SeedDatabase()
+        protected override async void SeedDatabase()
         {
+            if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(Database)).RoleExists(MyRoles.Administrator))
+                Database.Roles.AddOrUpdate(
+                new IdentityRole(MyRoles.Approved),
+                new IdentityRole(MyRoles.Internal),
+                new IdentityRole(MyRoles.Social),
+                new IdentityRole(MyRoles.TextMessage),
+                new IdentityRole(MyRoles.Administrator));
+
+            if (!Database.Users.Any(user => user.UserName == "admin"))
+            {
+                UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
+
+                User user = new User
+                {
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    UserName = "Admin",
+                    Email = "admin@email.com",
+                    PhoneNumber = "00000000000",
+                    IsArchived = false
+                };
+
+                userManager.Create(user, "admin!23");
+                userManager.AddToRoles(user.Id, MyRoles.Approved, MyRoles.Internal, MyRoles.Administrator, MyRoles.Social, MyRoles.TextMessage);
+            }
 
             if (!Database.Organisations.Any(org => org.Name == "Your Company Name"))
             {
@@ -88,6 +117,8 @@ namespace TicketManagement.Tests.Controllers.API
                 new TicketState { Name = "Closed", Colour = "#FF0000" });
             }
 
+            if(!await new DataPopulationHelper().PopulateDemoDataAsync(Database, new UserManager<User>(new UserStore<User>(Database))))
+                throw new Exception("TicketsControllerTest:SeedDatabase: Could not populate the database.");
         }
     }
 }
