@@ -1,5 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Controllers.API;
+using System.Linq;
+using TicketManagement.Management;
+using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Tests.Controllers.API
 {
@@ -25,9 +31,55 @@ namespace TicketManagement.Tests.Controllers.API
                 Assert.Fail("Controller failed to incorperate the parameter in the response.");
         }
 
+        [TestMethod]
+        public void Test_BaseApiController_CheckConnection()
+        {
+            BaseApiController controller = new BaseApiController(Database);
+            if (!controller.CheckConnection())
+                Assert.Fail("Controller failed to respond correctly.");
+        }
+
+        [TestMethod]
+        public void Test_BaseApiController_IsUserInternal()
+        {
+            BaseApiController controller = new BaseApiController(Database);
+            List<User> users = Database.Users.ToList(); // Get all the Users from the seeded database.
+            if(users.Count != 2)
+                Assert.Fail("Seeded database not as expected for this test.");
+
+
+
+        }
+
         protected override void Seed()
         {
             base.Seed();
+
+            UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
+
+            User internalUser = new User
+            {
+                FirstName = "Internal",
+                LastName = "Internal",
+                UserName = "Internal",
+                Email = "internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            User nonInternalUser = new User
+            {
+                FirstName = "Internal",
+                LastName = "Internal",
+                UserName = "Internal",
+                Email = "internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            userManager.Create(internalUser, "admin!23");
+            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
+            userManager.Create(nonInternalUser, "admin!23");
         }
     }
 }

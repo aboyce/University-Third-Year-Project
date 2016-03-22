@@ -1,6 +1,10 @@
 ﻿using System.Data.Common;
+using System.Data.Entity.Migrations;
 using System.IO;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TicketManagement.Management;
 using TicketManagement.Models.Context;
 
 namespace TicketManagement.Tests
@@ -10,8 +14,6 @@ namespace TicketManagement.Tests
     {
         private ApplicationContext _db;
         private string currentFile;
-
-        protected virtual void Seed() { }
 
         public ApplicationContext Database => _db;
 
@@ -35,8 +37,6 @@ namespace TicketManagement.Tests
 
             _db = new ApplicationContext(connection);
             _db.Database.CreateIfNotExists();
-
-            Seed();
         }
 
         [TestCleanup]
@@ -45,6 +45,17 @@ namespace TicketManagement.Tests
             _db.Dispose();
             _db = null;
             File.Delete(currentFile);
+        }
+
+        protected virtual void Seed()
+        {
+            if (!new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db)).RoleExists(MyRoles.Administrator))
+                _db.Roles.AddOrUpdate(
+                new IdentityRole(MyRoles.Approved),
+                new IdentityRole(MyRoles.Internal),
+                new IdentityRole(MyRoles.Social),
+                new IdentityRole(MyRoles.TextMessage),
+                new IdentityRole(MyRoles.Administrator));
         }
     }
 }
