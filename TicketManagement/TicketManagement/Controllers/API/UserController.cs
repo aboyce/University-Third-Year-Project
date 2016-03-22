@@ -58,17 +58,6 @@ namespace TicketManagement.Controllers.API
             return user.MobileApplicationConfirmed && string.Equals(user.UserToken, usertoken, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        //[System.Web.Http.AcceptVerbs("GET")]
-        //public async Task<bool> UserInternal(string username, string usertoken)
-        //{
-        //    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken)) return false;
-
-        //    User user = await db.Users.FirstOrDefaultAsync(u => u.UserName == username);
-        //    if (user == null) return false;
-
-        //    return await IsUserInternal(user.Id);
-        //}
-
         [System.Web.Http.AcceptVerbs("GET")]
         public async Task<bool> DeactivateUserToken(string username, string usertoken)
         {

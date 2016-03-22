@@ -14,8 +14,8 @@ namespace TicketManagement.Controllers.API
     {
         protected ApplicationContext db;
 
-        public BaseApiController() { db = new ApplicationContext(); }
-        public  BaseApiController(ApplicationContext context) { db = context; }
+        public BaseApiController() { db = new ApplicationContext(); } // TODO: Fix this, its getting called from the child classes...
+        public BaseApiController(ApplicationContext context) { db = context; }
 
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 

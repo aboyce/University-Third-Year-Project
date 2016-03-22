@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Management;
 using TicketManagement.Models.Context;
+using TicketManagement.Models.Entities;
+using File = System.IO.File;
 
 namespace TicketManagement.Tests
 {
@@ -56,6 +58,33 @@ namespace TicketManagement.Tests
                 new IdentityRole(MyRoles.Social),
                 new IdentityRole(MyRoles.TextMessage),
                 new IdentityRole(MyRoles.Administrator));
+
+            UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
+
+            User internalUser = new User
+            {
+                FirstName = "Internal",
+                LastName = "Internal",
+                UserName = "Internal",
+                Email = "internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            userManager.Create(internalUser, "randomlyGeneratedPassword");
+            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
+
+            User nonInternalUser = new User
+            {
+                FirstName = "NonInternal",
+                LastName = "NonInternal",
+                UserName = "NonInternal",
+                Email = "non_internal@email.com",
+                PhoneNumber = "00000000000",
+                IsArchived = false
+            };
+
+            userManager.Create(nonInternalUser, "randomlyGeneratedPassword");
         }
     }
 }

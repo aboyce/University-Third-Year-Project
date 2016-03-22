@@ -1,11 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Controllers.API;
-using System.Linq;
-using TicketManagement.Management;
-using TicketManagement.Models.Entities;
 
 namespace TicketManagement.Tests.Controllers.API
 {
@@ -15,8 +9,13 @@ namespace TicketManagement.Tests.Controllers.API
         [TestMethod]
         public void Test_BaseApiController_GetDefault()
         {
-            BaseApiController controller = new BaseApiController(Database);
-            string response = controller.Get();
+            // Setup/
+            BaseApiController controllerUnderTest = new BaseApiController(Database);
+
+            // Test the Controller method.
+            string response = controllerUnderTest.Get();
+
+            // Is the output as we expected.
             if (string.IsNullOrEmpty(response))
                 Assert.Fail("No response from Controller.");
         }
@@ -24,9 +23,14 @@ namespace TicketManagement.Tests.Controllers.API
         [TestMethod]
         public void Test_BaseApiController_GetWithId()
         {
+            // Setup.
             int idParameter = 7;
-            BaseApiController controller = new BaseApiController(Database);
-            string response = controller.Get(idParameter);
+            BaseApiController controllerUnderTest = new BaseApiController(Database);
+
+            // Test the Controller method.
+            string response = controllerUnderTest.Get(idParameter);
+
+            // Does the output contain what we expected, roughly as text-text doesn't really matter, just that it incorperate the Id back.
             if (!response.Contains(idParameter.ToString()))
                 Assert.Fail("Controller failed to incorperate the parameter in the response.");
         }
@@ -34,56 +38,32 @@ namespace TicketManagement.Tests.Controllers.API
         [TestMethod]
         public void Test_BaseApiController_CheckConnection()
         {
-            BaseApiController controller = new BaseApiController(Database);
-            if (!controller.CheckConnection())
+            // Setup.
+            BaseApiController controllerUnderTest = new BaseApiController(Database);
+
+            // Test the Controller method. Did it resond as we expect.
+            if (!controllerUnderTest.CheckConnection())
                 Assert.Fail("Controller failed to respond correctly.");
         }
 
-        [TestMethod]
-        public void Test_BaseApiController_IsUserInternal()
-        {
-            SeedDatabase();
-            BaseApiController controller = new BaseApiController(Database);
-            List<User> users = Database.Users.ToList(); // Get all the Users from the seeded database.
-            if(users.Count != 2)
-                Assert.Fail("Seeded database not as expected for this test.");
+        //[TestMethod]
+        //public async Task Test_BaseApiController_IsUserInternal()
+        //{
+        //    // Setup.
+        //    SeedDatabase();
+        //    BaseApiController controllerUnderTest = new BaseApiController(Database);
 
-            string temp = "";
+        //    // Check that we are set up as expected for the full test.
+        //    List<User> users = Database.Users.ToList();
+        //    if(users.Count != 2)
+        //        Assert.Fail("Seeded database not as expected for this test.");
 
+        //    // Check that we have the User we need for testing.
+        //    User internalUser = await Database.Users.FirstOrDefaultAsync(u => u.FirstName == "Internal");
+        //    if(internalUser == null)
+        //        Assert.Fail("Could not get the seeded User rom the database.");
 
-
-        }
-
-        protected override void SeedDatabase()
-        {
-            base.SeedDatabase();
-
-            UserManager<User> userManager = new UserManager<User>(new UserStore<User>(Database));
-
-            User internalUser = new User
-            {
-                FirstName = "Internal",
-                LastName = "Internal",
-                UserName = "Internal",
-                Email = "internal@email.com",
-                PhoneNumber = "00000000000",
-                IsArchived = false
-            };
-
-            userManager.Create(internalUser, "randomlyGeneratedPassword");
-            userManager.AddToRoles(internalUser.Id, MyRoles.Internal);
-
-            User nonInternalUser = new User
-            {
-                FirstName = "NonInternal",
-                LastName = "NonInternal",
-                UserName = "NonInternal",
-                Email = "non_internal@email.com",
-                PhoneNumber = "00000000000",
-                IsArchived = false
-            };
-
-            userManager.Create(nonInternalUser, "randomlyGeneratedPassword");
-        }
+        //    bool result = controllerUnderTest.Is
+        //}
     }
 }
