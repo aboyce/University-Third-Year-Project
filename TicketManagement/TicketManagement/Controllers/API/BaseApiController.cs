@@ -12,11 +12,6 @@ namespace TicketManagement.Controllers.API
 {
     public class BaseApiController : ApiController
     {
-        protected ApplicationContext db;
-
-        public BaseApiController() { db = new ApplicationContext(); } // TODO: Fix this, its getting called from the child classes...
-        public BaseApiController(ApplicationContext context) { db = context; }
-
         private readonly string _response = $"Ticket System API v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         private readonly string _availableMethods = " : Available API Calls :" +
@@ -47,7 +42,7 @@ namespace TicketManagement.Controllers.API
             return true;
         }
 
-        protected async Task<bool> IsUserInternal(string userId)
+        protected async Task<bool> IsUserInternal(ApplicationContext db, string userId)
         {
             // Get the Id for the Role, Internal.
             string internalRoleId = await db.Roles.Where(r => r.Name == MyRoles.Internal).Select(r => r.Id).FirstOrDefaultAsync();

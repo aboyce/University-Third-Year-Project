@@ -49,12 +49,14 @@ namespace TicketManagement.Tests.Controllers.API
             Database.Entry(user).State = EntityState.Modified;
             await Database.SaveChangesAsync();
 
-            // Test that the controller gives us back a result when the environment is correct.
-            //JsonResult result = await controllerUnderTest.GetNewUserToken(user.Id);
-            //if (result.ContentType != "UserTokenAndIsInternal")
-            //    Assert.Fail("JsonResult ContentType not as expected.");
-            //if (result.Data == null)
-            //    Assert.Fail("JsonResult Data not as expected.");
+           // Test that the controller gives us back a result when the environment is correct.
+           JsonResult result = await controllerUnderTest.GetNewUserToken(user.UserName);
+            if(result == null)
+                Assert.Fail("Json Result is null");
+            if (result.ContentType != "UserTokenAndIsInternal")
+                Assert.Fail("JsonResult ContentType not as expected.");
+            if (result.Data == null)
+                Assert.Fail("JsonResult Data not as expected.");
         }
 
 

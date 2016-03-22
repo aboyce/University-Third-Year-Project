@@ -11,6 +11,8 @@ namespace TicketManagement.Controllers.API
     [AllowAnonymous]
     public class TicketsController : BaseApiController
     {
+        private ApplicationContext db;
+
         public TicketsController() { db = new ApplicationContext(); }
         public TicketsController(ApplicationContext context) { db = context; }
 
@@ -37,7 +39,7 @@ namespace TicketManagement.Controllers.API
                     .Include(t => t.TicketPriority)
                     .Include(t => t.TicketState);
 
-            if (!await IsUserInternal(userId))
+            if (!await IsUserInternal(db, userId))
                 tickets = tickets.Where(t => t.OpenedById == userId);
 
             return new JsonResult
@@ -80,7 +82,7 @@ namespace TicketManagement.Controllers.API
             if (ticket == null) return null;
 
             // If the user is internal, then we can give them the ticket information.
-            if (await IsUserInternal(userId))
+            if (await IsUserInternal(db, userId))
             {
                 return new JsonResult
                 {
@@ -140,7 +142,7 @@ namespace TicketManagement.Controllers.API
                 db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
 
             // If the user is not internal...
-            if (!await IsUserInternal(userId))
+            if (!await IsUserInternal(db, userId))
             {
                 // ... they must have opened it to be able to access the information, else they don' have permission to view the information.
                 if (ticket.OpenedById != userId)
@@ -190,12 +192,12 @@ namespace TicketManagement.Controllers.API
                         .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return false;
 
-            TicketLogType type = await IsUserInternal(userId)
+            TicketLogType type = await IsUserInternal(db, userId)
                 ? TicketLogType.MessageFromInternalUser
                 : TicketLogType.MessageFromExternalUser;
 
             // If the user is not internal they must have opened it to be able to access it, else they don't have permission to add to the ticket.
-            if (!await IsUserInternal(userId) && ticket.OpenedById != userId)
+            if (!await IsUserInternal(db, userId) && ticket.OpenedById != userId)
                 return false;
 
             return await TicketLogHelper.NewTicketLogAsync(userId, id, type, isInternal, false, db, message, null);

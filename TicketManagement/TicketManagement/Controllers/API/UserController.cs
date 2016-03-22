@@ -11,6 +11,8 @@ namespace TicketManagement.Controllers.API
     [AllowAnonymous]
     public class UserController : BaseApiController
     {
+        private ApplicationContext db;
+
         public UserController() { db = new ApplicationContext(); }
         public UserController(ApplicationContext context) { db = context; }
 
@@ -41,7 +43,7 @@ namespace TicketManagement.Controllers.API
                 Data = new ApiUserTokenViewModel
                 {
                     UserToken = user.UserToken,
-                    IsInternal = await IsUserInternal(user.Id)
+                    IsInternal = await IsUserInternal(db, user.Id)
                 }
             };
         }
