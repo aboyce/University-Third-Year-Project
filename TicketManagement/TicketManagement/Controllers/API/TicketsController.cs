@@ -164,8 +164,7 @@ namespace TicketManagement.Controllers.API
 
         private async Task<bool> AddReplyToTicket(string ticketid, string username, string usertoken, string message, bool isInternal = false)
         {
-            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken) ||
-                string.IsNullOrEmpty(message)) return false;
+            if (string.IsNullOrEmpty(ticketid) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(usertoken) || string.IsNullOrEmpty(message)) return false;
 
             // See if the Ticket Id is a valid value, and cast to an int.
             int id;
