@@ -463,8 +463,10 @@ namespace TicketManagement.Helpers
 
             #region Files
 
-            byte[] file1Content = new byte[Resources.DataPopulation_File1_Content.Length * sizeof(char)];
-            Buffer.BlockCopy(Resources.DataPopulation_File1_Content.ToCharArray(), 0, file1Content, 0, file1Content.Length);
+            // This was throwing an exception as the length of file1Content was 87358, which exceeds the 4000 limit.
+            //byte[] file1Content = new byte[Resources.DataPopulation_File1_Content.Length * sizeof(char)];
+            byte[] file1Content = new byte[10];
+            //Buffer.BlockCopy(Resources.DataPopulation_File1_Content.ToCharArray(), 0, file1Content, 0, file1Content.Length);
 
             File file1 = new File
             {

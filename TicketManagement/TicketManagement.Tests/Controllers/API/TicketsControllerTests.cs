@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,9 +26,33 @@ namespace TicketManagement.Tests.Controllers.API
             SeedDatabase();
             TicketsController controllerUnderTest = new TicketsController(Database);
 
+            // Check that the controller handles incorrect paramters.
+            if (await controllerUnderTest.GetAllTicketsForUser(null, null) != null)
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.GetAllTicketsForUser("", "") != null)
+                Assert.Fail("Controller not handling incorrect parameters.");
 
+            // Setup (Get a valid User to test with).
+            User user = Database.Users.First();
+            if (user == null)
+                Assert.Fail("Seeded database not as expected for this test.");
+            string userId = user.Id; // Used as a cache to get the same User later on.
+            JsonResult userTokenJson = await new UserController(Database).GetNewUserToken(user.UserName); // This Controller has been tested independently.
+            if (userTokenJson == null) // Check that we didn't get an error from the controller and that we can continue.
+                Assert.Fail("Problem getting User Token for testing.");
+            user = Database.Users.FirstOrDefault(u => u.Id == userId); // Re-get the User from the database, as UserController should have changed it.
+            if (user == null)
+                Assert.Fail("Logic problem with test, cannot continue.");
 
-
+            // Test that the controller returns a list of tickets for the User.
+            JsonResult ticketsJson = await controllerUnderTest.GetAllTicketsForUser(user.UserName, user.UserToken);
+            if(ticketsJson == null)
+                Assert.Fail("Recieved an error from the controller.");
+            if (ticketsJson.ContentType != "Tickets")
+                Assert.Fail("Recieved incorrect data from controller.");
+            dynamic tickets = ticketsJson.Data;
+            if (tickets.Count != 4)
+                Assert.Fail("Did not receive the correct data from the controller.");
         }
 
 
