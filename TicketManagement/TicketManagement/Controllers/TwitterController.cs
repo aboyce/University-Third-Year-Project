@@ -79,6 +79,43 @@ namespace TicketManagement.Controllers
             }).ToList();
         }
 
+        private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
+        {
+            if (tweetsFromTwitter == null)
+                return new List<TwitterTweetViewModel>();
+
+            List<TwitterTweetViewModel> allTweets= new List<TwitterTweetViewModel>();
+
+            foreach (ITweet tweet in tweetsFromTwitter)
+            {
+                allTweets.Add(new TwitterTweetViewModel
+                {
+                    Text = tweet.Text,
+                    CreatedAt = tweet.CreatedAt,
+                    CreatedBy = tweet.CreatedBy,
+                    FavouriteCount = tweet.FavoriteCount,
+                    HashtagCount = tweet.Hashtags.Count,
+                    TweetLength = tweet.PublishedTweetLength,
+                    IsReply = tweet.InReplyToStatusId != null
+                });
+            }
+
+
+
+
+
+
+            return tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
+            {
+                Text = tweet.Text,
+                CreatedAt = tweet.CreatedAt,
+                CreatedBy = tweet.CreatedBy,
+                FavouriteCount = tweet.FavoriteCount,
+                HashtagCount = tweet.Hashtags.Count,
+                TweetLength = tweet.PublishedTweetLength,
+            }).ToList();
+        }
+
         public bool SetTwitterCredentials()
         {
             if (!HttpContext.Items.Contains(SocialMediaItem.TwitterAccessToken) || !HttpContext.Items.Contains(SocialMediaItem.TwitterAccessTokenSecret))

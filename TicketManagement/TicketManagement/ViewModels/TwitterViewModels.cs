@@ -29,5 +29,6 @@ namespace TicketManagement.ViewModels
         public int FavouriteCount { get; set; }
         public int HashtagCount { get; set; }
         public int TweetLength { get; set; }
+        public bool IsReply { get; set; }
     }
 }
