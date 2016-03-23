@@ -13,6 +13,7 @@ using TicketManagement.Helpers;
 using TicketManagement.Management;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Tests.Controllers.API
 {
@@ -53,6 +54,46 @@ namespace TicketManagement.Tests.Controllers.API
             dynamic tickets = ticketsJson.Data;
             if (tickets.Count != 4)
                 Assert.Fail("Did not receive the correct data from the controller.");
+            if(!(tickets[0] is ApiTicketViewModel))
+                Assert.Fail("Recieved incorrect data type from controller.");
+        }
+
+        [TestMethod]
+        public async Task Test_TicketsController_GetTicketForUser()
+        {
+            // Setup.
+            SeedDatabase();
+            TicketsController controllerUnderTest = new TicketsController(Database);
+
+            // Check that the controller handles incorrect paramters.
+            if (await controllerUnderTest.GetTicketForUser(null, null, null) != null)
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.GetTicketForUser("", "", "") != null)
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.GetTicketForUser("not_a_number", "could_be_valid", "could_be_valid") != null)
+                Assert.Fail("Controller not handling incorrect parameters.");
+
+            // Setup (Get a valid User to test with).
+            User user = Database.Users.First();
+            if (user == null)
+                Assert.Fail("Seeded database not as expected for this test.");
+            string userId = user.Id; // Used as a cache to get the same User later on.
+            JsonResult userTokenJson = await new UserController(Database).GetNewUserToken(user.UserName); // This Controller has been tested independently.
+            if (userTokenJson == null) // Check that we didn't get an error from the controller and that we can continue.
+                Assert.Fail("Problem getting User Token for testing.");
+            user = Database.Users.FirstOrDefault(u => u.Id == userId); // Re-get the User from the database, as UserController should have changed it.
+            if (user == null)
+                Assert.Fail("Logic problem with test, cannot continue.");
+
+            // Test that the controller returns the ticket that was requested.
+            JsonResult ticketJson = await controllerUnderTest.GetTicketForUser("1", user.UserName, user.UserToken);
+            if(ticketJson == null)
+                Assert.Fail("Recieved an error from the controller.");
+            if (ticketJson.ContentType != "Ticket")
+                Assert.Fail("Recieved incorrect data from controller.");
+            dynamic ticket = ticketJson.Data;
+            if (!(ticket is ApiTicketViewModel))
+                Assert.Fail("Recieved incorrect data type from controller.");
         }
 
 

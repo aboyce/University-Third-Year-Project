@@ -56,11 +56,9 @@ namespace TicketManagement.Controllers.API
             if (!int.TryParse(ticketid, out id)) return null;
 
             // Try to get the specific user with the Username and UserToken
-            string userId =
-                await
-                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
-                        .Select(u => u.Id)
-                        .FirstOrDefaultAsync();
+            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                                            .Select(u => u.Id)
+                                            .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return null;
 
             // Build a query for the ticket and linked information. (Not an actual DB request)
