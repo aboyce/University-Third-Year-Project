@@ -124,16 +124,13 @@ namespace TicketManagement.Controllers.API
             if (ticket == null) return null;
 
             // Try to get the specific user with the Username and UserToken
-            string userId =
-                await
-                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
-                        .Select(u => u.Id)
-                        .FirstOrDefaultAsync();
+            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
+                                            .Select(u => u.Id)
+                                            .FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(userId)) return null;
 
             // Get a list of the Ticket Logs that are related to the ticket
-            var ticketLogs =
-                db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
+            var ticketLogs = db.TicketLogs.Where(tl => tl.TicketId == id).Include(tl => tl.Ticket).Include(tl => tl.SubmittedByUser);
 
             // If the user is not internal...
             if (!await IsUserInternal(db, userId))
