@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TicketManagement.ViewModels
 {
@@ -29,6 +30,6 @@ namespace TicketManagement.ViewModels
         public int FavouriteCount { get; set; }
         public int HashtagCount { get; set; }
         public int TweetLength { get; set; }
-        public bool IsReply { get; set; }
+        public List<TwitterTweetViewModel> Replies { get; set; }
     }
 }

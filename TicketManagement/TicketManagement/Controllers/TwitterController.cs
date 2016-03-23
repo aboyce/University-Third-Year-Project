@@ -60,6 +60,8 @@ namespace TicketManagement.Controllers
             if (!Auth.Credentials.AreSetupForUserAuthentication())
                 return null;
 
+            var testing = GetTweetListWithReplies(await (await UserAsync.GetAuthenticatedUser(Auth.Credentials)).GetUserTimelineAsync());
+
             return PartialView(GetTweetList(await (await UserAsync.GetAuthenticatedUser(Auth.Credentials)).GetUserTimelineAsync()));
         }
 
@@ -84,27 +86,28 @@ namespace TicketManagement.Controllers
             if (tweetsFromTwitter == null)
                 return new List<TwitterTweetViewModel>();
 
-            List<TwitterTweetViewModel> allTweets= new List<TwitterTweetViewModel>();
+            List<TwitterTweetViewModel> tweets = new List<TwitterTweetViewModel>();
+
+            var descTweets = tweetsFromTwitter.OrderByDescending(t => t.InReplyToStatusId).ToList();
+            var ascTweets = tweetsFromTwitter.OrderBy(t => t.InReplyToStatusId).ToList(); // This one works, with the nulls first! just break when the first is reached.
+
+            // TODO: The ones with null ReplyToStatus can be considered as all of the parents, with the others children or children of children.
+
+
+
+
+
+            List<ITweet> tweetsWithOutParents = new List<ITweet>();
 
             foreach (ITweet tweet in tweetsFromTwitter)
             {
-                allTweets.Add(new TwitterTweetViewModel
+                if (tweet.InReplyToStatusId == null)
                 {
-                    Text = tweet.Text,
-                    CreatedAt = tweet.CreatedAt,
-                    CreatedBy = tweet.CreatedBy,
-                    FavouriteCount = tweet.FavoriteCount,
-                    HashtagCount = tweet.Hashtags.Count,
-                    TweetLength = tweet.PublishedTweetLength,
-                    IsReply = tweet.InReplyToStatusId != null
-                });
+                    tweets.Add(GetTweetViewModelFromITweet(tweet));
+                    continue;
+                }
+
             }
-
-
-
-
-
-
             return tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
             {
                 Text = tweet.Text,
@@ -114,6 +117,19 @@ namespace TicketManagement.Controllers
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
             }).ToList();
+        }
+
+        private static TwitterTweetViewModel GetTweetViewModelFromITweet(ITweet tweet)
+        {
+            return new TwitterTweetViewModel
+            {
+                Text = tweet.Text,
+                CreatedAt = tweet.CreatedAt,
+                CreatedBy = tweet.CreatedBy,
+                FavouriteCount = tweet.FavoriteCount,
+                HashtagCount = tweet.Hashtags.Count,
+                TweetLength = tweet.PublishedTweetLength
+            };
         }
 
         public bool SetTwitterCredentials()
