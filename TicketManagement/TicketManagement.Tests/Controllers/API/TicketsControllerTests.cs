@@ -179,9 +179,63 @@ namespace TicketManagement.Tests.Controllers.API
             if (ticketLogCount != 4)
                 Assert.Fail("Seeded database not as expected for this test, incorrect amount of ticket logs.");
 
+            if (!await controllerUnderTest.AddExternalReplyToTicket("1", user.UserName, user.UserToken, "Another message to add to Ticket."))
+                Assert.Fail("Received unexpected result from controller.");
+
+            ticketLogCount = await Database.TicketLogs.CountAsync(tl => tl.TicketId == 1);
+            if (ticketLogCount != 5)
+                Assert.Fail("Seeded database not as expected for this test, incorrect amount of ticket logs.");
+
             // TODO: Check for the handling of the User being internal/not internal.
         }
 
+        [TestMethod]
+        public async Task Test_TicketsController_AddInternalReplyToTicket()
+        {
+            // Setup.
+            SeedDatabase();
+            TicketsController controllerUnderTest = new TicketsController(Database);
+
+            // Check that the controller handles incorrect paramters.
+            if (await controllerUnderTest.AddExternalReplyToTicket(null, null, null, null))
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.AddExternalReplyToTicket("", "", "", ""))
+                Assert.Fail("Controller not handling incorrect parameters.");
+            if (await controllerUnderTest.AddExternalReplyToTicket("not_a_number", "could_be_valid", "could_be_valid", "could_be_valid"))
+                Assert.Fail("Controller not handling incorrect parameters.");
+
+            // Setup (Get a valid User to test with).
+            User user = Database.Users.First();
+            if (user == null)
+                Assert.Fail("Seeded database not as expected for this test.");
+            string userId = user.Id; // Used as a cache to get the same User later on.
+            JsonResult userTokenJson = await new UserController(Database).GetNewUserToken(user.UserName); // This Controller has been tested independently.
+            if (userTokenJson == null) // Check that we didn't get an error from the controller and that we can continue.
+                Assert.Fail("Problem getting User Token for testing.");
+            user = Database.Users.FirstOrDefault(u => u.Id == userId); // Re-get the User from the database, as UserController should have changed it.
+            if (user == null)
+                Assert.Fail("Logic problem with test, cannot continue.");
+
+            int ticketLogCount = await Database.TicketLogs.CountAsync(tl => tl.TicketId == 1);
+            if (ticketLogCount != 3)
+                Assert.Fail("Seeded database not as expected for this test, incorrect amount of ticket logs.");
+
+            if (!await controllerUnderTest.AddInternalReplyToTicket("1", user.UserName, user.UserToken, "Message to add to Ticket."))
+                Assert.Fail("Received unexpected result from controller.");
+
+            ticketLogCount = await Database.TicketLogs.CountAsync(tl => tl.TicketId == 1);
+            if (ticketLogCount != 4)
+                Assert.Fail("Seeded database not as expected for this test, incorrect amount of ticket logs.");
+
+            if (!await controllerUnderTest.AddInternalReplyToTicket("1", user.UserName, user.UserToken, "Another message to add to Ticket."))
+                Assert.Fail("Received unexpected result from controller.");
+
+            ticketLogCount = await Database.TicketLogs.CountAsync(tl => tl.TicketId == 1);
+            if (ticketLogCount != 5)
+                Assert.Fail("Seeded database not as expected for this test, incorrect amount of ticket logs.");
+
+            // TODO: Check for the handling of the User being internal/not internal.
+        }
 
         protected override async void SeedDatabase()
         {
