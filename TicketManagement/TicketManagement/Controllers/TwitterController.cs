@@ -23,15 +23,14 @@ namespace TicketManagement.Controllers
             return View(twitterCredentials == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
 
-        public ActionResult _Partial_TwitterProfileSummary()
+        public async Task<ActionResult> _Partial_TwitterProfileSummary()
         {
-            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
-
-            if (twitterCredentials == null)
+            if (!SetTwitterCredentials())
+                return null;
+            if (!Auth.Credentials.AreSetupForUserAuthentication())
                 return null;
 
-            //Tweetinvi.Core.Interfaces.ILoggedUser twitterUser = Auth.ExecuteOperationWithCredentials(twitterCredentials, Tweetinvi.User.GetLoggedUser);
-            var twitterUser = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
+            IAuthenticatedUser twitterUser = await Tweetinvi.UserAsync.GetAuthenticatedUser(Auth.Credentials);
 
             return PartialView(new TwitterProfileSummaryViewModel
             {
@@ -44,31 +43,24 @@ namespace TicketManagement.Controllers
             });
         }
 
-        public ActionResult _Partial_TwitterHomeTimeline()
+        public async Task<ActionResult> _Partial_TwitterHomeTimeline()
         {
-            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
-
-            if (twitterCredentials == null)
+            if (!SetTwitterCredentials())
+                return null;
+            if (!Auth.Credentials.AreSetupForUserAuthentication())
                 return null;
 
-            return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
-            {
-                return Tweetinvi.User.GetAuthenticatedUser()?.GetHomeTimeline();
-            })));
+            return PartialView(GetTweetList(await (await UserAsync.GetAuthenticatedUser(Auth.Credentials)).GetHomeTimelineAsync()));
         }
 
-        public ActionResult _Partial_TwitterUserTimeline()
+        public async Task<ActionResult> _Partial_TwitterUserTimeline()
         {
-            ITwitterCredentials twitterCredentials = GetTwitterCredentials();
-
-            if (twitterCredentials == null)
+            if (!SetTwitterCredentials())
+                return null;
+            if (!Auth.Credentials.AreSetupForUserAuthentication())
                 return null;
 
-            return PartialView(GetTweetList(Auth.ExecuteOperationWithCredentials(twitterCredentials, () =>
-            {
-                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser();
-                return twitterUser?.GetUserTimeline();
-            })));
+            return PartialView(GetTweetList(await (await UserAsync.GetAuthenticatedUser(Auth.Credentials)).GetUserTimelineAsync()));
         }
 
         private static List<TwitterTweetViewModel> GetTweetList(IEnumerable<ITweet> tweetsFromTwitter)
@@ -85,6 +77,25 @@ namespace TicketManagement.Controllers
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
             }).ToList();
+        }
+
+        public bool SetTwitterCredentials()
+        {
+            if (!HttpContext.Items.Contains(SocialMediaItem.TwitterAccessToken) || !HttpContext.Items.Contains(SocialMediaItem.TwitterAccessTokenSecret))
+                return false; // TODO: Handle this error
+
+            string twitterAccessToken = HttpContext.Items[SocialMediaItem.TwitterAccessToken].ToString();
+            string twitterAccessTokenSecret = HttpContext.Items[SocialMediaItem.TwitterAccessTokenSecret].ToString();
+
+            if (string.IsNullOrEmpty(twitterAccessToken) || string.IsNullOrEmpty(twitterAccessTokenSecret))
+            {
+                // TODO: Handle this error.
+                return false;
+            }
+
+            ITwitterCredentials credentials =  Auth.SetUserCredentials(ConfigurationHelper.GetTwitterConsumerKey(),ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
+
+            return credentials.AreSetupForUserAuthentication();
         }
 
         public ITwitterCredentials GetTwitterCredentials()
