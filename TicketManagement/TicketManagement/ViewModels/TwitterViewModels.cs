@@ -24,12 +24,14 @@ namespace TicketManagement.ViewModels
 
     public class TwitterTweetViewModel
     {
+        public long TwitterId { get; set; }
         public string Text { get; set; }
         public Tweetinvi.Core.Interfaces.IUser CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public int FavouriteCount { get; set; }
         public int HashtagCount { get; set; }
         public int TweetLength { get; set; }
-        public List<TwitterTweetViewModel> Replies { get; set; }
+        public long? ReplyToTwitterId { get; set; }
+        public List<TwitterTweetViewModel> Replies { get; set; } = new List<TwitterTweetViewModel>();
     }
 }

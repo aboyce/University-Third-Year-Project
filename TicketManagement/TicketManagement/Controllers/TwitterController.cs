@@ -83,40 +83,36 @@ namespace TicketManagement.Controllers
 
         private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
         {
-            if (tweetsFromTwitter == null)
-                return new List<TwitterTweetViewModel>();
-
-            List<TwitterTweetViewModel> tweets = new List<TwitterTweetViewModel>();
-
-            var descTweets = tweetsFromTwitter.OrderByDescending(t => t.InReplyToStatusId).ToList();
-            var ascTweets = tweetsFromTwitter.OrderBy(t => t.InReplyToStatusId).ToList(); // This one works, with the nulls first! just break when the first is reached.
-
-            // TODO: The ones with null ReplyToStatus can be considered as all of the parents, with the others children or children of children.
-
-
-
-
-
-            List<ITweet> tweetsWithOutParents = new List<ITweet>();
-
-            foreach (ITweet tweet in tweetsFromTwitter)
+            if (tweetsFromTwitter == null) return null;
+            List<TwitterTweetViewModel> tweetViewModels = tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
             {
-                if (tweet.InReplyToStatusId == null)
-                {
-                    tweets.Add(GetTweetViewModelFromITweet(tweet));
-                    continue;
-                }
-
-            }
-            return tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
-            {
+                TwitterId = tweet.Id,
                 Text = tweet.Text,
                 CreatedAt = tweet.CreatedAt,
                 CreatedBy = tweet.CreatedBy,
                 FavouriteCount = tweet.FavoriteCount,
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
+                ReplyToTwitterId = tweet.InReplyToStatusId
             }).ToList();
+
+            // This should add the replies to the corresponding parent Tweet.
+            foreach (TwitterTweetViewModel tweet in tweetViewModels)
+            {
+                if (tweet.ReplyToTwitterId == null) continue;
+                foreach (TwitterTweetViewModel tweetParent in tweetViewModels.Where(tweetParent => tweet.ReplyToTwitterId == tweetParent.TwitterId))
+                    tweetParent.Replies.Add(tweet);
+            }
+
+            // Remove the non-parents as they should be now added as replies.
+            tweetViewModels.RemoveAll(t => t.ReplyToTwitterId == null);
+
+            // TODO: The ones with null ReplyToStatus can be considered as all of the parents, with the others children or children of children.
+
+
+
+
+            return tweetViewModels;
         }
 
         private static TwitterTweetViewModel GetTweetViewModelFromITweet(ITweet tweet)
