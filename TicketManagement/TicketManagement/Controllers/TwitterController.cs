@@ -65,7 +65,7 @@ namespace TicketManagement.Controllers
                 if (credentials == null)
                     return new HttpStatusCodeResult(401);
 
-                return PartialView(GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetHomeTimelineAsync()));
+                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetHomeTimelineAsync()));
             }
             catch (TwitterException e)
             {
@@ -87,7 +87,7 @@ namespace TicketManagement.Controllers
                 if (credentials == null)
                     return new HttpStatusCodeResult(401);
 
-                return PartialView(GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
+                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
             }
             catch (TwitterException e)
             {
