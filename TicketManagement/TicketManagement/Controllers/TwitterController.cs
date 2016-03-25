@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -48,6 +49,10 @@ namespace TicketManagement.Controllers
             {
                 string exMessage = e.TwitterDescription;
             }
+            catch (Exception e)
+            {
+                string exMessage = e.Message;
+            }
 
             return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
@@ -66,6 +71,10 @@ namespace TicketManagement.Controllers
             {
                 string exMessage = e.TwitterDescription;
             }
+            catch (Exception e)
+            {
+                string exMessage = e.Message;
+            }
 
             return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
@@ -83,6 +92,10 @@ namespace TicketManagement.Controllers
             catch (TwitterException e)
             {
                 string exMessage = e.TwitterDescription;
+            }
+            catch (Exception e)
+            {
+                string exMessage = e.Message;
             }
 
             return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
