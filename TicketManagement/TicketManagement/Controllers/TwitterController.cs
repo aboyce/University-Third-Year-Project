@@ -11,6 +11,7 @@ using Tweetinvi;
 using Tweetinvi.Core.Credentials;
 using Tweetinvi.Core.Exceptions;
 using Tweetinvi.Core.Interfaces;
+using Tweetinvi.Core.Interfaces.Models.Entities;
 
 namespace TicketManagement.Controllers
 {
@@ -101,22 +102,6 @@ namespace TicketManagement.Controllers
             return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
 
-        private static List<TwitterTweetViewModel> GetTweetList(IEnumerable<ITweet> tweetsFromTwitter)
-        {
-            if (tweetsFromTwitter == null)
-                return new List<TwitterTweetViewModel>();
-
-            return tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
-            {
-                Text = tweet.Text,
-                CreatedAt = tweet.CreatedAt,
-                CreatedBy = tweet.CreatedBy,
-                FavouriteCount = tweet.FavoriteCount,
-                HashtagCount = tweet.Hashtags.Count,
-                TweetLength = tweet.PublishedTweetLength,
-            }).ToList();
-        }
-
         private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
         {
             if (tweetsFromTwitter == null) return null;
@@ -129,7 +114,8 @@ namespace TicketManagement.Controllers
                 FavouriteCount = tweet.FavoriteCount,
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
-                ReplyToTwitterId = tweet.InReplyToStatusId
+                ReplyToTwitterId = tweet.InReplyToStatusId,
+                TicketRequest = tweet.Hashtags.Exists(ht => string.Equals(ht.Text, ConfigurationHelper.GetTwitterHashtag(), StringComparison.CurrentCultureIgnoreCase))            
             }).ToList();
 
             // This should add the replies to the corresponding parent Tweet.
@@ -143,19 +129,6 @@ namespace TicketManagement.Controllers
             tweetViewModels.RemoveAll(t => t.ReplyToTwitterId != null);
 
             return tweetViewModels;
-        }
-
-        private static TwitterTweetViewModel GetTweetViewModelFromITweet(ITweet tweet)
-        {
-            return new TwitterTweetViewModel
-            {
-                Text = tweet.Text,
-                CreatedAt = tweet.CreatedAt,
-                CreatedBy = tweet.CreatedBy,
-                FavouriteCount = tweet.FavoriteCount,
-                HashtagCount = tweet.Hashtags.Count,
-                TweetLength = tweet.PublishedTweetLength
-            };
         }
 
         public bool SetTwitterCredentials()

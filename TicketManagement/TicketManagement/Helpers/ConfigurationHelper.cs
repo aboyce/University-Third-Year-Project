@@ -97,6 +97,13 @@ namespace TicketManagement.Helpers
             return !string.IsNullOrEmpty(value) ? value : null;
         }
 
+        public static Task<string> GetTwitterHashtagAsync() { return Task.Factory.StartNew(GetTwitterHashtag); }
+        public static string GetTwitterHashtag()
+        {
+            string value = ConfigurationManager.AppSettings["Twitter_Hashtag"];
+            return !string.IsNullOrEmpty(value) ? value : null;
+        }
+
         #endregion
 
         #region Text Messaging
