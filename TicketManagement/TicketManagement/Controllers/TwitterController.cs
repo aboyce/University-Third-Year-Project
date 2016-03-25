@@ -99,18 +99,12 @@ namespace TicketManagement.Controllers
             // This should add the replies to the corresponding parent Tweet.
             foreach (TwitterTweetViewModel tweet in tweetViewModels)
             {
-                if (tweet.ReplyToTwitterId == null) continue;
-                foreach (TwitterTweetViewModel tweetParent in tweetViewModels.Where(tweetParent => tweet.ReplyToTwitterId == tweetParent.TwitterId))
-                    tweetParent.Replies.Add(tweet);
+                if (tweet.ReplyToTwitterId == null) continue; // If it isn't a reply to another Tweet, we can just move on.
+                foreach (TwitterTweetViewModel parentTweet in tweetViewModels.Where(parentTweet => tweet.ReplyToTwitterId == parentTweet.TwitterId))
+                { parentTweet.Replies.Add(tweet); break; } // If it is a reply to a Tweet, we need to find its parent and add it to it's list of replies.
             }
-
             // Remove the non-parents as they should be now added as replies.
-            tweetViewModels.RemoveAll(t => t.ReplyToTwitterId == null);
-
-            // TODO: The ones with null ReplyToStatus can be considered as all of the parents, with the others children or children of children.
-
-
-
+            tweetViewModels.RemoveAll(t => t.ReplyToTwitterId != null);
 
             return tweetViewModels;
         }
