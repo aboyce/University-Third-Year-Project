@@ -11,7 +11,6 @@ using Tweetinvi;
 using Tweetinvi.Core.Credentials;
 using Tweetinvi.Core.Exceptions;
 using Tweetinvi.Core.Interfaces;
-using Tweetinvi.Core.Interfaces.Models.Entities;
 
 namespace TicketManagement.Controllers
 {
@@ -26,15 +25,22 @@ namespace TicketManagement.Controllers
             return View(twitterCredentials == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
 
+        public ActionResult TwitterError(string errorMessage)
+        {
+            ViewBag.Type = "Twitter";
+            ViewBag.ErrorMessage = errorMessage;
+            return PartialView("_Partial_SocialMediaNotLoggedIn");
+        }
+
         public ActionResult _Partial_TwitterProfileSummary()
         {
             try
             {
                 ITwitterCredentials credentials = GetTwitterCredentials();
                 if (credentials == null)
-                    return new HttpStatusCodeResult(401);
+                    return null;
 
-                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser(credentials);
+                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser(credentials, null);
 
                 return PartialView(new TwitterProfileSummaryViewModel
                 {
@@ -48,14 +54,12 @@ namespace TicketManagement.Controllers
             }
             catch (TwitterException e)
             {
-                string exMessage = e.TwitterDescription;
+                return null;
             }
             catch (Exception e)
             {
-                string exMessage = e.Message;
+                return null;
             }
-
-            return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
 
         public async Task<ActionResult> _Partial_TwitterHomeTimeline()
@@ -64,20 +68,18 @@ namespace TicketManagement.Controllers
             {
                 ITwitterCredentials credentials = GetTwitterCredentials();
                 if (credentials == null)
-                    return new HttpStatusCodeResult(401);
+                    return null;
 
                 return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetHomeTimelineAsync()));
             }
             catch (TwitterException e)
             {
-                string exMessage = e.TwitterDescription;
+                return null;
             }
             catch (Exception e)
             {
-                string exMessage = e.Message;
+                return null;
             }
-
-            return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
 
         public async Task<ActionResult> _Partial_TwitterUserTimeline()
@@ -86,20 +88,18 @@ namespace TicketManagement.Controllers
             {
                 ITwitterCredentials credentials = GetTwitterCredentials();
                 if (credentials == null)
-                    return new HttpStatusCodeResult(401);
+                    return TwitterError("Problem loading your credentials.");
 
                 return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
             }
             catch (TwitterException e)
             {
-                string exMessage = e.TwitterDescription;
+                return TwitterError(e.TwitterDescription);
             }
             catch (Exception e)
             {
-                string exMessage = e.Message;
+                return TwitterError(e.Message);
             }
-
-            return new HttpStatusCodeResult(503); // If this occurs, it should just be a tempory event that can be resolved by reauthenticating.
         }
 
         private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)

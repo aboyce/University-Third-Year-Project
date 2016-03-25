@@ -4,7 +4,7 @@
 
 @if (ViewBag.Type != "")
 {
-    <p class="text-info">Your are not logged in with @ViewBag.Type, if you have not already please associate your account @Html.ActionLink("here", "ManageLogins", "User"). If you have previously, please try to remove and re-associate it.</p>
+    <p class="text-info">You are not logged in with @ViewBag.Type, if you have not already please associate your account @Html.ActionLink("here", "ManageLogins", "User"). If you have previously, please try to remove and re-associate it.</p>
 
     if (ViewBag.ErrorMessage != "")
     {
