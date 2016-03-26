@@ -604,6 +604,7 @@
     <Content Include="Views\Twitter\_Partial_TwitterTimeline.cshtml" />
     <Content Include="Views\TextMessage\_Partial_SentMessages.cshtml" />
     <Content Include="Views\TextMessage\_Partial_RecievedMessages.cshtml" />
+    <Content Include="Views\Twitter\_Partial_AddTwitterReply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

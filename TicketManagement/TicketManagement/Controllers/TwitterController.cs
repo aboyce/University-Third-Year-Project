@@ -102,6 +102,26 @@ namespace TicketManagement.Controllers
             }
         }
 
+        public async Task<ActionResult> _Partial_AddTwitterReply(string id)
+        {
+            try
+            {
+                ITwitterCredentials credentials = GetTwitterCredentials();
+                if (credentials == null)
+                    return TwitterError("Problem loading your credentials.");
+
+                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
+            }
+            catch (TwitterException e)
+            {
+                return TwitterError(e.TwitterDescription);
+            }
+            catch (Exception e)
+            {
+                return TwitterError(e.Message);
+            }
+        }
+
         private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
         {
             if (tweetsFromTwitter == null) return null;
@@ -168,7 +188,8 @@ namespace TicketManagement.Controllers
                 return null;
             }
 
-            return new TwitterCredentials(ConfigurationHelper.GetTwitterConsumerKey(), ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
+            //return new TwitterCredentials(ConfigurationHelper.GetTwitterConsumerKey(), ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
+            return Auth.SetUserCredentials(ConfigurationHelper.GetTwitterConsumerKey(), ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
         }
     }
 }

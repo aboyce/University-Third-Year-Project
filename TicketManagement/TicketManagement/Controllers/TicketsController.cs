@@ -133,7 +133,7 @@ namespace TicketManagement.Controllers
             return View(ticket);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(string title, string description)
         {
             ViewBag.OpenedById = new SelectList(db.Users, "Id", "Id");
             ViewBag.OrganisationAssignedToId = new SelectList(db.Organisations, "Id", "Name");
@@ -143,6 +143,9 @@ namespace TicketManagement.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStateId = new SelectList(db.TicketStates, "Id", "Name");
             ViewBag.UserAssignedToId = new SelectList(db.Users, "Id", "Id");
+
+            if(!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description))
+                return View(new Ticket() { Title = title, Description = description });
 
             return View();
         }
