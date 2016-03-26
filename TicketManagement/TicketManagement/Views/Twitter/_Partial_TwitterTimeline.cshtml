@@ -7,6 +7,7 @@
 }
 else
 {
+    @Html.Partial("_Partial_AddTwitterReply")
     <div>
         @foreach (TwitterTweetViewModel tweet in Model)
         {
@@ -14,25 +15,27 @@ else
                 @if (tweet.Replies.Count < 1) // If there are no replies just display the basic Panel
                 {
                     <p class="list-group-item list-group-item-info one-line">
-                        @if (tweet.TicketRequest)
+                        @*@if (tweet.TicketRequest)
                         {
-                            <a href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
+                            <a href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" title="Create a Ticket"><i class="fa fa-plus-circle"></i></a>
                         }
                         @tweet.Text
+                        <a href="#" data-toggle="modal" id="@tweet.TwitterId" data-target="#modal_twitter_reply" title="Add Reply"><i class="fa fa-reply"></i></a>*@
                     </p>
                 }
                 else
                 {
                     string tweetId = $"#{tweet.TwitterId}";
-                    <p class="list-group-item list-group-item-info one-line" style="white-space: nowrap">
-                        <a href="@tweetId" class="one-line" data-toggle="collapse" data-parent="@tweetId"><i class="fa fa-caret-down"></i></a>
-                        @if (tweet.TicketRequest)
-                        {
-                            <a href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
-                        }
-                        @tweet.Text
-                    </p>
 
+                    <p class="list-group-item list-group-item-info one-line">
+                        @*<a href="@tweetId" data-toggle="collapse" data-parent="@tweetId"><i class="fa fa-caret-down"></i></a>
+                        @tweet.Text
+                        <a href="#" data-toggle="modal" id="@tweet.TwitterId" data-target="#modal_twitter_reply" title="Add Reply"><i class="fa fa-reply"></i></a>
+                        @if (tweet.TicketRequest)
+                            {
+                                <a href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" title="Create a Ticket"><i class="fa fa-plus-circle"></i></a>
+                            }*@
+                    </p>
                     <div class="collapse" id="@tweet.TwitterId">
                         @foreach (TwitterTweetViewModel tweetReply in tweet.Replies)
                         {
@@ -45,43 +48,52 @@ else
     </div>
 }
 
+<h3>Timeline</h3>
+<hr />
+<div style="overflow-y: scroll; max-height: 500px">
+    <div id="twitter_user_timeline"></div>
+</div>
+
 @helper HandleTwitterTweetViewModels(string parentId, TwitterTweetViewModel vm)
 {
 
 string tweetId = $"#{vm.TwitterId}";
 
-if (vm.Replies.Count < 1) // If there are no replies just display the basic Panel //$('#twitter_add_reply_form').submit()
-{
-    <p class="list-group-item"> 
-        
-        <a href="#" data-parent="@parentId">@vm.Text</a>
-    </p>
-}
-else
-{
-    <p class="list-group-item one-line" style="white-space: nowrap">
-        <a href="@tweetId" class="one-line" data-toggle="collapse" data-parent="@parentId"><i class="fa fa-caret-down"></i></a>
-        @*<a href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" class="one-line" title="Add Reply"><i class="fa fa-reply"></i></a>*@
-        @if (vm.TicketRequest)
-        {
-            <a href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
-        }
-        @vm.Text
-    </p>
-    <div class="collapse list-group-submenu" id="@vm.TwitterId" style="margin-left: 20px">
+    if (vm.Replies.Count < 1) // If there are no replies just display the basic Panel
+    {
+        <p class="list-group-item one-line">
+            <a href="#" class="one-line" data-toggle="modal" id="@vm.TwitterId" data-target="#modal_twitter_reply" title="Add Reply"><i class="fa fa-reply"></i></a>
+            <a href="#" class="one-line" data-parent="@parentId">@vm.Text</a>
+        </p>
+    }
+    else
+    {
+        <p class="list-group-item one-line">
+            <a href="@tweetId" class="one-line" data-toggle="collapse" data-parent="@parentId"><i class="fa fa-caret-down"></i></a>
+            <a href="#" class="one-line" data-toggle="modal" id="@vm.TwitterId" data-target="#modal_twitter_reply" title="Add Reply"><i class="fa fa-reply"></i></a>
+            @vm.Text
+                @*@if (vm.TicketRequest)
+                {
+                    <a href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" class="one-line" title="Create a Ticket"><i class="fa fa-plus-circle"></i></a>
+                }
+                *@
+        </p>
+        <div class="collapse list-group-submenu" id="@vm.TwitterId" style="margin-left: 20px">
 
-        @foreach (TwitterTweetViewModel tweetReply in vm.Replies)
+            @foreach (TwitterTweetViewModel tweetReply in vm.Replies)
         {
-            @HandleTwitterTweetViewModels(tweetId, tweetReply)
-        }
-    </div>
+                @HandleTwitterTweetViewModels(tweetId, tweetReply)
+            }
+        </div>
+    }
 }
-    <h3>Timeline</h3>
-    <hr />
-    <div style="overflow-y: scroll; max-height: 500px">
-        <div id="twitter_user_timeline"></div>
-    </div>
-}
+
+<script type="text/javascript">
+    $('#modal_twitter_reply').on('show.bs.modal', function (e) {
+        var model = $(this), tweetId = e.relatedTarget.id;
+        model.find('.edit-content').html(tweetId);
+    })
+</script>
 
 <style type="text/css">
     .list-group.panel > .list-group-item {
