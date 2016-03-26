@@ -62,12 +62,6 @@ else
     </div>
 }
 
-<h3>Timeline</h3>
-<hr />
-<div style="overflow-y: scroll; max-height: 500px">
-    <div id="twitter_user_timeline"></div>
-</div>
-
 @helper HandleTwitterTweetViewModels(string parentId, TwitterTweetViewModel vm)
 {
 
@@ -107,7 +101,7 @@ else
 
 <script type="text/javascript">
     $('#modal_twitter_reply').on('show.bs.modal', function (e) {
-        var model = $(this), tweetId = e.relatedTarget.id;
-        model.find('.edit-content').html(tweetId);
+        var tweetId = e.relatedTarget.id;
+        document.getElementById('tweet_reply_id').value = tweetId;
     })
 </script>

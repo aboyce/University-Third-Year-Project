@@ -5,15 +5,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-labelledby="modal_twitter_reply_label"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="modal_twitter_reply_label">Reply To Tweet</h4>
             </div>
-            <div class="modal-body edit-content">
-                <div class="row">
-                    <p>Hello world</p>
+            @using (Html.BeginForm("AddTwitterReply", "Twitter", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body edit-content">
+                    <div class="row">
+                        <input id="tweet_reply_id" name="tweet_reply_id" hidden="hidden" value=""/>
+                        <input name="tweet_reply_body" type="text"/>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Post Tweet" class="btn btn-success"
+                           title="Post Reply"
+                           onclick="return confirm('Are you sure you want to post this Tweet?')" />
+                </div>
+            }
         </div>
     </div>
 </div>

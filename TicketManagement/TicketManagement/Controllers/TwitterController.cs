@@ -102,24 +102,27 @@ namespace TicketManagement.Controllers
             }
         }
 
-        public async Task<ActionResult> _Partial_AddTwitterReply(string id)
+        [HttpPost]
+        public async Task<ActionResult> AddTwitterReply(string tweet_reply_id, string tweet_reply_body)
         {
-            try
-            {
-                ITwitterCredentials credentials = GetTwitterCredentials();
-                if (credentials == null)
-                    return TwitterError("Problem loading your credentials.");
 
-                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
-            }
-            catch (TwitterException e)
-            {
-                return TwitterError(e.TwitterDescription);
-            }
-            catch (Exception e)
-            {
-                return TwitterError(e.Message);
-            }
+            return TwitterError("Just kidding...");
+            //try
+            //{
+            //    ITwitterCredentials credentials = GetTwitterCredentials();
+            //    if (credentials == null)
+            //        return TwitterError("Problem loading your credentials.");
+
+            //    return View("Index");
+            //}
+            //catch (TwitterException e)
+            //{
+            //    return TwitterError(e.TwitterDescription);
+            //}
+            //catch (Exception e)
+            //{
+            //    return TwitterError(e.Message);
+            //}
         }
 
         private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
