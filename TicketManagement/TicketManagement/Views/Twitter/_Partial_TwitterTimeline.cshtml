@@ -15,10 +15,10 @@ else
                 @if (tweet.Replies.Count < 1) // If there are no replies just display the basic Panel
                 {
                     <p class="list-group-item list-group-item-info one-line" style="white-space: nowrap">
-                        <strong>@tweet.Text</strong>
+                        @tweet.Text
                         @if (tweet.TicketRequest)
                         {
-                            @Html.ActionLink("Create Ticket", "Index", "Tickets", new { id = tweet.TwitterId }, new { @class = "one_line" })
+                            <a href="@Url.Action("TwitterError", "Twitter", new {id = ""})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
                         }
                     </p>
                 }
@@ -27,10 +27,10 @@ else
                     string tweetId = $"#{tweet.TwitterId}";
                     <p class="list-group-item list-group-item-info one-line" style="white-space: nowrap">
                         <a href="@tweetId" class="one-line" data-toggle="collapse" data-parent="@tweetId"><i class="fa fa-caret-down"></i></a>
-                        <strong>@tweet.Text</strong>
+                        @tweet.Text
                         @if (tweet.TicketRequest)
                         {
-                            @Html.ActionLink("Create Ticket", "Index", "Tickets", new { id = tweet.TwitterId }, new { @class = "one_line" })
+                            <a href="@Url.Action("TwitterError", "Twitter", new {id = ""})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
                         }
                     </p>
                     
@@ -62,7 +62,7 @@ string tweetId = $"#{vm.TwitterId}";
              @vm.Text
             @if (vm.TicketRequest)
             {
-                @Html.ActionLink("Create Ticket", "Index", "Tickets", new { id = vm.TwitterId }, new { @class = "one_line" })
+                <a href="@Url.Action("TwitterError", "Twitter", new {id = ""})" class="one-line" title="Create a Ticket for this?"><i class="fa fa-plus-circle"></i></a>
             }
         </p>
         <div class="collapse list-group-submenu" id="@vm.TwitterId" style="margin-left: 20px">
