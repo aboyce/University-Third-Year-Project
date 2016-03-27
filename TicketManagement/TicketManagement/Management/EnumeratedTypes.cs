@@ -119,6 +119,9 @@ namespace TicketManagement.Management
         DataPopulated,
         DataNotPopulated,
 
+        TwitterReplyAdded,
+        TwitterReplyFailed,
+
         UserTokenGenerated,
         UserTokenGenerationFailed,
         UserTokenConfirmed,

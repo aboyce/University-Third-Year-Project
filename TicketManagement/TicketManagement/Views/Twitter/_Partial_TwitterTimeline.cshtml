@@ -32,8 +32,10 @@ else
                     <div class="list-group-item list-group-item-info one-line">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-info" id="_@tweet.TwitterId" data-toggle="modal" data-target="#modal_twitter_reply" title="Reply to Tweet"><i class="fa fa-reply"></i></button>
-                            @if (tweet.TicketRequest)
-                            {<a class="btn btn-info" href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                            @if (tweet.LinkedTicketId == -1)
+                            {<a class="btn btn-info" target="_blank" href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                            @if (tweet.LinkedTicketId > 0)
+                            {<a class="btn btn-info" target="_blank" href="@Url.Action("Ticket", "Tickets", new {id = tweet.LinkedTicketId})" title="Go to Related Ticket"><i class="fa fa-ticket"></i></a>}
                         </div>
                         @tweet.Text
                     </div>
@@ -45,8 +47,10 @@ else
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-info" href="@tweetId" data-toggle="collapse"><i class="fa fa-comment" title="See Tweet Replies"></i></button>
                             <button type="button" class="btn btn-info" id="_@tweet.TwitterId" data-toggle="modal" data-target="#modal_twitter_reply" title="Reply to Tweet"><i class="fa fa-reply"></i></button>
-                            @if (tweet.TicketRequest)
-                            {<button href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" type="button" class="btn btn-info" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></button>}
+                            @if (tweet.LinkedTicketId == -1)
+                            {<a class="btn btn-info" target="_blank" href="@Url.Action("Create", "Tickets", new {title = tweet.Text, description = $"From Twitter User: {tweet.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                            @if (tweet.LinkedTicketId > 0)
+                            {<a class="btn btn-info" target="_blank" href="@Url.Action("Ticket", "Tickets", new {id = tweet.LinkedTicketId})" title="Go to Related Ticket"><i class="fa fa-ticket"></i></a>}
                         </div>
                         @tweet.Text
                     </div>
@@ -72,8 +76,10 @@ string tweetId = $"#{vm.TwitterId}";
         <div class="list-group-item one-line">
             <div class="btn-group" role="group" aria-label="...">
                 <button type="button" class="btn btn-default" id="_@vm.TwitterId" data-toggle="modal" data-target="#modal_twitter_reply" title="Reply to Tweet"><i class="fa fa-reply"></i></button>
-                @if (vm.TicketRequest)
-                {<a class="btn btn-default" href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                @if (vm.LinkedTicketId == -1)
+                {<a class="btn btn-default" target="_blank" href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                @if (vm.LinkedTicketId > 0)
+                {<a class="btn btn-info" target="_blank" href="@Url.Action("Ticket", "Tickets", new {id = vm.LinkedTicketId})" title="Go to Related Ticket"><i class="fa fa-ticket"></i></a>}
             </div>
             @vm.Text
         </div>
@@ -84,8 +90,10 @@ else
             <div class="btn-group" role="group" aria-label="...">
                 <button type="button" class="btn btn-default" href="@tweetId" data-toggle="collapse"><i class="fa fa-comment" title="See Tweet Replies"></i></button>
                 <button type="button" class="btn btn-default" id="_@vm.TwitterId" data-toggle="modal" data-target="#modal_twitter_reply" title="Reply to Tweet"><i class="fa fa-reply"></i></button>
-                @if (vm.TicketRequest)
-                {<button href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" type="button" class="btn btn-info" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></button>}
+                @if (vm.LinkedTicketId == -1)
+                {<a class="btn btn-default" target="_blank" href="@Url.Action("Create", "Tickets", new {title = vm.Text, description = $"From Twitter User: {vm.CreatedBy.Name}"})" title="Make Tweet into Ticket"><i class="fa fa-plus-circle"></i></a>}
+                @if (vm.LinkedTicketId > 0)
+                {<a class="btn btn-info" target="_blank" href="@Url.Action("Ticket", "Tickets", new {id = vm.LinkedTicketId})" title="Go to Related Ticket"><i class="fa fa-ticket"></i></a>}
             </div>
             @vm.Text
         </div>

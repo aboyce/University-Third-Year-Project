@@ -24,15 +24,15 @@ namespace TicketManagement.ViewModels
 
     public class TwitterTweetViewModel
     {
-        public long TwitterId { get; set; }
+        public long TwitterId { get; set; } // The Id given from the Twitter API.
         public string Text { get; set; }
         public Tweetinvi.Core.Interfaces.IUser CreatedBy { get; set; } = null;
         public DateTime CreatedAt { get; set; }
         public int FavouriteCount { get; set; }
         public int HashtagCount { get; set; }
         public int TweetLength { get; set; }
-        public long? ReplyToTwitterId { get; set; }
+        public long? ReplyToTwitterId { get; set; } // If its a reply, the Id from the Twitter API of the Tweet it is a reply to.
         public List<TwitterTweetViewModel> Replies { get; set; } = new List<TwitterTweetViewModel>();
-        public bool TicketRequest { get; set; } = false;
+        public int? LinkedTicketId { get; set; } = null; // Null if does not contain the hashtag. -1 if not a Ticket, TicketId if a Ticket exists.
     }
 }

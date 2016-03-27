@@ -3,6 +3,22 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+@if (Request.Params["ViewMessage"] == "TwitterReplyAdded")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> Your reply has been added.
+    </div>
+}
+
+@if (Request.Params["ViewMessage"] == "TwitterReplyFailed")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Error</b> An error occurred whilst replying to the Tweet. Please try again later.
+    </div>
+}
+
 <h2>Twitter Management</h2>
 <hr/>
 

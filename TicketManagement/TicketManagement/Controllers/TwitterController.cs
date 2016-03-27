@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using TicketManagement.Filters;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
+using TicketManagement.Models.Context;
+using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
 using Tweetinvi;
 using Tweetinvi.Core.Credentials;
@@ -18,6 +20,8 @@ namespace TicketManagement.Controllers
     [TwitterAccessTokens]
     public class TwitterController : Controller
     {
+        private ApplicationContext db = new ApplicationContext();
+
         public ActionResult Index()
         {
             ITwitterCredentials twitterCredentials = GetTwitterCredentials();
@@ -103,29 +107,27 @@ namespace TicketManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddTwitterReply(string tweet_reply_id, string tweet_reply_body)
+        public ActionResult AddTwitterReply(string tweet_reply_id, string tweet_reply_body)
         {
+            if (string.IsNullOrEmpty(tweet_reply_id) || string.IsNullOrEmpty(tweet_reply_body))
+                return RedirectToAction("Index"); // TODO: Add reply was not successful
 
-            return TwitterError("Just kidding...");
-            //try
-            //{
-            //    ITwitterCredentials credentials = GetTwitterCredentials();
-            //    if (credentials == null)
-            //        return TwitterError("Problem loading your credentials.");
+            tweet_reply_id = tweet_reply_id.Replace("_", ""); // a '_' will most likely have been added by the View for formatting purposes.
 
-            //    return View("Index");
-            //}
-            //catch (TwitterException e)
-            //{
-            //    return TwitterError(e.TwitterDescription);
-            //}
-            //catch (Exception e)
-            //{
-            //    return TwitterError(e.Message);
-            //}
+            long tweetReplyId;
+            
+            if(!long.TryParse(tweet_reply_id, out tweetReplyId))
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
+
+            string tweetReplyText = $"@{Tweet.GetTweet(tweetReplyId).CreatedBy.ScreenName} {tweet_reply_body}";
+
+            if(Tweet.PublishTweetInReplyTo(tweetReplyText, tweetReplyId) != null)
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyAdded });
+            else
+                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
         }
 
-        private static List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
+        private List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
         {
             if (tweetsFromTwitter == null) return null;
             List<TwitterTweetViewModel> tweetViewModels = tweetsFromTwitter.Select(tweet => new TwitterTweetViewModel
@@ -138,7 +140,7 @@ namespace TicketManagement.Controllers
                 HashtagCount = tweet.Hashtags.Count,
                 TweetLength = tweet.PublishedTweetLength,
                 ReplyToTwitterId = tweet.InReplyToStatusId,
-                TicketRequest = tweet.Hashtags.Exists(ht => string.Equals(ht.Text, ConfigurationHelper.GetTwitterHashtag(), StringComparison.CurrentCultureIgnoreCase))            
+                LinkedTicketId = TicketRequestAvailable(tweet)            
             }).ToList();
 
             // This should add the replies to the corresponding parent Tweet.
@@ -152,6 +154,26 @@ namespace TicketManagement.Controllers
             tweetViewModels.RemoveAll(t => t.ReplyToTwitterId != null);
 
             return tweetViewModels;
+        }
+
+        private int? TicketRequestAvailable(ITweet tweet)
+        {
+            string configuredHastag = ConfigurationHelper.GetTwitterHashtag();
+            // First does the Hashtag exist in the tweet
+            bool ticketRequest = tweet.Hashtags.Exists(ht => string.Equals(ht.Text, configuredHastag, StringComparison.CurrentCultureIgnoreCase));
+
+            if (!ticketRequest)
+                return null;
+
+            // Next see if we have already created a Ticket (we don't want multiple people to create the same Ticket.
+
+            // TODO: This should not be on Ticket Title (as this can be changed and string-string comparison is not great...
+            Ticket relatedTicket = db.Tickets.FirstOrDefault(t => t.Title.Contains(tweet.Text));
+
+            if (relatedTicket == null)
+                return -1; // For this case there is not created Ticket.
+            else
+                return relatedTicket.Id;
         }
 
         public bool SetTwitterCredentials()
