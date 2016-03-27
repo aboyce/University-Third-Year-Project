@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
 
+@Styles.Render("~/bundles/bootstrap_toggle_css")
+
 @if (Request.Params["ViewMessage"] == "TwitterReplyAdded")
 {
     <div class="alert alert-success alert-dismissable" role="alert">
@@ -102,13 +104,22 @@
             }
 
             <h3>Home Timeline</h3>
-            <hr />
-            <div style="overflow-y: scroll; max-height: 500px">
-                <div id="twitter_home_timeline"></div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-12">
+                    <input id="cb_load_home_timeline" name="CloseOnReply" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info" data-on="Loaded" data-off="Load">
+                </div>
+                <div class="col-md-12">
+                    <div style="overflow-y: scroll; max-height: 500px">
+                        <div id="twitter_home_timeline">
+                        </div>
+                    </div>
+                </div>            
             </div>
         </div>
     </div>
 </div>
 
 @Scripts.Render("~/Scripts/Site/Shared/Ajax_error_handler.js")
+@Scripts.Render("~/bundles/bootstrap_toggle_js")
 @Scripts.Render("~/Scripts/Site/Twitter/twitter.js")

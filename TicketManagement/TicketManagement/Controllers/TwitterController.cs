@@ -72,7 +72,7 @@ namespace TicketManagement.Controllers
             {
                 ITwitterCredentials credentials = GetTwitterCredentials();
                 if (credentials == null)
-                    return null;
+                    return TwitterError("Problem loading your credentials.");
 
                 return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetHomeTimelineAsync()));
             }
