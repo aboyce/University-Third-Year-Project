@@ -63,6 +63,12 @@
         </div>
         <div class="col-md-9 col-sm-9">
 
+            <h3>Timeline</h3>
+            <hr />
+            <div style="overflow-y: scroll; max-height: 500px">
+                <div id="twitter_user_timeline"></div>
+            </div>
+
             @using (Ajax.BeginForm("_Partial_TwitterUserTimeline", "Twitter", new AjaxOptions
             {
                 OnFailure = "handleError(xhr, 'twitter_user_timeline')",
@@ -76,14 +82,22 @@
                 }))
             {
                 <div id="twitter_user_timeline_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;"/>
                 </div>
             }
 
-            <h3>Timeline</h3>
-            <hr/>
-            <div style="overflow-y: scroll; max-height: 500px">
-                <div id="twitter_user_timeline"></div>
+            <h3>Home Timeline</h3>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <input id="cb_load_home_timeline" name="CloseOnReply" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info" data-on="Loaded" data-off="Load">
+                </div>
+                <div class="col-md-12">
+                    <div style="overflow-y: scroll; max-height: 500px">
+                        <div id="twitter_home_timeline">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             @using (Ajax.BeginForm("_Partial_TwitterHomeTimeline", "Twitter", new AjaxOptions
@@ -99,23 +113,9 @@
                 }))
             {
                 <div id="twitter_home_timeline_loading" style="display: none;">
-                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;" />
+                    <img src="~/Content/Images/Shared/loading_horizontal.gif" style="width: 100%;"/>
                 </div>
             }
-
-            <h3>Home Timeline</h3>
-            <hr/>
-            <div class="row">
-                <div class="col-md-12">
-                    <input id="cb_load_home_timeline" name="CloseOnReply" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info" data-on="Loaded" data-off="Load">
-                </div>
-                <div class="col-md-12">
-                    <div style="overflow-y: scroll; max-height: 500px">
-                        <div id="twitter_home_timeline">
-                        </div>
-                    </div>
-                </div>            
-            </div>
         </div>
     </div>
 </div>

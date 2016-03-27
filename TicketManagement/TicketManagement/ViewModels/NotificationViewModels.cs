@@ -21,4 +21,14 @@ namespace TicketManagement.ViewModels
     {
         public List<RoleNotification> RoleNotifications { get; set; }
     }
+
+    public class SocialMediaNotificationsViewModel
+    {
+        public List<SocialMediaNotificationViewModel> SocialMediaNotifications { get; set; }
+    }
+
+    public class SocialMediaNotificationViewModel
+    {
+        
+    }
 }

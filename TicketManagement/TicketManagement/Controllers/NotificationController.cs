@@ -60,6 +60,33 @@ namespace TicketManagement.Controllers
             });
         }
 
+        public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, int? ticketsDayValue, int? ticketsWeekValue, int? ticketsMonthValue)
+        {
+
+            if (ticketsDay && ticketsDayValue != null)
+            {
+                // TODO: Get the tickets opened today
+                // TODO: Get the tickets closed today
+                // TODO: Work out the percent that have been closed
+                // TODO: Add the details to a List of ViewModels (in Notification ViewModels)
+
+                // TODO: Display the list as a table like the others
+
+                // TODO: Add more options; 
+                // TODO:    - ??? Think!
+            }
+            if (ticketsWeek && ticketsWeekValue != null)
+            {
+
+            }
+            if (ticketsMonth && ticketsMonthValue != null)
+            {
+
+            }
+
+            return null;
+        }
+
         public async Task<ActionResult> AuthoriseNotification(NotificationViewModel vm, NotificationCategory notificationCategory, int notificationId)
         {
             bool success = false;
