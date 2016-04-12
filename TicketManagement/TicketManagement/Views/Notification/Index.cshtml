@@ -1,4 +1,5 @@
-﻿@{
+﻿@using TicketManagement.Management
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_Standard.cshtml";
 }
@@ -36,7 +37,7 @@
 }
 
 <h2>Notifications</h2>
-<hr />
+<hr/>
 <h4>For You</h4>
 <hr/>
 <div id="notifications_user_loading" style="display: none;">
@@ -45,74 +46,172 @@
 <div id="notifications_user"></div>
 <br/>
 <div id="notifications_role_loading" style="display: none;">
-    <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    <img src="~/Content/Images/Shared/loading_horizontal.gif"/>
 </div>
 <h4>For the Roles you are in</h4>
 <hr />
 <div id="notifications_role"></div>
-<h4>Social Media</h4>
-<hr />
-<div id="notifications_social_media_loading" style="display: none;">
-    <img src="~/Content/Images/Shared/loading_horizontal.gif" />
-</div>
+<br/>
 
-@using (Ajax.BeginForm("_Partial_SocialMedia_Notifications", "Notification", new AjaxOptions
+@if (User.IsInRole(MyRoles.Social))
 {
-    OnFailure = "handleError(xhr, 'notifications_social_media')",
-    HttpMethod = "Get",
-    UpdateTargetId = "notifications_social_media",
-    LoadingElementId = "notifications_social_media_loading"
-},
-    new
+    <h4>Social Media</h4>
+    <hr />
+    <div id="notifications_social_media_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    </div>
+    <div id="notifications_social_media"></div>
+
+    using (Ajax.BeginForm("_Partial_SocialMedia_Notifications", "Notification", new AjaxOptions
     {
-        id = "notifications_social_media_form"
-    }))
-{
-    <div class="row">
-        <div class="col-md-4">
-            <div class="col-md-3">
-                <input type="number" min="0" placeholder="0" name="ticketsDayValue" style="max-width: 100%">
+        OnFailure = "handleError(xhr, 'notifications_social_media')",
+        HttpMethod = "Get",
+        UpdateTargetId = "notifications_social_media",
+        LoadingElementId = "notifications_social_media_loading"
+    },
+        new
+        {
+            id = "notifications_social_media_form"
+        }))
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Tickets Closed Today</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <input type="number" min="0" placeholder="0" name="ticketsDayValue" style="max-width: 100%">
+                        </div>
+                        <div class="col-md-6">
+                            <label>closed today</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input name="ticketsDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsDay" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <label>closed today</label>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Tickets Closed this Week</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <input type="number" min="0" placeholder="0" name="ticketsWeekValue" style="max-width: 100%">
+                        </div>
+                        <div class="col-md-6">
+                            <label>closed this week</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input name="ticketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsWeek" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3">
-                <input name="ticketsDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
-                <input name="ticketsDay" type="hidden" value="false"/>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Tickets Closed this Month</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <input type="number" min="0" placeholder="0" name="ticketsMonthValue" style="max-width: 100%">
+                        </div>
+                        <div class="col-md-6">
+                            <label>closed this month</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input name="ticketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsMonth" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="col-md-3">
-                <input type="number" min="0" placeholder="0" name="ticketsWeekValue" style="max-width: 100%">
-            </div>
-            <div class="col-md-6">
-                <label>closed this week</label>
-            </div>
-            <div class="col-md-3">
-                <input name="ticketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
-                <input name="ticketsWeek" type="hidden" value="false"/>
+        <br />
+        <div class="row">
+            <div class="col-lg-offset-10">
+                <input type="submit" class="btn btn-success" value="Search" />
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="col-md-3">
-                <input type="number" min="0" placeholder="0" name="ticketsMonthValue" style="max-width: 100%">
-            </div>
-            <div class="col-md-6">
-                <label>closed this month</label>
-            </div>
-            <div class="col-md-3">
-                <input name="ticketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
-                <input name="ticketsMonth" type="hidden" value="false"/>
-            </div>
-        </div>
-    </div>
-    <br/>
-    <div class="row">
-        <input type="submit" class="btn btn-success" value="Search"/>
-    </div>
+    }
 }
 
-<div id="notifications_social_media"></div>
+@if (User.IsInRole(MyRoles.Administrator))
+{
+    <h4>Management</h4>
+    <hr />
+    <div id="notifications_management_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    </div>
+    <div id="notifications_management"></div>
+
+    using (Ajax.BeginForm("_Partial_Management_Notifications", "Notification", new AjaxOptions
+    {
+        OnFailure = "handleError(xhr, 'notifications_management')",
+        HttpMethod = "Get",
+        UpdateTargetId = "notifications_management",
+        LoadingElementId = "notifications_management_loading"
+    },
+        new
+        {
+            id = "notifications_management_form"
+        }))
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Closed Most Tickets Today</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userTicketsDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsDay" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Closed Most Tickets This Week</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userTicketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsWeek" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Closed Most Tickets This Month</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userTicketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsMonth" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-offset-10">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    }
+}
 
 @using (Ajax.BeginForm("_Partial_UserNotifications", "Notification", new AjaxOptions
 {
@@ -139,6 +238,8 @@
         id = "notifications_role_form"
     }))
 { }
+
+<br/><br/>
 
 <script type="text/javascript">
     $('#notifications_user_form').submit();
