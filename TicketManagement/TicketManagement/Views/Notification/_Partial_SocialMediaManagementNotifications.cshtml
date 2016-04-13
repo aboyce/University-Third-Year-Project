@@ -1,0 +1,145 @@
+﻿@using TicketManagement.Management
+
+@if (User.IsInRole(MyRoles.Administrator))
+{
+    <h4>Social Media - Management</h4>
+    <hr />
+    <div id="notifications_management_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    </div>
+    <div id="notifications_management"></div>
+
+    using (Ajax.BeginForm("_Partial_SocialMedia_Management_Notifications", "Notification", new AjaxOptions
+    {
+        OnFailure = "handleError(xhr, 'notifications_management')",
+        HttpMethod = "Get",
+        UpdateTargetId = "notifications_management",
+        LoadingElementId = "notifications_management_loading"
+    },
+        new
+        {
+            id = "notifications_management_form"
+        }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets Today</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_tickets_day" name="userTicketsDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsDay" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets This Week</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_tickets_week" name="userTicketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsWeek" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets This Month</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_tickets_month" name="userTicketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsMonth" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets in Total</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_tickets_total" name="userTicketsTotal" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userTicketsTotal" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Provided the most Replies Today</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_replies_day" name="userRepliesDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesDay" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Provided the most Replies This Week</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_replies_week" name="userRepliesWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesWeek" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Provided the most Replies This Month</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_replies_month" name="userRepliesMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesMonth" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Provided the most Replies in Total</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="cb_user_replies_total" name="userRepliesTotal" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesTotal" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-md-offset-9 col-md-2">
+                <strong>Toggle All:</strong>
+                <input id="cb_social_media_management_toggle_all" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="All" data-off="None">
+            </div>
+            <div class="col-md-1">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    }
+}

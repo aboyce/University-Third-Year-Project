@@ -34,10 +34,13 @@ namespace TicketManagement.ViewModels
 
     public class SocialMediaNotificationViewModel
     {
-        public SocialMediaNotificationViewModel(string messageToPost)
+        public SocialMediaNotificationViewModel(int notificationId, string messageToPost)
         {
+            NotificationId = notificationId;
             MessageToPost = messageToPost;
         }
+
+        public int NotificationId { get; set; }
 
         public string MessageToPost { get; set; }
     }

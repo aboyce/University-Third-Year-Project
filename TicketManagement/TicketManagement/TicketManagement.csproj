@@ -491,6 +491,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
     <Content Include="Scripts\Site\Admin\admin.js" />
+    <Content Include="Scripts\Site\Notifications\notifications_social_media_suggestions.js" />
     <Content Include="Scripts\Site\Notifications\notifications.js" />
     <Content Include="Scripts\Site\Twitter\twitter.js" />
     <Content Include="Scripts\Site\Facebook\facebook.js" />
@@ -607,6 +608,8 @@
     <Content Include="Views\TextMessage\_Partial_RecievedMessages.cshtml" />
     <Content Include="Views\Twitter\_Partial_AddTwitterReply.cshtml" />
     <Content Include="Views\Notification\_Partial_SocialMediaNotifications.cshtml" />
+    <Content Include="Views\Notification\_Partial_SocialMediaSuggestions.cshtml" />
+    <Content Include="Views\Notification\_Partial_SocialMediaManagementNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

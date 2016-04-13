@@ -1,0 +1,58 @@
+﻿@using TicketManagement.ViewModels
+@model SocialMediaNotificationsViewModel
+
+<div id="modal_social_media_suggestions" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-labelledby="modal_social_media_suggestions_label"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal_social_media_suggestions_label">Social Media Suggestions</h4>
+            </div>
+            <br/>
+
+            @foreach (SocialMediaNotificationViewModel notification in Model.SocialMediaNotifications)
+            {
+                <div id="social_media_suggestion_@notification.NotificationId" class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-xs-8 col-md-8">
+                                    <strong>@notification.MessageToPost</strong>
+                                </div>
+                                <div class="col-xs-4 col-md-4">
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-facebook-square" aria-hidden="true"></i></button>
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-twitter-square" aria-hidden="true"></i></button>
+                                    <button class="btn btn-danger" onclick="hideSuggestion('social_media_suggestion_@notification.NotificationId')"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            @*@using (Html.BeginForm("AddTwitterReply", "Twitter", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body edit-content">
+                    <input id="tweet_reply_id" name="tweet_reply_id" hidden="hidden" value="" />
+                    <div class="form-group">
+                        @Html.Label("Reply", new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.TextArea("tweet_reply_body", htmlAttributes: new { @class = "form-control", style = "max-width: 100%; height: 100px;" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Post Tweet" class="btn btn-success"
+                           title="Post Reply"
+                           onclick="return confirm('Are you sure you want to post this Tweet?')" />
+                </div>
+            }*@
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Site/Notifications/notifications_social_media_suggestions.js")

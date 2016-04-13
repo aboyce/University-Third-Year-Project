@@ -82,7 +82,7 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedToday / amountOfTicketsOpenedToday;
                     if ((int)percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues today!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} of your issues today!"));
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedToday / totalAmountOfTickets;
                         if((int)percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues today!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} extra, of your issues today!"));
                     }
                 }
             }
@@ -105,7 +105,7 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedThisWeek/amountOfTicketsOpenedThisWeek;
                     if ((int)percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this week!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} of your issues this week!"));
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedThisWeek / totalAmountOfTickets;
                         if ((int)percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this week!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} extra, of your issues this week!"));
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedThisMonth / amountOfTicketsOpenedThisMonth;
                     if ((int)percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this month!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} of your issues this month!"));
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedThisMonth / totalAmountOfTickets;
                         if ((int)percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this month!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P")} extra, of your issues this month!"));
                     }
                 }
             }
@@ -147,11 +147,11 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosed / totalAmountOfTickets;
                     if ((int)percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"So far we have resolved {percentageClosed.ToString("P")} of all of your issues to date!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"So far we have resolved {percentageClosed.ToString("P")} of all of your issues to date!"));
                 }
             }
 
-            return null; // TODO: Something with this...
+            return PartialView("_Partial_SocialMediaSuggestions", new SocialMediaNotificationsViewModel(socialMediaNotifications));
         }
 
         public async Task<ActionResult> _Partial_SocialMedia_Management_Notifications(bool userTicketsDay, bool userTicketsWeek, bool userTicketsMonth, bool userTicketsTotal,
