@@ -1,0 +1,224 @@
+﻿@using TicketManagement.Management
+@if (User.IsInRole(MyRoles.Social))
+{
+    <h4>Social Media</h4>
+    <hr />
+    <div id="notifications_social_media_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    </div>
+    <div id="notifications_social_media"></div>
+
+    using (Ajax.BeginForm("_Partial_SocialMedia_Notifications", "Notification", new AjaxOptions
+    {
+        OnFailure = "handleError(xhr, 'notifications_social_media')",
+        HttpMethod = "Get",
+        UpdateTargetId = "notifications_social_media",
+        LoadingElementId = "notifications_social_media_loading"
+    },
+        new
+        {
+            id = "notifications_social_media_form"
+        }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>Proportion of Tickets Closed Today</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsWeek" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>Proportion of Tickets Closed this Week</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsMonth" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>Proportion of Tickets Closed this Month</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsMonth" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>Proportion of Tickets Closed in Total</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsTotal" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsTotal" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-offset-10">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    }
+}
+
+@if (User.IsInRole(MyRoles.Administrator))
+{
+    <h4>Social Media - Management</h4>
+    <hr />
+    <div id="notifications_management_loading" style="display: none;">
+        <img src="~/Content/Images/Shared/loading_horizontal.gif" />
+    </div>
+    <div id="notifications_management"></div>
+
+    using (Ajax.BeginForm("_Partial_SocialMedia_Management_Notifications", "Notification", new AjaxOptions
+    {
+        OnFailure = "handleError(xhr, 'notifications_management')",
+        HttpMethod = "Get",
+        UpdateTargetId = "notifications_management",
+        LoadingElementId = "notifications_management_loading"
+    },
+        new
+        {
+            id = "notifications_management_form"
+        }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets Today</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsDay" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets This Week</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsWeek" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets This Month</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsMonth" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <strong>User Who Closed Most Tickets in Total</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="ticketsTotal" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="ticketsTotal" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Provided the most Replies Today</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userRepliesDay" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesDay" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Provided the most Replies This Week</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userRepliesWeek" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesWeek" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Provided the most Replies This Month</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userRepliesMonth" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesMonth" type="hidden" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <strong>User Who Provided the most Replies in Total</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <input name="userRepliesTotal" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="Yes" data-off="No">
+                            <input name="userRepliesTotal" type="hidden" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-lg-offset-10">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    }
+}

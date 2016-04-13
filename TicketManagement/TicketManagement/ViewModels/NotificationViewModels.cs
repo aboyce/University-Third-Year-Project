@@ -24,11 +24,21 @@ namespace TicketManagement.ViewModels
 
     public class SocialMediaNotificationsViewModel
     {
+        public SocialMediaNotificationsViewModel(List<SocialMediaNotificationViewModel> socialMediaNotifications)
+        {
+            SocialMediaNotifications = socialMediaNotifications;
+        }
+
         public List<SocialMediaNotificationViewModel> SocialMediaNotifications { get; set; }
     }
 
     public class SocialMediaNotificationViewModel
     {
-        
+        public SocialMediaNotificationViewModel(string messageToPost)
+        {
+            MessageToPost = messageToPost;
+        }
+
+        public string MessageToPost { get; set; }
     }
 }

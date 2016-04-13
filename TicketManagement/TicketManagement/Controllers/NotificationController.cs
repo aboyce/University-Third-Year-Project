@@ -1,4 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -60,20 +63,93 @@ namespace TicketManagement.Controllers
             });
         }
 
-        public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool userTicketsDay, bool userTicketsWeek, bool userTicketsMonth)
+        public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, bool ticketsTotal)
         {
+            List<SocialMediaNotificationViewModel> socialMediaNotifications = new List<SocialMediaNotificationViewModel>();
+            DateTime now = DateTime.Now;
+            TicketState closedState = await db.TicketStates.FirstOrDefaultAsync(ts => ts.Name == "Closed");
+            if (closedState == null)
+                return null;
+            double totalAmountOfTickets = await db.Tickets.CountAsync(t => t.TicketState != closedState);
 
+            if (ticketsDay)
+            {
+                double amountOfTicketsOpenedToday = await db.Tickets.Where(t => t.Created > now.AddDays(-1)).CountAsync();
+                double amountOfTicketsClosedToday = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddDays(-1)).CountAsync();
+
+                if (amountOfTicketsOpenedToday > 0) // Avoid a divide by zero error.
+                {
+                    double percentageClosed = amountOfTicketsClosedToday / amountOfTicketsOpenedToday;
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues today!"));
+                }
+                else
+                {
+                    if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
+                    {
+                        double percentageClosed = amountOfTicketsClosedToday / totalAmountOfTickets;
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues today!"));
+                    }
+                }
+            }
+
+            if (ticketsWeek)
+            {
+                double amountOfTicketsOpenedThisWeek = await db.Tickets.Where(t => t.Created > now.AddDays(-7)).CountAsync();
+                double amountOfTicketsClosedThisWeek = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddDays(-7)).CountAsync();
+
+                if (amountOfTicketsOpenedThisWeek > 0) // Avoid a divide by zero error.
+                {
+                    double percentageClosed = amountOfTicketsClosedThisWeek/amountOfTicketsOpenedThisWeek;
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this week!"));
+                }
+                else
+                {
+                    if ((int) totalAmountOfTickets != 0) // Avoid a divide by zero error.
+                    {
+                        double percentageClosed = amountOfTicketsClosedThisWeek / totalAmountOfTickets;
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this week!"));
+                    }
+                }
+            }
+            if (ticketsMonth)
+            {
+                double amountOfTicketsOpenedThisMonth = await db.Tickets.Where(t => t.Created > now.AddMonths(-1)).CountAsync();
+                double amountOfTicketsClosedThisMonth = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddMonths(-1)).CountAsync();
+
+                if (amountOfTicketsOpenedThisMonth > 0) // Avoid a divide by zero error.
+                {
+                    double percentageClosed = amountOfTicketsClosedThisMonth / amountOfTicketsOpenedThisMonth;
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this month!"));
+                }
+                else
+                {
+                    if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
+                    {
+                        double percentageClosed = amountOfTicketsClosedThisMonth / totalAmountOfTickets;
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this month!"));
+                    }
+                }
+            }
+            if (ticketsTotal)
+            {
+                double amountOfTicketsClosed = await db.Tickets.CountAsync(t => t.TicketState == closedState);
+
+                if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
+                {
+                    double percentageClosed = amountOfTicketsClosed / totalAmountOfTickets;
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"So far we have resolved {percentageClosed.ToString("P")} of all of your issues to date!"));
+                }
+            }
+
+            return null; // TODO: Something with this...
+        }
+
+        public async Task<ActionResult> _Partial_SocialMedia_Management_Notifications(bool userTicketsDay, bool userTicketsWeek, bool userTicketsMonth, bool userTicketsTotal,
+                                                                                        bool userRepliesDay, bool userRepliesWeek, bool userRepliesMonth, bool userRepliesTotal)
+        {
             if (userTicketsDay)
             {
-                // TODO: Get the tickets opened today
-                // TODO: Get the tickets closed today
-                // TODO: Work out the percent that have been closed
-                // TODO: Add the details to a List of ViewModels (in Notification ViewModels)
 
-                // TODO: Display the list as a table like the others
-
-                // TODO: Add more options; 
-                // TODO:    - ??? Think!
             }
             if (userTicketsWeek)
             {
@@ -83,30 +159,23 @@ namespace TicketManagement.Controllers
             {
 
             }
-
-            return null;
-        }
-
-        public async Task<ActionResult> _Partial_Management_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, int? ticketsDayValue, int? ticketsWeekValue, int? ticketsMonthValue)
-        {
-
-            if (ticketsDay && ticketsDayValue != null)
-            {
-                // TODO: Get the tickets opened today
-                // TODO: Get the tickets closed today
-                // TODO: Work out the percent that have been closed
-                // TODO: Add the details to a List of ViewModels (in Notification ViewModels)
-
-                // TODO: Display the list as a table like the others
-
-                // TODO: Add more options; 
-                // TODO:    - ??? Think!
-            }
-            if (ticketsWeek && ticketsWeekValue != null)
+            if (userTicketsTotal)
             {
 
             }
-            if (ticketsMonth && ticketsMonthValue != null)
+            if (userRepliesDay)
+            {
+
+            }
+            if (userRepliesWeek)
+            {
+
+            }
+            if (userRepliesMonth)
+            {
+
+            }
+            if (userRepliesTotal)
             {
 
             }
