@@ -82,6 +82,7 @@
 /// <reference path="site/admin/admin.js" />
 /// <reference path="site/facebook/facebook.js" />
 /// <reference path="site/home/home.js" />
+/// <reference path="site/notifications/notifications.js" />
 /// <reference path="site/shared/ajax_error_handler.js" />
 /// <reference path="site/shared/date_picker.js" />
 /// <reference path="site/shared/table_popover.js" />

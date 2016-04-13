@@ -491,6 +491,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
     <Content Include="Scripts\Site\Admin\admin.js" />
+    <Content Include="Scripts\Site\Notifications\notifications.js" />
     <Content Include="Scripts\Site\Twitter\twitter.js" />
     <Content Include="Scripts\Site\Facebook\facebook.js" />
     <Content Include="Scripts\Site\Home\home.js" />
