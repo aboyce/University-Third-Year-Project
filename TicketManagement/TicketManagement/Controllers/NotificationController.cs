@@ -70,74 +70,84 @@ namespace TicketManagement.Controllers
             TicketState closedState = await db.TicketStates.FirstOrDefaultAsync(ts => ts.Name == "Closed");
             if (closedState == null)
                 return null;
-            double totalAmountOfTickets = await db.Tickets.CountAsync(t => t.TicketState != closedState);
+            double totalAmountOfTickets = await db.Tickets.CountAsync(t => t.TicketState.Id != closedState.Id);
 
             if (ticketsDay)
             {
-                double amountOfTicketsOpenedToday = await db.Tickets.Where(t => t.Created > now.AddDays(-1)).CountAsync();
-                double amountOfTicketsClosedToday = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddDays(-1)).CountAsync();
+                DateTime previousDay = now.AddDays(-1);
+                double amountOfTicketsOpenedToday = await db.Tickets.Where(t => t.Created > previousDay).CountAsync();
+                double amountOfTicketsClosedToday = await db.Tickets.Where(t => t.TicketState.Id == closedState.Id && t.LastMessage > previousDay).CountAsync();
 
                 if (amountOfTicketsOpenedToday > 0) // Avoid a divide by zero error.
                 {
                     double percentageClosed = amountOfTicketsClosedToday / amountOfTicketsOpenedToday;
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues today!"));
+                    if ((int)percentageClosed > 0)
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues today!"));
                 }
                 else
                 {
                     if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
                     {
                         double percentageClosed = amountOfTicketsClosedToday / totalAmountOfTickets;
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues today!"));
+                        if((int)percentageClosed > 0)
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues today!"));
                     }
                 }
             }
 
             if (ticketsWeek)
             {
-                double amountOfTicketsOpenedThisWeek = await db.Tickets.Where(t => t.Created > now.AddDays(-7)).CountAsync();
-                double amountOfTicketsClosedThisWeek = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddDays(-7)).CountAsync();
+                DateTime previousWeek = now.AddDays(-7);
+                double amountOfTicketsOpenedThisWeek = await db.Tickets.Where(t => t.Created > previousWeek).CountAsync();
+                double amountOfTicketsClosedThisWeek = await db.Tickets.Where(t => t.TicketState.Id == closedState.Id && t.LastMessage > previousWeek).CountAsync();
 
                 if (amountOfTicketsOpenedThisWeek > 0) // Avoid a divide by zero error.
                 {
                     double percentageClosed = amountOfTicketsClosedThisWeek/amountOfTicketsOpenedThisWeek;
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this week!"));
+                    if ((int)percentageClosed > 0)
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this week!"));
                 }
                 else
                 {
                     if ((int) totalAmountOfTickets != 0) // Avoid a divide by zero error.
                     {
                         double percentageClosed = amountOfTicketsClosedThisWeek / totalAmountOfTickets;
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this week!"));
+                        if ((int)percentageClosed > 0)
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this week!"));
                     }
                 }
             }
             if (ticketsMonth)
             {
-                double amountOfTicketsOpenedThisMonth = await db.Tickets.Where(t => t.Created > now.AddMonths(-1)).CountAsync();
-                double amountOfTicketsClosedThisMonth = await db.Tickets.Where(t => t.TicketState == closedState && t.LastMessage > now.AddMonths(-1)).CountAsync();
+                DateTime previousMonth = now.AddMonths(-1);
+                double amountOfTicketsOpenedThisMonth = await db.Tickets.Where(t => t.Created > previousMonth).CountAsync();
+                double amountOfTicketsClosedThisMonth = await db.Tickets.Where(t => t.TicketState.Id == closedState.Id && t.LastMessage > previousMonth).CountAsync();
 
                 if (amountOfTicketsOpenedThisMonth > 0) // Avoid a divide by zero error.
                 {
                     double percentageClosed = amountOfTicketsClosedThisMonth / amountOfTicketsOpenedThisMonth;
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this month!"));
+                    if ((int)percentageClosed > 0)
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} of your issues this month!"));
                 }
                 else
                 {
                     if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
                     {
                         double percentageClosed = amountOfTicketsClosedThisMonth / totalAmountOfTickets;
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this month!"));
+                        if ((int)percentageClosed > 0)
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"We resolved {percentageClosed.ToString("P")} extra, of your issues this month!"));
                     }
                 }
             }
             if (ticketsTotal)
             {
-                double amountOfTicketsClosed = await db.Tickets.CountAsync(t => t.TicketState == closedState);
+                double amountOfTicketsClosed = await db.Tickets.CountAsync(t => t.TicketState.Id == closedState.Id);
 
                 if ((int)totalAmountOfTickets != 0) // Avoid a divide by zero error.
                 {
                     double percentageClosed = amountOfTicketsClosed / totalAmountOfTickets;
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"So far we have resolved {percentageClosed.ToString("P")} of all of your issues to date!"));
+                    if ((int)percentageClosed > 0)
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel($"So far we have resolved {percentageClosed.ToString("P")} of all of your issues to date!"));
                 }
             }
 
