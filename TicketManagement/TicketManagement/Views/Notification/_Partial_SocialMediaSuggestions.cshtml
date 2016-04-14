@@ -20,15 +20,20 @@
                                     <strong>@notification.MessageToPost</strong>
                                 </div>
                                 <div class="col-xs-4 col-md-4">
-                                    <button class="btn btn-info" type="submit"><i class="fa fa-facebook-square" aria-hidden="true"></i></button>
-                                    <button class="btn btn-info" type="submit"><i class="fa fa-twitter-square" aria-hidden="true"></i></button>
-                                    <button class="btn btn-danger" onclick="hideSuggestion('social_media_suggestion_@notification.NotificationId')"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    <button id="social_media_suggestion_facebook_@(notification.NotificationId)" class="btn btn-info" onclick="postSuggestionToFacebook('@notification.NotificationId', '@notification.MessageToPost')">
+                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                                    </button>
+                                    <button id="social_media_suggestion_twitter_@(notification.NotificationId)" class="btn btn-info" onclick="postSuggestionToTwitter('@notification.NotificationId', '@notification.MessageToPost')">
+                                        <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="btn btn-danger" onclick="hideSuggestion('social_media_suggestion_@notification.NotificationId')">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             }
 
             @*@using (Html.BeginForm("AddTwitterReply", "Twitter", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

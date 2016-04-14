@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Filters;
@@ -197,6 +198,39 @@ namespace TicketManagement.Controllers
             ITwitterCredentials credentials =  Auth.SetUserCredentials(ConfigurationHelper.GetTwitterConsumerKey(),ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
 
             return credentials.AreSetupForUserAuthentication();
+        }
+
+        [HttpPost]
+        public ActionResult PostSuggestion(string messageToPost)
+        {
+            try
+            {
+                ITwitterCredentials credentials = GetTwitterCredentials();
+                if (credentials == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
+                string tweetReplyText = $"@{Tweet.GetTweet(tweetReplyId).CreatedBy.ScreenName} {tweet_reply_body}";
+
+                if (Tweet.PublishTweetInReplyTo(tweetReplyText, tweetReplyId) != null)
+                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyAdded });
+                else
+                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
+
+            }
+            catch (TwitterException e)
+            {
+                return TwitterError(e.TwitterDescription);
+            }
+            catch (Exception e)
+            {
+                return TwitterError(e.Message);
+            }
+
+
+
+
+
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         public ITwitterCredentials GetTwitterCredentials()
