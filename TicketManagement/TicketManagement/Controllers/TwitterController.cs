@@ -167,12 +167,11 @@ namespace TicketManagement.Controllers
                 return null;
 
             // Next see if we have already created a Ticket (we don't want multiple people to create the same Ticket.
-
-            // TODO: This should not be on Ticket Title (as this can be changed and string-string comparison is not great...
+            // TODO: This should not be on Ticket Title (as this can be changed and string-string comparison is not great anyway)...
             Ticket relatedTicket = db.Tickets.FirstOrDefault(t => t.Title.Contains(tweet.Text));
 
             if (relatedTicket == null)
-                return -1; // For this case there is not created Ticket.
+                return -1; // For this case there is not a created Ticket.
             else
                 return relatedTicket.Id;
         }
@@ -209,28 +208,20 @@ namespace TicketManagement.Controllers
                 if (credentials == null)
                     return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
 
-                string tweetReplyText = $"@{Tweet.GetTweet(tweetReplyId).CreatedBy.ScreenName} {tweet_reply_body}";
-
-                if (Tweet.PublishTweetInReplyTo(tweetReplyText, tweetReplyId) != null)
-                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyAdded });
-                else
-                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
+                if (Tweet.PublishTweet(messageToPost) != null)
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
 
             }
             catch (TwitterException e)
             {
-                return TwitterError(e.TwitterDescription);
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             catch (Exception e)
             {
-                return TwitterError(e.Message);
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-
-
-
-
-
-            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         public ITwitterCredentials GetTwitterCredentials()

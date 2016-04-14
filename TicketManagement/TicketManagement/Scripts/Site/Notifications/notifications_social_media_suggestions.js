@@ -6,7 +6,7 @@ function postSuggestionToFacebook(id, message_to_post) {
     $.ajax({
         type: "POST",
         url: "/Facebook/PostSuggestion",
-        data: message_to_post,
+        data: { messageToPost: message_to_post },
         datatype: "html",
         complete: function(xhr, textStatus) {
             successfulPostToSocialMedia(xhr, message_to_post);
@@ -35,7 +35,7 @@ function successfulPostToSocialMedia(xhr, messagePosted) {
     if (xhr.status === 200)
         alert('Posted to the Social Media Site: ' + messagePosted);
     else if (xhr.status === 401)
-        alert('Problem posting, please check your \'External Site\' credentials.')
+        alert('Problem posting, please check your \'External Site\' credentials.');
 }
 
 (function () {

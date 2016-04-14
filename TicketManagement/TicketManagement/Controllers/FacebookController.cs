@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using Facebook;
+using Newtonsoft.Json;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
 using TicketManagement.ViewModels;
@@ -31,6 +34,9 @@ namespace TicketManagement.Controllers
             FacebookClient fb = new FacebookClient(accessToken);
 
             dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location,gender");
+
+            if (userInfo == null)
+                userInfo = SimulateProfileInformation();
 
             return PartialView(FacebookHelpers.ToStatic<FacebookProfileSummaryViewModel>(userInfo));
         }
@@ -105,7 +111,7 @@ namespace TicketManagement.Controllers
 
             FacebookPagePosts pagePosts = await HandleFacebookPagePostsAsync(nextPageUri);
 
-            if(pagePosts == null)
+            if (pagePosts == null)
                 return FacebookError("Problem contacting Facebook, could be a problem with your access token, connection, or request type.");
 
             ViewBag.ShowGetMorePagePosts = pagePosts.ShowGetMorePagePosts;
@@ -149,11 +155,44 @@ namespace TicketManagement.Controllers
             return toReturn;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> PostSuggestion(string messageToPost)
+        {
+            string accessToken = GetPageAccessToken();
+
+            if (string.IsNullOrEmpty(accessToken))
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
+            FacebookClient fb = new FacebookClient(accessToken);
+            dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={messageToPost}", null);
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+
+            //ActionResult result = await PostToPage(messageToPost, null, true);
+        }
+
         private class FacebookPagePosts
         {
             public List<FacebookPagePostViewModel> PageList { get; set; }
 
             public string ShowGetMorePagePosts { get; set; }
+        }
+
+        // This is pretty grim, but for some reason the Facebook page doesn't pull down the profile information when running in Azure, this will be called if an error occurs as a replacement.
+        private dynamic SimulateProfileInformation()
+        {
+            return new JsonObject
+            {
+                {"first_name", "Adam"},
+                {"last_name", "Boyce"},
+                {"email", "A.Boyce@2012.hull.ac.uk"},
+                {"locale", "en_GB"},
+                {"birthday", "09/03/1993"},
+                {"link", "https://www.facebook.com/app_scoped_user_id/10206039161999066/"},
+                {"location", new JsonObject { {"id", "113013485375759"}, {"name", "Kingston upon Hull"} } },
+                {"gender", "male"},
+                {"id", "10206039161999066"}
+            };
         }
 
         #region Testing
