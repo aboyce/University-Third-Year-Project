@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="TicketManagement.Models.Entities.Base_Entity">
-    <Position X="1" Y="1" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAEAAAAAAAQAQAAAAAAAAAA=</HashCode>
       <FileName>Models\Entities\Base_Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketManagement.Models.Entities.Base_TextMessage">
-    <Position X="8" Y="1" Width="1.5" />
+    <Position X="18.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgACAAAAAgAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Entities\Base_TextMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketManagement.Models.Entities.File">
-    <Position X="17" Y="2" Width="1.5" />
+    <Position X="12.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAABAAAA=</HashCode>
       <FileName>Models\Entities\File.cs</FileName>
@@ -25,7 +25,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.Organisation">
-    <Position X="0.5" Y="5" Width="1.75" />
+    <Position X="0.5" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAIQAAAAAACAAIAAAAAIQAAAAAAQAAAAAAAAAAACA=</HashCode>
       <FileName>Models\Entities\Organisation.cs</FileName>
@@ -35,10 +35,10 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.Project">
-    <Position X="3.5" Y="11" Width="1.75" />
+    <Position X="3.5" Y="0.5" Width="1.75" />
     <AssociationLine Name="TeamAssignedTo" Type="TicketManagement.Models.Entities.Team">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.395" Y="0.963" />
+        <Position X="0.25" Y="0.126" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -51,10 +51,10 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.ReceivedTextMessage">
-    <Position X="10.25" Y="1" Width="2.75" />
+    <Position X="17.75" Y="0.5" Width="2.75" />
     <AssociationLine Name="UserFrom" Type="TicketManagement.Models.Entities.User">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.092" Y="0.538" />
+        <Position X="0.538" Y="0.092" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -66,7 +66,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.SentTextMessage">
-    <Position X="4.75" Y="1" Width="2.5" />
+    <Position X="18" Y="6.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AwIAAAAAAAAAABAAAAAAQAAAAggAAAAAAAIAAAAAEAA=</HashCode>
       <FileName>Models\Entities\SentTextMessage.cs</FileName>
@@ -76,7 +76,12 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.Team">
-    <Position X="0.75" Y="9" Width="1.5" />
+    <Position X="0.5" Y="8" Width="1.5" />
+    <AssociationLine Name="Organisation" Type="TicketManagement.Models.Entities.Organisation">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.062" Y="0.63" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAEAAAAAAwAAAAAAAAAAAIAEAAAAAA=</HashCode>
       <FileName>Models\Entities\Team.cs</FileName>
@@ -86,10 +91,10 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.Ticket">
-    <Position X="11.75" Y="5.25" Width="2.25" />
+    <Position X="15" Y="0.5" Width="2.25" />
     <AssociationLine Name="TeamAssignedTo" Type="TicketManagement.Models.Entities.Team">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.68" Y="-0.795" />
+        <Position X="0.187" Y="0.11" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -98,17 +103,17 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="OpenedBy" />
-      <Property Name="OrganisationAssignedTo" />
-      <Property Name="Project" />
-      <Property Name="TeamAssignedTo" />
-      <Property Name="TicketCategory" />
       <Property Name="TicketPriority" />
-      <Property Name="TicketState" />
       <Property Name="UserAssignedTo" />
+      <Property Name="TeamAssignedTo" />
+      <Property Name="OrganisationAssignedTo" />
+      <Property Name="TicketState" />
+      <Property Name="Project" />
+      <Property Name="TicketCategory" />
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.TicketCategory">
-    <Position X="16.25" Y="7" Width="1.5" />
+    <Position X="9.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAACAACAQABAAAAAAAAAAAAAAAgAA=</HashCode>
       <FileName>Models\Entities\TicketCategory.cs</FileName>
@@ -118,34 +123,39 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.TicketLog">
-    <Position X="16.75" Y="10" Width="1.75" />
+    <Position X="9.25" Y="4.5" Width="1.75" />
+    <AssociationLine Name="Ticket" Type="TicketManagement.Models.Entities.Ticket">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.379" Y="0.108" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>BAACAAAAAAAAAAACAAgAAAAQAAAEARAAAAAAIAIAAAA=</HashCode>
       <FileName>Models\Entities\TicketLog.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="SubmittedByUser" />
       <Property Name="Ticket" />
+      <Property Name="SubmittedByUser" />
       <Property Name="TicketLogType" />
       <Property Name="File" />
     </ShowAsAssociation>
   </Class>
   <Class Name="TicketManagement.Models.Entities.TicketPriority">
-    <Position X="16.5" Y="4.5" Width="1.5" />
+    <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAgAAAAAAAABAAAAA=</HashCode>
       <FileName>Models\Entities\TicketPriority.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketManagement.Models.Entities.TicketState">
-    <Position X="14.25" Y="1" Width="1.5" />
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAgAAAAAAAABAAAAA=</HashCode>
       <FileName>Models\Entities\TicketState.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketManagement.Models.Entities.User">
-    <Position X="7.75" Y="5.75" Width="2.25" />
+    <Position X="5.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAkAAkAACAAAAIAAAAEAQAECIAAAEDQAEAAAAAAAFAg=</HashCode>
       <FileName>Models\Entities\User.cs</FileName>
@@ -155,14 +165,14 @@
     </ShowAsAssociation>
   </Class>
   <Enum Name="TicketManagement.Management.FileType" Collapsed="true">
-    <Position X="16.25" Y="0.75" Width="1.5" />
+    <Position X="9.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAACAAAAAA=</HashCode>
       <FileName>Management\EnumeratedTypes.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="TicketManagement.Helpers.TicketLogType" Collapsed="true">
-    <Position X="15.5" Y="12.75" Width="1.5" />
+    <Position X="12.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Helpers\TicketLogHelper.cs</FileName>
