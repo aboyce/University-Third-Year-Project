@@ -1,0 +1,1 @@
+﻿git log --date=iso --pretty=format:'"%h","%an","%ad","%s"' > filename.txt

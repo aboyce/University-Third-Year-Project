@@ -1,14 +1,140 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="TicketManagement.Controllers.AdminController">
-    <Position X="0.5" Y="0.5" Width="2.75" />
+  <Class Name="TicketManagement.Controllers.API.BaseApiController">
+    <Position X="0.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAABCCAACAQAAQAgABhAAAAAAAAIQIBAAEQAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAACDAAAAAAAAQAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\API\BaseApiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.API.TicketsController">
+    <Position X="0.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQEAAAAAAQAACAAAAAAAAAAAAAoIAAAAA=</HashCode>
+      <FileName>Controllers\API\TicketsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.API.UserController">
+    <Position X="3.75" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAEAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\API\UserController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.AdminController">
+    <Position X="9.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABCCAACAQAAQAgABgAAAAAAAAIAIBAAEQAAAAAAA=</HashCode>
       <FileName>Controllers\AdminController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="TicketManagement.Controllers.FacebookController">
+    <Position X="3.75" Y="7.25" Width="2.5" />
+    <NestedTypes>
+      <Class Name="TicketManagement.Controllers.FacebookController.FacebookPagePosts" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controllers\FacebookController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAACAAAQAIAEAEAQAAEBAQ=</HashCode>
+      <FileName>Controllers\FacebookController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.FacebookErrorHandlerController">
+    <Position X="0.5" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAAFAAAAARAQAQAAAAQAACAAAABAAAAIBAAAAgAAAAA=</HashCode>
+      <FileName>Controllers\FacebookErrorHandlerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.FileController">
+    <Position X="18.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\FileController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.HomeController">
+    <Position X="9.25" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABACAACAQAAEACAFgAAAAAAABIgIAAAEAAAQgQAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.NotificationController">
+    <Position X="18.5" Y="4" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAGAACAwAAAAAAKAAAAAAAACAAAAAAEAAACAAAA=</HashCode>
+      <FileName>Controllers\NotificationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.OrganisationsController">
+    <Position X="12.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAEAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\OrganisationsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.ProjectsController">
+    <Position X="4" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\ProjectsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TeamsController">
+    <Position X="6.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TeamsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TextMessageController">
+    <Position X="12.5" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgAIAAACAQAAAAAEAAAAAAAAAABAAQAAFCAAAAAAA=</HashCode>
+      <FileName>Controllers\TextMessageController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TicketCategoriesController">
+    <Position X="18.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TicketCategoriesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TicketPrioritiesController">
+    <Position X="15.75" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TicketPrioritiesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TicketsController">
+    <Position X="6.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIRAACCAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TicketsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TicketStatesController">
+    <Position X="6.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TicketStatesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketManagement.Controllers.TwitterController">
+    <Position X="12.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAIAQAAAAIAAAAAAAEAAAQAAEQAUAAAAAAAI=</HashCode>
+      <FileName>Controllers\TwitterController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="TicketManagement.Controllers.UserController">
-    <Position X="9" Y="4" Width="2.5" />
+    <Position X="15.5" Y="0.5" Width="2.5" />
     <NestedTypes>
       <Class Name="TicketManagement.Controllers.UserController.ChallengeResult" Collapsed="true">
         <TypeIdentifier>
@@ -17,92 +143,8 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAABACAACAQgAAAAABgAAAAAAAAIAAAAAEAAAAgAAA=</HashCode>
+      <HashCode>ABAEBACAACAYgAAAAAFhoQAAAAAAImMAAEEEQAAhAAA=</HashCode>
       <FileName>Controllers\UserController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TicketStatesController">
-    <Position X="16.25" Y="4" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\TicketStatesController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TicketsController">
-    <Position X="14" Y="4" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACCAAAAAAAACAEAAEACAAEAAAAAAAQ=</HashCode>
-      <FileName>Controllers\TicketsController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TicketPrioritiesController">
-    <Position X="11.75" Y="4" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\TicketPrioritiesController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TicketCategoriesController">
-    <Position X="6.5" Y="4" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\TicketCategoriesController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TextMessageController">
-    <Position X="16" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAQAAAAAEAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\TextMessageController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.TeamsController">
-    <Position X="13.75" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\TeamsController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.ProjectsController">
-    <Position X="11.5" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\ProjectsController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.OrganisationsController">
-    <Position X="8.75" Y="0.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACARAACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\OrganisationsController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.HomeController">
-    <Position X="3.5" Y="0.5" Width="2.75" />
-    <NestedTypes>
-      <Class Name="TicketManagement.Controllers.HomeController.ChallengeResult" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Controllers\HomeController.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAAABACAACAQAAEACAFgAAAAAAABIgIAAAEQAAQgQAA=</HashCode>
-      <FileName>Controllers\HomeController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.FileController">
-    <Position X="0.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\FileController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TicketManagement.Controllers.NotificationController">
-    <Position X="6.5" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAABACAACAQAAAgAAIAAAAAAAACAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Controllers\NotificationController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

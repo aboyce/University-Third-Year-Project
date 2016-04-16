@@ -383,6 +383,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Misc\Export Commit History.txt" />
     <Content Include="Misc\Fading Base.txt" />
     <Content Include="Misc\Migration Commands.txt" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -396,7 +397,6 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="Design\Controllers.cd" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -414,6 +414,7 @@
     <Content Include="Content\bootstrap-datepicker.min.css.map" />
     <Content Include="Content\bootstrap-datepicker.css.map" />
     <Content Include="Design\Entities.cd" />
+    <Content Include="Design\Controllers.cd" />
     <None Include="Properties\PublishProfiles\Adam-Server.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
