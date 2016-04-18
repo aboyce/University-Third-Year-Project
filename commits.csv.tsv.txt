@@ -1,0 +1,333 @@
+Date/Time	Commit Message
+16/04/2016 14:39	*Re-formatted the Entities Class Diagram to better fit on an A4 page. *Added publication file for a recent publish to Azure.
+16/04/2016 14:08	*Updated Entities for Final Report.
+14/04/2016 18:09	"*Added logic to Post the suggestions on Facebook. *Added logic to handle a bug that only happens on Azure. *Changed some of the int/double logic as it was providing incorrect results, because the decimal value was being disregarded. *Completed the logic for posting suggestions on Twitter. *Fixed JS bug that prevented the Facebook suggestion posting to happen."
+14/04/2016 12:28	*Updated jQuery.
+14/04/2016 12:27	"*Added basic method to Twitter Controller to handle the autmatic posting. *Added Ajax requests to the Facebook and Twitter Controller, then alert the User as required, and prevent that being published again. *Added logic in the View to make these calls upon request."
+13/04/2016 23:08	*Split up the Social Media Notification Views into separate partials. *Added a model that displays as a result of the query. *The suggestions are currently dismissible.
+13/04/2016 18:52	*Fixed problems with limitations of Linq. *Fixed View id bug.
+13/04/2016 17:59	*Cleaned up the Social Media Notifications. *Added functionality to toggle all of the check boxes together.
+13/04/2016 16:30	"*Added improved progress on the Notification options available, and the back end logic."
+12/04/2016 22:29	*Added a Managment part to the Notifications.
+27/03/2016 23:07	"*Added an empty method to correctly handle the request for Social Media Notifications. *Added some notification ViewModels to fill as required. *Fixed the display issues with Social Media Notifications layout, just required additional queries."
+27/03/2016 18:21	"*Added functionality to prevent the Home Twitter Timeline loading automatically, and now can be toggled on/off, this clears up the page, and should prevent any delays when loading the Timelines."
+27/03/2016 17:40	*Cleaned up the Twitter reply box. *Changed logic to detect if a Tweet was suitable to create a Ticket from it. *Added functionality to check if a suitable Tweet already has a Ticket.
+26/03/2016 22:12	"*Added functionality to post intended Twitter reply to Twitter Controller, with the Tweet Id and message body."
+26/03/2016 21:25	"*Added working buttons for the Twitter Timeline, that will dynamically display depending on requirements and will properly load the child comment if present. *Functionality for creating the Tweet into a Ticket works. *Funtionality to reply to a Tweet appears and needs completing. **Finally!"
+26/03/2016 17:32	*Part way through trying to figure out why the Twitter menu is behaving strangely.
+26/03/2016 15:41	"*Trialling a different way of getting Twitter Credentials.  *Added functionality to the Tickets Controller to pre-load a new Ticket with information. *Added a method to Twitter Controller to handle a Reply, needs completing. *Added functionality to Tickets-Index to show the '+' for a new Ticket on the correct Tweets."
+26/03/2016 12:25	*Added functionality to the Twitter-Index to make the 'new ticket' cleaner than just text.
+25/03/2016 23:11	*Altered the error message on the Twitter Controller to prevent a flood of the same messages with the same error. *Again commented out calls to load the full Twitter content whilst testing. *Added functionality to have multiple functions within each of the Tweets.
+25/03/2016 20:20	"*Added functionality to detect a specified Hashtag, and then note the Tweet as requesting a Ticket to be created."
+25/03/2016 18:29	"*Merged the two Twitter Timeline Partial Views into one, to prevent repeated code. *Re-enabled the Twitter views to load."
+25/03/2016 17:31	*Added way for replies to be hidden under the parent Tweet. **Still not nested though as CSS seems to be getting overridden.
+25/03/2016 15:24	"*Added catches for standard Exceptions in the Twitter Controller as it keeps having problems, more than a Twitter Exception."
+25/03/2016 15:09	*Added try-catches to Twitter calls to prevent exceptions. *Now doesn't show all the replies as separate panels.
+25/03/2016 14:09	*Fixed logic that will return a List of Tweets and nested replies.
+24/03/2016 15:08	"*Initial attempt at sorting through the Twitter responses, requires debugging to see if the deletion has caused an issue. **Couldn't connect to Azure database at campus."
+23/03/2016 22:02	*Partial implementation of ordering the Tweets to have replies within a post.
+23/03/2016 20:33	*Partial implementation of getting nested Tweets (for replies).
+23/03/2016 20:07	"*Refactored the Twitter controller, now should be easier to read."
+23/03/2016 12:55	*Added test for AddInternalReplyToTicket. *Improved test for AddExternalReplayToTicket.
+23/03/2016 12:52	*Added test for AddExternalReplyToTicket.
+23/03/2016 12:25	*Added method to test GetTicketLogsForUser.
+23/03/2016 12:03	*Improved test for GetAllTicketsForUser. *Added test for GetTicketForUser.
+23/03/2016 11:40	"*Fixed issue with the automatic data population, that was creating a byte array over twice the maximum size (not sure how this every worked in the past). *Added test for GetAllTicketsForUser in the Tickets Api Controller."
+22/03/2016 18:48	*Added seeding of the database to TicketsController test class.
+22/03/2016 18:36	"*Made the TestBase class abstract, to remove the SeedDatabase functionality as it was only needed in one child, so makes sense to move that out and is better practice."
+22/03/2016 18:24	*Added test for the Deactivation of the User Token method.
+22/03/2016 18:06	*Added test to check CheckUserToken.
+22/03/2016 17:51	*Solved problem with the parent Api controller causing problems whilst testing. *Finshed the test for GetNewUserToken.
+22/03/2016 15:26	"*Continued testing, migrated tests to UserController as that requires the functionality of the BaseController."
+22/03/2016 13:56	"*Got Testing database set up working correctly, populating it with data during seeding, and can query the data as hoped."
+22/03/2016 11:53	"*Attempt at testing with added data, it failed..."
+22/03/2016 11:07	"*Fixed bug with initial tests so that database can be passed through to the Controller for testing, but not affect the standard use."
+22/03/2016 10:52	*Fixed Tweetinvi upgrade problems. *Added new Publish profile as the last one stopped working. *Small UI change.
+21/03/2016 23:03	"**Tweetinvi update added a few errors... *Cannot currently build the Project, requires investigation. *Added some basic test methods to test the default Api Controller."
+21/03/2016 22:44	"*Updated TicketManagement project. *Added Entity Framework to the Test project. *Added a Test base class to the Test project. *Added functionality to create a clean database file before each test is run, and then remove it upon completion."
+21/03/2016 21:37	*Renamed the Test Project base class.
+21/03/2016 21:06	*Believed to be reverted back to the state before the intended Unit Test integration. **Removed some OneDrive copy files that was preventing the application from running.
+21/03/2016 14:30	"*Partial implementation of Unit Testing. *Bit of a disaster, and will most likely be taken out..."
+21/03/2016 12:38	"*Added a DBContext Interface. *Added methods to replace noting instances as modified, as that now runs through methods in the Applicaiton Context. **These will need the old versions removing, is proven to work."
+21/03/2016 11:42	*Added a Testing Project to test the Web API Controllers.
+01/03/2016 10:30	*Added prototype project to try and debug the Help Text message. *Implemented the changes to TicketManagement. *Text formatting. *Saving Help Text Messages.
+29/02/2016 23:00	*Added functionality to send a Help Text to a specified User. *Temporarily commented out some code to get a list of properties from a class. *Modified TextMessage-Send to give the User the option of sending a Help Message.
+29/02/2016 22:33	*Cleaned up the Notification text. *Added toString type functionality on the Notification Enums. *Implemented the improved Notification enums on Notifications-Index.
+29/02/2016 20:45	*Added functionality to send specific texts to selected Users.
+29/02/2016 19:49	*Added changes to the TextMessage-Index to show the different states of the Text Message.
+29/02/2016 18:48	*Added and locally tested functionality to recieve a Delivery Reciept from Clockwork SMS and add it to the database.
+29/02/2016 18:10	"*Added improved way of sending Text Messages, that now gathers success information, error messages, and a Clockwork Id."
+29/02/2016 16:56	*Added functionality to handle a Notification request via Text.
+29/02/2016 16:37	Merge branch 'master' of https://apboyce.visualstudio.com/DefaultCollection/_git/University%20-%20Development%20Project
+29/02/2016 12:40	*Partially implemented more Text Protocol.
+28/02/2016 20:15	*Cleaned up code.
+28/02/2016 19:17	"*Added functionality to get if the User is Internal or not. **Wanting to remove redundant code, that has been handled better."
+28/02/2016 15:02	*Continued with Reply to Ticket functionality to the Ticket Activity.
+28/02/2016 11:34	*Added Reply to Ticket functionality to the Ticket Activity. **Needs functionality adding.
+23/02/2016 22:36	*Fixed rename issues that crashed the App.
+23/02/2016 22:09	"*Cleaned up the UI regarding the two ListViews, positioning, text style etc."
+23/02/2016 21:52	"*Completed functionality to have Ticket Logs aligned to the right, depending on if it is internal or external."
+23/02/2016 21:06	*Added functionality to have some of the Ticket Logs aligned to the right. **Needs properly implementing.
+23/02/2016 20:11	*Trying to add extra file. *Added functionality to pull down Ticket Logs for the selected Ticket.
+22/02/2016 23:21	"**Left in a grim state... *Partially added functionality to pull down Ticket Logs, adding the required elements, new List Item Layout and adding ListView to the TicketActivity."
+22/02/2016 22:55	"*Added Api functionality to return a list of Ticket Logs, depending on User permissions."
+22/02/2016 21:40	*Fixed problems that was preventing the App to deserialize the ticket.
+22/02/2016 19:11	*Added functionality to pull down a Single Ticket when selected. *Migrated some of the shared functionality into a separate class.
+22/02/2016 17:53	*Added API call to get a specific Ticket.
+22/02/2016 17:05	*Small UI changes to MainActivity.
+22/02/2016 17:04	*Added a format to all of the view items. *Added a Ticket Activity.
+22/02/2016 16:48	"*Added more ticket_list_item_borders with numerous colours. *Added improved UI when loading Tickets. *Added a Ticket Refresh option to the menu, that is only visible on the TicketsActivity due to overriding the base override."
+22/02/2016 15:38	*Added a coloured border drawable for the list items. *Added a way to dynamically add the border at runtime. *Added an Id to the Ticket to enable selection from the server upon onClick.
+22/02/2016 14:41	*Added Bootstrap style colours. *Added Title colouring depending on the Ticket State.
+21/02/2016 22:08	*Added logging to TicketsActivity.
+21/02/2016 21:38	*Added a basic List Item for the Tickets. *Added getters/setters for the Ticket class. *Privatised the API calls to prevent them appearing on other views. *Added a cleaner way to populate the Tickets via constructor. *Added a class to populate the Ticket List.
+21/02/2016 17:48	*Added a Ticket Entity. *The App will now populate an ArrayList of Tickets from the Server.
+21/02/2016 17:07	"*Changed how the server return the Tickets JSON. *Added functionality to the App to request the Tickets, check it is from the server, and then convert them into a JSONArray."
+21/02/2016 14:31	*Added some cleaner exeption handling when processing text messages.
+20/02/2016 23:03	*Added User information on the SettingsActivity.
+20/02/2016 22:34	"*Moved more shared functionality into the BaseActivity. *LoginActivity now checks if there is User information stored and will skip to MainActivity if so. *Improved visibility of relevant button and updating checkboxes on results. *SettingsActivity now has the functionality to remove the User from the Phone and de-authorise from the server, as it was an endless loop of authenticating before getting through to the server. *TicketsActivity now checks to see itself if there are User credentials and will redirect to the MainActivity if not."
+20/02/2016 21:43	*Added Ajax calls for loading the sent and received Text Messages. *Added a User instance to Received Text Messages. *Added a Database migration.
+20/02/2016 21:08	*Added functionality to detect when a 'Confirm User Token SMS Message' has been recieved and to make the DB changes if required.
+20/02/2016 18:28	*Partial implementation of Text Message Processing for Keywords. *Added prototype project to develop the Text Message Protocol.
+20/02/2016 17:34	*Added functionality to make an API call to deactivate the User Token.
+20/02/2016 17:14	*Migrated the 'showMessageBox' functionality into the Base Activity.
+20/02/2016 17:01	*A changed the App colour scheme. *Added an Activity Base that holds some Menu configuration and helped remove some variables from each Activity.
+19/02/2016 22:49	*Added settings to try and run on mobile device.
+19/02/2016 22:06	*Added functionality to Send an SMS message from within the App. *Fixed the problem with the popup to either send an SMS or leave it for now.
+19/02/2016 20:35	*Added a Settings Activity. *Removed a Publish file that was causing problems with OneDrive.
+18/02/2016 23:09	*Removed unused assets. *Added new drawable assets. *Added a custom menu that has a settings option.
+18/02/2016 13:33	*Added more useful error message.
+18/02/2016 13:24	*Cleaned up code. *Tried to re-implement a popup box.
+18/02/2016 12:59	"*Added further login logic, with options and should now  move the user around a lot more depending on the state that they are in. **Heavily Untested."
+18/02/2016 12:12	*Added functionality to confirm and deatuthorise a User Token.
+18/02/2016 11:45	"*Now logs in if User Token is confirmed, and displays toast. *Added improved loading display."
+17/02/2016 21:03	*Implemented functionality to check the connection to the server.
+17/02/2016 20:52	*Added an API call to confirm the connection to the Server.
+17/02/2016 20:48	*Added functionality to check the connection to the server.
+17/02/2016 20:41	*Added on click events for MainActivity.
+17/02/2016 20:37	*Added some UI elements to MainActivity.
+17/02/2016 18:49	"*Added an Async task to check the Access Token. **Just a partial commit, untested."
+17/02/2016 18:22	"*Updated the API Controllers, had working calls with two parameters. *Added a MainActivity to the Android App, as a log of initial logic was building in the TicketsActivity, which seemed a bad idea as more was required to be added without any actual ticket logic."
+17/02/2016 17:34	*Added API to confirm if a token is valid or not.
+16/02/2016 23:07	*Added improved logging when errors occur. *Added various TODOs to progress next time.
+16/02/2016 22:50	*Fixed bug with an erroneous '!' that was causing a lot of grief.
+16/02/2016 22:15	"*Cleaned up functionality. *Will get the code back, but has trouble storing the UserTokem in the app. **Currently crashes if the API call goes wrong."
+16/02/2016 19:58	Merge branch 'master' of https://apboyce.visualstudio.com/DefaultCollection/_git/University%20-%20Development%20Project
+16/02/2016 19:58	*Added Web Deploy Configuration.
+16/02/2016 15:41	"*Added KeyStoreHelper. *Requires more work, and has a compilation error."
+16/02/2016 14:35	"*Fixed problem that caused the app to bomb out, due to an isEmpty() check on a string that was null."
+16/02/2016 13:00	*Test commit from Laptop from Visual Studio.
+16/02/2016 12:53	*Test commit from Android Studio on Laptop.
+15/02/2016 21:48	*Added information to the default API call to display the current available methods.
+15/02/2016 21:09	"*Added functionality for the Login page to make an API call, via another thread."
+15/02/2016 20:18	*Cleaned up and partially implemented some of the Login functionality.
+15/02/2016 18:05	*Added functionality that should reach to the phone storage and get/set data. **Far away from usable functionality.
+15/02/2016 17:19	*Added a Login activity and some basic customisation including using the resource file for text.
+15/02/2016 17:02	*Added TS logos to the Application.
+15/02/2016 15:11	*Broke and fixed some problems rendering the Action Bar.
+15/02/2016 14:25	*Test commit from Visual Studio to test compatability.
+15/02/2016 14:22	*Initial commit from Android Studio.
+15/02/2016 11:45	*Attempt at adding an Android Project to the repository.
+15/02/2016 00:00	*Modified functionality so that the retrieval of Tickets now requires 'authorisation' from the user. **This requires testing.
+14/02/2016 23:12	"*Added functionality to remove a User Token (with the current UserToken), ideally used for a 'safe' removal. *Added functionality for API calls with two parameters to be used."
+14/02/2016 22:44	Added functionality to Text the User Token to the loggin in user.
+14/02/2016 22:25	*Added the ability to generate a User Token for the user.
+14/02/2016 20:44	*Added Azure Test Web Deploy. *Added api/UserController. *Added new properties to the User. *Made the changes to incorperate these new changes. **May be some places that these are not properly implemented.
+13/02/2016 18:14	*The Api call GetAllTickets now returns a stringified version of the ticket.
+13/02/2016 17:41	*A simplified List of Tickets can now be returned through an Api call.
+13/02/2016 16:55	"*Changed the default Api Controller to a 'base' Controller, so that they all default to the same Get() Get(id) methods. **Will also implement Post methods."
+13/02/2016 16:08	*Implemented core Web API functionality with default responses.
+13/02/2016 14:09	*Added Web API to the project.
+08/02/2016 21:40	*Fixed Facebook Page Access Token bug. *Added config to seamlessly switch between database connection string when publishing to Azure.
+08/02/2016 20:45	*Added Twitter functionality to pull down the Tweets from the support account and from the timeline of its followers.
+08/02/2016 18:25	*Added functionality to display the Twitter User Profile.
+08/02/2016 17:13	"*Rewrote the way that External Accounts are selected and used, enabled both techniques/account typed to be used together."
+07/02/2016 22:35	*Previous commit was a broken build... *Fixed the problem with the build.
+07/02/2016 22:34	"*Added some Twitter implementation. *Removed the 'magic' strings that where plagued all over, they are now cleanly handled in SocialMediaItem."
+07/02/2016 21:48	*Implemented storing VerifierCode and AuthorisationId from Twitter.
+07/02/2016 20:49	*Added a way to clear the Access Tokens (that seems to be consistently working.
+07/02/2016 17:50	*Optimised the Notifications sections.
+07/02/2016 17:20	*Altered Notifications-Index to use Ajax requests over a full page load to both clean up the code and to inprove performance when more notifications are added.
+07/02/2016 17:00	"*Site cleanup, added Titles to links, relayout of some of the links on the address bar."
+07/02/2016 15:56	"*Added compressed image as the background, used that instead, considerably smaller."
+04/02/2016 18:24	*Added publishing files. *Updated the Assembly Version.
+04/02/2016 15:27	"*Finished off notifications for new Ticket Logs. **Should only provide a notification when an external User adds a Log, but requires more advanced testing."
+04/02/2016 13:30	*Altered the Text Message box size.
+04/02/2016 12:12	*Added connection string to Azure Database.
+31/01/2016 17:19	*Partial implementation of Twitter Integration. **Not functional.
+31/01/2016 12:42	*Cleaned up Facebook View Models. *Did some Nuget Package updates.
+30/01/2016 22:45	*Small Facebook-Index UI tweaks.
+30/01/2016 22:43	"*Tidied up and testes posting as the Page and as the signed in User. *Removed code and functionality to set the Privacy of the post, as this seems to be not implemented when posting to Pages etc."
+30/01/2016 19:17	*Customised the new post box on Facebook-Index.
+30/01/2016 18:14	*Fixed the same message getting repeated if the Facebook Access Token was missing.
+30/01/2016 18:00	*Added functionality for a User to Post to the Admin Page as the Page.
+30/01/2016 17:04	*Attempt at adding the ability to post as the Facebook Admin Page. **Believe it is required to get the Page Access Token.
+30/01/2016 13:21	*UI Facebook Post changes.
+30/01/2016 00:35	*Implemented more Panel types for the Facebook Post type.
+29/01/2016 23:56	*Fixed problem with HandleFacebookPagePostsAsync. *Added a UI for a 'informative' post.
+29/01/2016 23:33	"*Restructured the way that the list of Facebook Pages is constructed, trying to remove code re-use. **Requires testing."
+29/01/2016 22:35	*Facebook 'auto load new values working (requires further testing). **Requires cleaning up the Java Script.
+29/01/2016 18:34	*Mid-way through trying to implement an automatic scrolling feature to keep loading new Page Posts. **Not a usuable build.
+29/01/2016 16:48	*Implemented a list of Page posts from the Facebook Admin Page.
+28/01/2016 22:08	*Added more fields to the Facebook Admin Page View. *Started to rearrange the Admin View.
+28/01/2016 19:38	"*Removed ambiguity with some of the error messages. *Added a work around for when there is an OAuth Exception, that is usable. **Would like to stop any loading that is not the main page though..."
+28/01/2016 17:53	"*Facebook missing token partially implemented. **Problem with filterContext.Result = GetFacebookLoginUrl();"""
+27/01/2016 18:34	"*Attempt at adding error handling to the Facebook logic, some success and some needs continued debugging. **Not usable build."
+26/01/2016 23:03	*Added a 'better' way of logging out from Facebook (seems to work so far). *Added less scary messages if you are not logged in. *Added more values to get from Facebook with the Admin Pages ViewModel. *Improved the Facebook pages aesthetically.
+26/01/2016 20:20	*Fixed problem with Facebook returning the Birthday in US format. *Added styling to the Social Media icons. *Moved some of the JS error handling into a separate file.
+26/01/2016 17:46	"*Continued progress with Facebook implementation. *Now returns the User Profile and basic information about the Admin Page, if it matches. **Still not recommended to fully use."
+25/01/2016 22:45	*Continued developement with Facebook integration. Have information displaying on screen. **Not a usable build.
+25/01/2016 17:55	"*Have result from Facebook, and now stores the access token for the User. **Not a usable build."
+25/01/2016 15:41	*Continued work on Facebook integration. **This part is still not usuable.
+24/01/2016 21:54	"*Made some progress on implementing Facebook/Twitter integration. **No working, and contains bugs."
+07/01/2016 22:28	**Partial implementation of Twitter integration.
+06/01/2016 19:40	"*Added links SQL links to GoDaddy Database. **Botched attempt at Login via Google, on hold for now, button is just commented out (last problems where doing it again after you have an account results in an endless loop)."
+05/01/2016 21:58	"**Discovered problem with Google Auth, the return address was part of the Layout page that required the user to be logged in, now creating new error. **Sign in via Google is not working."
+05/01/2016 21:08	"*Continuing with Google Auth, getting a positive response from Google but having bother directing to 'ExternalLoginConfirmation' for some reason."
+05/01/2016 19:34	*Added jQuery Unobtrusive AJAX to the project.
+05/01/2016 19:27	*Updated Bootstrap and Newtonsoft.Json.
+03/01/2016 22:48	*Fixed bug with Received Texts not displaying. *Added null checking in ReceivedTextMessage Constructor to avoid errors when receiving text messages.
+03/01/2016 20:31	"*Changed the DB string for deployment. *Added version number, and it displayed on the _Layout_Standard."
+03/01/2016 17:32	*Removed Management assets from the Models folder.
+03/01/2016 15:39	*Updated automatic chnages to Entities Class Diagram. *File rename.
+03/01/2016 15:36	Merge branch 'master' of https://apboyce.visualstudio.com/defaultcollection/_git/University%20-%20Development%20Project
+03/01/2016 15:36	*Added Class Diagrams for Controllers and Entities.
+02/01/2016 23:38	*UI changes to the Change Password Button on Admin-User.
+02/01/2016 23:20	*Customised the Organisations-Structure View.
+02/01/2016 22:26	*Fixed problem that turned the Server into a Stress Test as it recursively kept reloading a page.
+02/01/2016 21:54	*Fully transferred the Login/Register functionality to the Home-Index. **May still ba a few small problems to do with this. *Added a View to Organisations to see the companies that are associated with the system and what belongs to each Organisation.
+01/01/2016 20:58	"*Small UI changes. *Bug fixes from the previous commits. *Reworked the Roles, in the sense that they are now all a constant string, and not magic strings."
+31/12/2015 20:57	*Change to Data Population to reflect new Message Types.
+31/12/2015 20:55	"*Large restructure, removed the separation between a message and a file upload, these are now combined, and a message can either have an attached file or not."
+31/12/2015 18:39	*Added UI functionality on the New Reply box that now changes depending on the message type.
+31/12/2015 17:09	"*Added a connection string to use the DB locally. *Fixed an Async problem when adding a Notification to the DB. *Split up the TicketLogTypeHelper into TicketLogTypeHelper and TicketLogHelper, to make more sense."
+30/12/2015 23:15	*Added logic to extract a text message from Clockwork. *Added migration. **Reqiuires testing.
+30/12/2015 22:30	*Added new Migration. *Cleared up errors from last commit. *Added Constructors to Text Message Entitites (causing exception). *Fixed UI problem on TextMessage-Index.
+30/12/2015 21:57	"**Partial commit, recovered from a ReSharper rename that got carried away. *Split up Text Message into Send and Received. *Changed the naming convention for Base classes. **Not a usable build."
+30/12/2015 19:38	*A method in the TextMessageHelper required to be public.
+29/12/2015 23:12	"*Added functionality to stop users editing the required TicketStates. *Fixed a problem with the Notification icons, the Partial Views cannot be asynchronous. *Extracted repeating code out of the Ticket Controller into a Helper. *Added more user messages in the Ticket-Ticket View."
+29/12/2015 15:14	"*Fully converted the Controllers to be Asynchronous, and some of the methods in the Notificaiton Helper."
+29/12/2015 14:21	*Added Authentication for the remainding Controller that were not set up properly. *Fixed problem with the Tabs on Ticket-Ticket displaying both tab bodies to start with.
+29/12/2015 13:50	*Fixed bug with Upload button on Ticket-Ticket not working. *Stopped Internal users from having the option to post internally. *Changed the Ticket colour scheme and the New Log Box to match the user.
+29/12/2015 12:05	*Added ways to differentiate between a TicketLog and the creater type.
+29/12/2015 10:07	"*Fixed problems with Data Population, that now runs through. *Heavy code cleanup, removing unused 'using' statements. **Data Population could could with a one time use option, and the example file is not working."
+28/12/2015 23:15	*Continued with adding Async alternatives and implementing them where possible. *Continued adding to the Data Population.
+28/12/2015 22:50	*Added Async variants to some of the helper methods and used where applicable. *Cleaned up some commented code. *Enabled live texting.
+28/12/2015 20:00	**More changes to data population.
+28/12/2015 19:01	**Part way through setting up proper data population.
+28/12/2015 14:17	"*Added a toggle to enable or disable a Populate Button on Admin-Index, this calls to a post method. **Post method needs populating."
+28/12/2015 12:22	*Added Async to the NotificationHelper. *Removed some commented code from NotificaitonController. *Added Include methods to the Role retrieval to prevent null fields. *Added functionality to Decline a notification. *Removed methods to fill in classes that are now handled by includes.
+27/12/2015 22:46	*Started on limiting the View for non-Internal Users.
+27/12/2015 21:55	"*Added Solution to recieve a HTTP request and can see the raw data. **Currently not really usuable, just a proof of concept."
+27/12/2015 17:09	*Added functionality for PDFs. *Changed File TicketLogType message View.
+27/12/2015 16:57	*Added functionality to take .txt files and display them. *Changed TicketLog Data to Message. *Added migration for these changes.
+27/12/2015 01:43	*Re-Migrated... *Added File Entity. *Added File uploads that are part of the TicketLog. *Added some display for Files in the ticket View. *Re-structured the NewTicketViewModel for use with both types.
+26/12/2015 23:39	*Added Migrations to update the TicketLogs. *Re-worked the Internal/External toggle to get data from it. *Changed TicketViewModel to match DB changes. *Added functionality to show a series of messages on a ticket.
+26/12/2015 21:18	"*Removed TicketLogType as an Entity, this is now an Enum (they would be added as features, not by the user. *Added migration. *Updated the database."
+26/12/2015 13:55	*Added full size TextArea to Tickets-Ticket and added jQuery to ensure the Send button is only clickable when text is present.
+24/12/2015 22:48	"*Added some links to BundleConfig to any new Styles or Scripts. *Added styling and javascript to apply custom toggles. *Added a Post Method to TicketsController to be used with the new TicketLog. *Added TicketViewmodel to get the correct data for the new TicketLog. *Removed functionality from Tickets-Ticket into a Partial View. *Started styling on the new Partial View, added tabbed menu, toggle for the message type and matching send button. **All of this needs linking up/finishing as currently just cosmetic."
+24/12/2015 20:46	*Added date formatting. *Added Ticket Summary to Tickets-Ticket. *Added some example TicketLog boxes.
+24/12/2015 00:14	"*Fixed bug with bit being able to assign a User to a Ticket. *Changed some of the Ticket-Index styling. *Added functionality to click on the Ticket table rows, and that will redirect to the new View. **View currently is a basic details page."
+23/12/2015 22:07	"*Added ticket sorting, and View changes depending on sort type."
+23/12/2015 18:07	*Made some UI changes to Ticket-Edit. *Added DatePicker to Ticket-Edit and added checks to update Deadline.
+23/12/2015 16:06	"*Fixed extracting the Deadline from ticket creation, not automated, but pretty robust."
+16/12/2015 16:54	"*Added some custom buttons. *Restructured the folders. *Added some new wallpaper images, changed the default."
+13/12/2015 22:20	"*Added Bootstrap Datepicker. **Not returning the date correctly, although have seen this work..."
+13/12/2015 18:12	"*Checked over Ticket Categories CRUD, added user alerts. *Checked over Ticket Log Types CRUD, added user alerts. *Checked over Ticket Priorities CRUD, added user alerts. *Checked over Ticket States CRUD, added user alerts."
+13/12/2015 17:39	"*Checked over Team CRUD, added user alerts."
+13/12/2015 17:32	"*Fixed problem with Admin-Users showing GUIDs. *Checked over Project CRUD, added user alerts."
+13/12/2015 17:19	"*Checked over Organisation CRUD, added user alerts."
+13/12/2015 16:41	"*Fixed problems with editing Users, from the User re-arrange. *Fixed bug with Non-Administrators seeing some old links."
+13/12/2015 15:56	"*Huge re-structure, removed the UserExtra completely, adding the extra entities to the old ApplicationUser, now just User. *Removed the past migrations as it was stuck, and a clean sheet worked out fine. *Added checks in the notifications to see if the User was already in the role before trying to apply it."
+13/12/2015 12:54	*Made some changes to the Ticket-Create View and Controller to compensate for these changes.
+12/12/2015 23:49	"*Clicking the button on the notification now completes the task it is notifying, and then removes it. *Restructured some of the Controller<->View message structures. *Rearranged some of the Notification classes."
+12/12/2015 18:18	"*Added functionality to properly display display Notifications. *Added two migrations adding extra properties to the Notification classes. **No idea why the User is coming back as null, currently the helper will detect this and manually add the value in."
+12/12/2015 00:12	*Added Notification functionality. *Migrated the enums to a central location as they access was becoming untidy.
+11/12/2015 12:04	*Added Migration to Add the Notification Classes/Tables. * Rearranged the _Layout_Standard into one of the Partial Views. *Renamed the Helpers (**May be some temporary side effects to this). *Added a Notification Controller and Partial View.
+11/12/2015 09:49	*Added viewing for Roles on Admin-User.
+10/12/2015 23:11	"*Added ability to remove roles. *Some testing on role adding/removal error checking, will not add duplicate roles, and won't try to remove a role that doesnt exist, and a general error message (but not sure how that could appear without a logic problem)."
+10/12/2015 20:50	*Added functionality to the User-Index section so that now also updates both the ApplicationUser and the ExtraUser.
+10/12/2015 19:40	*Added POST method to successfully update an ApplicationUser and UserExtra. *Added a specific Edit View for UserExtra and implemented that within the Edit View for User Edit.
+10/12/2015 16:42	*Added styling to the Admin-Users Views.
+09/12/2015 17:11	*Part way through editing a user from the Admin panel.
+09/12/2015 15:34	"*Moved some of the JS into a shared folder as it was required elsewhere, also for the CSS for that section. *Added the ability to see the roles of everyone from the Admin-Users View."
+09/12/2015 11:53	*Added functionality to very simply check a mobile number and if it can modify it to work with the Clockwork API. *Added functionality to the Admin-Users to highlight the current user.
+08/12/2015 23:14	*Migrated TextMessage functionality from Index to Send View.
+08/12/2015 22:37	*Added functionality to add a sent Text Message to the database for logging purposes.
+08/12/2015 22:09	"Tested text message sending, done some smoke testing on the failed and success alerts. *Added a TextMessage Class."
+07/12/2015 23:30	"*Added Controllers and Views for Sending a Text Message, and returned the correct values back, with error checking."
+07/12/2015 20:06	"*Added a working POST method for updating a user profile that doesn't delete the user data (has hidden fields on the View for everything else, which is not ideal). *Added a migration for requiring the Phone Number. *Added popups for Logging Off, Updating Profile and when the user is Pending Approval. *Hid the Admin panel from none Administrators."
+07/12/2015 18:33	"*Started on Text Messages. *Added some code to try and update a user. **Working as before, but extra stuff isn't really doing anything yet."
+07/12/2015 13:22	"*Updated the CRUD Views for TicketLogTypes. TicketPriorities, and TicketStates."
+07/12/2015 12:00	"*Updated CRUD pages for Projects, Teams, and TicketCategories."
+07/12/2015 11:06	*Cleaned up Admin-Users page.
+07/12/2015 10:40	*Cleaned up Organisation CRUD pages.
+06/12/2015 22:31	"*Fixed bug with RAG on Tickets, (copy-paste error). *Changed conversion problem with Admin-Index."
+06/12/2015 22:12	*Added testing Project for RAG Ticket colours. *Added Migration. *Added tested logic to Ticket-Index.
+06/12/2015 12:12	"*Changed the styling of the Edit, Delete, Details."
+06/12/2015 11:48	*Fixed bug with popover only showing details for the first result.
+05/12/2015 22:34	"*Ticket display now has information and a popover to keep it looking cleaner, with the option to show more information."
+05/12/2015 19:02	*Started on Ticket Views.
+05/12/2015 17:53	*Added basic CRUD to the majority of the entities.
+05/12/2015 17:14	*Sorted Admin dropdown.
+05/12/2015 16:38	*Added pending approval page for new users. *Modified Organisations page to start a consistent theme.
+05/12/2015 15:07	*Fixed exception with User crossover. Now have ApplicationUser and UserExtra.
+22/11/2015 21:07	*Added Authorisation to Controllers. *Started on Admin Users page.
+22/11/2015 19:01	"*Cosmetic changes to About and Contact, just to make it relevant if viewed."
+22/11/2015 18:53	*Made some cosmetic changes to the Home Views.
+20/11/2015 21:37	*Added functionality to the Admin Panel to see the loaded in config from Web.Config.
+20/11/2015 21:08	*Added logic to Configuration to get the values from the Web.Config.
+20/11/2015 20:45	*Recovering from VS crash...
+20/11/2015 18:07	*Fixed problem with incorrect log in page. *General work on Authorisation.
+20/11/2015 16:31	"*Styled Change Password to match the User Index, linked them two up togther."
+20/11/2015 16:18	"*User Edit page done for now, visually. **Requires testing."
+20/11/2015 15:24	*Partially through the User Edit page. **Bit messy.
+20/11/2015 13:11	*Added functionality to the Admin Index to list Entities and display the count.
+20/11/2015 12:32	*Added basic sticky footer to the Standard Layout page.
+20/11/2015 12:00	*Added scaffolded Organisation Controller and Views to edit. *Fixed problem with Seed method that was replicating data.
+20/11/2015 10:54	*Removed unused Javascript. *Renamed some css classes for consistency.
+20/11/2015 10:49	*Added a central Home link.
+20/11/2015 10:40	"*Removed UserAdmin, into User and Admin for different purposes. *Added more functionality to the Home group. *Re-done how the Welcome Layout page works, added footer/navigation."
+19/11/2015 11:41	*Changed default Login Page. *Added functionality to display Users on the UserAdmin Index.
+13/11/2015 00:14	"*Addded FontAwsome. *Minor UI changes. *Renamed the Index to ExternalLogins, as it isn't what I expected."
+12/11/2015 23:21	"*Added a new constructor to ApplicationUser, that sets up the relevant User and links the two up. *Fixed a problem with User Index from the Username changes earlier."
+12/11/2015 19:51	*Trying to get a default admin user into the database from the seed method.
+12/11/2015 18:07	*Updated Entities to adopt the self updating method.
+12/11/2015 14:45	*Updated the ApplicationDbContext to include Users (UserExtras). *Added a Username to the Register View/ViewModel. *Changed the Login ViewModel to actually use Username instead of Email.
+12/11/2015 14:16	"*Added an Entity Base Class, with Id, Updated and Created. *Locked down the ability to update these values, and added an automatic way of updating it when the User is updated. **Still need to modify the remaining entities."
+12/11/2015 12:23	"*Added a link to User from ApplicaitonUser, and a Id string in User to link back to the ApplicationUser. *Migrated the TicketManagementContext into ApplicationContext to remove errors and simplify everything. **Migrates and updates the database."
+12/11/2015 11:49	"*Updated MigrationCommands. *Added renaming functionality into ApplicationContext. **Still allows migrations, and tested pushing to the database."
+12/11/2015 11:34	"*Separated out IdentityModels into a separate ApplicationUser in Entities and ApplicationDbContext into a separate ApplicationContext, keeps consistency with the layout. **Does enable migrations."
+11/11/2015 19:45	*Cleaned up the UserAdminController.
+11/11/2015 18:27	"*Separated out some of the User Administration into separate VM, V, C."
+11/11/2015 18:10	"*Tested Login and Register (separate pages), and modified change password to follow the same theme."
+11/11/2015 17:14	*Transferred functionality from the Account Controller and ViewModel into the User Controller and ViewModel.
+09/11/2015 10:56	"*Major thinning, removed the ManageViewModels and ManageController, and Manage Views. *Continued thinning the Account areas, still need to finish this. *Mage name changes to reflect the changes. **Very much broken, need to finish off Account controller and then patch everything back up."
+09/11/2015 10:27	*Part way through migrating everything required to a single User Controller and ViewModels file. *Renamed Welcome to User.
+09/11/2015 10:16	*Removed files that were no longer being used. *Continued migrating pre-built functionality into own Controller and ViewModels. **Last commit before mass deletion.
+07/11/2015 22:45	*Welcome Index is looking better. *Moved Register functionality into a partial view. *Added controller methods to try and deal with Login and Register. **Broken commit.
+06/11/2015 00:10	"*Updated the Namespace for the AccountViewModel and ManageViewModel to reflect the folder changes, it has updated the relevent files fortunately."
+06/11/2015 00:06	"*Added the ViewModels into their own folder, seen no problems as yet, but expecting to have to update a few things to reflect the changes."
+05/11/2015 23:58	"*Tried to thin out a lot of code that will be unused from the AccountController and ManageController into the Misc Folder, and the revelant views that shouldn't be used have been migrated out as well."
+05/11/2015 19:58	*Added full screen image to the Welcome page. *Added JavaScript and Image directories.
+05/11/2015 19:17	"*Removed a rough line that appeared and seemed to be stopping the application from running. *Added a Modal to the Welcome page, that you cannot click through."
+05/11/2015 18:53	"*Updated the Project, including Boostrap. *Added a Welcome Controller and Index page."
+05/11/2015 18:21	*Updated some basic parts of the _Layout Page. *Updated port numbers for SQL Server.
+05/11/2015 14:56	*Added Migration Commands guide.
+05/11/2015 14:43	*Set up Migrations for both the Application and the Entities. *Added Seed data to Entities folder.
+05/11/2015 14:28	*Removed the migrations. *Updated jQuery.Validate.
+04/11/2015 20:53	*Added working data to the Seed Method and confirmed working. *Made some changes to Entities Organisation and TicketPriority to allow the values that are wanted.
+03/11/2015 22:08	"*Re-Enabled Migrations, fixed a possible problem with Primary Keys being required, but not provided. *Added default values to everything not required. *Ran Initial Migration with nothing in the Seed Method."
+03/11/2015 21:29	"*Readded Migrations, assume problems lied either with Seed Method, or problems that the Package Manager Console was having than an update appeared to iron out."
+03/11/2015 20:48	*Enabled Migrations. *Added some seed data for the main required areas.
+02/11/2015 23:11	*Added Constructor to hopefully link up the DbContext with the connection string.
+02/11/2015 22:47	"*Updated Entities, added Relationships. *Briefly tested the relationships via the Entity Framework View Entity Data Model view. *Added the data context."
+02/11/2015 20:14	*Added the initial entities.
+31/10/2015 16:20	"*Updated iQuery, WebGrease, Newtonsoft.Json."
+31/10/2015 16:09	*Added a blank ASP.NET MVC4 Project.
+26/10/2015 23:39	*Added Untracked file.
+26/10/2015 23:38	*Added and tested a REST API example that will get the JSON from TFS.
+26/10/2015 22:45	*Added Console Project to test communication with the TFS Server. *Added a working test that talks to TFS and gets information on the latest commit.
+24/10/2015 13:49	Merge branch 'master' of https://apboyce.visualstudio.com/defaultcollection/_git/University%20-%20Development%20Project
+24/10/2015 13:49	*Added a blank Solution to start adding prototype projects.
+24/10/2015 12:43	Added file Readme.md

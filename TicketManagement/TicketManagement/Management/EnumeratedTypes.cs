@@ -145,6 +145,9 @@ namespace TicketManagement.Management
         AlreadyInRole,
         NotInternal,
 
+        UserRemoved,
+        UserRemovalFailed,
+
         RoleRemoved,
         RoleNotRemoved,
         NotInRole,

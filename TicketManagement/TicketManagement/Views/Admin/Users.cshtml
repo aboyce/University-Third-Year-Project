@@ -17,6 +17,20 @@
         <b>Success</b> The user profile for @ViewBag.UserProfile has been updated.
     </div>
 }
+@if (Request.Params["ViewMessage"] == "UserRemoved")
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The user profile @ViewBag.UserProfile has been removed.
+    </div>
+}
+@if (Request.Params["ViewMessage"] == "UserRemovalFailed")
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>Success</b> The user profile @ViewBag.UserProfile failed to be removed.
+    </div>
+}
 
 <h2>Admin Panel</h2>
 <hr/>
@@ -79,15 +93,11 @@
             </td>
             <td>
                 <a href="@Url.Action("UserEdit", new {id = userRoles.Key.Id})"><i class="fa fa-pencil"></i></a> |
-                <a href="@Url.Action("Delete", new {id = userRoles.Key.Id})"><i class="fa fa-trash"></i></a>
+                <a href="@Url.Action("RemoveUser", "Admin", new {id = userRoles.Key.Id})"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
     }
 
 </table>
-
-<p>
-    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default disabled" })
-</p>
 
 @Scripts.Render("/Scripts/Site/Shared/table_popover.js")

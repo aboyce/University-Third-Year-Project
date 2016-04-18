@@ -178,6 +178,22 @@ namespace TicketManagement.Controllers
             return RedirectToAction("UserEdit", new { id = vm.UserId, ViewMessage = ViewMessage.RoleRemoved });
         }
 
+        public async Task<ActionResult> RemoveUser(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction("Users", new { ViewMessage = ViewMessage.UserRemovalFailed });
+
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+                return RedirectToAction("Users", new { ViewMessage = ViewMessage.UserRemovalFailed });
+
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
+
+            ViewBag.UserProfile = user.FullName;
+            return RedirectToAction("Users", new { ViewMessage = ViewMessage.UserRemoved });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -52,13 +52,13 @@
                                 @Html.ActionLink("Teams", "Index", "Teams", null, new { @class = "btn btn-default" })
                                 break;
                             case 't':
-                                @Html.ActionLink("*Tickets", "Index", "Admin", null, new { @class = "btn btn-default" })
+                                <button class="btn btn-default disabled" disabled="disabled">Tickets</button>
                                 break;
                             case 'g':
                                 @Html.ActionLink("Ticket Categories", "Index", "TicketCategories", null, new { @class = "btn btn-default" })
                                 break;
                             case 'l':
-                                @Html.ActionLink("*Ticket Logs", "Index", "Admin", null, new { @class = "btn btn-default" })
+                                <button class="btn btn-default disabled" disabled="disabled">Ticket Logs</button>
                                 break;
                             case 'i':
                                 @Html.ActionLink("Ticket Priorities", "Index", "TicketPriorities", null, new { @class = "btn btn-default" })
