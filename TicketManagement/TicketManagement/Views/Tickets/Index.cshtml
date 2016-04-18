@@ -64,9 +64,10 @@
     {
         if (ticketConfiguration != null)
         {
-            if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanRed) { rowColour = "danger"; }
-            else if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanAmber) { rowColour = "warning"; }
-            else if ((now - item.Created).Duration() >= ticketConfiguration.TimeSpanGreen) { rowColour = "success"; }
+            if(item.TicketState.Name == "Closed") { rowColour = "active"; }
+            else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanRed) { rowColour = "danger"; }
+            else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanAmber) { rowColour = "warning"; }
+            else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanGreen) { rowColour = "success"; }
             else { rowColour = "info"; }
         }
 
