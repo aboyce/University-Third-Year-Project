@@ -37,6 +37,16 @@
         }
     }
 
+    function toggleSmsButton(show) {
+        if (show) {
+            $("label:contains('SMS')").parent().parent().show();
+        } else {
+            //$('#cb-send-sms').bootstrapToggle('off');
+            $('#cb-send-sms').bootstrapToggle('off');
+            $("label:contains('SMS')").parent().parent().hide();
+        }
+    }
+
     function toggleSendButton() {
         if ($('#message').val() === "")
             $('#btn-message-send').attr('disabled', 'disabled');
@@ -49,12 +59,14 @@
             $('#new-response-panel-heading').text("New Response");
             $('#new-response-panel').removeClass('panel-default');
             $('#new-response-panel').addClass('panel-success');
+            toggleSmsButton(true);
         }
         else {
             $('#new-response-panel-heading').text("New Internal Response");
             $('#new-response-panel').removeClass('panel-success');
             $('#new-response-panel').addClass('panel-default');
-    }
+            toggleSmsButton(false);
+        }
 }
 
     $(document).ready(function () {
@@ -62,6 +74,7 @@
         makeCurrentSortTypeTabActive();
 
         toggleSendButton();
+        toggleSmsButton(false);
 
         // When one from the list of tickets is clicked on, take it to the correct page.
         $('.clickable-row').click(function () {

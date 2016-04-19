@@ -60,11 +60,11 @@ namespace TicketManagement.Helpers
             }
         }
 
-        public Task<SentTextMessage> SendTextMessageAsync(string id, User user, string phoneNumber, string message) { return Task.Factory.StartNew(() => SendTextMessage(id, user, phoneNumber, message)); }
+        public Task<SentTextMessage> SendTextMessageAsync(string userId, User user, string phoneNumber, string message) { return Task.Factory.StartNew(() => SendTextMessage(userId, user, phoneNumber, message)); }
 
-        private SentTextMessage SendTextMessage(string id, User user, string phoneNumber, string message)
+        private SentTextMessage SendTextMessage(string userId, User user, string phoneNumber, string message)
         {
-            SentTextMessage txt = new SentTextMessage(id, user, phoneNumber, message);
+            SentTextMessage txt = new SentTextMessage(userId, user, phoneNumber, message);
 
             if (!LoadInConfiguration())
             {

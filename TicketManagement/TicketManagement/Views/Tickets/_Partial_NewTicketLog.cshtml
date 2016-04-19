@@ -39,6 +39,9 @@
                 <div style="float: right">
                     @if (isInternal)
                     {
+                        <input id="cb-send-sms" name="SendSms" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="success" data-on="SMS" data-off="No SMS">
+                        <input name="SendSms" type="hidden" value="false" />
+
                         <input id="cb-internal-external" name="IsInternal" value="false" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="danger" data-on="External" data-off=Internal>
                         <input name="IsInternal" type="hidden" value="true" />
                     }
