@@ -1,10 +1,13 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Helpers;
 using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
+using TicketManagement.ViewModels;
 
 namespace TicketManagement.Controllers.API
 {
@@ -38,10 +41,25 @@ namespace TicketManagement.Controllers.API
             if (!await IsUserInternal(db, userId))
                 tickets = tickets.Where(t => t.OpenedById == userId);
 
+            List<ApiTicketViewModel> ticketViewModels;
+
+            try
+            {
+                ticketViewModels = (await tickets.ToListAsync()).Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList();
+            }
+            catch (Exception e)
+            {
+                return new JsonResult
+                {
+                    ContentType = "Tickets",
+                    Data = $"Error Occurred: {e.Message} || Inner Exception: {e.InnerException.Message}"
+                };
+            }
+
             return new JsonResult
             {
                 ContentType = "Tickets",
-                Data = tickets.Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList()
+                Data = ticketViewModels
             };
         }
 
