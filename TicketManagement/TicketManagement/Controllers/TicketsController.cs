@@ -113,6 +113,23 @@ namespace TicketManagement.Controllers
                 await db.SaveChangesAsync();
             }
 
+            if (vm.SendSms) // Assume if SendSms is true that the logged in User is Internal (as external Users shouldn't be able to configure sending an SMS).
+            {
+                string externalUserId = await db.Tickets.Where(t => t.Id == vm.TicketId).Select(t => t.OpenedById).FirstOrDefaultAsync();
+                User externalUser = await db.Users.FirstOrDefaultAsync(u => u.Id == externalUserId);
+                if (externalUser != null)
+                {
+                    SentTextMessage text = await new TextMessageHelper().SendTextMessageAsync(externalUser.Id, externalUser, externalUser.PhoneNumber,
+                        $"An update has been made to one of your Tickets by {User.Identity.Name}: {vm.Message}");
+
+                    if (text != null)
+                    {
+                        db.TextMessagesSent.Add(text);
+                        await db.SaveChangesAsync();
+                    }
+                }
+            }
+
             if (await TicketLogHelper.NewTicketLogAsync(User.Identity.GetUserId(), vm.TicketId, type, vm.IsInternal, vm.CloseOnReply, db, vm.Message, file))
                 return RedirectToAction("Ticket", new { id = vm.TicketId, ViewMessage = ViewMessage.TicketMessageAdded });
             else
