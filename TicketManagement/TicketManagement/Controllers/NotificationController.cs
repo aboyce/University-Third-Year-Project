@@ -165,7 +165,7 @@ namespace TicketManagement.Controllers
             {
                 DateTime previousDay = now.AddDays(-1);
                 List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousDay).ToListAsync();
-                int newTicketsRespondedTo = 0;
+                double newTicketsRespondedTo = 0;
                 double totalNewTicketResponseTimeInSeconds = 0;
 
                 foreach (Ticket ticket in newTickets)
@@ -180,18 +180,18 @@ namespace TicketManagement.Controllers
                             {
                                 // We have a response from an internal User to the new Ticket.
                                 newTicketsRespondedTo++;
-                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                                totalNewTicketResponseTimeInSeconds += (ticket.Created - ticketLog.TimeOfLog).TotalSeconds;
+                                break;
                             }
                         }
                     }
                 }
-                long ratioOfTicketsResponded = newTicketsRespondedTo/newTickets.Count;
-                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
-                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets today!"));
 
-                if (newTicketsRespondedTo != 0)
+                if (newTickets.Count > 0 && newTicketsRespondedTo > 0)
                 {
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {(newTicketsRespondedTo / newTickets.Count).ToString("P0")} of all new Tickets today!"));
+
                     TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
                     socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
                         $"For our responded to Tickets today, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
@@ -201,7 +201,7 @@ namespace TicketManagement.Controllers
             {
                 DateTime previousWeek = now.AddDays(-7);
                 List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousWeek).ToListAsync();
-                int newTicketsRespondedTo = 0;
+                double newTicketsRespondedTo = 0;
                 double totalNewTicketResponseTimeInSeconds = 0;
 
                 foreach (Ticket ticket in newTickets)
@@ -216,18 +216,18 @@ namespace TicketManagement.Controllers
                             {
                                 // We have a response from an internal User to the new Ticket.
                                 newTicketsRespondedTo++;
-                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                                totalNewTicketResponseTimeInSeconds += (ticket.Created - ticketLog.TimeOfLog).TotalSeconds;
+                                break;
                             }
                         }
                     }
                 }
-                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
-                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
-                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets this week!"));
 
-                if (newTicketsRespondedTo != 0)
+                if (newTickets.Count > 0 && newTicketsRespondedTo > 0)
                 {
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {(newTicketsRespondedTo / newTickets.Count).ToString("P0")} of all new Tickets this week!"));
+
                     TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
                     socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
                         $"For our responded to Tickets this week, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
@@ -237,7 +237,7 @@ namespace TicketManagement.Controllers
             {
                 DateTime previousMonth = now.AddMonths(-1);
                 List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousMonth).ToListAsync();
-                int newTicketsRespondedTo = 0;
+                double newTicketsRespondedTo = 0;
                 double totalNewTicketResponseTimeInSeconds = 0;
 
                 foreach (Ticket ticket in newTickets)
@@ -252,18 +252,17 @@ namespace TicketManagement.Controllers
                             {
                                 // We have a response from an internal User to the new Ticket.
                                 newTicketsRespondedTo++;
-                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                                totalNewTicketResponseTimeInSeconds += (ticket.Created - ticketLog.TimeOfLog).TotalSeconds;
+                                break;
                             }
                         }
                     }
                 }
-                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
-                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
-                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets this month!"));
-
-                if (newTicketsRespondedTo != 0)
+                if (newTickets.Count > 0 && newTicketsRespondedTo > 0)
                 {
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {(newTicketsRespondedTo / newTickets.Count).ToString("P0")} of all new Tickets this month!"));
+
                     TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
                     socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
                         $"For our responded to Tickets this month, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
@@ -272,7 +271,7 @@ namespace TicketManagement.Controllers
             if (timeTotal) // The average time to respond to new Tickets in total.
             {
                 List<Ticket> newTickets = await db.Tickets.ToListAsync();
-                int newTicketsRespondedTo = 0;
+                double newTicketsRespondedTo = 0;
                 double totalNewTicketResponseTimeInSeconds = 0;
 
                 foreach (Ticket ticket in newTickets)
@@ -287,18 +286,17 @@ namespace TicketManagement.Controllers
                             {
                                 // We have a response from an internal User to the new Ticket.
                                 newTicketsRespondedTo++;
-                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                                totalNewTicketResponseTimeInSeconds += (ticket.Created - ticketLog.TimeOfLog).TotalSeconds;
+                                break;
                             }
                         }
                     }
                 }
-                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
-                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
-                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
-                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets so far!"));
-
-                if (newTicketsRespondedTo != 0)
+                if (newTickets.Count > 0 && newTicketsRespondedTo > 0)
                 {
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {(newTicketsRespondedTo / newTickets.Count).ToString("P0")} of all new Tickets so far!"));
+
                     TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
                     socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
                         $"For our responded to Tickets, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
