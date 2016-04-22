@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using TicketManagement.Helpers;
 using TicketManagement.Management;
@@ -63,7 +65,7 @@ namespace TicketManagement.Controllers
             });
         }
 
-        public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, bool ticketsTotal)
+        public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, bool ticketsTotal, bool timeDay, bool timeWeek, bool timeMonth, bool timeTotal)
         {
             List<SocialMediaNotificationViewModel> socialMediaNotifications = new List<SocialMediaNotificationViewModel>();
             DateTime now = DateTime.Now;
@@ -72,7 +74,7 @@ namespace TicketManagement.Controllers
                 return null;
             double totalAmountOfTickets = await db.Tickets.CountAsync(t => t.TicketState.Id != closedState.Id);
 
-            if (ticketsDay)
+            if (ticketsDay) // The percent of Tickets closed today, compared to Tickets opened today.
             {
                 DateTime previousDay = now.AddDays(-1);
                 double amountOfTicketsOpenedToday = await db.Tickets.Where(t => t.Created > previousDay).CountAsync();
@@ -82,7 +84,8 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedToday / amountOfTicketsOpenedToday;
                     if (percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} of your issues today!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                            $"We resolved {percentageClosed.ToString("P0")} of your issues today!"));
                 }
                 else
                 {
@@ -90,12 +93,13 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedToday / totalAmountOfTickets;
                         if(percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} extra, of your issues today!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                                $"We resolved {percentageClosed.ToString("P0")} extra, of your issues today!"));
                     }
                 }
             }
 
-            if (ticketsWeek)
+            if (ticketsWeek) // The percent of Tickets closed this week, compared to Tickets opened this week.
             {
                 DateTime previousWeek = now.AddDays(-7);
                 double amountOfTicketsOpenedThisWeek = await db.Tickets.Where(t => t.Created > previousWeek).CountAsync();
@@ -105,7 +109,8 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedThisWeek/amountOfTicketsOpenedThisWeek;
                     if (percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} of your issues this week!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                            $"We resolved {percentageClosed.ToString("P0")} of your issues this week!"));
                 }
                 else
                 {
@@ -113,11 +118,12 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedThisWeek / totalAmountOfTickets;
                         if (percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} extra, of your issues this week!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                                $"We resolved {percentageClosed.ToString("P0")} extra, of your issues this week!"));
                     }
                 }
             }
-            if (ticketsMonth)
+            if (ticketsMonth) // The percent of Tickets closed this month, compared to Tickets opened this month.
             {
                 DateTime previousMonth = now.AddMonths(-1);
                 double amountOfTicketsOpenedThisMonth = await db.Tickets.Where(t => t.Created > previousMonth).CountAsync();
@@ -127,7 +133,8 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosedThisMonth / amountOfTicketsOpenedThisMonth;
                     if (percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} of your issues this month!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                            $"We resolved {percentageClosed.ToString("P0")} of your issues this month!"));
                 }
                 else
                 {
@@ -135,11 +142,12 @@ namespace TicketManagement.Controllers
                     {
                         double percentageClosed = amountOfTicketsClosedThisMonth / totalAmountOfTickets;
                         if (percentageClosed > 0)
-                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"We resolved {percentageClosed.ToString("P0")} extra, of your issues this month!"));
+                            socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                                $"We resolved {percentageClosed.ToString("P0")} extra, of your issues this month!"));
                     }
                 }
             }
-            if (ticketsTotal)
+            if (ticketsTotal) // The percent of Tickets closed in total, compared to Tickets opened in total.
             {
                 double amountOfTicketsClosed = await db.Tickets.CountAsync(t => t.TicketState.Id == closedState.Id);
 
@@ -147,8 +155,62 @@ namespace TicketManagement.Controllers
                 {
                     double percentageClosed = amountOfTicketsClosed / totalAmountOfTickets;
                     if (percentageClosed > 0)
-                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1, $"So far we have resolved {percentageClosed.ToString("P0")} of all of your issues to date!"));
+                        socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                            $"So far we have resolved {percentageClosed.ToString("P0")} of all of your issues to date!"));
                 }
+            }
+
+            if (timeDay) // The average time to respond to new Tickets today.
+            {
+                DateTime previousDay = now.AddDays(-1);
+
+                List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousDay).ToListAsync();
+                int newTicketsRespondedTo = 0;
+                double totalNewTicketResponseTimeInSeconds = 0;
+
+                ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+                foreach (Ticket ticket in newTickets)
+                {
+                    if (await db.TicketLogs.AnyAsync(tl => tl.TicketId == ticket.Id)) // If there are any Logs for the Ticket
+                    {
+                        // Go through the Ticket Logs and find the first one that is from an Internal User, that will be the first response.
+                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).
+                            OrderBy(tl => tl.TimeOfLog).ToListAsync()))
+                        {
+                            // If the Ticket Log was by an internal User, and an external message.
+                            if (userManager.GetRoles(ticketLog.SubmittedByUser.Id).Contains(MyRoles.Internal) && !ticketLog.IsInternal)
+                            {
+                                // We have a response from an internal User to the new Ticket.
+                                newTicketsRespondedTo++;
+                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                            }
+                        }
+                    }
+                }
+                long ratioOfTicketsResponded = newTicketsRespondedTo/newTickets.Count;
+                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets today!"));
+
+                if (newTicketsRespondedTo != 0)
+                {
+                    TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"For our responded to Tickets, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
+                }
+            }
+            if (timeWeek) // The average time to respond to new Tickets this week.
+            {
+
+            }
+            if (timeMonth) // The average time to respond to new Tickets this month.
+            {
+
+            }
+            if (timeTotal) // The average time to respond to new Tickets in total.
+            {
+
             }
 
             return PartialView("_Partial_SocialMediaSuggestions", new SocialMediaNotificationsViewModel(socialMediaNotifications));

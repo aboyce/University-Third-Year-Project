@@ -6,11 +6,19 @@
             $('#cb_tickets_week').bootstrapToggle('on');
             $('#cb_tickets_month').bootstrapToggle('on');
             $('#cb_tickets_total').bootstrapToggle('on');
+            $('#cb_time_today').bootstrapToggle('on');
+            $('#cb_time_week').bootstrapToggle('on');
+            $('#cb_time_month').bootstrapToggle('on');
+            $('#cb_time_total').bootstrapToggle('on');
         } else {
             $('#cb_tickets_today').bootstrapToggle('off');
             $('#cb_tickets_week').bootstrapToggle('off');
             $('#cb_tickets_month').bootstrapToggle('off');
             $('#cb_tickets_total').bootstrapToggle('off');
+            $('#cb_time_today').bootstrapToggle('off');
+            $('#cb_time_week').bootstrapToggle('off');
+            $('#cb_time_month').bootstrapToggle('off');
+            $('#cb_time_total').bootstrapToggle('off');
         }
     }
 

@@ -193,11 +193,8 @@ namespace TicketManagement.Controllers.API
             if (ticket == null) return false;
 
             // Try to get the specific user with the Username and UserToken
-            string userId =
-                await
-                    db.Users.Where(u => u.UserName == username && u.UserToken == usertoken)
-                        .Select(u => u.Id)
-                        .FirstOrDefaultAsync();
+            string userId = await db.Users.Where(u => u.UserName == username && u.UserToken == usertoken).Select(u => u.Id).FirstOrDefaultAsync();
+
             if (string.IsNullOrEmpty(userId)) return false;
 
             TicketLogType type = await IsUserInternal(db, userId)
