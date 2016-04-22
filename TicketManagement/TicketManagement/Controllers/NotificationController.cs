@@ -68,6 +68,7 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult> _Partial_SocialMedia_Notifications(bool ticketsDay, bool ticketsWeek, bool ticketsMonth, bool ticketsTotal, bool timeDay, bool timeWeek, bool timeMonth, bool timeTotal)
         {
             List<SocialMediaNotificationViewModel> socialMediaNotifications = new List<SocialMediaNotificationViewModel>();
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             DateTime now = DateTime.Now;
             TicketState closedState = await db.TicketStates.FirstOrDefaultAsync(ts => ts.Name == "Closed");
             if (closedState == null)
@@ -163,20 +164,16 @@ namespace TicketManagement.Controllers
             if (timeDay) // The average time to respond to new Tickets today.
             {
                 DateTime previousDay = now.AddDays(-1);
-
                 List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousDay).ToListAsync();
                 int newTicketsRespondedTo = 0;
                 double totalNewTicketResponseTimeInSeconds = 0;
-
-                ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
                 foreach (Ticket ticket in newTickets)
                 {
                     if (await db.TicketLogs.AnyAsync(tl => tl.TicketId == ticket.Id)) // If there are any Logs for the Ticket
                     {
                         // Go through the Ticket Logs and find the first one that is from an Internal User, that will be the first response.
-                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).
-                            OrderBy(tl => tl.TimeOfLog).ToListAsync()))
+                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).OrderBy(tl => tl.TimeOfLog).ToListAsync()))
                         {
                             // If the Ticket Log was by an internal User, and an external message.
                             if (userManager.GetRoles(ticketLog.SubmittedByUser.Id).Contains(MyRoles.Internal) && !ticketLog.IsInternal)
@@ -197,20 +194,115 @@ namespace TicketManagement.Controllers
                 {
                     TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
                     socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
-                        $"For our responded to Tickets, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
+                        $"For our responded to Tickets today, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
                 }
             }
             if (timeWeek) // The average time to respond to new Tickets this week.
             {
+                DateTime previousWeek = now.AddDays(-7);
+                List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousWeek).ToListAsync();
+                int newTicketsRespondedTo = 0;
+                double totalNewTicketResponseTimeInSeconds = 0;
 
+                foreach (Ticket ticket in newTickets)
+                {
+                    if (await db.TicketLogs.AnyAsync(tl => tl.TicketId == ticket.Id)) // If there are any Logs for the Ticket
+                    {
+                        // Go through the Ticket Logs and find the first one that is from an Internal User, that will be the first response.
+                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).OrderBy(tl => tl.TimeOfLog).ToListAsync()))
+                        {
+                            // If the Ticket Log was by an internal User, and an external message.
+                            if (userManager.GetRoles(ticketLog.SubmittedByUser.Id).Contains(MyRoles.Internal) && !ticketLog.IsInternal)
+                            {
+                                // We have a response from an internal User to the new Ticket.
+                                newTicketsRespondedTo++;
+                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                            }
+                        }
+                    }
+                }
+                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
+                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets this week!"));
+
+                if (newTicketsRespondedTo != 0)
+                {
+                    TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"For our responded to Tickets this week, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
+                }
             }
             if (timeMonth) // The average time to respond to new Tickets this month.
             {
+                DateTime previousMonth = now.AddMonths(-1);
+                List<Ticket> newTickets = await db.Tickets.Where(t => t.Created > previousMonth).ToListAsync();
+                int newTicketsRespondedTo = 0;
+                double totalNewTicketResponseTimeInSeconds = 0;
 
+                foreach (Ticket ticket in newTickets)
+                {
+                    if (await db.TicketLogs.AnyAsync(tl => tl.TicketId == ticket.Id)) // If there are any Logs for the Ticket
+                    {
+                        // Go through the Ticket Logs and find the first one that is from an Internal User, that will be the first response.
+                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).OrderBy(tl => tl.TimeOfLog).ToListAsync()))
+                        {
+                            // If the Ticket Log was by an internal User, and an external message.
+                            if (userManager.GetRoles(ticketLog.SubmittedByUser.Id).Contains(MyRoles.Internal) && !ticketLog.IsInternal)
+                            {
+                                // We have a response from an internal User to the new Ticket.
+                                newTicketsRespondedTo++;
+                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                            }
+                        }
+                    }
+                }
+                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
+                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets this month!"));
+
+                if (newTicketsRespondedTo != 0)
+                {
+                    TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"For our responded to Tickets this month, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
+                }
             }
             if (timeTotal) // The average time to respond to new Tickets in total.
             {
+                List<Ticket> newTickets = await db.Tickets.ToListAsync();
+                int newTicketsRespondedTo = 0;
+                double totalNewTicketResponseTimeInSeconds = 0;
 
+                foreach (Ticket ticket in newTickets)
+                {
+                    if (await db.TicketLogs.AnyAsync(tl => tl.TicketId == ticket.Id)) // If there are any Logs for the Ticket
+                    {
+                        // Go through the Ticket Logs and find the first one that is from an Internal User, that will be the first response.
+                        foreach (TicketLog ticketLog in (await db.TicketLogs.Where(tl => tl.TicketId == ticket.Id).Include(tl => tl.SubmittedByUser).OrderBy(tl => tl.TimeOfLog).ToListAsync()))
+                        {
+                            // If the Ticket Log was by an internal User, and an external message.
+                            if (userManager.GetRoles(ticketLog.SubmittedByUser.Id).Contains(MyRoles.Internal) && !ticketLog.IsInternal)
+                            {
+                                // We have a response from an internal User to the new Ticket.
+                                newTicketsRespondedTo++;
+                                totalNewTicketResponseTimeInSeconds += (ticketLog.TimeOfLog - ticket.Created).TotalSeconds;
+                            }
+                        }
+                    }
+                }
+                long ratioOfTicketsResponded = newTicketsRespondedTo / newTickets.Count;
+                if (newTickets.Count != 0 && ratioOfTicketsResponded > 0)
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"We got back to {ratioOfTicketsResponded.ToString("P0")} of all new Tickets so far!"));
+
+                if (newTicketsRespondedTo != 0)
+                {
+                    TimeSpan averageResponseTime = TimeSpan.FromSeconds((totalNewTicketResponseTimeInSeconds / newTicketsRespondedTo));
+                    socialMediaNotifications.Add(new SocialMediaNotificationViewModel(socialMediaNotifications.Count + 1,
+                        $"For our responded to Tickets, on average we got back to you within {averageResponseTime.Minutes} minute(s)!"));
+                }
             }
 
             return PartialView("_Partial_SocialMediaSuggestions", new SocialMediaNotificationsViewModel(socialMediaNotifications));
