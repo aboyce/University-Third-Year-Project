@@ -41,11 +41,16 @@ namespace TicketManagement.Controllers.API
             if (!await IsUserInternal(db, userId))
                 tickets = tickets.Where(t => t.OpenedById == userId);
 
-            List<ApiTicketViewModel> ticketViewModels;
+            List<ApiTicketViewModel> ticketViewModels = new List<ApiTicketViewModel>();
 
             try
             {
-                ticketViewModels = (await tickets.ToListAsync()).Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList();
+                foreach (Ticket ticket in await tickets.ToListAsync())
+                {
+                    ticketViewModels.Add(ApiHelper.GetApiTicketViewModel(ticket, GetColourForTicket(ticket)));
+                }
+
+                //ticketViewModels = (await tickets.ToListAsync()).Select(Helpers.ApiHelper.GetApiTicketViewModel).ToList();
             }
             catch (Exception e)
             {
@@ -99,7 +104,7 @@ namespace TicketManagement.Controllers.API
                 return new JsonResult
                 {
                     ContentType = "Ticket",
-                    Data = Helpers.ApiHelper.GetApiTicketViewModel(ticket)
+                    Data = Helpers.ApiHelper.GetApiTicketViewModel(ticket, GetColourForTicket(ticket))
                 };
             }
 
@@ -112,7 +117,7 @@ namespace TicketManagement.Controllers.API
                 return new JsonResult
                 {
                     ContentType = "Ticket",
-                    Data = Helpers.ApiHelper.GetApiTicketViewModel(ticket)
+                    Data = Helpers.ApiHelper.GetApiTicketViewModel(ticket, GetColourForTicket(ticket))
                 };
             }
         }
@@ -206,6 +211,26 @@ namespace TicketManagement.Controllers.API
                 return false;
 
             return await TicketLogHelper.NewTicketLogAsync(userId, id, type, isInternal, false, db, message, null);
+        }
+
+        private string GetColourForTicket(Ticket ticket)
+        {
+            string colour;
+            DateTime now = DateTime.Now;
+            TicketConfiguration ticketConfiguration = ConfigurationHelper.GetTicketConfiguration();
+
+            if (ticket.TicketState.Name == "Closed")
+                colour = "grey";
+            else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanRed)
+                colour = "red";
+            else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanAmber)
+                colour = "amber";
+            else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanGreen)
+                colour = "green";
+            else
+                colour = "blue";
+
+            return colour;
         }
     }
 }

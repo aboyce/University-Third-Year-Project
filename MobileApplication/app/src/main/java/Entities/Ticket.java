@@ -14,6 +14,7 @@ public class Ticket {
     private String teamAssignedTo;
     private String organisationAssignedTo;
     private String deadline;
+    private String colour;
     private String lastMessage;
     private String lastResponse;
 
@@ -21,7 +22,7 @@ public class Ticket {
 
     public Ticket(Integer id, String title, String description, String openedByName, String priority,
                   String state, String category, String projectName, String userAssignedTo,
-                  String teamAssignedTo, String organisationAssignedTo, String deadline,
+                  String teamAssignedTo, String organisationAssignedTo, String deadline, String colour,
                   String lastMessage, String lastResponse) {
         this.id = id;
         this.title = title;
@@ -35,6 +36,7 @@ public class Ticket {
         this.teamAssignedTo = teamAssignedTo;
         this.organisationAssignedTo = organisationAssignedTo;
         this.deadline = deadline;
+        this.colour = colour;
         this.lastMessage = lastMessage;
         this.lastResponse = lastResponse;
     }
@@ -133,6 +135,14 @@ public class Ticket {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public String getLastMessage() {

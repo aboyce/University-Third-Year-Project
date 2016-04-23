@@ -9,11 +9,11 @@ namespace TicketManagement.Helpers
     public static class ApiHelper
     {
 
-        public static Task<ApiTicketViewModel> GetApiTicketViewModelAsync(Ticket ticket)
+        public static Task<ApiTicketViewModel> GetApiTicketViewModelAsync(Ticket ticket, string colour)
         {
-            return Task.Factory.StartNew(() => GetApiTicketViewModel(ticket));
+            return Task.Factory.StartNew(() => GetApiTicketViewModel(ticket, colour));
         }
-        public static ApiTicketViewModel GetApiTicketViewModel(Ticket ticket)
+        public static ApiTicketViewModel GetApiTicketViewModel(Ticket ticket, string colour)
         {
             if (ticket == null)
                 return null;
@@ -31,6 +31,7 @@ namespace TicketManagement.Helpers
                 OrganisationAssignedToName = ticket.OrganisationAssignedTo?.Name,
                 TicketStateName = ticket.TicketState?.Name,
                 TicketCategoryName = ticket.TicketCategory?.Name,
+                Colour = colour,
                 Deadline = ticket.Deadline,
                 LastMessage = ticket.LastMessage,
                 LastResponse = ticket.LastResponse

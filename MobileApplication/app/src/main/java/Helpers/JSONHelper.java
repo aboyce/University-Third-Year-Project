@@ -7,9 +7,6 @@ import org.json.JSONObject;
 import Entities.Ticket;
 import Entities.TicketLog;
 
-/**
- * Created by Adam on 22/02/2016.
- */
 public class JSONHelper {
 
     public static Ticket getTicketFromJSONObject (JSONObject json){
@@ -21,7 +18,7 @@ public class JSONHelper {
                     json.getString("ticketCategoryName"), json.getString("projectName"),
                     json.getString("userAssignedToName"), json.getString("teamAssignedToName"),
                     json.getString("organisationAssignedToName"), json.getString("deadline"),
-                    json.getString("lastMessage"), json.getString("lastResponse"));
+                    json.getString("colour"), json.getString("lastMessage"), json.getString("lastResponse"));
 
         }catch(Exception e){
             Log.e("TICKET_MANAGEMENT", "TicketsActivity:getTicketFromJSONObject: Exception: " + e.getMessage());

@@ -112,20 +112,26 @@ public class TicketsActivity extends ActivityBase {
                 TextView description = (TextView) itemView.findViewById(R.id.ticketList_lblTicketDescription);
                 description.setText(currentTicket.getDescription());
 
-                switch (currentTicket.getState()){
-                    case "Pending Approval":
-                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
-                        break;
-                    case "Awaiting Response":
-                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
-                        break;
-                    case "Closed":
+                switch (currentTicket.getColour()){
+                    case "grey":
                         title.setTextColor(getColor(R.color.colorBootstrap_default));
                         itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_default));
                         break;
-                    default:
-                    case "Open":
+                    case "blue":
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_info));
+                        title.setTextColor(getColor(R.color.colorBootstrap_info));
+                        break;
+                    case "green":
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_success));
+                        title.setTextColor(getColor(R.color.colorBootstrap_success));
+                        break;
+                    case "amber":
                         itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_warning));
+                        title.setTextColor(getColor(R.color.colorBootstrap_warning));
+                        break;
+                    case "red":
+                        itemView.setBackground(getDrawable(R.drawable.ticket_list_item_border_danger));
+                        title.setTextColor(getColor(R.color.colorBootstrap_danger));
                         break;
                 }
             } catch (Exception e){

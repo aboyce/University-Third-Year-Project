@@ -29,6 +29,7 @@ namespace TicketManagement.ViewModels
         public string TicketStateName { get; set; }
         public string ProjectName { get; set; }
         public string TicketCategoryName { get; set; }
+        public string Colour { get; set; }
         public DateTime? Deadline { get; set; }
         public DateTime? LastMessage { get; set; }
         public DateTime? LastResponse { get; set; }
