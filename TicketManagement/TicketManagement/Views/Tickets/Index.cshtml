@@ -65,9 +65,9 @@
         if (ticketConfiguration != null)
         {
             if(item.TicketState.Name == "Closed") { rowColour = "active"; }
+            else if(item.TicketState.Name == "Open") { rowColour = "success"; }
             else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanRed) { rowColour = "danger"; }
             else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanAmber) { rowColour = "warning"; }
-            else if (item.LastMessage != null && (now - item.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanGreen) { rowColour = "success"; }
             else { rowColour = "info"; }
         }
 

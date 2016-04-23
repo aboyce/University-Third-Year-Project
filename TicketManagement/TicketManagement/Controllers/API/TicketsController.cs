@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -221,14 +222,20 @@ namespace TicketManagement.Controllers.API
 
             if (ticket.TicketState.Name == "Closed")
                 colour = "grey";
+            else if (ticket.TicketState.Name == "Open")
+                colour = "green";
             else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanRed)
                 colour = "red";
             else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanAmber)
                 colour = "amber";
-            else if (ticket.LastMessage != null && (now - ticket.LastMessage.Value).Duration() >= ticketConfiguration.TimeSpanGreen)
-                colour = "green";
             else
                 colour = "blue";
+
+            // Closed                            = Grey (not really a concern)
+            // Open                              = Green (waiting on them to answer us)
+            // Awaiting Response and Old         = Red
+            // Awaiting Response and not recent  = Amber
+            // Awaiting Response and recent      = Blue
 
             return colour;
         }

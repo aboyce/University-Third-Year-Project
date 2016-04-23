@@ -418,6 +418,7 @@
     <None Include="Properties\PublishProfiles\Adam-Server.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\adamboyce - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\adamboyce.pubxml" />
     <None Include="Properties\PublishProfiles\testadamboyce.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
