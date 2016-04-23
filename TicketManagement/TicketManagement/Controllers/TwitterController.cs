@@ -11,7 +11,7 @@ using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
 using Tweetinvi;
-using Tweetinvi.Core.Credentials;
+using Tweetinvi.Core.Authentication;
 using Tweetinvi.Core.Exceptions;
 using Tweetinvi.Core.Interfaces;
 
@@ -27,7 +27,9 @@ namespace TicketManagement.Controllers
         {
             ITwitterCredentials twitterCredentials = GetTwitterCredentials();
 
-            return View(twitterCredentials == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
+            IUser user = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
+
+            return View(user == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
 
         public ActionResult TwitterError(string errorMessage)
@@ -75,7 +77,9 @@ namespace TicketManagement.Controllers
                 if (credentials == null)
                     return TwitterError("Problem loading your credentials.");
 
-                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetHomeTimelineAsync()));
+                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser(credentials);
+
+                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await twitterUser.GetHomeTimelineAsync()));
             }
             catch (TwitterException e)
             {
@@ -95,7 +99,9 @@ namespace TicketManagement.Controllers
                 if (credentials == null)
                     return TwitterError("Problem loading your credentials.");
 
-                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await (Tweetinvi.User.GetAuthenticatedUser(credentials)).GetUserTimelineAsync()));
+                IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser(credentials);
+
+                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await twitterUser.GetUserTimelineAsync()));
             }
             catch (TwitterException e)
             {
@@ -104,6 +110,36 @@ namespace TicketManagement.Controllers
             catch (Exception e)
             {
                 return TwitterError(e.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddTweet(string tweetBody, string tweetLink)
+        {
+            if (string.IsNullOrEmpty(tweetBody))
+                return Json("Cannot post with out a message body.");
+
+            try
+            {
+                ITwitterCredentials credentials = GetTwitterCredentials();
+                if (credentials == null)
+                    return Json("Problem with your credentials, please try re-associating you account and check permissions.");
+
+                IAuthenticatedUser user = Tweetinvi.User.GetAuthenticatedUser(credentials);
+                ITweet tweet = user.PublishTweet(tweetBody + (string.IsNullOrEmpty(tweetLink) ? "" : $" {tweetLink}"));
+
+                if (tweet != null)
+                    return Json("Tweet sent!");
+                else
+                    return Json("Problem with your credentials, please try re-associating you account and check permissions.");
+            }
+            catch (TwitterException e)
+            {
+                return Json("Sorry, an error occurred.");
+            }
+            catch (Exception e)
+            {
+                return Json("Sorry, an error occurred.");
             }
         }
 
@@ -120,12 +156,28 @@ namespace TicketManagement.Controllers
             if(!long.TryParse(tweet_reply_id, out tweetReplyId))
                 return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
 
-            string tweetReplyText = $"@{Tweet.GetTweet(tweetReplyId).CreatedBy.ScreenName} {tweet_reply_body}";
+            try
+            {
+                ITwitterCredentials credentials = GetTwitterCredentials();
+                if (credentials == null)
+                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
 
-            if(Tweet.PublishTweetInReplyTo(tweetReplyText, tweetReplyId) != null)
-                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyAdded });
-            else
-                return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
+                string tweetReplyText = $"@{Tweet.GetTweet(tweetReplyId).CreatedBy.ScreenName} {tweet_reply_body}";
+
+                if (Tweet.PublishTweetInReplyTo(tweetReplyText, tweetReplyId) != null)
+                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyAdded });
+                else
+                    return RedirectToAction("Index", new { ViewMessage = ViewMessage.TwitterReplyFailed });
+
+            }
+            catch (TwitterException e)
+            {
+                return null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         private List<TwitterTweetViewModel> GetTweetListWithReplies(IEnumerable<ITweet> tweetsFromTwitter)
@@ -181,7 +233,6 @@ namespace TicketManagement.Controllers
             if(Auth.Credentials.AreSetupForUserAuthentication())
                 return true;
 
-
             if (!HttpContext.Items.Contains(SocialMediaItem.TwitterAccessToken) || !HttpContext.Items.Contains(SocialMediaItem.TwitterAccessTokenSecret))
                 return false; // TODO: Handle this error
 
@@ -194,7 +245,7 @@ namespace TicketManagement.Controllers
                 return false;
             }
 
-            ITwitterCredentials credentials =  Auth.SetUserCredentials(ConfigurationHelper.GetTwitterConsumerKey(),ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
+            ITwitterCredentials credentials = Auth.SetUserCredentials(ConfigurationHelper.GetTwitterConsumerKey(),ConfigurationHelper.GetTwitterConsumerSecret(), twitterAccessToken, twitterAccessTokenSecret);
 
             return credentials.AreSetupForUserAuthentication();
         }

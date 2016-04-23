@@ -63,8 +63,17 @@
         </div>
         <div class="col-md-9 col-sm-9">
 
-            <h3>Timeline</h3>
+            <h3>New Post</h3>
             <hr />
+            <div id="tw_new_post">
+                @if (Model.IsLoggedIn)
+                {
+                    @Html.Partial("_Partial_TwitterPostForm")
+                }
+            </div>
+
+            <h3>Timeline</h3>
+            <hr/>
             <div style="overflow-y: scroll; max-height: 500px">
                 <div id="twitter_user_timeline"></div>
             </div>
@@ -87,7 +96,7 @@
             }
 
             <h3>Home Timeline</h3>
-            <hr />
+            <hr/>
             <div class="row">
                 <div class="col-md-12">
                     <input id="cb_load_home_timeline" name="CloseOnReply" value="true" class="checkbox" type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info" data-on="Loaded" data-off="Load">

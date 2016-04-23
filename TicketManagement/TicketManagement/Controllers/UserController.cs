@@ -16,7 +16,7 @@ using TicketManagement.Models.Context;
 using TicketManagement.Models.Entities;
 using TicketManagement.ViewModels;
 using Tweetinvi;
-using Tweetinvi.Core.Credentials;
+using Tweetinvi.Core.Authentication;
 using User = TicketManagement.Models.Entities.User;
 
 namespace TicketManagement.Controllers
@@ -286,9 +286,9 @@ namespace TicketManagement.Controllers
             if (Request.Url == null)
                 return RedirectToAction("ManageLogins", new { ViewMessage = ManageMessageId.ErrorWithTwitterAuthentication });
 
-            string url = CredentialsCreator.GetAuthorizationURL(credentials, $"https://{Request.Url.Authority}/User/ValidateTwitterAuthentication"); // Check that Url matched the method below.
+            IAuthenticationContext authenticationContext = AuthFlow.InitAuthentication(credentials, $"https://{Request.Url.Authority}/User/ValidateTwitterAuthentication"); // Check that Url matched the method below.
 
-            return new RedirectResult(url);
+            return new RedirectResult(authenticationContext.AuthorizationURL);
         }
 
         public async Task<ActionResult> ValidateTwitterAuthentication()
@@ -296,7 +296,7 @@ namespace TicketManagement.Controllers
             string verifierCode = Request.Params.Get("oauth_verifier");
             string authorisationId = Request.Params.Get("authorization_id");
 
-            ITwitterCredentials credentials = CredentialsCreator.GetCredentialsFromVerifierCode(verifierCode, authorisationId);
+            ITwitterCredentials credentials = AuthFlow.CreateCredentialsFromVerifierCode(verifierCode, authorisationId);
 
             await StoreTwitterCredentials(verifierCode, authorisationId, credentials.AccessToken, credentials.AccessTokenSecret);
 

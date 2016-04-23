@@ -1,41 +1,36 @@
 ﻿@Styles.Render("~/bundles/bootstrap_toggle_css")
 
-@using (Ajax.BeginForm("PostToPage", "Facebook", null,
+@using (Ajax.BeginForm("AddTweet", "Twitter", null,
     new AjaxOptions
     {
-        OnFailure = "HandleError(xhr,'fb_post')",
+        OnFailure = "HandleError(xhr,'tw_post')",
         HttpMethod = "Post",
-        UpdateTargetId = "fb_post_response",
-        LoadingElementId = "fb_post_response_loading",
+        UpdateTargetId = "tw_post_response",
+        LoadingElementId = "tw_post_response_loading",
         InsertionMode = InsertionMode.Replace
     },
     new
     {
-        id = "fb_post_form",
+        id = "tw_post_form",
         @class = "form",
         role = "form"
     }))
 {
-    <div id="fb_post_response_loading"></div>
+    <div id="tw_post_response_loading"></div>
 
-    <div id="fb_post_response" class="form-group text-success"></div>
+    <div id="tw_post_response" class="form-group text-success"></div>
 
     <div class="panel panel-default">
 
         <div class="panel-heading">
-            <strong>New Post</strong>
-            <div style="float: right;">
-                <strong>Post as: </strong>
-                <input id="fb_cb_page_or_user" name="page" value="false" class="checkbox" type="checkbox" data-size="mini" data-toggle="toggle" data-offstyle="info" data-onstyle="primary" data-on="User" data-off="Page">
-                <input name="page" type="hidden" value="true"/>
-            </div>
+            <strong>New Tweet</strong>
         </div>
 
         <div class="panel-body">           
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <textarea name="message" class="form-control" rows="2" style="max-width: 100%" placeholder="Add post message..."></textarea>
+                        <textarea name="tweetBody" class="form-control" rows="2" style="max-width: 100%" placeholder="Tweet body..."></textarea>
                     </div>
                 </div>
             </div>
@@ -47,7 +42,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-link"></i></span>
-                            <input name="link" class="form-control" type="text" placeholder="Add URL link..." style="width: 100%"/>
+                            <input name="tweetLink" class="form-control" type="text" placeholder="Add URL link..." style="width: 100%"/>
                         </div>
                     </div>
                 </div>

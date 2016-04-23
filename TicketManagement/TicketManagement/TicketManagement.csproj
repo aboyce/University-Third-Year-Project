@@ -217,8 +217,8 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="Tweetinvi, Version=0.9.11.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TweetinviAPI.0.9.11.2\lib\net45\Tweetinvi.dll</HintPath>
+    <Reference Include="Tweetinvi, Version=0.9.12.2, Culture=neutral, PublicKeyToken=7247f14397bf67b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\TweetinviAPI.0.9.12.2\lib\net45\Tweetinvi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -613,6 +613,7 @@
     <Content Include="Views\Notification\_Partial_SocialMediaSuggestions.cshtml" />
     <Content Include="Views\Notification\_Partial_SocialMediaManagementNotifications.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="Views\Twitter\_Partial_TwitterPostForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
