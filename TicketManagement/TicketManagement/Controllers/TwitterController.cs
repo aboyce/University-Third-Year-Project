@@ -29,7 +29,7 @@ namespace TicketManagement.Controllers
 
             IUser user = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
 
-            return View(user == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
+            return View(twitterCredentials == null || user == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
 
         public ActionResult TwitterError(string errorMessage)
