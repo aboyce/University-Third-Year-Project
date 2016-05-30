@@ -14,8 +14,11 @@
         checkbox.change(function () {
             if (checkbox.prop('checked') === true) {
                 $('#twitter_home_timeline_form').submit();
+                checkbox.bootstrapToggle('on');
+
             } else {
                 $('#twitter_home_timeline').empty();
+                checkbox.bootstrapToggle('off');
             }
         });
     });

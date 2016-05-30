@@ -26,8 +26,10 @@ namespace TicketManagement.Controllers
         public ActionResult Index()
         {
             ITwitterCredentials twitterCredentials = GetTwitterCredentials();
+            IUser user = null;
 
-            IUser user = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
+            if(twitterCredentials != null)
+                user = Tweetinvi.User.GetAuthenticatedUser(twitterCredentials);
 
             return View(twitterCredentials == null || user == null ? new TwitterIndexViewModel { IsLoggedIn = false } : new TwitterIndexViewModel { IsLoggedIn = true });
         }
@@ -78,8 +80,13 @@ namespace TicketManagement.Controllers
                     return TwitterError("Problem loading your credentials.");
 
                 IAuthenticatedUser twitterUser = Tweetinvi.User.GetAuthenticatedUser(credentials);
-
-                return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(await twitterUser.GetHomeTimelineAsync()));
+                if (twitterUser != null)
+                {
+                    IEnumerable<ITweet> tweets = await twitterUser.GetHomeTimelineAsync();
+                    return PartialView("_Partial_TwitterTimeline", GetTweetListWithReplies(tweets));
+                }
+                else
+                    return TwitterError("Problem loading your credentials.");
             }
             catch (TwitterException e)
             {
