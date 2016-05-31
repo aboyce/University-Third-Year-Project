@@ -31,12 +31,12 @@ namespace TicketManagement.Controllers
             if (string.IsNullOrEmpty(accessToken))
                 return null;
             FacebookClient fb = new FacebookClient(accessToken);
-            dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location,gender");
-            if (userInfo == null)
-                userInfo = SimulateProfileInformation();
+            //dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location,gender");
+            //if (userInfo == null)
+                //userInfo = SimulateProfileInformation();
 
-            //dynamic userInfo = SimulateProfileInformation(); // There is a production only issue that is not a problem on the local dev machine, this shamelessly gets around it.
-            //Thread.Sleep(500);
+            dynamic userInfo = SimulateProfileInformation(); // There is a production only issue that is not a problem on the local dev machine, this shamelessly gets around it.
+            Thread.Sleep(500);
             return PartialView(FacebookHelpers.ToStatic<FacebookProfileSummaryViewModel>(userInfo));
         }
 
