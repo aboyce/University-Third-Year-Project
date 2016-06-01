@@ -7,20 +7,20 @@
         model.find('.edit-content').html(tweetId);
     });
 
-    $(document).ready(function () {
+    //$(document).ready(function () {
 
-        // When the user toggles the message to be internal or external, change the UI as required.
-        var checkbox = $('#cb_load_home_timeline');
-        checkbox.change(function () {
-            if (checkbox.prop('checked') === true) {
-                $('#twitter_home_timeline_form').submit();
-                checkbox.bootstrapToggle('on');
+    //    // When the user toggles the message to be internal or external, change the UI as required.
+    //    var checkbox = $('#cb_load_home_timeline');
+    //    checkbox.change(function () {
+    //        if (checkbox.prop('checked') === true) {
+    //            $('#twitter_home_timeline_form').submit();
+    //            checkbox.bootstrapToggle('on');
 
-            } else {
-                $('#twitter_home_timeline').empty();
-                checkbox.bootstrapToggle('off');
-            }
-        });
-    });
+    //        } else {
+    //            $('#twitter_home_timeline').empty();
+    //            checkbox.bootstrapToggle('off');
+    //        }
+    //    });
+    //});
 
 })();

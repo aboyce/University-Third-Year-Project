@@ -25,19 +25,31 @@ namespace TicketManagement.Controllers
             return View(string.IsNullOrEmpty(GetUserAccessToken()) ? new FacebookIndexViewModel { IsLoggedIn = false } : new FacebookIndexViewModel { IsLoggedIn = true });
         }
 
-        public async Task<ActionResult> _Partial_FacebookProfileSummary()
+        public ActionResult _Partial_FacebookProfileSummary()
         {
             string accessToken = GetUserAccessToken();
             if (string.IsNullOrEmpty(accessToken))
                 return null;
-            FacebookClient fb = new FacebookClient(accessToken);
+
+            //FacebookClient fb = new FacebookClient(accessToken);
             //dynamic userInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,email,locale,birthday,link,location,gender");
             //if (userInfo == null)
-                //userInfo = SimulateProfileInformation();
+            //userInfo = SimulateProfileInformation();
 
-            dynamic userInfo = SimulateProfileInformation(); // There is a production only issue that is not a problem on the local dev machine, this shamelessly gets around it.
-            Thread.Sleep(500);
-            return PartialView(FacebookHelpers.ToStatic<FacebookProfileSummaryViewModel>(userInfo));
+            // There is a production only issue that is not a problem on the local dev machine, this shamelessly gets around it.
+            FacebookProfileSummaryViewModel simulatedProfile = new FacebookProfileSummaryViewModel
+            {
+                FirstName = "Adam",
+                LastName = "Boyce",
+                Email = "A.Boyce@2012.hull.ac.uk",
+                Locale = "en_GB",
+                Birthday = new DateTime(1993, 9, 3),
+                ExternalLink = "",
+                Location = "Kingston Upon Hull",
+                Gender = "male",
+                FullName = "Adam Boyce"
+            };
+            return PartialView(simulatedProfile);
         }
 
         public async Task<ActionResult> _Partial_FacebookPage()
@@ -166,8 +178,6 @@ namespace TicketManagement.Controllers
             dynamic facebookPostId = await fb.PostTaskAsync($"{await ConfigurationHelper.GetFacebookPageIdAsync()}/feed?message={messageToPost}", null);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-
-            //ActionResult result = await PostToPage(messageToPost, null, true);
         }
 
         private class FacebookPagePosts
@@ -178,7 +188,7 @@ namespace TicketManagement.Controllers
         }
 
         // This is pretty grim, but for some reason the Facebook page doesn't pull down the profile information when running in Azure, this will be called if an error occurs as a replacement.
-        private dynamic SimulateProfileInformation()
+        private JsonObject SimulateProfileInformation()
         {
             return new JsonObject
             {
